@@ -1,0 +1,3 @@
+[submodule "go/src/github.com/kuzzleio/sdk-go"]
+	path = go/src/github.com/kuzzleio/sdk-go
+	url = git@github.com:kuzzleio/sdk-go
