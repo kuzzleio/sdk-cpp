@@ -71,7 +71,7 @@ cpp: makedir update_submodule make_c_sdk $(CPPSDK)
 		cd $(ROOTOUTDIR) && ln -s $(LIB_PREFIX)kuzzlesdk$(STATICLIB).$(VERSION) $(LIB_PREFIX)kuzzlesdk$(STATICLIB)
 
 clean:
-	cd sdk-c && make clean
+	cd sdk-c && make clean'
 ifeq ($(OS),Windows_NT)
 	$(RRM) $(ROOTOUTDIR)
 	$(RRM) src$(PATHSEP)*.o

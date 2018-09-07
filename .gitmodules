@@ -1,3 +1,6 @@
 [submodule "sdk-c"]
 	path = sdk-c
 	url = git@github.com:kuzzleio/sdk-c
+[submodule "sdk-features"]
+	path = sdk-features
+	url = git@github.com:kuzzleio/sdk-features
