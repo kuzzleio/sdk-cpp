@@ -1,3 +1,5 @@
+VERSION = 1.0.0
+
 ROOT_DIR = $(dir $(abspath $(lastword $(MAKEFILE_LIST))))
 ifeq ($(OS),Windows_NT)
 	STATICLIB = .lib
@@ -24,24 +26,13 @@ else
 	LIB_PREFIX = lib
 endif
 
-SDKGOPATH = go$(PATHSEP)src$(PATHSEP)github.com$(PATHSEP)kuzzleio$(PATHSEP)sdk-go
-CGOPATH = cgo$(PATHSEP)kuzzle
 PATHSEP = $(strip $(SEP))
 ROOTOUTDIR = $(ROOT_DIR)build
-GOFLAGS = -buildmode=c-archive
-GOSRC = .$(PATHSEP)cgo$(PATHSEP)kuzzle$(PATHSEP)
-GOTARGETDIR = $(ROOTOUTDIR)/c
-GOTARGET = $(GOTARGETDIR)$(PATHSEP)$(LIB_PREFIX)kuzzlesdk$(STATICLIB)
-GOTARGETSO = $(GOTARGETDIR)$(PATHSEP)$(LIB_PREFIX)kuzzlesdk$(DYNLIB)
 CPPDIR = $(ROOT_DIR)cpp
 HEADERSDIR = $(ROOT_DIR)include
 
-CPPFLAGS = -g -fPIC -std=c++11
-INCS = -I$(HEADERSDIR) -I$(CPPDIR) -I$(ROOT_DIR)templates -I$(GOTARGETDIR)
-LDFLAGS = -L$(GOTARGETDIR)
-LIBS = -lkuzzlesdk
-SRCS = kcore_wrap.cxx
-OBJS = $(SRCS:.cxx=.o)
+CXXFLAGS = -g -fPIC -std=c++11 -I.$(PATHSEP)include -I.$(PATHSEP)sdk-c$(PATHSEP)include$(PATHSEP) -I.$(PATHSEP)sdk-c$(PATHSEP)build$(PATHSEP) -L.$(PATHSEP)sdk-c$(PATHSEP)build
+LDFLAGS = -lkuzzlesdk
 
 CPP_SDK_SRCS = src$(PATHSEP)kuzzle.cpp \
 					src$(PATHSEP)document.cpp \
@@ -56,46 +47,36 @@ CPPSDK = $(CPP_SDK_SRCS:%.cpp=%.o)
 all: cpp
 
 %.o: %.cpp
-	$(CXX) -fPIC -c $< -o $@ $(CPPFLAGS) -I.$(PATHSEP)include -I.$(PATHSEP)build$(PATHSEP)c$(PATHSEP) -L.$(PATHSEP)build$(PATHSEP)c -lkuzzlesdk
-
-core:
-ifneq ($(OS),Windows_NT)
-ifeq ($(wildcard $(GOCC)),)
-	$(error "Unable to find go compiler")
-endif
-endif
-	cd $(SDKGOPATH) && go get .$(PATHSEP)...
-	cd $(SDKGOPATH)$(PATHSEP)internal$(PATHSEP)wrappers && $(GOCC) build -o $(GOTARGET) $(GOFLAGS) $(GOSRC)
-	cd $(SDKGOPATH)$(PATHSEP)internal$(PATHSEP)wrappers && $(GOCC) build -o $(GOTARGETSO) $(GOFLAGS) $(GOSRC)
-ifeq ($(OS),Windows_NT)
-	$(MV) $(subst /,\,$(GOTARGETDIR)$(PATHSEP)$(LIB_PREFIX)kuzzlesdk.h) kuzzle.h
-else
-	$(MV) $(GOTARGETDIR)$(PATHSEP)$(LIB_PREFIX)kuzzlesdk.h $(GOTARGETDIR)$(PATHSEP)kuzzle.h
-endif
+	$(CXX) -fPIC -c $< -o $@ $(CXXFLAGS) $(LDFLAGS)
 
 makedir:
 ifeq ($(OS),Windows_NT)
-	@if not exist $(subst /,\,$(OUTDIR)) mkdir $(subst /,\,$(OUTDIR))
+	@if not exist $(subst /,\,$(ROOTOUTDIR)) mkdir $(subst /,\,$(ROOTOUTDIR))
 else
-	mkdir -p $(OUTDIR)
+	mkdir -p $(ROOTOUTDIR)
 endif
 
-cpp: OUTDIR = $(ROOTOUTDIR)/cpp
-cpp: LANGUAGE = c++
+update_submodule:
+	cd sdk-c/go/src/github.com/kuzzleio/sdk-go && git submodule init && git submodule update
+
+make_c_sdk:
+	cd sdk-c && $(MAKE)
+
 cpp: export GOPATH = $(ROOT_DIR)go
-cpp: makedir core $(CPPSDK)
-		ar rvs $(OUTDIR)$(PATHSEP)libcpp$(STATICLIB) src$(PATHSEP)*.o
-		$(CXX) -shared -fPIC -o $(OUTDIR)$(PATHSEP)libcpp$(DYNLIB) -Wl,--whole-archive $(OUTDIR)$(PATHSEP)libcpp$(STATICLIB) build$(PATHSEP)c$(PATHSEP)$(LIB_PREFIX)kuzzlesdk$(STATICLIB) -Wl,--no-whole-archive
+cpp: makedir update_submodule make_c_sdk $(CPPSDK)
+		ar rvs $(ROOTOUTDIR)$(PATHSEP)libkuzzlesdk$(STATICLIB) src$(PATHSEP)*.o
+		$(CXX) -shared -fPIC -o $(ROOTOUTDIR)$(PATHSEP)$(LIB_PREFIX)kuzzlesdk$(DYNLIB) -Wl,--whole-archive $(ROOTOUTDIR)$(PATHSEP)$(LIB_PREFIX)kuzzlesdk$(STATICLIB) sdk-c$(PATHSEP)build$(PATHSEP)$(LIB_PREFIX)kuzzlesdk$(STATICLIB) -Wl,--no-whole-archive
+		cd $(ROOTOUTDIR) && mv $(LIB_PREFIX)kuzzlesdk$(STATICLIB) $(LIB_PREFIX)kuzzlesdk$(STATICLIB).$(VERSION) && mv $(LIB_PREFIX)kuzzlesdk$(DYNLIB) $(LIB_PREFIX)kuzzlesdk$(DYNLIB).$(VERSION)
+		cd $(ROOTOUTDIR) && ln -s $(LIB_PREFIX)kuzzlesdk$(DYNLIB).$(VERSION) $(LIB_PREFIX)kuzzlesdk$(DYNLIB)
+		cd $(ROOTOUTDIR) && ln -s $(LIB_PREFIX)kuzzlesdk$(STATICLIB).$(VERSION) $(LIB_PREFIX)kuzzlesdk$(STATICLIB)
 
 clean:
+	cd sdk-c && make clean
 ifeq ($(OS),Windows_NT)
-	if exist build$(PATHSEP)c $(RRM) build$(PATHSEP)cpp
+	$(RRM) $(ROOTOUTDIR)
 	$(RRM) src$(PATHSEP)*.o
 else
-	$(RRM) build$(PATHSEP)c
-	$(RRM) build$(PATHSEP)cpp
-	$(RRM) kcore_wrap.cxx kcore_wrap.h kcore_wrap.o
-	$(RRM) src$(PATHSEP)*.o
+	$(RRM) $(ROOTOUTDIR) src/*.o
 endif
 .PHONY: all cpp core clean 
 
