@@ -1,7 +1,5 @@
 language: cpp
 dist: trusty
-install:
-  - git clone git@github.com:${TRAVIS_REPO_SLUG}.git
 script: make && cd test && ./build_cpp_tests && ./_build_cpp_tests/KuzzleSDKStepDefs& && cucumber
 matrix:
   include:

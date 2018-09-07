@@ -1,6 +1,6 @@
 [submodule "sdk-c"]
 	path = sdk-c
-	url = git@github.com:kuzzleio/sdk-c
+	url = https://github.com/kuzzleio/sdk-c
 [submodule "test/features/sdk-features"]
 	path = test/features/sdk-features
-	url = git@github.com:kuzzleio/sdk-features
+	url = https://github.com/kuzzleio/sdk-features
