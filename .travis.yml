@@ -1,9 +1,6 @@
 language: cpp
 dist: trusty
 script: make && cd test && ./build_cpp_tests && ./_build_cpp_tests/KuzzleSDKStepDefs& && cucumber
-compiler:
-  - clang
-  - gcc
 matrix:
   include:
     - os: linux
