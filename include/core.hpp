@@ -16,7 +16,7 @@
 #define _CORE_HPP_
 #define _Complex
 #define _Bool bool
-#include <stdio.h>
+#include <cstdio>
 
 extern "C" {
   #include "kuzzle.h"
