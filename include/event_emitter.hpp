@@ -18,9 +18,9 @@
 #include <functional>
 #include "kuzzle.hpp"
 
-typedef const std::function<void(const std::string)> EventListener;
 
 namespace kuzzleio {
+  typedef const std::function<void(const std::string)> EventListener;
 
   class KuzzleEventEmitter {
     public:
