@@ -59,7 +59,8 @@ matrix:
       script:
         # Build & Test
         - docker run --rm -it --network ci_default --link kuzzle -v "$(pwd)":/mnt kuzzleio/sdk-cross:gcc bash -c "make && ./.ci/build_tests.sh && ./.ci/run_test.sh"
-
+        - ./.ci/package_build.sh
+        - aws cloudfront create-invalidation --distribution-id $AWS_CLOUDFRONT_DISTRIBUTION_ID --paths "/*"
 
 # ---------------------------------------
 # I386
@@ -116,7 +117,6 @@ matrix:
 # ---------------------------------------
 # I386
 # ---------------------------------------
-
     - env:
         - ARCH="i386"
         - COMPILATOR="clang"
