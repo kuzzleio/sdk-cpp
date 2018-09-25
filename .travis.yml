@@ -1,7 +1,5 @@
 os: linux
-dist: trusty
-
-language: minimal
+language: cpp
 sudo: required
 
 services:
@@ -20,16 +18,29 @@ before_install:
   - sudo sysctl -w vm.max_map_count=262144
   - ./.ci/start_kuzzle.sh
 
+addons:
+  apt:
+    packages:
+    - python
+    - python-pip
+
+install:
+  - pip install awscli --upgrade --user
+
+before_deploy:
+  - sudo ./.ci/package_build.sh
+
 deploy:
   provider: s3
   access_key_id: $AWS_ACCESS_KEY_ID
   secret_access_key: $AWS_SECRET_ACCESS_KEY
   bucket: $AWS_S3_BUCKET
+  region: us-west-2
   skip_cleanup: true
-  upload-dir: sdk/cpp/$TRAVIS_BRANCH/
+  upload-dir: sdk/cpp/$TRAVIS_BRANCH
   local-dir: deploy
   on:
-    branch: master
+    condition: "$COMPILATOR = gcc"
 
 after_deploy:
   - aws cloudfront create-invalidation --distribution-id $AWS_CLOUDFRONT_DISTRIBUTION_ID --paths "/*"
@@ -79,7 +90,7 @@ matrix:
 # ARMV8
 # ---------------------------------------
     - env:
-        - ARCH="arm64"
+        - ARCH="aarch64"
         - COMPILATOR="gcc"
 
       script:
