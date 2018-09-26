@@ -1,0 +1,3 @@
+test/_build_cpp_tests/
+*.o
+build/

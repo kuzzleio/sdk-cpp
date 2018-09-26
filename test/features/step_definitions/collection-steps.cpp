@@ -164,7 +164,8 @@ namespace {
 
     string specifications = "{\"" + ctx->index + "\":{\"" + collection_id + "\":{\"strict\":true}}}";
 
-    ctx->success = ctx->kuzzle->collection->validateSpecifications(specifications) ? 1 : 0;
+    kuzzleio::validation_response *validationResponse = ctx->kuzzle->collection->validateSpecifications(specifications);
+    ctx->success = validationResponse->valid;
   }
 
   THEN("^they should be validated$")
