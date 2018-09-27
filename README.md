@@ -32,10 +32,10 @@ make
 
 You can find prebuilt SDK's for each version and architecture:
 
-arm64: https://dl.kuzzle.io/sdk/c/master/kuzzlesdk-c-aarch64-1.0.0.tar.gz
+arm64: https://dl.kuzzle.io/sdk/c/master/kuzzlesdk-cpp-aarch64-1.0.0.tar.gz
 
-arm32: https://dl.kuzzle.io/sdk/c/master/kuzzlesdk-c-armhf-1.0.0.tar.gz
+arm32: https://dl.kuzzle.io/sdk/c/master/kuzzlesdk-cpp-armhf-1.0.0.tar.gz
 
-amd64: https://dl.kuzzle.io/sdk/c/master/kuzzlesdk-c-amd64-1.0.0.tar.gz
+amd64: https://dl.kuzzle.io/sdk/c/master/kuzzlesdk-cpp-amd64-1.0.0.tar.gz
 
-x86:  https://dl.kuzzle.io/sdk/c/master/kuzzlesdk-c-i386-1.0.0.tar.gz
+x86:  https://dl.kuzzle.io/sdk/c/master/kuzzlesdk-cpp-x86-1.0.0.tar.gz
