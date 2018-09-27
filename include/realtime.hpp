@@ -6,9 +6,9 @@
 #include <map>
 #include <functional>
 
-typedef std::function<void(const kuzzleio::notification_result*)> NotificationListener;
 
 namespace kuzzleio {
+  typedef std::function<void(const kuzzleio::notification_result*)> NotificationListener;
 
   class Kuzzle;
 
