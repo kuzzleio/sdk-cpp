@@ -105,6 +105,7 @@ namespace kuzzleio {
 
   std::string Auth::login(const std::string& strategy, const std::string& credentials) {
     string_result* r = kuzzle_login(_auth, const_cast<char*>(strategy.c_str()), const_cast<char*>(credentials.c_str()), nullptr);
+    std::cout << r->result << std::cout;
     if (r->error != nullptr)
         throwExceptionFromStatus(r);
     std::string ret = r->result;

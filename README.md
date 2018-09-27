@@ -1,3 +1,5 @@
+[![Build Status](https://travis-ci.org/kuzzleio/sdk-cpp.svg?branch=master)](https://travis-ci.org/kuzzleio/sdk-cpp) [![codecov.io](http://codecov.io/github/kuzzleio/sdk-cpp/coverage.svg?branch=master)](http://codecov.io/github/kuzzleio/sdk-cpp?branch=master)
+
 Official Kuzzle C++ SDK
 ======
 
