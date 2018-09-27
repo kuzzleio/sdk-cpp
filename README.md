@@ -33,6 +33,9 @@ You should know have the SDK in the build directory.
 You can find prebuilt SDK's for each version and architecture:
 
 arm64: https://dl.kuzzle.io/sdk/c/master/kuzzlesdk-c-aarch64-1.0.0.tar.gz
+
 arm32: https://dl.kuzzle.io/sdk/c/master/kuzzlesdk-c-armhf-1.0.0.tar.gz
+
 amd64: https://dl.kuzzle.io/sdk/c/master/kuzzlesdk-c-amd64-1.0.0.tar.gz
+
 i386:  https://dl.kuzzle.io/sdk/c/master/kuzzlesdk-c-i386-1.0.0.tar.gz
