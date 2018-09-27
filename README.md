@@ -15,11 +15,11 @@ The complete SDK documentation is available [here](http://docs.kuzzle.io/sdk-ref
 
 ## Protocol used
 
-The C++ SDK implement the websocket protocol.
+The C++ SDK implements the websocket protocol.
 
-## Build
+### Build
 
-### Clone the depot
+Execute the following snippet to clone the GIT repository, and build the SDK. It will then be available in the "build/" directory
 
 ```sh
 git clone --recursive git@github.com:kuzzleio/sdk-cpp.git
@@ -27,8 +27,6 @@ cd sdk-cpp
 git submodule update --init --recursive
 make
 ```
-
-You should know have the SDK in the build directory.
 
 ### Installation
 
@@ -40,4 +38,4 @@ arm32: https://dl.kuzzle.io/sdk/c/master/kuzzlesdk-c-armhf-1.0.0.tar.gz
 
 amd64: https://dl.kuzzle.io/sdk/c/master/kuzzlesdk-c-amd64-1.0.0.tar.gz
 
-i386:  https://dl.kuzzle.io/sdk/c/master/kuzzlesdk-c-i386-1.0.0.tar.gz
+x86:  https://dl.kuzzle.io/sdk/c/master/kuzzlesdk-c-i386-1.0.0.tar.gz
