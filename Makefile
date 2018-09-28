@@ -70,13 +70,32 @@ cpp: makedir update_submodule make_c_sdk $(CPPSDK)
 		cd $(ROOTOUTDIR) && ln -sr $(LIB_PREFIX)kuzzlesdk$(DYNLIB).$(VERSION) $(LIB_PREFIX)kuzzlesdk$(DYNLIB)
 		cd $(ROOTOUTDIR) && ln -sr $(LIB_PREFIX)kuzzlesdk$(STATICLIB).$(VERSION) $(LIB_PREFIX)kuzzlesdk$(STATICLIB)
 
+package: $(ROOTOUTDIR)$(PATHSEP)$(LIB_PREFIX)kuzzlesdk$(DYNLIB).$(VERSION) $(ROOTOUTDIR)$(PATHSEP)$(LIB_PREFIX)kuzzlesdk$(STATICLIB).$(VERSION)
+	mkdir $(ROOTOUTDIR)$(PATHSEP)lib
+	mkdir $(ROOTOUTDIR)$(PATHSEP)include
+	cp -fr $(ROOT_DIR)$(PATHSEP)include$(PATHSEP)*.hpp $(ROOTOUTDIR)$(PATHSEP)include
+	cp $(ROOT_DIR)$(PATHSEP)sdk-c$(PATHSEP)include$(PATHSEP)kuzzlesdk.h $(ROOTOUTDIR)$(PATHSEP)include
+	cp $(ROOT_DIR)$(PATHSEP)sdk-c$(PATHSEP)include$(PATHSEP)sdk_wrappers_internal.h $(ROOTOUTDIR)$(PATHSEP)include
+	cp $(ROOTOUTDIR)$(PATHSEP)*.so  $(ROOTOUTDIR)$(PATHSEP)lib
+	cp $(ROOTOUTDIR)$(PATHSEP)*.a  $(ROOTOUTDIR)$(PATHSEP)lib
+	mkdir deploy && cd $(ROOTOUTDIR) && tar cfz ..$(PATHSEP)deploy$(PATHSEP)kuzzlesdk-cpp-$(ARCH)-$(VERSION).tar.gz lib include
+
+build_test: $(ROOTOUTDIR)$(PATHSEP)$(LIB_PREFIX)kuzzlesdk$(DYNLIB).$(VERSION) $(ROOTOUTDIR)$(PATHSEP)$(LIB_PREFIX)kuzzlesdk$(STATICLIB).$(VERSION)
+	cd $(ROOT_DIR)$(PATHSEP)test && sh build_cpp_tests.sh
+
+run_test: $(ROOT_DIR)$(PATHSEP)test$(PATHSEP)_build_cpp_tests$(PATHSEP)KuzzleSDKStepDefs
+	cd $(ROOT_DIR)$(PATHSEP)test && .$(PATHSEP)_build_cpp_tests$(PATHSEP)KuzzleSDKStepDefs > /dev/null &
+	cd $(ROOT_DIR)$(PATHSEP)test && cucumber
+
 clean:
 	cd sdk-c && make clean
 ifeq ($(OS),Windows_NT)
 	$(RRM) $(ROOTOUTDIR)
 	$(RRM) src$(PATHSEP)*.o
+	$(RRM) $(ROOT_DIR)$(PATHSEP)deploy
+	$(RRM) $(ROOT_DIR)$(PATHSEP)test$(PATHSEP)_build_cpp_tests
 else
-	$(RRM) $(ROOTOUTDIR) src/*.o
+	$(RRM) $(ROOTOUTDIR) src/*.o $(ROOT_DIR)$(PATHSEP)deploy $(ROOT_DIR)$(PATHSEP)test$(PATHSEP)_build_cpp_tests
 endif
 .PHONY: all cpp core clean
 
