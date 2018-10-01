@@ -28,7 +28,7 @@ install:
   - pip install awscli --upgrade --user
 
 before_deploy:
-  - sudo ./.ci/package_build.sh
+  - docker run --rm -it -v "$(pwd)":/mnt kuzzleio/sdk-cross:gcc make package
 
 deploy:
   provider: s3
@@ -58,8 +58,7 @@ matrix:
 
       script:
         # Build & Test
-        - docker run --rm -it --network ci_default --link kuzzle -v "$(pwd)":/mnt kuzzleio/sdk-cross:gcc bash -c "make && ./.ci/build_tests.sh && ./.ci/run_test.sh"
-
+        - docker run --rm -it --network ci_default --link kuzzle -v "$(pwd)":/mnt kuzzleio/sdk-cross:gcc make all build_test run_test
 
 # ---------------------------------------
 # I386
@@ -70,7 +69,7 @@ matrix:
 
       script:
         # Build & Test
-        - docker run --rm -it --network ci_default --link kuzzle -v "$(pwd)":/mnt kuzzleio/sdk-cross:gcc-i386 bash -c "make && ./.ci/build_tests.sh && ./.ci/run_test.sh"
+        - docker run --rm -it --network ci_default --link kuzzle -v "$(pwd)":/mnt kuzzleio/sdk-cross:gcc-i386 make all build_test run_test
 
 # ---------------------------------------
 # ARMV7
@@ -81,10 +80,10 @@ matrix:
 
       script:
         # Build
-        - docker run --rm -it -v "$(pwd)":/mnt kuzzleio/sdk-cross:gcc-armhf bash -c "make && ./.ci/build_tests.sh"
+        - docker run --rm -it -v "$(pwd)":/mnt kuzzleio/sdk-cross:gcc-armhf make all build_test
         # Test
         - docker run --rm --privileged multiarch/qemu-user-static:register
-        - docker run --rm -it --network ci_default --link kuzzle -v "$(pwd)":/mnt kuzzleio/sdk-cross:armhf-cpp-runner ./.ci/run_test.sh
+        - docker run --rm -it --network ci_default --link kuzzle -v "$(pwd)":/mnt kuzzleio/sdk-cross:armhf-cpp-runner make run_test
 
 # ---------------------------------------
 # ARMV8
@@ -95,10 +94,10 @@ matrix:
 
       script:
         # Build
-        - docker run --rm -it -v "$(pwd)":/mnt kuzzleio/sdk-cross:gcc-aarch64 bash -c "make && ./.ci/build_tests.sh"
+        - docker run --rm -it -v "$(pwd)":/mnt kuzzleio/sdk-cross:gcc-aarch64 make all build_test
         # Test
         - docker run --rm --privileged multiarch/qemu-user-static:register
-        - docker run --rm -it --network ci_default --link kuzzle -v "$(pwd)":/mnt kuzzleio/sdk-cross:aarch64-cpp-runner ./.ci/run_test.sh
+        - docker run --rm -it --network ci_default --link kuzzle -v "$(pwd)":/mnt kuzzleio/sdk-cross:aarch64-cpp-runner make run_test
 
 # ---------------------------------------------
 # CLANG: Build & Test (AMD64 & i386 only)
@@ -111,17 +110,16 @@ matrix:
 
       script:
         # Build & Test
-        - docker run --rm -it --network ci_default --link kuzzle -v "$(pwd)":/mnt kuzzleio/sdk-cross:clang bash -c "make && ./.ci/build_tests.sh && ./.ci/run_test.sh"
+        - docker run --rm -it --network ci_default --link kuzzle -v "$(pwd)":/mnt kuzzleio/sdk-cross:clang make all build_test run_test
 
 # ---------------------------------------
 # I386
 # ---------------------------------------
-
     - env:
         - ARCH="i386"
         - COMPILATOR="clang"
 
       script:
         # Build & Test
-        - docker run --rm -it --network ci_default --link kuzzle -v "$(pwd)":/mnt kuzzleio/sdk-cross:clang-i386 bash -c "make && ./.ci/build_tests.sh && ./.ci/run_test.sh"
+        - docker run --rm -it --network ci_default --link kuzzle -v "$(pwd)":/mnt kuzzleio/sdk-cross:clang-i386 make all build_test run_test
 
