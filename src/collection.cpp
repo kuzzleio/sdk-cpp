@@ -108,10 +108,7 @@ namespace kuzzleio {
         if (r->error != nullptr)
             throwExceptionFromStatus(r);
 
-        search_result *ret = r;
-        kuzzle_free_search_result(r);
-
-        return ret;
+        return r;
     }
 
     std::string Collection::updateSpecifications(const std::string& index, const std::string& collection, const std::string& body, query_options *options) {
@@ -124,15 +121,12 @@ namespace kuzzleio {
         return ret;
     }
 
-    bool Collection::validateSpecifications(const std::string& body, query_options *options) {
-        bool_result *r = kuzzle_collection_validate_specifications(_collection, const_cast<char*>(body.c_str()), options);
+    validation_response* Collection::validateSpecifications(const std::string& body, query_options *options) {
+        validation_response *r = kuzzle_collection_validate_specifications(_collection, const_cast<char*>(body.c_str()), options);
         if (r->error != nullptr)
             throwExceptionFromStatus(r);
 
-        bool ret = r->result;
-        kuzzle_free_bool_result(r);
-
-        return ret;
+        return r;
     }
 
     void Collection::deleteSpecifications(const std::string& index, const std::string& collection, query_options *options) {
