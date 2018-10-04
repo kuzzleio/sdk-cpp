@@ -38,7 +38,7 @@ namespace kuzzleio {
       void deleteMyCredentials(const std::string& strategy, query_options *options=nullptr);
       kuzzle_user* getCurrentUser();
       std::string getMyCredentials(const std::string& strategy, query_options *options=nullptr);      
-      user_right* getMyRights(query_options *options=nullptr);
+      user_right** getMyRights(query_options *options=nullptr);
       std::vector<std::string> getStrategies(query_options *options=nullptr);
       std::string login(const std::string& strategy, const std::string& credentials, int expiresIn);
       std::string login(const std::string& strategy, const std::string& credentials);
