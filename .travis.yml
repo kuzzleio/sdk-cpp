@@ -40,7 +40,8 @@ deploy:
   upload-dir: sdk/cpp/$TRAVIS_BRANCH
   local-dir: deploy
   on:
-    condition: "$COMPILATOR = gcc"
+    all_branches: true
+    condition: $TRAVIS_BRANCH =~ ^master|*-dev$ AND "$COMPILATOR = gcc"
 
 after_deploy:
   - aws cloudfront create-invalidation --distribution-id $AWS_CLOUDFRONT_DISTRIBUTION_ID --paths "/*"
