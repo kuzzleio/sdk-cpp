@@ -164,7 +164,7 @@ namespace {
 
     string specifications = "{\"" + ctx->index + "\":{\"" + collection_id + "\":{\"strict\":true}}}";
 
-    kuzzleio::validation_response *validationResponse = ctx->kuzzle->collection->validateSpecifications(specifications);
+    kuzzleio::validation_response *validationResponse = ctx->kuzzle->collection->validateSpecifications(ctx->index, ctx->collection, specifications);
     ctx->success = validationResponse->valid;
   }
 
