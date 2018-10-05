@@ -42,7 +42,7 @@ namespace kuzzleio {
             std::string mCreate(const std::string& index, const std::string& collection, const std::string& body, query_options *options=nullptr);
             std::string mCreateOrReplace(const std::string& index, const std::string& collection, const std::string& body, query_options *options=nullptr);
             std::vector<std::string> mDelete(const std::string& index, const std::string& collection, const std::vector<std::string>& ids, query_options *options=nullptr);
-            std::string mGet(const std::string& index, const std::string& collection, const std::vector<std::string>& ids, bool includeTrash, query_options *options=nullptr);
+            std::string mGet(const std::string& index, const std::string& collection, const std::vector<std::string>& ids, query_options *options=nullptr);
             std::string mReplace(const std::string& index, const std::string& collection, const std::string& body, query_options *options=nullptr);
             std::string mUpdate(const std::string& index, const std::string& collection, const std::string& body, query_options *options=nullptr);
     };
