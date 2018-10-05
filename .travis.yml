@@ -41,7 +41,7 @@ deploy:
   local-dir: deploy
   on:
     all_branches: true
-    condition: $TRAVIS_BRANCH =~ ^master|*-dev$ AND "$COMPILATOR = gcc"
+    condition: "$COMPILATOR = gcc" AND (branch = master OR branch =~ ^.?-dev$)
 
 after_deploy:
   - aws cloudfront create-invalidation --distribution-id $AWS_CLOUDFRONT_DISTRIBUTION_ID --paths "/*"
