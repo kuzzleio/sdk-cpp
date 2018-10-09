@@ -225,7 +225,7 @@ namespace {
       query_options options = {0};
       options.refresh = const_cast<char*>("wait_for");
 
-      string documents = "{\"documents\":[{\"_id\":\"" + document1_id + "\", \"body\":{}}, {\"_id\":\"" + document2_id + "\", \"body\":{}}]}";
+      string documents = "[{\"_id\":\"" + document1_id + "\", \"body\":{}}, {\"_id\":\"" + document2_id + "\", \"body\":{}}]";
       ctx->kuzzle->document->mCreate(ctx->index, ctx->collection, documents, &options);
       ctx->success = 1;
       ctx->partial_exception = 0;
@@ -248,7 +248,7 @@ namespace {
       query_options options = {0};
       options.refresh = const_cast<char*>("wait_for");
 
-      string documents = "{\"documents\":[{\"_id\":\"" + document1_id + "\", \"body\":{\"a\":\"replaced document\"}}, {\"_id\":\"" + document2_id + "\", \"body\":{\"a\":\"replaced document\"}}]}";
+      string documents = "[{\"_id\":\"" + document1_id + "\", \"body\":{\"a\":\"replaced document\"}}, {\"_id\":\"" + document2_id + "\", \"body\":{\"a\":\"replaced document\"}}]";
       ctx->kuzzle->document->mReplace(ctx->index, ctx->collection, documents, &options);
       ctx->success = 1;
       ctx->partial_exception = 0;
@@ -282,7 +282,7 @@ namespace {
       query_options options = {0};
       options.refresh = const_cast<char*>("wait_for");
 
-      string documents = "{\"documents\":[{\"_id\":\"" + document1_id + "\", \"body\":{\"a\":\"replaced document\"}}, {\"_id\":\"" + document2_id + "\", \"body\":{\"a\":\"replaced document\"}}]}";
+      string documents = "[{\"_id\":\"" + document1_id + "\", \"body\":{\"a\":\"replaced document\"}}, {\"_id\":\"" + document2_id + "\", \"body\":{\"a\":\"replaced document\"}}]";
       ctx->kuzzle->document->mUpdate(ctx->index, ctx->collection, documents, &options);
       ctx->success = 1;
       ctx->partial_exception = 0;
@@ -316,7 +316,7 @@ namespace {
       query_options options = {0};
       options.refresh = const_cast<char*>("wait_for");
 
-      string documents = "{\"documents\":[{\"_id\":\"" + document1_id + "\", \"body\":{\"a\":\"replaced document\"}}, {\"_id\":\"" + document2_id + "\", \"body\":{\"a\":\"replaced document\"}}]}";
+      string documents = "[{\"_id\":\"" + document1_id + "\", \"body\":{\"a\":\"replaced document\"}}, {\"_id\":\"" + document2_id + "\", \"body\":{\"a\":\"replaced document\"}}]";
       ctx->kuzzle->document->mCreateOrReplace(ctx->index, ctx->collection, documents, &options);
       ctx->success = 1;
       ctx->partial_exception = 0;
@@ -372,7 +372,7 @@ namespace {
       document_ids.push_back(document1_id);
       document_ids.push_back(document2_id);
 
-      ctx->content = ctx->kuzzle->document->mGet(ctx->index, ctx->collection, document_ids, false);
+      ctx->content = ctx->kuzzle->document->mGet(ctx->index, ctx->collection, document_ids);
       ctx->success = 1;
     } catch (KuzzleException e) {
       ctx->success = 0;
