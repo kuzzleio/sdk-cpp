@@ -1,23 +1,23 @@
 # How to contribute to the CPP SDK
 
-Here are a few rules and guidelines to follow if you want to contribute to the CPP SDK and, more importantly, if you want to see your pull requests accepted by Kuzzle team.
+Here are a few rules and guidelines to follow if you want to contribute to the Java SDK and, more importantly, if you want to see your pull requests accepted by the  Kuzzle team.
 
 ## Tools
 
-We use git submodules to link the sdk-go and the sdk-c.  
-When you are developing a new functionality that had implications on the other SDK, you should align all your submodules on your development branch.  
-You can use `align-submodules.sh` script to achieve this. (Eg: `./align-submodules.sh 1-dev` to align all submodules on `1-dev` branch)
+This SDK inherits from the following repositories, linked as git submodules: sdk-c, sdk-go.  
+Whenever significant changes are applied to the parent SDKs, you need to align the linked submodules accordingly.
+You can use `align-submodules.sh` script to achieve this. (e.g.: `./align-submodules.sh 1-dev` to align all submodules on `1-dev` branch)
 
 
-To build the SDK, you can use this Docker image to build the SDK:  
+You can use this Docker image to build the SDK:  
 ```
 docker run --rm -it --network ci_default --link kuzzle -v "$(pwd)":/mnt kuzzleio/sdk-cross:gcc make all
 ```
 
 ## Running Tests
 
-The tests uses cucumber, so please ensure that you have ruby in your PATH.
-First make the SDK, install `Bundler`, install cucumber and run a Kuzzle stack.  
+Tests are handled by [cucumber](https://cucumber.io/).  
+First build the SDK, install `Bundler`, install cucumber and run a Kuzzle stack:
 
 ```bash
 gem install bundler
@@ -29,10 +29,10 @@ bundle install
 Then run features tests
 ```bash
 # Run all features tests
-./run-functionnal-testing.sh
+./run-tests.sh
 
 # Run only one feature file
-./run-functional-testing.sh collection.feature
+./run-tests.sh collection.feature
 
 ```
 
