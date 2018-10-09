@@ -137,7 +137,7 @@ namespace {
 
     ScenarioScope<KuzzleCtx> ctx;
 
-    string specifications = "{\"" + ctx->index + "\":{\""+ collection_id +"\":{\"strict\":false}}}";
+    string specifications = "{\"strict\":false}";
 
     ctx->kuzzle->collection->updateSpecifications(ctx->index, collection_id, specifications);
   }
@@ -153,7 +153,8 @@ namespace {
 
     BOOST_CHECK(specifications == expected_specifications);
 
-    ctx->kuzzle->collection->updateSpecifications(ctx->index, collection_id, "{\"" + ctx->index + "\":{\""+ collection_id +"\":{\"strict\":true}}}");
+    specifications = "{\"strict\":true}";
+    ctx->kuzzle->collection->updateSpecifications(ctx->index, collection_id, specifications);
   }
 
   WHEN("^I validate the specifications of \'([^\"]*)\'$")
@@ -162,7 +163,7 @@ namespace {
 
     ScenarioScope<KuzzleCtx> ctx;
 
-    string specifications = "{\"" + ctx->index + "\":{\"" + collection_id + "\":{\"strict\":true}}}";
+    string specifications = "{\"strict\":true}";
 
     kuzzleio::validation_response *validationResponse = ctx->kuzzle->collection->validateSpecifications(ctx->index, ctx->collection, specifications);
     ctx->success = validationResponse->valid;
@@ -179,7 +180,7 @@ namespace {
   {
     ScenarioScope<KuzzleCtx> ctx;
 
-    string specifications = "{\"" + ctx->index + "\":{\""+ ctx->collection +"\":{\"strict\":true}}}";
+    string specifications = "{\"strict\":true}";
 
     ctx->kuzzle->collection->updateSpecifications(ctx->index, ctx->collection, specifications);
   }
