@@ -14,9 +14,11 @@ env:
   # AWS SECRET ACCESS KEY
   - secure: "XFXzbiX3L9yWTM1eZVHNvK9J36V5m02SBZ1SjGKQk6gk1FCBlTk2qimDcjEXRmoFbvSjl66qu2A7JYNyo0+UVAd6xUCKasJeEezElUkYGehXXc65yoSEC2BikIdgMWwl3q/flPBaXyLVCuaczLCY3T7j7d+oT4Zy0GNkqtPMxxe0DhUydyESJ8rVP07s/ai4qoAx9ZYOQ/zAitwZlrUM5SQo1lDSd3zb0mU2nk4WxgnlFZRxukc+fBS/Iz0+t10zcAr4meiAFhmHxu5I/GWo4NvxF2xvenxnN9OMdImrTn+X8kqiM3Zgp5nfxyM2pqeoPitkc8pps/UDiwYa59YC1aG5W05VdvJJYghBNYZXnQYTAcJeNdoMD+Vvg7bnPY8eEV5EcAoM+j8sRiqw+zr5ORtR/qYR98rYtBbYpRE9DAKqx5HIl6aWZIirSP0ChxmM9T4F1z9Nky/xq18hb9ZrTVTN2sOoJNh8c42odHuXlE7IDQqkB8EuY9nC6bIeBaKINtoMr1PZ1DmMdnTWliJdS7rhzKo3n1Ns0NMsLnnELMJXWUZD1LVHXlDT4yRo1ZFQ/bu3uGaaibIG4BZzwjrTQ+8Lnr1+MS5jeD/SkESzr2z8BRn+6Hmomap3BnYQAC565idMVATDAZ6NZh/j/lg5Vbvll0wRkoZR5v5Jgf3hIdE="
 
+stages:
+  - name: Builds & Tests
+
 before_install:
   - sudo sysctl -w vm.max_map_count=262144
-  - ./.ci/start_kuzzle.sh
 
 addons:
   apt:
@@ -27,8 +29,8 @@ addons:
 install:
   - pip install awscli --upgrade --user
 
-before_deploy:
-  - docker run --rm -it -v "$(pwd)":/mnt kuzzleio/sdk-cross:gcc make package
+before_script:
+  - ./.ci/start_kuzzle.sh
 
 deploy:
   provider: s3
@@ -41,43 +43,44 @@ deploy:
   local-dir: deploy
   on:
     all_branches: true
-    condition: $TRAVIS_BRANCH =~ ^master|*-dev$ AND "$COMPILATOR = gcc"
+    condition: $COMPILATOR != clang AND $TRAVIS_BRANCH =~ ^master|.?-dev$
 
 after_deploy:
   - aws cloudfront create-invalidation --distribution-id $AWS_CLOUDFRONT_DISTRIBUTION_ID --paths "/*"
 
-matrix:
+jobs:
   include:
 # ---------------------------------------------
 # GCC: Build, test and deploy (only on master)
 # ---------------------------------------------
 # AMD64
 # ---------------------------------------
-    - env:
-        - ARCH="amd64"
-        - COMPILATOR="gcc"
-
+    - stage: Builds & Tests
+      name: "Build & Tests using GCC/G++ - amd64"
       script:
         # Build & Test
         - docker run --rm -it --network ci_default --link kuzzle -v "$(pwd)":/mnt kuzzleio/sdk-cross:gcc make all build_test run_test
 
+      before_deploy:
+        - docker run --rm -it -e ARCH=amd64 -v "$(pwd)":/mnt kuzzleio/sdk-cross:gcc make package
 # ---------------------------------------
 # I386
 # ---------------------------------------
-    - env:
-        - ARCH="i386"
-        - COMPILATOR="gcc"
+    - stage: Builds & Tests
+      name: "Build & Tests using GCC/G++ - i386"
 
       script:
         # Build & Test
         - docker run --rm -it --network ci_default --link kuzzle -v "$(pwd)":/mnt kuzzleio/sdk-cross:gcc-i386 make all build_test run_test
 
+      before_deploy:
+        - docker run --rm -it -e ARCH=i386 -v "$(pwd)":/mnt kuzzleio/sdk-cross:gcc-i386 make package
+
 # ---------------------------------------
 # ARMV7
 # ---------------------------------------
-    - env:
-        - ARCH="armhf"
-        - COMPILATOR="gcc"
+    - stage: Builds & Tests
+      name: "Build & Tests using GCC/G++ - armhf"
 
       script:
         # Build
@@ -86,12 +89,14 @@ matrix:
         - docker run --rm --privileged multiarch/qemu-user-static:register
         - docker run --rm -it --network ci_default --link kuzzle -v "$(pwd)":/mnt kuzzleio/sdk-cross:armhf-cpp-runner make run_test
 
+      before_deploy:
+        - docker run --rm -it -e ARCH=armhf -v "$(pwd)":/mnt kuzzleio/sdk-cross:gcc-armhf make package
+
 # ---------------------------------------
 # ARMV8
 # ---------------------------------------
-    - env:
-        - ARCH="aarch64"
-        - COMPILATOR="gcc"
+    - stage: Builds & Tests
+      name: "Build & Tests using GCC/G++ - aarch64"
 
       script:
         # Build
@@ -100,14 +105,19 @@ matrix:
         - docker run --rm --privileged multiarch/qemu-user-static:register
         - docker run --rm -it --network ci_default --link kuzzle -v "$(pwd)":/mnt kuzzleio/sdk-cross:aarch64-cpp-runner make run_test
 
+      before_deploy:
+        - docker run --rm -it -e ARCH=aarch64 -v "$(pwd)":/mnt kuzzleio/sdk-cross:gcc-aarch64 make package
+
 # ---------------------------------------------
 # CLANG: Build & Test (AMD64 & i386 only)
 # ---------------------------------------------
 # AMD64
 # ---------------------------------------
-    - env:
-        - ARCH="amd64"
-        - COMPILATOR="clang"
+    - stage: Builds & Tests
+      name: "Build & Tests using Clang - amd64"
+
+      env:
+        - COMPILATOR = "clang"
 
       script:
         # Build & Test
@@ -116,9 +126,11 @@ matrix:
 # ---------------------------------------
 # I386
 # ---------------------------------------
-    - env:
-        - ARCH="i386"
-        - COMPILATOR="clang"
+    - stage: Builds & Tests
+      name: "Build & Tests using Clang - i386"
+
+      env:
+        - COMPILATOR = "clang"
 
       script:
         # Build & Test
