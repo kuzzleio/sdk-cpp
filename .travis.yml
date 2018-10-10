@@ -32,6 +32,12 @@ install:
 before_script:
   - ./.ci/start_kuzzle.sh
 
+before_deploy:
+  - |
+    if [[ $TRAVIS_BRANCH =~ ^.?-dev$ ]]; then
+      mv ./deploy/kuzzlesdk-cpp-$ARCH-*.tar.gz ./deploy/kuzzlesdk-cpp-$ARCH.tar.gz;
+    fi;
+
 deploy:
   provider: s3
   access_key_id: $AWS_ACCESS_KEY_ID
