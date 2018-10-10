@@ -79,7 +79,7 @@ package: $(ROOTOUTDIR)$(PATHSEP)$(LIB_PREFIX)kuzzlesdk$(DYNLIB).$(VERSION) $(ROO
 	cp $(ROOT_DIR)$(PATHSEP)sdk-c$(PATHSEP)include$(PATHSEP)sdk_wrappers_internal.h $(ROOTOUTDIR)$(PATHSEP)include
 	cp $(ROOTOUTDIR)$(PATHSEP)*.so  $(ROOTOUTDIR)$(PATHSEP)lib
 	cp $(ROOTOUTDIR)$(PATHSEP)*.a  $(ROOTOUTDIR)$(PATHSEP)lib
-	mkdir deploy && cd $(ROOTOUTDIR) && tar cfz ..$(PATHSEP)deploy$(PATHSEP)kuzzlesdk-cpp-$(ARCH)-$(VERSION).tar.gz lib include
+	mkdir deploy && cd $(ROOTOUTDIR) && tar cfz ..$(PATHSEP)deploy$(PATHSEP)kuzzlesdk-$(VERSION)-$(ARCH).tar.gz lib include
 
 build_test: $(ROOTOUTDIR)$(PATHSEP)$(LIB_PREFIX)kuzzlesdk$(DYNLIB).$(VERSION) $(ROOTOUTDIR)$(PATHSEP)$(LIB_PREFIX)kuzzlesdk$(STATICLIB).$(VERSION)
 	cd $(ROOT_DIR)$(PATHSEP)test && sh build_cpp_tests.sh

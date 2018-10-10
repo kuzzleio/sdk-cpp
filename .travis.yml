@@ -35,7 +35,7 @@ before_script:
 before_deploy:
   - |
     if [[ $TRAVIS_BRANCH =~ ^.?-dev$ ]]; then
-      mv ./deploy/kuzzlesdk-cpp-$ARCH-*.tar.gz ./deploy/kuzzlesdk-cpp-$ARCH.tar.gz;
+      mv ./deploy/kuzzlesdk-*-$ARCH.tar.gz ./deploy/kuzzlesdk-$ARCH-experimental.tar.gz;
     fi;
 
 deploy:
