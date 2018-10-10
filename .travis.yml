@@ -1,6 +1,12 @@
 os: linux
-language: cpp
+language: minimal
 sudo: required
+
+addons:
+  apt:
+    packages:
+    - python
+    - python-pip
 
 services:
   - docker
@@ -20,12 +26,6 @@ stages:
 before_install:
   - sudo sysctl -w vm.max_map_count=262144
 
-addons:
-  apt:
-    packages:
-    - python
-    - python-pip
-
 install:
   - pip install awscli --upgrade --user
 
@@ -35,7 +35,7 @@ before_script:
 before_deploy:
   - |
     if [[ $TRAVIS_BRANCH =~ ^.?-dev$ ]]; then
-      mv ./deploy/kuzzlesdk-*-$ARCH.tar.gz ./deploy/kuzzlesdk-$ARCH-experimental.tar.gz;
+      sudo mv ./deploy/kuzzlesdk-*-$ARCH.tar.gz ./deploy/kuzzlesdk-$ARCH-experimental.tar.gz;
     fi;
 
 deploy:
@@ -63,11 +63,15 @@ jobs:
 # ---------------------------------------
     - stage: Builds & Tests
       name: "Build & Tests using GCC/G++ - amd64"
+
+      env:
+        - ARCH=amd64
+
       script:
         # Build & Test
         - docker run --rm -it --network ci_default --link kuzzle -v "$(pwd)":/mnt kuzzleio/sdk-cross:gcc make all build_test run_test
 
-      before_deploy:
+      after_success:
         - docker run --rm -it -e ARCH=amd64 -v "$(pwd)":/mnt kuzzleio/sdk-cross:gcc make package
 # ---------------------------------------
 # I386
@@ -75,11 +79,14 @@ jobs:
     - stage: Builds & Tests
       name: "Build & Tests using GCC/G++ - i386"
 
+      env:
+        - ARCH=i386
+
       script:
         # Build & Test
         - docker run --rm -it --network ci_default --link kuzzle -v "$(pwd)":/mnt kuzzleio/sdk-cross:gcc-i386 make all build_test run_test
 
-      before_deploy:
+      after_success:
         - docker run --rm -it -e ARCH=i386 -v "$(pwd)":/mnt kuzzleio/sdk-cross:gcc-i386 make package
 
 # ---------------------------------------
@@ -88,6 +95,9 @@ jobs:
     - stage: Builds & Tests
       name: "Build & Tests using GCC/G++ - armhf"
 
+      env:
+        - ARCH=armhf
+
       script:
         # Build
         - docker run --rm -it -v "$(pwd)":/mnt kuzzleio/sdk-cross:gcc-armhf make all build_test
@@ -95,7 +105,7 @@ jobs:
         - docker run --rm --privileged multiarch/qemu-user-static:register
         - docker run --rm -it --network ci_default --link kuzzle -v "$(pwd)":/mnt kuzzleio/sdk-cross:armhf-cpp-runner make run_test
 
-      before_deploy:
+      after_success:
         - docker run --rm -it -e ARCH=armhf -v "$(pwd)":/mnt kuzzleio/sdk-cross:gcc-armhf make package
 
 # ---------------------------------------
@@ -104,6 +114,9 @@ jobs:
     - stage: Builds & Tests
       name: "Build & Tests using GCC/G++ - aarch64"
 
+      env:
+        - ARCH=aarch64
+
       script:
         # Build
         - docker run --rm -it -v "$(pwd)":/mnt kuzzleio/sdk-cross:gcc-aarch64 make all build_test
@@ -111,7 +124,7 @@ jobs:
         - docker run --rm --privileged multiarch/qemu-user-static:register
         - docker run --rm -it --network ci_default --link kuzzle -v "$(pwd)":/mnt kuzzleio/sdk-cross:aarch64-cpp-runner make run_test
 
-      before_deploy:
+      after_success:
         - docker run --rm -it -e ARCH=aarch64 -v "$(pwd)":/mnt kuzzleio/sdk-cross:gcc-aarch64 make package
 
 # ---------------------------------------------
