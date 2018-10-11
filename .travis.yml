@@ -1,5 +1,5 @@
 os: linux
-language: cpp
+language: minimal
 sudo: required
 
 services:
@@ -14,73 +14,118 @@ env:
   # AWS SECRET ACCESS KEY
   - secure: "XFXzbiX3L9yWTM1eZVHNvK9J36V5m02SBZ1SjGKQk6gk1FCBlTk2qimDcjEXRmoFbvSjl66qu2A7JYNyo0+UVAd6xUCKasJeEezElUkYGehXXc65yoSEC2BikIdgMWwl3q/flPBaXyLVCuaczLCY3T7j7d+oT4Zy0GNkqtPMxxe0DhUydyESJ8rVP07s/ai4qoAx9ZYOQ/zAitwZlrUM5SQo1lDSd3zb0mU2nk4WxgnlFZRxukc+fBS/Iz0+t10zcAr4meiAFhmHxu5I/GWo4NvxF2xvenxnN9OMdImrTn+X8kqiM3Zgp5nfxyM2pqeoPitkc8pps/UDiwYa59YC1aG5W05VdvJJYghBNYZXnQYTAcJeNdoMD+Vvg7bnPY8eEV5EcAoM+j8sRiqw+zr5ORtR/qYR98rYtBbYpRE9DAKqx5HIl6aWZIirSP0ChxmM9T4F1z9Nky/xq18hb9ZrTVTN2sOoJNh8c42odHuXlE7IDQqkB8EuY9nC6bIeBaKINtoMr1PZ1DmMdnTWliJdS7rhzKo3n1Ns0NMsLnnELMJXWUZD1LVHXlDT4yRo1ZFQ/bu3uGaaibIG4BZzwjrTQ+8Lnr1+MS5jeD/SkESzr2z8BRn+6Hmomap3BnYQAC565idMVATDAZ6NZh/j/lg5Vbvll0wRkoZR5v5Jgf3hIdE="
 
-stages:
-  - name: Builds & Tests
-
 before_install:
   - sudo sysctl -w vm.max_map_count=262144
-
-addons:
-  apt:
-    packages:
-    - python
-    - python-pip
-
-install:
-  - pip install awscli --upgrade --user
 
 before_script:
   - ./.ci/start_kuzzle.sh
 
-deploy:
-  provider: s3
-  access_key_id: $AWS_ACCESS_KEY_ID
-  secret_access_key: $AWS_SECRET_ACCESS_KEY
-  bucket: $AWS_S3_BUCKET
-  region: us-west-2
-  skip_cleanup: true
-  upload-dir: sdk/cpp/$TRAVIS_BRANCH
-  local-dir: deploy
-  on:
-    all_branches: true
-    condition: $COMPILATOR != clang AND $TRAVIS_BRANCH =~ ^master|.?-dev$
-
-after_deploy:
-  - aws cloudfront create-invalidation --distribution-id $AWS_CLOUDFRONT_DISTRIBUTION_ID --paths "/*"
-
 jobs:
   include:
 # ---------------------------------------------
-# GCC: Build, test and deploy (only on master)
+# GCC: Build, test and deploy
 # ---------------------------------------------
 # AMD64
 # ---------------------------------------
     - stage: Builds & Tests
       name: "Build & Tests using GCC/G++ - amd64"
+
+      addons:
+        apt:
+          packages:
+          - python
+          - python-pip
+
+      install:
+        - pip install awscli --upgrade --user
+
       script:
         # Build & Test
         - docker run --rm -it --network ci_default --link kuzzle -v "$(pwd)":/mnt kuzzleio/sdk-cross:gcc make all build_test run_test
 
-      before_deploy:
+      after_success:
         - docker run --rm -it -e ARCH=amd64 -v "$(pwd)":/mnt kuzzleio/sdk-cross:gcc make package
+
+      before_deploy:
+        - |
+          if [[ $TRAVIS_BRANCH =~ ^.?-dev$ ]]; then
+            sudo mv ./deploy/kuzzlesdk-cpp-*-amd64.tar.gz ./deploy/kuzzlesdk-cpp-experimental-amd64.tar.gz;
+          fi;
+
+      deploy:
+        provider: s3
+        access_key_id: $AWS_ACCESS_KEY_ID
+        secret_access_key: $AWS_SECRET_ACCESS_KEY
+        bucket: $AWS_S3_BUCKET
+        region: us-west-2
+        skip_cleanup: true
+        upload-dir: sdk/cpp/$TRAVIS_BRANCH
+        local-dir: deploy
+        on:
+          all_branches: true
+          condition: $TRAVIS_BRANCH =~ ^master|.?-dev$
+
+      after_deploy:
+        - aws cloudfront create-invalidation --distribution-id $AWS_CLOUDFRONT_DISTRIBUTION_ID --paths "/*"
+
 # ---------------------------------------
 # I386
 # ---------------------------------------
     - stage: Builds & Tests
       name: "Build & Tests using GCC/G++ - i386"
 
+      addons:
+        apt:
+          packages:
+          - python
+          - python-pip
+
+      install:
+        - pip install awscli --upgrade --user
+
       script:
         # Build & Test
         - docker run --rm -it --network ci_default --link kuzzle -v "$(pwd)":/mnt kuzzleio/sdk-cross:gcc-i386 make all build_test run_test
 
-      before_deploy:
+      after_success:
         - docker run --rm -it -e ARCH=i386 -v "$(pwd)":/mnt kuzzleio/sdk-cross:gcc-i386 make package
+
+      before_deploy:
+        - |
+          if [[ $TRAVIS_BRANCH =~ ^.?-dev$ ]]; then
+            sudo mv ./deploy/kuzzlesdk-cpp-*-i386.tar.gz ./deploy/kuzzlesdk-cpp-experimental-i386.tar.gz;
+          fi;
+
+      deploy:
+        provider: s3
+        access_key_id: $AWS_ACCESS_KEY_ID
+        secret_access_key: $AWS_SECRET_ACCESS_KEY
+        bucket: $AWS_S3_BUCKET
+        region: us-west-2
+        skip_cleanup: true
+        upload-dir: sdk/cpp/$TRAVIS_BRANCH
+        local-dir: deploy
+        on:
+          all_branches: true
+          condition: $TRAVIS_BRANCH =~ ^master|.?-dev$
+
+      after_deploy:
+        - aws cloudfront create-invalidation --distribution-id $AWS_CLOUDFRONT_DISTRIBUTION_ID --paths "/*"
 
 # ---------------------------------------
 # ARMV7
 # ---------------------------------------
     - stage: Builds & Tests
       name: "Build & Tests using GCC/G++ - armhf"
+
+      addons:
+        apt:
+          packages:
+          - python
+          - python-pip
+
+      install:
+        - pip install awscli --upgrade --user
 
       script:
         # Build
@@ -89,14 +134,45 @@ jobs:
         - docker run --rm --privileged multiarch/qemu-user-static:register
         - docker run --rm -it --network ci_default --link kuzzle -v "$(pwd)":/mnt kuzzleio/sdk-cross:armhf-cpp-runner make run_test
 
-      before_deploy:
+      after_success:
         - docker run --rm -it -e ARCH=armhf -v "$(pwd)":/mnt kuzzleio/sdk-cross:gcc-armhf make package
+
+      before_deploy:
+        - |
+          if [[ $TRAVIS_BRANCH =~ ^.?-dev$ ]]; then
+            sudo mv ./deploy/kuzzlesdk-cpp-*-armhf.tar.gz ./deploy/kuzzlesdk-cpp-experimental-armhf.tar.gz;
+          fi;
+
+      deploy:
+        provider: s3
+        access_key_id: $AWS_ACCESS_KEY_ID
+        secret_access_key: $AWS_SECRET_ACCESS_KEY
+        bucket: $AWS_S3_BUCKET
+        region: us-west-2
+        skip_cleanup: true
+        upload-dir: sdk/cpp/$TRAVIS_BRANCH
+        local-dir: deploy
+        on:
+          all_branches: true
+          condition: $TRAVIS_BRANCH =~ ^master|.?-dev$
+
+      after_deploy:
+        - aws cloudfront create-invalidation --distribution-id $AWS_CLOUDFRONT_DISTRIBUTION_ID --paths "/*"
 
 # ---------------------------------------
 # ARMV8
 # ---------------------------------------
     - stage: Builds & Tests
       name: "Build & Tests using GCC/G++ - aarch64"
+
+      addons:
+        apt:
+          packages:
+          - python
+          - python-pip
+
+      install:
+        - pip install awscli --upgrade --user
 
       script:
         # Build
@@ -105,8 +181,30 @@ jobs:
         - docker run --rm --privileged multiarch/qemu-user-static:register
         - docker run --rm -it --network ci_default --link kuzzle -v "$(pwd)":/mnt kuzzleio/sdk-cross:aarch64-cpp-runner make run_test
 
-      before_deploy:
+      after_success:
         - docker run --rm -it -e ARCH=aarch64 -v "$(pwd)":/mnt kuzzleio/sdk-cross:gcc-aarch64 make package
+
+      before_deploy:
+        - |
+          if [[ $TRAVIS_BRANCH =~ ^.?-dev$ ]]; then
+            sudo mv ./deploy/kuzzlesdk-cpp-*-aarch64.tar.gz ./deploy/kuzzlesdk-cpp-experimental-aarch64.tar.gz;
+          fi;
+
+      deploy:
+        provider: s3
+        access_key_id: $AWS_ACCESS_KEY_ID
+        secret_access_key: $AWS_SECRET_ACCESS_KEY
+        bucket: $AWS_S3_BUCKET
+        region: us-west-2
+        skip_cleanup: true
+        upload-dir: sdk/cpp/$TRAVIS_BRANCH
+        local-dir: deploy
+        on:
+          all_branches: true
+          condition: $TRAVIS_BRANCH =~ ^master|.?-dev$
+
+      after_deploy:
+        - aws cloudfront create-invalidation --distribution-id $AWS_CLOUDFRONT_DISTRIBUTION_ID --paths "/*"
 
 # ---------------------------------------------
 # CLANG: Build & Test (AMD64 & i386 only)
