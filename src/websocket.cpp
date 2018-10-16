@@ -2,8 +2,9 @@
 
 namespace kuzzleio {
 
-    WebSocket::WebSocket(const std::string& host) {
-      
+    WebSocket::WebSocket(const std::string& host, options *opts) {
+      this->_web_socket = new web_socket();
+      kuzzle_new_web_socket(this->_web_socket, const_cast<char*>(host.c_str()), opts);
     }
 
     void WebSocket::addListener(int, EventListener*) {}

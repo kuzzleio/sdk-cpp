@@ -1,13 +1,15 @@
 #ifndef KUZZLE_WEBSOCKET_HPP
 #define KUZZLE_WEBSOCKET_HPP
 
+#include "core.hpp"
 #include "protocol.hpp"
 
 namespace kuzzleio {
 
   class WebSocket : public Protocol {
     public:
-    WebSocket(const std::string&);
+    web_socket* _web_socket;
+    WebSocket(const std::string&, options*);
     virtual void addListener(int, EventListener*);
     virtual void removeListener(int, EventListener*);
     virtual void removeAllListeners(int);
