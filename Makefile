@@ -41,7 +41,8 @@ CPP_SDK_SRCS = src$(PATHSEP)kuzzle.cpp \
 					src$(PATHSEP)realtime.cpp \
 					src$(PATHSEP)auth.cpp \
 					src$(PATHSEP)server.cpp \
-					src$(PATHSEP)index.cpp
+					src$(PATHSEP)index.cpp \
+					src$(PATHSEP)websocket.cpp
 
 CPPSDK = $(CPP_SDK_SRCS:%.cpp=%.o)
 

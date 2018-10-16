@@ -15,6 +15,7 @@
 #ifndef _KUZZLE_HPP_
 #define _KUZZLE_HPP_
 
+#include "protocol.hpp"
 #include "exceptions.hpp"
 #include "core.hpp"
 #include "event_emitter.hpp"
@@ -31,6 +32,7 @@ namespace kuzzleio {
   class Index;
   class Server;
   class Realtime;
+  class Protocol;
 
   class Kuzzle : public KuzzleEventEmitter {
     private:
@@ -45,7 +47,7 @@ namespace kuzzleio {
       Document *document;
       Realtime *realtime;
 
-      Kuzzle(const std::string& host, options *options=nullptr);
+      Kuzzle(Protocol* protocol, options *options=nullptr);
       virtual ~Kuzzle();
 
       char* connect() noexcept;

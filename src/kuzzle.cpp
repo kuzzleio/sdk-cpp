@@ -18,9 +18,11 @@
 #include "auth.hpp"
 #include "index.hpp"
 #include "server.hpp"
+#include "protocol.hpp"
 #include "collection.hpp"
 #include "document.hpp"
 #include "realtime.hpp"
+#include "kuzzle.hpp"
 #include <iostream>
 #include <vector>
 
@@ -33,9 +35,9 @@ namespace kuzzleio {
     return what();
   }
 
-  Kuzzle::Kuzzle(const std::string& host, options *opts) {
+  Kuzzle::Kuzzle(Protocol* protocol, options *opts) {
     this->_kuzzle = new kuzzle();
-    kuzzle_new_kuzzle(this->_kuzzle, const_cast<char*>(host.c_str()), (char*)"websocket", opts);
+    // kuzzle_new_kuzzle(this->_kuzzle, const_cast<char*>(host.c_str()), (char*)"websocket", opts);
 
     this->document = new Document(this, kuzzle_get_document_controller(_kuzzle));
     this->auth = new Auth(this, kuzzle_get_auth_controller(_kuzzle));
