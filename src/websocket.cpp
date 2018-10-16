@@ -2,7 +2,9 @@
 
 namespace kuzzleio {
 
-    WebSocket::WebSocket(const std::string& host) {}
+    WebSocket::WebSocket(const std::string& host) {
+      
+    }
 
     void WebSocket::addListener(int, EventListener*) {}
     void WebSocket::removeListener(int, EventListener*) {}

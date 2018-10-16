@@ -37,6 +37,7 @@ namespace kuzzleio {
 
   Kuzzle::Kuzzle(Protocol* protocol, options *opts) {
     this->_kuzzle = new kuzzle();
+    kuzzle_new_kuzzle(this->_kuzzle, protocol->_protocol, opts);
     // kuzzle_new_kuzzle(this->_kuzzle, const_cast<char*>(host.c_str()), (char*)"websocket", opts);
 
     this->document = new Document(this, kuzzle_get_document_controller(_kuzzle));

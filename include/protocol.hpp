@@ -11,6 +11,7 @@ namespace kuzzleio {
 
   class Protocol {
     public:
+    protocol *_protocol;
     virtual void addListener(int, EventListener*) = 0;
     virtual void removeListener(int, EventListener*) = 0;
     virtual void removeAllListeners(int) = 0;
