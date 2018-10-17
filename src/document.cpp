@@ -183,7 +183,7 @@ namespace kuzzleio {
         return v;
     }
 
-    std::string Document::mGet(const std::string& index, const std::string& collection, const std::vector<std::string>& ids, bool includeTrash, query_options *options) {
+    std::string Document::mGet(const std::string& index, const std::string& collection, const std::vector<std::string>& ids, query_options *options) {
         char **idsArray = new char *[ids.size()];
         int i = 0;
         for (auto& id : ids) {
@@ -191,7 +191,7 @@ namespace kuzzleio {
           i++;
         }
 
-        string_result *r = kuzzle_document_mget(_document, const_cast<char*>(index.c_str()), const_cast<char*>(collection.c_str()), idsArray, ids.size(), includeTrash, options);
+        string_result *r = kuzzle_document_mget(_document, const_cast<char*>(index.c_str()), const_cast<char*>(collection.c_str()), idsArray, ids.size(), options);
         delete[] idsArray;
         if (r->error != nullptr)
           throwExceptionFromStatus(r);

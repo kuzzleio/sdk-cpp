@@ -111,8 +111,8 @@ namespace kuzzleio {
         return r;
     }
 
-    std::string Collection::updateSpecifications(const std::string& index, const std::string& collection, const std::string& body, query_options *options) {
-        string_result *r = kuzzle_collection_update_specifications(_collection, const_cast<char*>(index.c_str()), const_cast<char*>(collection.c_str()), const_cast<char*>(body.c_str()), options);
+    std::string Collection::updateSpecifications(const std::string& index, const std::string& collection, const std::string& specifications, query_options *options) {
+        string_result *r = kuzzle_collection_update_specifications(_collection, const_cast<char*>(index.c_str()), const_cast<char*>(collection.c_str()), const_cast<char*>(specifications.c_str()), options);
         if (r->error != nullptr)
             throwExceptionFromStatus(r);
         std::string ret = r->result;
@@ -121,8 +121,8 @@ namespace kuzzleio {
         return ret;
     }
 
-    validation_response* Collection::validateSpecifications(const std::string& body, query_options *options) {
-        validation_response *r = kuzzle_collection_validate_specifications(_collection, const_cast<char*>(body.c_str()), options);
+    validation_response* Collection::validateSpecifications(const std::string& index, const std::string& collection, const std::string& specifications, query_options *options) {
+        validation_response *r = kuzzle_collection_validate_specifications(_collection, const_cast<char*>(index.c_str()), const_cast<char*>(collection.c_str()), const_cast<char*>(specifications.c_str()), options);
         if (r->error != nullptr)
             throwExceptionFromStatus(r);
 

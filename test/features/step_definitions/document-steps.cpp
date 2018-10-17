@@ -372,7 +372,7 @@ namespace {
       document_ids.push_back(document1_id);
       document_ids.push_back(document2_id);
 
-      ctx->content = ctx->kuzzle->document->mGet(ctx->index, ctx->collection, document_ids, false);
+      ctx->content = ctx->kuzzle->document->mGet(ctx->index, ctx->collection, document_ids);
       ctx->success = 1;
     } catch (KuzzleException e) {
       ctx->success = 0;

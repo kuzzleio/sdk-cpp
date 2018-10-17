@@ -1,5 +1,5 @@
 os: linux
-language: cpp
+language: minimal
 sudo: required
 
 services:
@@ -16,67 +16,116 @@ env:
 
 before_install:
   - sudo sysctl -w vm.max_map_count=262144
+
+before_script:
   - ./.ci/start_kuzzle.sh
 
-addons:
-  apt:
-    packages:
-    - python
-    - python-pip
-
-install:
-  - pip install awscli --upgrade --user
-
-before_deploy:
-  - docker run --rm -it -v "$(pwd)":/mnt kuzzleio/sdk-cross:gcc make package
-
-deploy:
-  provider: s3
-  access_key_id: $AWS_ACCESS_KEY_ID
-  secret_access_key: $AWS_SECRET_ACCESS_KEY
-  bucket: $AWS_S3_BUCKET
-  region: us-west-2
-  skip_cleanup: true
-  upload-dir: sdk/cpp/$TRAVIS_BRANCH
-  local-dir: deploy
-  on:
-    condition: "$COMPILATOR = gcc"
-
-after_deploy:
-  - aws cloudfront create-invalidation --distribution-id $AWS_CLOUDFRONT_DISTRIBUTION_ID --paths "/*"
-
-matrix:
+jobs:
   include:
 # ---------------------------------------------
-# GCC: Build, test and deploy (only on master)
+# GCC: Build, test and deploy
 # ---------------------------------------------
 # AMD64
 # ---------------------------------------
-    - env:
-        - ARCH="amd64"
-        - COMPILATOR="gcc"
+    - stage: Builds & Tests
+      name: "Build & Tests using GCC/G++ - amd64"
+
+      addons:
+        apt:
+          packages:
+          - python
+          - python-pip
+
+      install:
+        - pip install awscli --upgrade --user
 
       script:
         # Build & Test
         - docker run --rm -it --network ci_default --link kuzzle -v "$(pwd)":/mnt kuzzleio/sdk-cross:gcc make all build_test run_test
 
+      after_success:
+        - docker run --rm -it -e ARCH=amd64 -v "$(pwd)":/mnt kuzzleio/sdk-cross:gcc make package
+
+      before_deploy:
+        - |
+          if [[ $TRAVIS_BRANCH =~ ^.?-dev$ ]]; then
+            sudo mv ./deploy/kuzzlesdk-cpp-*-amd64.tar.gz ./deploy/kuzzlesdk-cpp-experimental-amd64.tar.gz;
+          fi;
+
+      deploy:
+        provider: s3
+        access_key_id: $AWS_ACCESS_KEY_ID
+        secret_access_key: $AWS_SECRET_ACCESS_KEY
+        bucket: $AWS_S3_BUCKET
+        region: us-west-2
+        skip_cleanup: true
+        upload-dir: sdk/cpp/$TRAVIS_BRANCH
+        local-dir: deploy
+        on:
+          all_branches: true
+          condition: $TRAVIS_BRANCH =~ ^master|.?-dev$
+
+      after_deploy:
+        - aws cloudfront create-invalidation --distribution-id $AWS_CLOUDFRONT_DISTRIBUTION_ID --paths "/*"
+
 # ---------------------------------------
 # I386
 # ---------------------------------------
-    - env:
-        - ARCH="i386"
-        - COMPILATOR="gcc"
+    - stage: Builds & Tests
+      name: "Build & Tests using GCC/G++ - i386"
+
+      addons:
+        apt:
+          packages:
+          - python
+          - python-pip
+
+      install:
+        - pip install awscli --upgrade --user
 
       script:
         # Build & Test
         - docker run --rm -it --network ci_default --link kuzzle -v "$(pwd)":/mnt kuzzleio/sdk-cross:gcc-i386 make all build_test run_test
 
+      after_success:
+        - docker run --rm -it -e ARCH=i386 -v "$(pwd)":/mnt kuzzleio/sdk-cross:gcc-i386 make package
+
+      before_deploy:
+        - |
+          if [[ $TRAVIS_BRANCH =~ ^.?-dev$ ]]; then
+            sudo mv ./deploy/kuzzlesdk-cpp-*-i386.tar.gz ./deploy/kuzzlesdk-cpp-experimental-i386.tar.gz;
+          fi;
+
+      deploy:
+        provider: s3
+        access_key_id: $AWS_ACCESS_KEY_ID
+        secret_access_key: $AWS_SECRET_ACCESS_KEY
+        bucket: $AWS_S3_BUCKET
+        region: us-west-2
+        skip_cleanup: true
+        upload-dir: sdk/cpp/$TRAVIS_BRANCH
+        local-dir: deploy
+        on:
+          all_branches: true
+          condition: $TRAVIS_BRANCH =~ ^master|.?-dev$
+
+      after_deploy:
+        - aws cloudfront create-invalidation --distribution-id $AWS_CLOUDFRONT_DISTRIBUTION_ID --paths "/*"
+
 # ---------------------------------------
 # ARMV7
 # ---------------------------------------
-    - env:
-        - ARCH="armhf"
-        - COMPILATOR="gcc"
+    - stage: Builds & Tests
+      name: "Build & Tests using GCC/G++ - armhf"
+
+      addons:
+        apt:
+          packages:
+          - python
+          - python-pip
+
+      install:
+        - pip install awscli --upgrade --user
 
       script:
         # Build
@@ -85,12 +134,45 @@ matrix:
         - docker run --rm --privileged multiarch/qemu-user-static:register
         - docker run --rm -it --network ci_default --link kuzzle -v "$(pwd)":/mnt kuzzleio/sdk-cross:armhf-cpp-runner make run_test
 
+      after_success:
+        - docker run --rm -it -e ARCH=armhf -v "$(pwd)":/mnt kuzzleio/sdk-cross:gcc-armhf make package
+
+      before_deploy:
+        - |
+          if [[ $TRAVIS_BRANCH =~ ^.?-dev$ ]]; then
+            sudo mv ./deploy/kuzzlesdk-cpp-*-armhf.tar.gz ./deploy/kuzzlesdk-cpp-experimental-armhf.tar.gz;
+          fi;
+
+      deploy:
+        provider: s3
+        access_key_id: $AWS_ACCESS_KEY_ID
+        secret_access_key: $AWS_SECRET_ACCESS_KEY
+        bucket: $AWS_S3_BUCKET
+        region: us-west-2
+        skip_cleanup: true
+        upload-dir: sdk/cpp/$TRAVIS_BRANCH
+        local-dir: deploy
+        on:
+          all_branches: true
+          condition: $TRAVIS_BRANCH =~ ^master|.?-dev$
+
+      after_deploy:
+        - aws cloudfront create-invalidation --distribution-id $AWS_CLOUDFRONT_DISTRIBUTION_ID --paths "/*"
+
 # ---------------------------------------
 # ARMV8
 # ---------------------------------------
-    - env:
-        - ARCH="aarch64"
-        - COMPILATOR="gcc"
+    - stage: Builds & Tests
+      name: "Build & Tests using GCC/G++ - aarch64"
+
+      addons:
+        apt:
+          packages:
+          - python
+          - python-pip
+
+      install:
+        - pip install awscli --upgrade --user
 
       script:
         # Build
@@ -99,14 +181,41 @@ matrix:
         - docker run --rm --privileged multiarch/qemu-user-static:register
         - docker run --rm -it --network ci_default --link kuzzle -v "$(pwd)":/mnt kuzzleio/sdk-cross:aarch64-cpp-runner make run_test
 
+      after_success:
+        - docker run --rm -it -e ARCH=aarch64 -v "$(pwd)":/mnt kuzzleio/sdk-cross:gcc-aarch64 make package
+
+      before_deploy:
+        - |
+          if [[ $TRAVIS_BRANCH =~ ^.?-dev$ ]]; then
+            sudo mv ./deploy/kuzzlesdk-cpp-*-aarch64.tar.gz ./deploy/kuzzlesdk-cpp-experimental-aarch64.tar.gz;
+          fi;
+
+      deploy:
+        provider: s3
+        access_key_id: $AWS_ACCESS_KEY_ID
+        secret_access_key: $AWS_SECRET_ACCESS_KEY
+        bucket: $AWS_S3_BUCKET
+        region: us-west-2
+        skip_cleanup: true
+        upload-dir: sdk/cpp/$TRAVIS_BRANCH
+        local-dir: deploy
+        on:
+          all_branches: true
+          condition: $TRAVIS_BRANCH =~ ^master|.?-dev$
+
+      after_deploy:
+        - aws cloudfront create-invalidation --distribution-id $AWS_CLOUDFRONT_DISTRIBUTION_ID --paths "/*"
+
 # ---------------------------------------------
 # CLANG: Build & Test (AMD64 & i386 only)
 # ---------------------------------------------
 # AMD64
 # ---------------------------------------
-    - env:
-        - ARCH="amd64"
-        - COMPILATOR="clang"
+    - stage: Builds & Tests
+      name: "Build & Tests using Clang - amd64"
+
+      env:
+        - COMPILATOR = "clang"
 
       script:
         # Build & Test
@@ -115,9 +224,11 @@ matrix:
 # ---------------------------------------
 # I386
 # ---------------------------------------
-    - env:
-        - ARCH="i386"
-        - COMPILATOR="clang"
+    - stage: Builds & Tests
+      name: "Build & Tests using Clang - i386"
+
+      env:
+        - COMPILATOR = "clang"
 
       script:
         # Build & Test
