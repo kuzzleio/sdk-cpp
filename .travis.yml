@@ -8,6 +8,7 @@ services:
 env:
   global:
   - AWS_S3_BUCKET=dl.kuzzle.io
+  - AWS_CLOUDFRONT_DISTRIBUTION_ID=E12YL8EZVABYR0
   # AWS ACCESS KEY ID
   - secure: "FNXFRe/5Ddci25oBqrMCjPe1JzfWs0A1b1e9FBMHK3ucx3bsbBLKs1HJWOUvTmWF/ZvvifaqZe1yczjoRfHSZeTNC4GQM1H//KZLU9PVx0FgIKy1AZ4efFftRsYOfQ6YhnPpp6SCeDoViC4bWwS7MxHQw8agvLBetDuV+nUK869DZtzAEw1Q/dThxSOtx/w+3LUibipxtmDpY99tB1+RCag1JyJBLvkkCuOEd/inAcTkLtEMXjIst5IP0pHJWfmVgGFwxclwzvq45qLEaS9cbmWcF9vFTV1eO9ubS27GgdL9Bnt1I0ZRYCrg3xxq8fIHKgmana8Jb9ESrB3QpqcaoVS5j5nR89lHdqHHPESCRghIOADnIqkqLi1+aURmSgQAyWOP4CRZuo1EO+A6Pq0XMisGreMkH1XfyemB6us9hijbSAnBdxAN6JQB0+SsKljIFf44iLilEVt1NzbPj4bxcUwFTZFPSsHKMXXgRgaZ86Gwg5ejuXweL1MPqWztBxn8TgaYR6SwExytD0rvhCMJoO/qyXplQxpuTVd517yL7iOFniMvtkxDTJCAkldj3yF/BnrESqs69R+LCBNorFmjnigyfDlg54FvWik4+QakyNofmB2LVnNBa9z+QB/QwFJcYkJpKLBgSxEEtQRJEVdOhiV8WlR84jmF45TgzRJgDEE="
   # AWS SECRET ACCESS KEY
@@ -28,6 +29,15 @@ jobs:
 # ---------------------------------------
     - stage: Builds & Tests
       name: "Build & Tests using GCC/G++ - amd64"
+
+      addons:
+        apt:
+          packages:
+          - python
+          - python-pip
+
+      install:
+        - pip install awscli --upgrade --user
 
       script:
         # Build & Test
@@ -55,11 +65,23 @@ jobs:
           all_branches: true
           condition: $TRAVIS_BRANCH =~ ^master|.?-dev$
 
+      after_deploy:
+        - sleep 10 && aws cloudfront create-invalidation --distribution-id $AWS_CLOUDFRONT_DISTRIBUTION_ID --paths "/*"
+
 # ---------------------------------------
 # I386
 # ---------------------------------------
     - stage: Builds & Tests
       name: "Build & Tests using GCC/G++ - i386"
+
+      addons:
+        apt:
+          packages:
+          - python
+          - python-pip
+
+      install:
+        - pip install awscli --upgrade --user
 
       script:
         # Build & Test
@@ -87,11 +109,23 @@ jobs:
           all_branches: true
           condition: $TRAVIS_BRANCH =~ ^master|.?-dev$
 
+      after_deploy:
+        - sleep 10 && aws cloudfront create-invalidation --distribution-id $AWS_CLOUDFRONT_DISTRIBUTION_ID --paths "/*"
+
 # ---------------------------------------
 # ARMV7
 # ---------------------------------------
     - stage: Builds & Tests
       name: "Build & Tests using GCC/G++ - armhf"
+
+      addons:
+        apt:
+          packages:
+          - python
+          - python-pip
+
+      install:
+        - pip install awscli --upgrade --user
 
       script:
         # Build
@@ -122,11 +156,23 @@ jobs:
           all_branches: true
           condition: $TRAVIS_BRANCH =~ ^master|.?-dev$
 
+      after_deploy:
+        - sleep 10 && aws cloudfront create-invalidation --distribution-id $AWS_CLOUDFRONT_DISTRIBUTION_ID --paths "/*"
+
 # ---------------------------------------
 # ARMV8
 # ---------------------------------------
     - stage: Builds & Tests
       name: "Build & Tests using GCC/G++ - aarch64"
+
+      addons:
+        apt:
+          packages:
+          - python
+          - python-pip
+
+      install:
+        - pip install awscli --upgrade --user
 
       script:
         # Build
@@ -156,6 +202,9 @@ jobs:
         on:
           all_branches: true
           condition: $TRAVIS_BRANCH =~ ^master|.?-dev$
+
+      after_deploy:
+        - sleep 10 && aws cloudfront create-invalidation --distribution-id $AWS_CLOUDFRONT_DISTRIBUTION_ID --paths "/*"
 
 # ---------------------------------------------
 # CLANG: Build & Test (AMD64 & i386 only)
