@@ -1,11 +1,23 @@
-# How to contribute to Kuzzle CPP SDK
+# How to contribute to the CPP SDK
 
-Here are a few rules and guidelines to follow if you want to contribute to Kuzzle CPP SDK and, more importantly, if you want to see your pull requests accepted by Kuzzle team.    
+Here are a few rules and guidelines to follow if you want to contribute to the Java SDK and, more importantly, if you want to see your pull requests accepted by the  Kuzzle team.
 
-## Run tests
+## Tools
 
-The tests uses cucumber, so please ensure that you have ruby in your PATH.
-First make the SDK, install `Bundler`, install cucumber and run a Kuzzle stack.  
+This SDK inherits from the following repositories, linked as git submodules: sdk-c, sdk-go.  
+Whenever significant changes are applied to the parent SDKs, you need to align the linked submodules accordingly.
+You can use `align-submodules.sh` script to achieve this. (e.g.: `./align-submodules.sh 1-dev` to align all submodules on `1-dev` branch)
+
+
+You can use this Docker image to build the SDK:  
+```
+docker run --rm -it --network ci_default --link kuzzle -v "$(pwd)":/mnt kuzzleio/sdk-cross:gcc make all
+```
+
+## Running Tests
+
+Tests are handled by [cucumber](https://cucumber.io/).  
+First build the SDK, install `Bundler`, install cucumber and run a Kuzzle stack:
 
 ```bash
 gem install bundler
@@ -17,8 +29,15 @@ bundle install
 Then run features tests
 ```bash
 # Run all features tests
-./run-functionnal-testing.sh
+./run-tests.sh
 
 # Run only one feature file
-./run-functional-testing.sh collection.feature
+./run-tests.sh collection.feature
+
+```
+
+You can also use the Docker container:
+```bash
+# Run all features tests
+docker run --rm -it --network ci_default --link kuzzle -v "$(pwd)":/mnt kuzzleio/sdk-cross:gcc make build_test run_test
 ```
