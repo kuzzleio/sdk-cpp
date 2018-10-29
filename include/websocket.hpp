@@ -13,7 +13,7 @@ namespace kuzzleio {
     public:
     web_socket* _web_socket;
     WebSocket(const std::string&, options* query_options=nullptr);
-    std::map<int, EventListener*> getListeners() noexcept;
+    EventListener* getListener(int) noexcept;
 
 
     virtual void addListener(Event, EventListener*);

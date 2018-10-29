@@ -10,19 +10,22 @@ namespace kuzzleio {
     }
 
     void trigger_websocket_event_listener(int event, char* res, void* data) {
-      EventListener* listener = static_cast<WebSocket*>(data)->getListeners()[event];
+      EventListener* listener = static_cast<WebSocket*>(data)->getListener(event);
       if (listener) {
+        std::cout << "### cpp/websocket.cpp: trigger_websocket_event_listener: " << listener << std::endl;
         (*listener)(res);
+        std::cout << "### cpp/websocket.cpp: after trigger" << std::endl;
       }
     }
 
-    std::map<int, EventListener*> WebSocket::getListeners() noexcept {
-      return _listener_instances;
+    EventListener* WebSocket::getListener(int event) noexcept {
+      return _listener_instances[event];
     }
 
     void WebSocket::addListener(Event event, EventListener* listener) {
-      kuzzle_websocket_add_listener(this->_web_socket, event, trigger_websocket_event_listener);
+      std::cout << "cpp/websocket.cpp: addListener: " << listener << std::endl;
       _listener_instances[event] = listener;
+      kuzzle_websocket_add_listener(this->_web_socket, event, trigger_websocket_event_listener);
     }
 
     void WebSocket::removeListener(Event, EventListener*) {}

@@ -29,9 +29,9 @@
 namespace kuzzleio {
 
   // Bridges for protocol
-  void bridge_add_listener(int event, kuzzle_event_listener* listener, void* data) {
+  void bridge_add_listener(int event, kuzzle_event_listener listener, void* data) {
     EventListener l = [&](const std::string res) {
-      (*listener)(event, const_cast<char*>(res.c_str()), data);
+      listener(event, const_cast<char*>(res.c_str()), data);
     };
     static_cast<Protocol*>(data)->addListener((Event)event, &l);
   }
