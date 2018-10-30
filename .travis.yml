@@ -19,6 +19,7 @@ before_install:
 
 before_script:
   - ./.ci/start_kuzzle.sh
+  - cd sdk-c/go/src/github.com/kuzzleio/sdk-go && git submodule init && git submodule update
 
 jobs:
   include:
@@ -233,4 +234,3 @@ jobs:
       script:
         # Build & Test
         - docker run --rm -it --network ci_default --link kuzzle -v "$(pwd)":/mnt kuzzleio/sdk-cross:clang-i386 make all build_test run_test
-
