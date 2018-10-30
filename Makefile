@@ -36,12 +36,14 @@ CXXFLAGS = -g -fPIC -std=c++11 -I.$(PATHSEP)include -I.$(PATHSEP)sdk-c$(PATHSEP)
 LDFLAGS = -lkuzzlesdk
 
 CPP_SDK_SRCS = src$(PATHSEP)kuzzle.cpp \
-					src$(PATHSEP)document.cpp \
-					src$(PATHSEP)collection.cpp \
-					src$(PATHSEP)realtime.cpp \
 					src$(PATHSEP)auth.cpp \
+					src$(PATHSEP)collection.cpp \
+					src$(PATHSEP)document.cpp \
+					src$(PATHSEP)index.cpp \
+					src$(PATHSEP)realtime.cpp \
+					src$(PATHSEP)search_result.cpp \
 					src$(PATHSEP)server.cpp \
-					src$(PATHSEP)index.cpp
+					src$(PATHSEP)specification_search_result.cpp 
 
 CPPSDK = $(CPP_SDK_SRCS:%.cpp=%.o)
 

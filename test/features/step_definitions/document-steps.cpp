@@ -143,7 +143,6 @@ namespace {
       ctx->documents = ctx->kuzzle->document->search(ctx->index, ctx->collection, "{\"query\": {\"bool\": {\"should\":[{\"match\":{\"_id\": \"" + document_id + "\"}}]}}}");
       ctx->success = 1;
     } catch (KuzzleException e) {
-      kuzzle_free_search_result(ctx->documents);
       BOOST_FAIL(e.getMessage());
     }
   }
@@ -160,8 +159,6 @@ namespace {
       BOOST_CHECK(ctx->documents->total == 1);
     else
       BOOST_CHECK(ctx->documents->total == 0);
-
-    kuzzle_free_search_result(ctx->documents);
   }
 
   WHEN("^I count how many documents there is in the collection$")

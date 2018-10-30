@@ -35,7 +35,7 @@ struct KuzzleCtx {
   string collection;
   string jwt;
   string document_id;
-  search_result *documents;
+  SearchResult *documents;
 
   string room_id;
 

@@ -14,6 +14,7 @@
 
 #include "kuzzle.hpp"
 #include "document.hpp"
+#include "search_result.hpp"
 
 namespace kuzzleio {
     Document::Document(Kuzzle* kuzzle) {
@@ -134,12 +135,12 @@ namespace kuzzleio {
         return ret;
     }
 
-    search_result* Document::search(const std::string& index, const std::string& collection, const std::string& body, query_options *options) {
+    SearchResult* Document::search(const std::string& index, const std::string& collection, const std::string& body, query_options *options) {
         search_result *r = kuzzle_document_search(_document, const_cast<char*>(index.c_str()), const_cast<char*>(collection.c_str()), const_cast<char*>(body.c_str()), options);
         if (r->error != nullptr)
             throwExceptionFromStatus(r);
 
-        return r;
+        return new SearchResult(r);
     }
 
     std::string Document::mCreate(const std::string& index, const std::string& collection, const std::string& body, query_options *options) {
