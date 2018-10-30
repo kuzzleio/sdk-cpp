@@ -25,15 +25,18 @@
 #include "kuzzle.hpp"
 #include <iostream>
 #include <vector>
+#include <iostream>
+#include <functional>
 
 namespace kuzzleio {
 
   // Bridges for protocol
-  void bridge_add_listener(int event, kuzzle_event_listener listener, void* data) {
-    EventListener l = [&](const std::string res) {
-      listener(event, const_cast<char*>(res.c_str()), data);
-    };
-    static_cast<Protocol*>(data)->addListener((Event)event, &l);
+  void bridge_add_listener(int event, kuzzle_event_listener* listener, void* data) {
+    EventListener *l = new std::function<void(const std::string)>([=](const std::string& res) {
+      (*listener)(event, NULL, data);
+    });
+
+    static_cast<Protocol*>(data)->addListener((Event)event, l);
   }
 
   void bridge_emit_event(int event, void* res, void* data) {
@@ -210,7 +213,7 @@ namespace kuzzleio {
   }
 
   KuzzleEventEmitter* Kuzzle::addListener(Event event, EventListener* listener) {
-    kuzzle_add_listener(_kuzzle, event, &trigger_event_listener, this);
+    kuzzle_add_listener(_kuzzle, event, trigger_event_listener, this);
     _listener_instances[event] = listener;
 
     return this;

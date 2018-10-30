@@ -9,7 +9,7 @@ namespace kuzzleio {
 
   class WebSocket : public Protocol {
     private:
-      std::map<int, EventListener*>  _listener_instances;
+      std::map<int, EventListener*>  _websocket_listener_instances;
     public:
     web_socket* _web_socket;
     WebSocket(const std::string&, options* query_options=nullptr);
