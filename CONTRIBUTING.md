@@ -2,17 +2,25 @@
 
 Here are a few rules and guidelines to follow if you want to contribute to the Java SDK and, more importantly, if you want to see your pull requests accepted by the  Kuzzle team.
 
-## Tools
-
-This SDK inherits from the following repositories, linked as git submodules: sdk-c, sdk-go.  
-Whenever significant changes are applied to the parent SDKs, you need to align the linked submodules accordingly.
-You can use `align-submodules.sh` script to achieve this. (e.g.: `./align-submodules.sh 1-dev` to align all submodules on `1-dev` branch)
-
+## Build the SDK
 
 You can use this Docker image to build the SDK:  
 ```
 docker run --rm -it --network ci_default --link kuzzle -v "$(pwd)":/mnt kuzzleio/sdk-cross:gcc make all
 ```
+
+## Compile with the SDK
+
+Use this commande to compile a cpp source file with the builded SDK:
+`g++ -std=c++11 source.cpp -Isdk-c/include -Isdk-c/build/ -Iinclude -L./build/ -lkuzzlesdk -lpthread`
+
+Then run the compiled program with: `LD_LIBRARY_PATH=./build ./a.out`
+
+## Tools
+
+This SDK inherits from the following repositories, linked as git submodules: sdk-c, sdk-go.  
+Whenever significant changes are applied to the parent SDKs, you need to align the linked submodules accordingly.
+You can use `align-submodules.sh` script to achieve this. (e.g.: `./align-submodules.sh 1-dev` to align all submodules on `1-dev` branch)
 
 ## Running Tests
 

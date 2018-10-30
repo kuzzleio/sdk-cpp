@@ -17,8 +17,8 @@ namespace kuzzleio {
     delete(_realtime);
   }
 
-  int Realtime::count(const std::string& index, const std::string& collection, const std::string& roomId, query_options *options) {
-    int_result *r = kuzzle_realtime_count(_realtime, const_cast<char*>(index.c_str()), const_cast<char*>(collection.c_str()), const_cast<char*>(roomId.c_str()), options);
+  int Realtime::count(const std::string& roomId, query_options *options) {
+    int_result *r = kuzzle_realtime_count(_realtime, const_cast<char*>(roomId.c_str()), options);
     if (r->error != nullptr)
         throwExceptionFromStatus(r);
     int ret = r->result;

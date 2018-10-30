@@ -64,7 +64,7 @@ make_c_sdk:
 	cd sdk-c && $(MAKE)
 
 cpp: export GOPATH = $(ROOT_DIR)go
-cpp: makedir update_submodule make_c_sdk $(CPPSDK)
+cpp: makedir make_c_sdk $(CPPSDK)
 		$(AR) rvs $(ROOTOUTDIR)$(PATHSEP)libkuzzlesdk$(STATICLIB) src$(PATHSEP)*.o
 		$(CXX) -shared -fPIC -o $(ROOTOUTDIR)$(PATHSEP)$(LIB_PREFIX)kuzzlesdk$(DYNLIB) -Wl,--whole-archive $(ROOTOUTDIR)$(PATHSEP)$(LIB_PREFIX)kuzzlesdk$(STATICLIB) sdk-c$(PATHSEP)build$(PATHSEP)$(LIB_PREFIX)kuzzlesdk$(STATICLIB) -Wl,--no-whole-archive
 		cd $(ROOTOUTDIR) && mv $(LIB_PREFIX)kuzzlesdk$(STATICLIB) $(LIB_PREFIX)kuzzlesdk$(STATICLIB).$(VERSION) && mv $(LIB_PREFIX)kuzzlesdk$(DYNLIB) $(LIB_PREFIX)kuzzlesdk$(DYNLIB).$(VERSION)
