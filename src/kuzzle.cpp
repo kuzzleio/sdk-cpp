@@ -33,10 +33,10 @@ namespace kuzzleio {
   // Bridges for protocol
   void bridge_add_listener(int event, kuzzle_event_listener* listener, void* data) {
     EventListener *l = new std::function<void(const std::string)>([=](const std::string& res) {
-      if (res != "") {
+      if (res != "null") {
         (*listener)(event, const_cast<char*>(res.c_str()), data);        
       } else {
-        (*listener)(event, NULL, data);
+        (*listener)(event, nullptr, data);
       }
     });
 
