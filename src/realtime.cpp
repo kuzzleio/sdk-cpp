@@ -40,15 +40,6 @@ namespace kuzzleio {
     }
   }
 
-  std::string Realtime::list(const std::string& index, const std::string& collection, query_options *options) {
-    string_result *r = kuzzle_realtime_list(_realtime, const_cast<char*>(index.c_str()), const_cast<char*>(collection.c_str()), options);
-    if (r->error != nullptr)
-        throwExceptionFromStatus(r);
-    std::string ret = r->result;
-    kuzzle_free_string_result(r);
-    return ret;
-  }
-
   void Realtime::publish(const std::string& index, const std::string& collection, const std::string& body, query_options *options) {
     error_result *r = kuzzle_realtime_publish(_realtime, const_cast<char*>(index.c_str()), const_cast<char*>(collection.c_str()), const_cast<char*>(body.c_str()), options);
     if (r != nullptr)
@@ -76,14 +67,5 @@ namespace kuzzleio {
 
     _listener_instances[roomId] = nullptr;
     kuzzle_free_error_result(r);
-  }
-
-  bool Realtime::validate(const std::string& index, const std::string& collection, const std::string& body, query_options *options) {
-    bool_result *r = kuzzle_realtime_validate(_realtime, const_cast<char*>(index.c_str()), const_cast<char*>(collection.c_str()),  const_cast<char*>(body.c_str()), options);
-    if (r->error != nullptr)
-        throwExceptionFromStatus(r);
-    bool ret = r->result;
-    kuzzle_free_bool_result(r);
-    return ret;
   }
 }
