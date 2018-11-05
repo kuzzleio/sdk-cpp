@@ -97,7 +97,6 @@ namespace {
   {
     K_LOG_I("Connecting to Kuzzle on 'localhost:7512'");
     ScenarioScope<KuzzleCtx> ctx;
-    ctx->kuzzle_options         = KUZZLE_OPTIONS_DEFAULT;
     std::string hostname = "localhost";
 
     if (std::getenv("KUZZLE_HOST") != NULL) {
