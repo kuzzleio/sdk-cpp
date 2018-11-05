@@ -19,6 +19,7 @@
 #include <list>
 #include "core.hpp"
 #include "exceptions.hpp"
+#include "search_result.hpp"
 
 namespace kuzzleio {
     class Kuzzle;
@@ -37,7 +38,7 @@ namespace kuzzleio {
             std::string getMapping(const std::string& index, const std::string& collection, query_options *options=nullptr);
             void updateMapping(const std::string& index, const std::string& collection, const std::string& body, query_options *options=nullptr);
             std::string getSpecifications(const std::string& index, const std::string& collection, query_options *options=nullptr);
-            search_result* searchSpecifications(query_options *options=nullptr);
+            SpecificationSearchResult* searchSpecifications(query_options *options=nullptr);
             std::string updateSpecifications(const std::string& index, const std::string& collection, const std::string& specifications, query_options *options=nullptr);
             validation_response* validateSpecifications(const std::string& index, const std::string& collection, const std::string& specifications, query_options *options=nullptr);
             void deleteSpecifications(const std::string& index, const std::string& collection, query_options *options=nullptr);
