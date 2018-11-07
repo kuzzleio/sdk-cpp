@@ -12,6 +12,8 @@ namespace kuzzleio {
   class Protocol {
     public:
       protocol *_protocol;
+      std::map<int, std::map<kuzzle_event_listener*, EventListener*>>  listener_instances;
+      std::map<int, std::map<kuzzle_event_listener*, EventListener*>>  listener_once_instances;
 
     virtual void addListener(Event, EventListener*) = 0;
     virtual void removeListener(Event, EventListener*) = 0;

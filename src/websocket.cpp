@@ -10,28 +10,50 @@ namespace kuzzleio {
     }
 
     void trigger_websocket_event_listener(int event, char* res, void* data) {
-      EventListener* listener = static_cast<WebSocket*>(data)->getListener(event);
-      if (listener) {
-        (*listener)(res);
+      std::list<EventListener*> listeners = static_cast<WebSocket*>(data)->getListeners(event);
+      if (listeners.size()) {
+        for (EventListener*& listener : listeners) {
+          (*listener)(res);
+        }
       }
     }
 
-    EventListener* WebSocket::getListener(int event) noexcept {
+    void trigger_websocket_once(int event, char* res, void* data) {
+      std::list<EventListener*> listeners = static_cast<WebSocket*>(data)->getOnceListeners(event);
+      if (listeners.size()) {
+        for (EventListener*& listener : listeners) {
+          (*listener)(res);
+          static_cast<WebSocket*>(data)->getOnceListeners(event).remove(listener);
+        }
+      }
+    }
+
+    std::list<EventListener*> WebSocket::getListeners(int event) noexcept {
       return _websocket_listener_instances[event];
     }
 
+    std::list<EventListener*> WebSocket::getOnceListeners(int event) noexcept {
+      return _websocket_once_listener_instances[event];
+    }
+
     void WebSocket::addListener(Event event, EventListener* listener) {
-      _websocket_listener_instances[event] = listener;
+      _websocket_listener_instances[event].push_back(listener);
       kuzzle_websocket_add_listener(this->_web_socket, event, trigger_websocket_event_listener);
     }
 
-    void WebSocket::removeListener(Event, EventListener*) {}
+    void WebSocket::removeListener(Event event, EventListener* listener) {
+      _websocket_listener_instances[event].remove(listener);
+    }
 
     void WebSocket::removeAllListeners(Event event) {
       kuzzle_websocket_remove_all_listeners(this->_web_socket, event);
+      _websocket_listener_instances[event].clear();
     }
 
-    void WebSocket::once(Event, EventListener*) {}
+    void WebSocket::once(Event event, EventListener* listener) {
+      _websocket_once_listener_instances[event].push_back(listener);
+      kuzzle_websocket_once(this->_web_socket, event, trigger_websocket_once);
+    }
 
     int WebSocket::listenerCount(Event event) {
       return kuzzle_websocket_listener_count(this->_web_socket, event);

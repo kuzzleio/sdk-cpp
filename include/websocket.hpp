@@ -2,6 +2,7 @@
 #define KUZZLE_WEBSOCKET_HPP
 
 #include <map>
+#include <list>
 #include "core.hpp"
 #include "protocol.hpp"
 
@@ -9,12 +10,13 @@ namespace kuzzleio {
 
   class WebSocket : public Protocol {
     private:
-      std::map<int, EventListener*>  _websocket_listener_instances;
+      std::map<int, std::list<EventListener*>>  _websocket_listener_instances;
+      std::map<int, std::list<EventListener*>>  _websocket_once_listener_instances;
     public:
     web_socket* _web_socket;
     WebSocket(const std::string&, options* query_options=nullptr);
-    EventListener* getListener(int) noexcept;
-
+    std::list<EventListener*> getListeners(int) noexcept;
+    std::list<EventListener*> getOnceListeners(int) noexcept;
 
     virtual void addListener(Event, EventListener*);
     virtual void removeListener(Event, EventListener*);
