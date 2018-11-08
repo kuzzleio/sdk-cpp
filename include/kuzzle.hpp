@@ -13,16 +13,18 @@
 // limitations under the License.
 
 #ifndef _KUZZLE_HPP_
-#define _KUZZLE_HPP_
+# define _KUZZLE_HPP_
 
-#include "exceptions.hpp"
-#include "core.hpp"
-#include "event_emitter.hpp"
-#include <string>
-#include <iostream>
-#include <vector>
-#include <map>
-#include <functional>
+# include <string>
+# include <iostream>
+# include <vector>
+# include <map>
+# include <functional>
+
+# include "exceptions.hpp"
+# include "core.hpp"
+# include "event_emitter.hpp"
+# include "options.hpp"
 
 namespace kuzzleio {
   class Collection;
@@ -39,13 +41,13 @@ namespace kuzzleio {
     public:
       kuzzle *_kuzzle;
       Auth *auth;
-      Index  *index;
+      Index *index;
       Server *server;
       Collection *collection;
       Document *document;
       Realtime *realtime;
 
-      Kuzzle(const std::string& host, options *options=nullptr);
+      Kuzzle(const std::string& host, Options *options=nullptr);
       virtual ~Kuzzle();
 
       char* connect() noexcept;
