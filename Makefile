@@ -43,7 +43,8 @@ CPP_SDK_SRCS = src$(PATHSEP)kuzzle.cpp \
 					src$(PATHSEP)realtime.cpp \
 					src$(PATHSEP)search_result.cpp \
 					src$(PATHSEP)server.cpp \
-					src$(PATHSEP)specification_search_result.cpp 
+					src$(PATHSEP)default_constructors.cpp \
+					src$(PATHSEP)specification_search_result.cpp
 
 CPPSDK = $(CPP_SDK_SRCS:%.cpp=%.o)
 
