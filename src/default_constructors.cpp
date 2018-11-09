@@ -22,4 +22,8 @@ namespace kuzzleio {
   s_room_options::s_room_options() {
     kuzzle_set_default_room_options(this);
   }
+
+  s_query_options::s_query_options() {
+    kuzzle_set_default_query_options(this);
+  }
 }
