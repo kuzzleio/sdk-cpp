@@ -61,7 +61,7 @@ namespace kuzzleio {
     kuzzle_free_error_result(r);
   }
 
-  std::string Realtime::subscribe(const std::string& index, const std::string& collection, const std::string& body, NotificationListener* cb, RoomOptions* options) {
+  std::string Realtime::subscribe(const std::string& index, const std::string& collection, const std::string& body, NotificationListener* cb, room_options* options) {
     subscribe_result *r = kuzzle_realtime_subscribe(_realtime, const_cast<char*>(index.c_str()), const_cast<char*>(collection.c_str()),  const_cast<char*>(body.c_str()), call_subscribe_cb, this, options);
     if (r->error != nullptr)
         throwExceptionFromStatus(r);

@@ -34,7 +34,7 @@ namespace kuzzleio {
     return what();
   }
 
-  Kuzzle::Kuzzle(const std::string& host, Options *opts) {
+  Kuzzle::Kuzzle(const std::string& host, options *opts) {
     this->_kuzzle = new kuzzle();
     kuzzle_new_kuzzle(this->_kuzzle, const_cast<char*>(host.c_str()), (char*)"websocket", opts);
 
