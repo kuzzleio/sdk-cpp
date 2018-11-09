@@ -9,7 +9,7 @@ namespace {
     ScenarioScope<KuzzleCtx> ctx;
 
     try {
-      query_options options = {0};
+      query_options options;
       options.refresh = const_cast<char*>("wait_for");
 
       ctx->kuzzle->document->create(ctx->index, ctx->collection, document_id, "{\"a\":\"document\"}", &options);
@@ -43,7 +43,7 @@ namespace {
     ScenarioScope<KuzzleCtx> ctx;
 
     try {
-      query_options options = {0};
+      query_options options;
       options.refresh = const_cast<char*>("wait_for");
 
       ctx->kuzzle->document->delete_(ctx->index, ctx->collection, document_id, &options);
@@ -59,7 +59,7 @@ namespace {
     ScenarioScope<KuzzleCtx> ctx;
 
     try {
-      query_options options = {0};
+      query_options options;
       options.refresh = const_cast<char*>("wait_for");
 
       ctx->kuzzle->document->createOrReplace(ctx->index, ctx->collection, document_id, "{\"a\":\"replaced document\"}", &options);
@@ -87,7 +87,7 @@ namespace {
     ScenarioScope<KuzzleCtx> ctx;
 
     try {
-      query_options options = {0};
+      query_options options;
       options.refresh = const_cast<char*>("wait_for");
 
       ctx->kuzzle->document->replace(ctx->index, ctx->collection, document_id, "{\"a\":\"replaced document\"}", &options);
@@ -112,7 +112,7 @@ namespace {
     ScenarioScope<KuzzleCtx> ctx;
 
     try {
-      query_options options = {0};
+      query_options options;
       options.refresh = const_cast<char*>("wait_for");
 
       ctx->kuzzle->document->update(ctx->index, ctx->collection, document_id, "{\"a\":\"updated document\"}", &options);
@@ -180,7 +180,7 @@ namespace {
     ScenarioScope<KuzzleCtx> ctx;
 
     try {
-      query_options options = {0};
+      query_options options;
       options.refresh = const_cast<char*>("wait_for");
 
       std::vector<string> document_ids;
@@ -219,7 +219,7 @@ namespace {
     ScenarioScope<KuzzleCtx> ctx;
 
     try {
-      query_options options = {0};
+      query_options options;
       options.refresh = const_cast<char*>("wait_for");
 
       string documents = "[{\"_id\":\"" + document1_id + "\", \"body\":{}}, {\"_id\":\"" + document2_id + "\", \"body\":{}}]";
@@ -242,7 +242,7 @@ namespace {
     ScenarioScope<KuzzleCtx> ctx;
 
     try {
-      query_options options = {0};
+      query_options options;
       options.refresh = const_cast<char*>("wait_for");
 
       string documents = "[{\"_id\":\"" + document1_id + "\", \"body\":{\"a\":\"replaced document\"}}, {\"_id\":\"" + document2_id + "\", \"body\":{\"a\":\"replaced document\"}}]";
@@ -276,7 +276,7 @@ namespace {
     ScenarioScope<KuzzleCtx> ctx;
 
     try {
-      query_options options = {0};
+      query_options options;
       options.refresh = const_cast<char*>("wait_for");
 
       string documents = "[{\"_id\":\"" + document1_id + "\", \"body\":{\"a\":\"replaced document\"}}, {\"_id\":\"" + document2_id + "\", \"body\":{\"a\":\"replaced document\"}}]";
@@ -310,7 +310,7 @@ namespace {
     ScenarioScope<KuzzleCtx> ctx;
 
     try {
-      query_options options = {0};
+      query_options options;
       options.refresh = const_cast<char*>("wait_for");
 
       string documents = "[{\"_id\":\"" + document1_id + "\", \"body\":{\"a\":\"replaced document\"}}, {\"_id\":\"" + document2_id + "\", \"body\":{\"a\":\"replaced document\"}}]";
