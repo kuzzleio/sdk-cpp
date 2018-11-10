@@ -1,11 +1,11 @@
 #ifndef _KUZZLE_REALTIME_HPP
 #define _KUZZLE_REALTIME_HPP
 
-#include "exceptions.hpp"
-#include "core.hpp"
 #include <map>
 #include <functional>
 
+#include "exceptions.hpp"
+#include "core.hpp"
 
 namespace kuzzleio {
   typedef std::function<void(const kuzzleio::notification_result*)> NotificationListener;

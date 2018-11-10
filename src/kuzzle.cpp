@@ -14,6 +14,9 @@
 
 #include <exception>
 #include <stdexcept>
+#include <iostream>
+#include <vector>
+
 #include "kuzzle.hpp"
 #include "auth.hpp"
 #include "index.hpp"
@@ -21,8 +24,6 @@
 #include "collection.hpp"
 #include "document.hpp"
 #include "realtime.hpp"
-#include <iostream>
-#include <vector>
 
 namespace kuzzleio {
 

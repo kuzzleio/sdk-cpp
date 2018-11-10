@@ -78,7 +78,7 @@ namespace {
 
     ScenarioScope<KuzzleCtx> ctx;
 
-    query_options options = {0};
+    query_options options;
     options.refresh = const_cast<char*>("wait_for");
 
     ctx->kuzzle->document->create(ctx->index, ctx->collection, document_id, "{\"a\":\"document\"}", &options);
@@ -90,7 +90,7 @@ namespace {
 
     ScenarioScope<KuzzleCtx> ctx;
 
-    query_options options = {0};
+    query_options options;
     options.refresh = const_cast<char*>("wait_for");
 
     ctx->kuzzle->collection->truncate(ctx->index, collection_id, &options);

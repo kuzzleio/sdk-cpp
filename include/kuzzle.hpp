@@ -15,14 +15,15 @@
 #ifndef _KUZZLE_HPP_
 #define _KUZZLE_HPP_
 
-#include "exceptions.hpp"
-#include "core.hpp"
-#include "event_emitter.hpp"
 #include <string>
 #include <iostream>
 #include <vector>
 #include <map>
 #include <functional>
+
+#include "exceptions.hpp"
+#include "core.hpp"
+#include "event_emitter.hpp"
 
 namespace kuzzleio {
   class Collection;
@@ -39,7 +40,7 @@ namespace kuzzleio {
     public:
       kuzzle *_kuzzle;
       Auth *auth;
-      Index  *index;
+      Index *index;
       Server *server;
       Collection *collection;
       Document *document;
