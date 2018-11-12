@@ -1,5 +1,4 @@
 #include "websocket.hpp"
-#include <iostream>
 
 namespace kuzzleio {
 
@@ -22,7 +21,6 @@ namespace kuzzleio {
       std::list<EventListener*> listeners = static_cast<WebSocket*>(data)->getOnceListeners(event);
       if (listeners.size()) {
         for (EventListener*& listener : listeners) {
-          std::cout << "cpp once" << std::endl;
           (*listener)(res);
           static_cast<WebSocket*>(data)->getOnceListeners(event).remove(listener);
         }
@@ -65,7 +63,8 @@ namespace kuzzleio {
     }
 
     kuzzle_response* WebSocket::send(const std::string& query, query_options *options, const std::string& request_id) {
-      return kuzzle_websocket_send(this->_web_socket, const_cast<char*>(query.c_str()), options, const_cast<char*>(request_id.c_str()));
+      kuzzle_response* res = kuzzle_websocket_send(this->_web_socket, const_cast<char*>(query.c_str()), options, const_cast<char*>(request_id.c_str()));
+      return res;
     }
 
     std::string WebSocket::close() {
