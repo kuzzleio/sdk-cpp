@@ -109,7 +109,7 @@ namespace {
       K_LOG_E(e.getMessage().c_str());
     }
     char* error = ctx->kuzzle->connect();
-    BOOST_CHECK(error == NULL);
+    BOOST_CHECK(std::string(error) == "");
   }
 
   THEN("^I get an error$")
