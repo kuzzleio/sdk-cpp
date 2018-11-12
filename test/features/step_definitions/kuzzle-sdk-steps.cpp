@@ -104,7 +104,7 @@ namespace {
     }
 
     try {
-      ctx->kuzzle = new Kuzzle(hostname, &ctx->kuzzle_options);
+      ctx->kuzzle = new Kuzzle(new WebSocket(hostname), &ctx->kuzzle_options);
     } catch (KuzzleException e) {
       K_LOG_E(e.getMessage().c_str());
     }

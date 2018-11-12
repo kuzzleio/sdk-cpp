@@ -14,6 +14,7 @@
 #include "index.hpp"
 #include "realtime.hpp"
 #include "kuzzle.hpp"
+#include "websocket.hpp"
 
 #include "kuzzle_utils.h"
 
