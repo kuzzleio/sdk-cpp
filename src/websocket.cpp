@@ -22,6 +22,7 @@ namespace kuzzleio {
       std::list<EventListener*> listeners = static_cast<WebSocket*>(data)->getOnceListeners(event);
       if (listeners.size()) {
         for (EventListener*& listener : listeners) {
+          std::cout << "cpp once" << std::endl;
           (*listener)(res);
           static_cast<WebSocket*>(data)->getOnceListeners(event).remove(listener);
         }
@@ -108,4 +109,27 @@ namespace kuzzleio {
       kuzzle_websocket_clear_queue(this->_web_socket);
     }
 
+    bool WebSocket::isAutoReconnect() {
+      return kuzzle_websocket_is_auto_reconnect(this->_web_socket);
+    }
+
+    bool WebSocket::isAutoResubscribe() {
+      return kuzzle_websocket_is_auto_resubscribe(this->_web_socket);
+    }
+
+    std::string WebSocket::getHost() {
+      return std::string(kuzzle_websocket_get_host(this->_web_socket));
+    }
+
+    unsigned int WebSocket::getPort() {
+      return kuzzle_websocket_get_port(this->_web_socket);
+    }
+
+    unsigned long long WebSocket::getReconnectionDelay() {
+      return kuzzle_websocket_get_reconnection_delay(this->_web_socket);
+    }
+
+    bool WebSocket::isSslConnection() {
+      return kuzzle_websocket_is_ssl_connection(this->_web_socket);
+    }
 }

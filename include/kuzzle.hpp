@@ -37,6 +37,7 @@ namespace kuzzleio {
   class Kuzzle : public KuzzleEventEmitter {
     private:
       std::map<int, EventListener*>  _listener_instances;
+      Protocol *_cppProtocol;
 
     public:
       kuzzle *_kuzzle;
@@ -65,6 +66,7 @@ namespace kuzzleio {
       Kuzzle* setVolatile(const std::string& volatiles) noexcept;
       std::map<int, EventListener*> getListeners() noexcept;
       void emitEvent(Event event, const std::string& body) noexcept;
+      Protocol* getProtocol() noexcept;
 
       virtual KuzzleEventEmitter* addListener(Event event, EventListener* listener) override;
       virtual KuzzleEventEmitter* removeListener(Event event, EventListener* listener) override;

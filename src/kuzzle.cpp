@@ -116,6 +116,30 @@ namespace kuzzleio {
     static_cast<Protocol*>(data)->removeAllListeners((Event)event);
   }
 
+  bool bridge_is_auto_reconnect(void* data) {
+    return static_cast<Protocol*>(data)->isAutoReconnect();
+  }
+
+  bool bridge_is_auto_resubscribe(void* data) {
+    return static_cast<Protocol*>(data)->isAutoResubscribe();
+  }
+
+  const char* bridge_get_host(void* data) {
+    return static_cast<Protocol*>(data)->getHost().c_str();
+  }
+
+  unsigned int bridge_get_port(void* data) {
+    return static_cast<Protocol*>(data)->getPort();
+  }
+
+  unsigned long long bridge_get_reconnection_delay(void* data) {
+    return static_cast<Protocol*>(data)->getReconnectionDelay();
+  }
+
+  bool bridge_is_ssl_connection(void* data) {
+    return static_cast<Protocol*>(data)->isSslConnection();
+  }
+
   // Class
   KuzzleException::KuzzleException(int status, const std::string& error)
     : std::runtime_error(error), status(status) {}
@@ -146,8 +170,15 @@ namespace kuzzleio {
     proto->_protocol->play_queue = bridge_play_queue;
     proto->_protocol->clear_queue = bridge_clear_queue;
     proto->_protocol->remove_all_listeners = bridge_remove_all_listeners;
+    proto->_protocol->is_auto_reconnect = bridge_is_auto_reconnect;
+    proto->_protocol->is_auto_resubscribe = bridge_is_auto_resubscribe;
+    proto->_protocol->get_host = bridge_get_host;
+    proto->_protocol->get_port = bridge_get_port;
+    proto->_protocol->get_reconnection_delay = bridge_get_reconnection_delay;
+    proto->_protocol->is_ssl_connection = bridge_is_ssl_connection;
 
     this->_protocol = proto->_protocol;
+    this->_cppProtocol = proto;
 
     kuzzle_new_kuzzle(this->_kuzzle, this->_protocol, opts);
 
@@ -222,6 +253,10 @@ namespace kuzzleio {
 
   std::string Kuzzle::getJwt() noexcept {
     return std::string(kuzzle_get_jwt(_kuzzle));
+  }
+
+  Protocol* Kuzzle::getProtocol() noexcept {
+    return _cppProtocol;
   }
 
   void trigger_event_listener(int event, char* res, void* data) {
