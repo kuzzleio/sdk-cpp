@@ -9,7 +9,7 @@ namespace {
     ScenarioScope<KuzzleCtx> ctx;
 
     try {
-      query_options options = {0};
+      query_options options;
       options.refresh = const_cast<char*>("wait_for");
 
       ctx->kuzzle->document->create(ctx->index, ctx->collection, document_id, "{\"a\":\"document\"}", &options);
@@ -43,7 +43,7 @@ namespace {
     ScenarioScope<KuzzleCtx> ctx;
 
     try {
-      query_options options = {0};
+      query_options options;
       options.refresh = const_cast<char*>("wait_for");
 
       ctx->kuzzle->document->delete_(ctx->index, ctx->collection, document_id, &options);
@@ -59,7 +59,7 @@ namespace {
     ScenarioScope<KuzzleCtx> ctx;
 
     try {
-      query_options options = {0};
+      query_options options;
       options.refresh = const_cast<char*>("wait_for");
 
       ctx->kuzzle->document->createOrReplace(ctx->index, ctx->collection, document_id, "{\"a\":\"replaced document\"}", &options);
@@ -87,7 +87,7 @@ namespace {
     ScenarioScope<KuzzleCtx> ctx;
 
     try {
-      query_options options = {0};
+      query_options options;
       options.refresh = const_cast<char*>("wait_for");
 
       ctx->kuzzle->document->replace(ctx->index, ctx->collection, document_id, "{\"a\":\"replaced document\"}", &options);
@@ -112,7 +112,7 @@ namespace {
     ScenarioScope<KuzzleCtx> ctx;
 
     try {
-      query_options options = {0};
+      query_options options;
       options.refresh = const_cast<char*>("wait_for");
 
       ctx->kuzzle->document->update(ctx->index, ctx->collection, document_id, "{\"a\":\"updated document\"}", &options);
@@ -143,7 +143,6 @@ namespace {
       ctx->documents = ctx->kuzzle->document->search(ctx->index, ctx->collection, "{\"query\": {\"bool\": {\"should\":[{\"match\":{\"_id\": \"" + document_id + "\"}}]}}}");
       ctx->success = 1;
     } catch (KuzzleException e) {
-      kuzzle_free_search_result(ctx->documents);
       BOOST_FAIL(e.getMessage());
     }
   }
@@ -160,8 +159,6 @@ namespace {
       BOOST_CHECK(ctx->documents->total == 1);
     else
       BOOST_CHECK(ctx->documents->total == 0);
-
-    kuzzle_free_search_result(ctx->documents);
   }
 
   WHEN("^I count how many documents there is in the collection$")
@@ -183,7 +180,7 @@ namespace {
     ScenarioScope<KuzzleCtx> ctx;
 
     try {
-      query_options options = {0};
+      query_options options;
       options.refresh = const_cast<char*>("wait_for");
 
       std::vector<string> document_ids;
@@ -222,7 +219,7 @@ namespace {
     ScenarioScope<KuzzleCtx> ctx;
 
     try {
-      query_options options = {0};
+      query_options options;
       options.refresh = const_cast<char*>("wait_for");
 
       string documents = "[{\"_id\":\"" + document1_id + "\", \"body\":{}}, {\"_id\":\"" + document2_id + "\", \"body\":{}}]";
@@ -245,7 +242,7 @@ namespace {
     ScenarioScope<KuzzleCtx> ctx;
 
     try {
-      query_options options = {0};
+      query_options options;
       options.refresh = const_cast<char*>("wait_for");
 
       string documents = "[{\"_id\":\"" + document1_id + "\", \"body\":{\"a\":\"replaced document\"}}, {\"_id\":\"" + document2_id + "\", \"body\":{\"a\":\"replaced document\"}}]";
@@ -279,7 +276,7 @@ namespace {
     ScenarioScope<KuzzleCtx> ctx;
 
     try {
-      query_options options = {0};
+      query_options options;
       options.refresh = const_cast<char*>("wait_for");
 
       string documents = "[{\"_id\":\"" + document1_id + "\", \"body\":{\"a\":\"replaced document\"}}, {\"_id\":\"" + document2_id + "\", \"body\":{\"a\":\"replaced document\"}}]";
@@ -313,7 +310,7 @@ namespace {
     ScenarioScope<KuzzleCtx> ctx;
 
     try {
-      query_options options = {0};
+      query_options options;
       options.refresh = const_cast<char*>("wait_for");
 
       string documents = "[{\"_id\":\"" + document1_id + "\", \"body\":{\"a\":\"replaced document\"}}, {\"_id\":\"" + document2_id + "\", \"body\":{\"a\":\"replaced document\"}}]";

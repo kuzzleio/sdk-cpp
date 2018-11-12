@@ -25,6 +25,10 @@
 #include <map>
 #include <functional>
 
+#include "exceptions.hpp"
+#include "core.hpp"
+#include "event_emitter.hpp"
+
 namespace kuzzleio {
   class Collection;
   class Document;
@@ -43,7 +47,7 @@ namespace kuzzleio {
       kuzzle *_kuzzle;
       protocol *_protocol;
       Auth *auth;
-      Index  *index;
+      Index *index;
       Server *server;
       Collection *collection;
       Document *document;

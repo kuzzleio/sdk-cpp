@@ -26,7 +26,7 @@ namespace {
 
     ScenarioScope<KuzzleCtx> ctx;
 
-    query_options options = {0};
+    query_options options;
     options.refresh = const_cast<char*>("wait_for");
 
     try {
@@ -68,7 +68,7 @@ namespace {
 
     ScenarioScope<KuzzleCtx> ctx;
 
-    query_options options = {0};
+    query_options options;
     options.refresh = const_cast<char*>("wait_for");
 
     try {

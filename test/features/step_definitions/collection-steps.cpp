@@ -78,7 +78,7 @@ namespace {
 
     ScenarioScope<KuzzleCtx> ctx;
 
-    query_options options = {0};
+    query_options options;
     options.refresh = const_cast<char*>("wait_for");
 
     ctx->kuzzle->document->create(ctx->index, ctx->collection, document_id, "{\"a\":\"document\"}", &options);
@@ -90,7 +90,7 @@ namespace {
 
     ScenarioScope<KuzzleCtx> ctx;
 
-    query_options options = {0};
+    query_options options;
     options.refresh = const_cast<char*>("wait_for");
 
     ctx->kuzzle->collection->truncate(ctx->index, collection_id, &options);
@@ -102,11 +102,9 @@ namespace {
 
     ScenarioScope<KuzzleCtx> ctx;
 
-    search_result *result = ctx->kuzzle->document->search(ctx->index, collection_id, "{}");
+    SearchResult * result = ctx->kuzzle->document->search(ctx->index, collection_id, "{}");
 
     BOOST_CHECK(result->total == 0);
-
-    kuzzle_free_search_result(result);
   }
 
   WHEN("^I update the mapping of collection \'([^\"]*)\'$")

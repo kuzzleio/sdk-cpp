@@ -85,7 +85,7 @@ namespace kuzzleio {
     user_rights_result *r = kuzzle_get_my_rights(_auth, options);
     if (r->error != nullptr)
         throwExceptionFromStatus(r);
-    
+
     user_right** ret = r->result;
     kuzzle_free_user_rights_result(r);
     return ret;

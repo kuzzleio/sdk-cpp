@@ -14,6 +14,9 @@
 
 #include <exception>
 #include <stdexcept>
+#include <iostream>
+#include <vector>
+
 #include "kuzzle.hpp"
 #include "auth.hpp"
 #include "index.hpp"

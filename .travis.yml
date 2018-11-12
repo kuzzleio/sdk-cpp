@@ -19,7 +19,6 @@ before_install:
 
 before_script:
   - ./.ci/start_kuzzle.sh
-  - cd sdk-c/go/src/github.com/kuzzleio/sdk-go && git submodule init && git submodule update
 
 jobs:
   include:
@@ -42,7 +41,7 @@ jobs:
 
       script:
         # Build & Test
-        - docker run --rm -it --network ci_default --link kuzzle -v "$(pwd)":/mnt kuzzleio/sdk-cross:gcc make all build_test run_test
+        - docker run --rm -it --network ci_default --link kuzzle -v "$(pwd)":/mnt kuzzleio/sdk-cross:gcc make update_submodule all build_test run_test
 
       after_success:
         - docker run --rm -it -e ARCH=amd64 -v "$(pwd)":/mnt kuzzleio/sdk-cross:gcc make package
@@ -86,7 +85,7 @@ jobs:
 
       script:
         # Build & Test
-        - docker run --rm -it --network ci_default --link kuzzle -v "$(pwd)":/mnt kuzzleio/sdk-cross:gcc-i386 make all build_test run_test
+        - docker run --rm -it --network ci_default --link kuzzle -v "$(pwd)":/mnt kuzzleio/sdk-cross:gcc-i386 make update_submodule all build_test run_test
 
       after_success:
         - docker run --rm -it -e ARCH=i386 -v "$(pwd)":/mnt kuzzleio/sdk-cross:gcc-i386 make package
@@ -220,7 +219,7 @@ jobs:
 
       script:
         # Build & Test
-        - docker run --rm -it --network ci_default --link kuzzle -v "$(pwd)":/mnt kuzzleio/sdk-cross:clang make all build_test run_test
+        - docker run --rm -it --network ci_default --link kuzzle -v "$(pwd)":/mnt kuzzleio/sdk-cross:clang make update_submodule all build_test run_test
 
 # ---------------------------------------
 # I386
@@ -233,4 +232,4 @@ jobs:
 
       script:
         # Build & Test
-        - docker run --rm -it --network ci_default --link kuzzle -v "$(pwd)":/mnt kuzzleio/sdk-cross:clang-i386 make all build_test run_test
+        - docker run --rm -it --network ci_default --link kuzzle -v "$(pwd)":/mnt kuzzleio/sdk-cross:clang-i386 make update_submodule all build_test run_test

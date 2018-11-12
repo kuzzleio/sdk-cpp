@@ -27,7 +27,7 @@ namespace kuzzleio {
       Server(Kuzzle* kuzzle);
       Server(Kuzzle *kuzzle, server *server);
       virtual ~Server();
-      bool adminExists(query_options *options);
+      bool adminExists(query_options *options=nullptr);
       std::string getAllStats(query_options* options=nullptr);
       std::string getStats(time_t start, time_t end, query_options* options=nullptr);
       std::string getLastStats(query_options* options=nullptr);
