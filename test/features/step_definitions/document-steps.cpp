@@ -156,7 +156,7 @@ namespace {
     ScenarioScope<KuzzleCtx> ctx;
 
     try {
-      kuzzleio::query_options options = {0};
+      kuzzleio::query_options options = {};
       options.from = from;
       options.size = size;
 
@@ -420,10 +420,6 @@ namespace {
     REGEX_PARAM(unsigned, number);
 
     ScenarioScope<KuzzleCtx> ctx;
-
-    std::cout << field << std::endl;
-    std::cout << number << std::endl;
-    std::cout << ctx->documents->hits << std::endl;
 
     if (field == "a total of") {
       BOOST_CHECK(ctx->documents->total == number);
