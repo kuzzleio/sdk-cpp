@@ -34,7 +34,7 @@ namespace kuzzleio {
 
     int Document::count(const std::string& index, const std::string& collection, const std::string& body, query_options *options) {
         char* rbody;
-        
+
         if (!body.empty()) {
             rbody = const_cast<char*>(body.c_str());
         }
@@ -45,6 +45,10 @@ namespace kuzzleio {
         int ret = r->result;
         kuzzle_free_int_result(r);
         return ret;
+    }
+
+    int Document::count(const std::string& index, const std::string& collection, query_options *options) {
+        return count(index, collection, "", options);
     }
 
     bool Document::exists(const std::string& index, const std::string& collection, const std::string& id, query_options *options) {
