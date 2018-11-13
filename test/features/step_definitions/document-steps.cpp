@@ -147,6 +147,36 @@ namespace {
     }
   }
 
+  WHEN(R"(^I search documents matching '([^']+)' with from (\d+) and size (\d+)$)")
+  {
+    REGEX_PARAM(std::string, query);
+    REGEX_PARAM(unsigned, from);
+    REGEX_PARAM(unsigned, size);
+
+    ScenarioScope<KuzzleCtx> ctx;
+
+    try {
+      kuzzleio::query_options options = {};
+      options.from = from;
+      options.size = size;
+
+      ctx->documents = ctx->kuzzle->document->search(ctx->index, ctx->collection, query, &options);
+    } catch (KuzzleException e) {
+      BOOST_FAIL(e.getMessage());
+    }
+  }
+
+  WHEN("^I search the next documents$")
+  {
+    ScenarioScope<KuzzleCtx> ctx;
+
+    try {
+      ctx->documents = ctx->documents->next();
+    } catch (KuzzleException e) {
+      BOOST_FAIL(e.getMessage());
+    }
+  }
+
   THEN("^the document is (successfully|not) found$")
   {
     REGEX_PARAM(std::string, search_status);
@@ -382,5 +412,20 @@ namespace {
 
     BOOST_CHECK(ctx->success == 1);
     BOOST_CHECK(ctx->content != "");
+  }
+
+  THEN(R"(^The search result should have (a total of|fetched) (\d+) documents$)")
+  {
+    REGEX_PARAM(std::string, field);
+    REGEX_PARAM(unsigned, number);
+
+    ScenarioScope<KuzzleCtx> ctx;
+
+    if (field == "a total of") {
+      BOOST_CHECK(ctx->documents->total == number);
+    }
+    else if (field == "fetched") {
+      BOOST_CHECK(ctx->documents->fetched == number);
+    }
   }
 }
