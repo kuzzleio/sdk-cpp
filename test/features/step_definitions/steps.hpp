@@ -29,6 +29,7 @@ using std::string;
 
 struct KuzzleCtx {
   Kuzzle* kuzzle = NULL;
+  Protocol* protocol = NULL;
   options kuzzle_options;
 
   string user_id;
