@@ -32,7 +32,12 @@ CPPDIR = $(ROOT_DIR)cpp
 HEADERSDIR = $(ROOT_DIR)include
 AR ?= ar
 
-CXXFLAGS = -g -fPIC -std=c++11 -I.$(PATHSEP)include -I.$(PATHSEP)sdk-c$(PATHSEP)include$(PATHSEP) -I.$(PATHSEP)sdk-c$(PATHSEP)build$(PATHSEP) -L.$(PATHSEP)sdk-c$(PATHSEP)build
+CXXFLAGS = -g -fPIC -std=c++11 -MMD \
+	-I.$(PATHSEP)include \
+	-I.$(PATHSEP)sdk-c$(PATHSEP)include$(PATHSEP) \
+	-I.$(PATHSEP)sdk-c$(PATHSEP)build$(PATHSEP) \
+	-L.$(PATHSEP)sdk-c$(PATHSEP)build
+
 LDFLAGS = -lkuzzlesdk
 
 CPP_SDK_SRCS = src$(PATHSEP)kuzzle.cpp \
@@ -48,14 +53,18 @@ CPP_SDK_SRCS = src$(PATHSEP)kuzzle.cpp \
 					src$(PATHSEP)default_constructors.cpp \
 					src$(PATHSEP)specification_search_result.cpp
 
-CPPSDK = $(CPP_SDK_SRCS:%.cpp=%.o)
+OBJETS = $(CPP_SDK_SRCS:%.cpp=%.o)
+DEPENDS = $(CPP_SDK_SRCS:%.cpp=%.d)
 
 all: cpp
 
+-include ${DEPENDS}
+
 %.o: %.cpp
+	echo $<
 	$(CXX) -fPIC -c $< -o $@ $(CXXFLAGS) $(LDFLAGS)
 
-makedir:
+$(ROOTOUTDIR):
 ifeq ($(OS),Windows_NT)
 	@if not exist $(subst /,\,$(ROOTOUTDIR)) mkdir $(subst /,\,$(ROOTOUTDIR))
 else
@@ -69,7 +78,7 @@ make_c_sdk:
 	cd sdk-c && $(MAKE)
 
 cpp: export GOPATH = $(ROOT_DIR)go
-cpp: makedir make_c_sdk $(CPPSDK)
+cpp: $(ROOTOUTDIR) make_c_sdk $(OBJETS)
 		$(AR) rvs $(ROOTOUTDIR)$(PATHSEP)libkuzzlesdk$(STATICLIB) src$(PATHSEP)*.o
 		$(CXX) -shared -fPIC -o $(ROOTOUTDIR)$(PATHSEP)$(LIB_PREFIX)kuzzlesdk$(DYNLIB) -Wl,--whole-archive $(ROOTOUTDIR)$(PATHSEP)$(LIB_PREFIX)kuzzlesdk$(STATICLIB) sdk-c$(PATHSEP)build$(PATHSEP)$(LIB_PREFIX)kuzzlesdk$(STATICLIB) -Wl,--no-whole-archive
 		cd $(ROOTOUTDIR) && mv $(LIB_PREFIX)kuzzlesdk$(STATICLIB) $(LIB_PREFIX)kuzzlesdk$(STATICLIB).$(VERSION) && mv $(LIB_PREFIX)kuzzlesdk$(DYNLIB) $(LIB_PREFIX)kuzzlesdk$(DYNLIB).$(VERSION)
