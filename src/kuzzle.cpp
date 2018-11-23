@@ -62,7 +62,7 @@ namespace kuzzleio {
   }
 
   void bridge_remove_listener(int event, kuzzle_event_listener* listener, void* data) {
-    static_cast<Protocol*>(data)->removeListener((Event)event, static_cast<Protocol*>(data)->listener_instances[event][listener]);
+    static_cast<Protocol*>(data)->removeListener(static_cast<Event>(event), static_cast<Protocol*>(data)->listener_instances[event][listener]);
     delete static_cast<Protocol*>(data)->listener_instances[event][listener];
   }
 
