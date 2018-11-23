@@ -2,10 +2,9 @@
 #define KUZZLE_PROTOCOL_HPP
 
 #include <string>
-#include "core.hpp"
+#include <map>
 #include "kuzzle.hpp"
-#include "event_emitter.hpp"
-#include "realtime.hpp"
+#include "protocol.h"
 
 namespace kuzzleio {
 

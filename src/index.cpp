@@ -13,8 +13,7 @@
 // limitations under the License.
 
 #include "kuzzle.hpp"
-#include "index.hpp"
-#include <string>
+#include "internal/index.hpp"
 
 namespace kuzzleio {
 

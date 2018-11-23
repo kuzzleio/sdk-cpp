@@ -15,19 +15,27 @@
 #ifndef _KUZZLE_HPP_
 #define _KUZZLE_HPP_
 
-#include "protocol.hpp"
-#include "exceptions.hpp"
-#include "core.hpp"
-#include "event_emitter.hpp"
 #include <string>
 #include <iostream>
 #include <vector>
 #include <map>
 #include <functional>
 
-#include "exceptions.hpp"
-#include "core.hpp"
-#include "event_emitter.hpp"
+#include "internal/exceptions.hpp"
+#include "internal/core.hpp"
+#include "internal/event_emitter.hpp"
+
+#include "internal/realtime.hpp"
+#include "internal/auth.hpp"
+#include "internal/index.hpp"
+#include "internal/server.hpp"
+#include "internal/collection.hpp"
+#include "internal/document.hpp"
+#include "protocol.hpp"
+
+#include "internal/search_result.hpp"
+
+
 
 namespace kuzzleio {
   class Collection;

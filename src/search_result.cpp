@@ -12,8 +12,8 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-#include "search_result.hpp"
-#include "core.hpp"
+#include "internal/search_result.hpp"
+#include "internal/core.hpp"
 
 namespace kuzzleio {
     SearchResult::SearchResult(search_result* sr) {

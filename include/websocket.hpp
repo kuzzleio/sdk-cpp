@@ -3,7 +3,7 @@
 
 #include <map>
 #include <list>
-#include "core.hpp"
+#include "internal/core.hpp"
 #include "protocol.hpp"
 
 namespace kuzzleio {

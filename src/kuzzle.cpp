@@ -14,22 +14,9 @@
 
 #include <exception>
 #include <stdexcept>
-#include <iostream>
-#include <vector>
 
 #include "kuzzle.hpp"
-#include "auth.hpp"
-#include "index.hpp"
-#include "server.hpp"
-#include "protocol.hpp"
-#include "collection.hpp"
-#include "document.hpp"
-#include "realtime.hpp"
-#include "kuzzle.hpp"
-#include <iostream>
-#include <vector>
-#include <iostream>
-#include <functional>
+#include "internal/event_emitter.hpp"
 
 namespace kuzzleio {
 
