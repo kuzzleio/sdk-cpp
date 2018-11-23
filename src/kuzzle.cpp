@@ -83,7 +83,7 @@ namespace kuzzleio {
   }
 
   int bridge_listener_count(int event, void* data) {
-    return static_cast<Protocol*>(data)->listenerCount((Event)event);
+    return static_cast<Protocol*>(data)->listenerCount(static_cast<Event>(event));
   }
 
   const char* bridge_close(void* data) {
