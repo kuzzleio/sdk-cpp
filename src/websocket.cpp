@@ -27,12 +27,23 @@ namespace kuzzleio {
       }
     }
 
+    void trigger_websocket_notification_listener(notification_result* result, void* data) {
+      NotificationListener* listener = static_cast<WebSocket*>(data)->getNotificationListener(result->room_id);
+      if (listener) {
+        (*listener)(result);
+      }
+    }
+
     std::list<EventListener*> WebSocket::getListeners(int event) noexcept {
       return _websocket_listener_instances[event];
     }
 
     std::list<EventListener*> WebSocket::getOnceListeners(int event) noexcept {
       return _websocket_once_listener_instances[event];
+    }
+
+    NotificationListener* WebSocket::getNotificationListener(const std::string& room_id) noexcept {
+      return _websocket_notification_listener_instances[room_id];
     }
 
     void WebSocket::addListener(Event event, EventListener* listener) {
@@ -83,10 +94,14 @@ namespace kuzzleio {
       kuzzle_websocket_emit_event(this->_web_socket, event, nullptr);
     }
 
-    void WebSocket::registerSub(const std::string&, const std::string&, const std::string&, int, NotificationListener*, void*) {}
+    void WebSocket::registerSub(const std::string& channel, const std::string& room_id, const std::string& filters, bool subscribe_to_self, NotificationListener* listener) {
+      _websocket_notification_listener_instances[channel] = listener;
+      kuzzle_websocket_register_sub(this->_web_socket, const_cast<char*>(channel.c_str()), const_cast<char*>(room_id.c_str()), const_cast<char*>(filters.c_str()), subscribe_to_self, trigger_websocket_notification_listener);
+    }
 
     void WebSocket::unregisterSub(const std::string& id) {
       kuzzle_websocket_unregister_sub(this->_web_socket, const_cast<char*>(id.c_str()));
+      _websocket_notification_listener_instances[id] = nullptr;
     }
 
     void WebSocket::cancelSubs() {

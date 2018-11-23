@@ -61,7 +61,6 @@ namespace kuzzleio {
     static_cast<Protocol*>(data)->once((Event)event, l);
   }
 
-
   void bridge_remove_listener(int event, kuzzle_event_listener* listener, void* data) {
     static_cast<Protocol*>(data)->removeListener((Event)event, static_cast<Protocol*>(data)->listener_instances[event][listener]);
     delete static_cast<Protocol*>(data)->listener_instances[event][listener];
@@ -91,8 +90,18 @@ namespace kuzzleio {
     return static_cast<Protocol*>(data)->close().c_str();
   }
 
+  void bridge_register_sub(const char* channel, const char* room_id, const char* filters, bool subscribe_to_self, kuzzle_notification_listener* listener, void* data) {
+    NotificationListener *nl = new std::function<void(kuzzleio::notification_result*)>([=](kuzzleio::notification_result* res) {
+      (*listener)(res, data);
+    });
+    
+    static_cast<Protocol*>(data)->notification_listener_instances[channel] = nl;
+    static_cast<Protocol*>(data)->registerSub(std::string(channel), std::string(room_id), std::string(filters), subscribe_to_self, nl);
+  }
+
   void bridge_unregister_sub(const char* id, void* data) {
     static_cast<Protocol*>(data)->unregisterSub(std::string(id));
+    static_cast<Protocol*>(data)->notification_listener_instances[id] = nullptr;
   }
 
   void bridge_cancel_subs(void* data) {
@@ -166,6 +175,7 @@ namespace kuzzleio {
     proto->_protocol->get_state = bridge_get_state;
     proto->_protocol->listener_count = bridge_listener_count;
     proto->_protocol->close = bridge_close;
+    proto->_protocol->register_sub = bridge_register_sub;
     proto->_protocol->unregister_sub = bridge_unregister_sub;
     proto->_protocol->cancel_subs = bridge_cancel_subs;
     proto->_protocol->start_queuing = bridge_start_queuing;

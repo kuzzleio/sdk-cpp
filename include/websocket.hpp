@@ -12,11 +12,13 @@ namespace kuzzleio {
     private:
       std::map<int, std::list<EventListener*>>  _websocket_listener_instances;
       std::map<int, std::list<EventListener*>>  _websocket_once_listener_instances;
+      std::map<std::string, NotificationListener*>  _websocket_notification_listener_instances;
     public:
     web_socket* _web_socket;
     WebSocket(const std::string&, options* query_options=nullptr);
     std::list<EventListener*> getListeners(int) noexcept;
     std::list<EventListener*> getOnceListeners(int) noexcept;
+    NotificationListener* getNotificationListener(const std::string&) noexcept;
 
     virtual void addListener(Event, EventListener*);
     virtual void removeListener(Event, EventListener*);
@@ -28,7 +30,7 @@ namespace kuzzleio {
     virtual std::string close();
     virtual int getState();
     virtual void emitEvent(Event);
-    virtual void registerSub(const std::string&, const std::string&, const std::string&, int, NotificationListener*, void*);
+    virtual void registerSub(const std::string&, const std::string&, const std::string&, bool, NotificationListener*);
     virtual void unregisterSub(const std::string&);
     virtual void cancelSubs();
     virtual void startQueuing();

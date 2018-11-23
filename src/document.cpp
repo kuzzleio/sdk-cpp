@@ -173,8 +173,10 @@ namespace kuzzleio {
 
         string_array_result *r = kuzzle_document_mdelete(_document, const_cast<char*>(index.c_str()), const_cast<char*>(collection.c_str()), idsArray, ids.size(), options);
         delete[] idsArray;
-        if (r->error != nullptr)
+        if (r->error != nullptr) {
+          fflush(NULL);
           throwExceptionFromStatus(r);
+        }
 
         std::vector<std::string> v;
         for (int i = 0; i < r->result_length; i++)
