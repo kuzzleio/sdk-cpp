@@ -24,12 +24,15 @@ else
 	MV = mv -f
 	ROOT_DIR_CLEAN = $(ROOT_DIR)
 	LIB_PREFIX = lib
+	ARCH=$(shell uname -p)
 endif
 
+SDK_FOLDER_NAME=kuzzle-cpp-sdk
+
+export GOPATH = $(ROOT_DIR)go
+
 PATHSEP = $(strip $(SEP))
-ROOTOUTDIR = $(ROOT_DIR)build
-CPPDIR = $(ROOT_DIR)cpp
-HEADERSDIR = $(ROOT_DIR)include
+BUILD_DIR = build
 AR ?= ar
 
 CXXFLAGS = -g -fPIC -std=c++11 -MMD \
@@ -40,35 +43,24 @@ CXXFLAGS = -g -fPIC -std=c++11 -MMD \
 
 LDFLAGS = -lkuzzlesdk
 
-CPP_SDK_SRCS = src$(PATHSEP)kuzzle.cpp \
-					src$(PATHSEP)auth.cpp \
-					src$(PATHSEP)collection.cpp \
-					src$(PATHSEP)document.cpp \
-					src$(PATHSEP)index.cpp \
-					src$(PATHSEP)realtime.cpp \
-					src$(PATHSEP)search_result.cpp \
-					src$(PATHSEP)server.cpp \
-					src$(PATHSEP)index.cpp \
-					src$(PATHSEP)websocket.cpp \
-					src$(PATHSEP)default_constructors.cpp \
-					src$(PATHSEP)specification_search_result.cpp
+SOURCES = $(wildcard src$(PATHSEP)*.cpp)
 
-OBJETS = $(CPP_SDK_SRCS:%.cpp=%.o)
-DEPENDS = $(CPP_SDK_SRCS:%.cpp=%.d)
+OBJECTS = $(SOURCES:%.cpp=$(BUILD_DIR)/%.o)
+DEPENDS = $(OBJECTS:%.o=%.d)
 
-all: cpp
+all: $(BUILD_DIR)/cpp
 
 -include ${DEPENDS}
 
-%.o: %.cpp
-	echo $<
+$(BUILD_DIR)/%.o: %.cpp
+	mkdir -p $(@D)
 	$(CXX) -fPIC -c $< -o $@ $(CXXFLAGS) $(LDFLAGS)
 
-$(ROOTOUTDIR):
+$(BUILD_DIR):
 ifeq ($(OS),Windows_NT)
-	@if not exist $(subst /,\,$(ROOTOUTDIR)) mkdir $(subst /,\,$(ROOTOUTDIR))
+	@if not exist $(subst /,\,$(BUILD_DIR)) mkdir $(subst /,\,$(BUILD_DIR))
 else
-	mkdir -p $(ROOTOUTDIR)
+	mkdir -p $@
 endif
 
 update_submodule:
@@ -77,27 +69,26 @@ update_submodule:
 make_c_sdk:
 	cd sdk-c && $(MAKE)
 
-cpp: export GOPATH = $(ROOT_DIR)go
-cpp: $(ROOTOUTDIR) make_c_sdk $(OBJETS)
-		$(AR) rvs $(ROOTOUTDIR)$(PATHSEP)libkuzzlesdk$(STATICLIB) src$(PATHSEP)*.o
-		$(CXX) -shared -fPIC -o $(ROOTOUTDIR)$(PATHSEP)$(LIB_PREFIX)kuzzlesdk$(DYNLIB) -Wl,--whole-archive $(ROOTOUTDIR)$(PATHSEP)$(LIB_PREFIX)kuzzlesdk$(STATICLIB) sdk-c$(PATHSEP)build$(PATHSEP)$(LIB_PREFIX)kuzzlesdk$(STATICLIB) -Wl,--no-whole-archive
-		cd $(ROOTOUTDIR) && mv $(LIB_PREFIX)kuzzlesdk$(STATICLIB) $(LIB_PREFIX)kuzzlesdk$(STATICLIB).$(VERSION) && mv $(LIB_PREFIX)kuzzlesdk$(DYNLIB) $(LIB_PREFIX)kuzzlesdk$(DYNLIB).$(VERSION)
-		cd $(ROOTOUTDIR) && ln -sr $(LIB_PREFIX)kuzzlesdk$(DYNLIB).$(VERSION) $(LIB_PREFIX)kuzzlesdk$(DYNLIB)
-		cd $(ROOTOUTDIR) && ln -sr $(LIB_PREFIX)kuzzlesdk$(STATICLIB).$(VERSION) $(LIB_PREFIX)kuzzlesdk$(STATICLIB)
+$(BUILD_DIR)/cpp: $(BUILD_DIR) make_c_sdk $(OBJECTS)
+		$(AR) rvs $(BUILD_DIR)$(PATHSEP)libkuzzlesdk$(STATICLIB).$(VERSION) $(OBJECTS)
+		$(CXX) -shared -fPIC -o $(BUILD_DIR)$(PATHSEP)$(LIB_PREFIX)kuzzlesdk$(DYNLIB).$(VERSION) -Wl,--whole-archive $(BUILD_DIR)$(PATHSEP)$(LIB_PREFIX)kuzzlesdk$(STATICLIB).$(VERSION) sdk-c$(PATHSEP)build$(PATHSEP)$(LIB_PREFIX)kuzzlesdk$(STATICLIB) -Wl,--no-whole-archive
+		cd $(BUILD_DIR) && ln -srf $(LIB_PREFIX)kuzzlesdk$(DYNLIB).$(VERSION) $(LIB_PREFIX)kuzzlesdk$(DYNLIB)
+		cd $(BUILD_DIR) && ln -srf $(LIB_PREFIX)kuzzlesdk$(STATICLIB).$(VERSION) $(LIB_PREFIX)kuzzlesdk$(STATICLIB)
+		touch $@
 
-package: $(ROOTOUTDIR)$(PATHSEP)$(LIB_PREFIX)kuzzlesdk$(DYNLIB).$(VERSION) $(ROOTOUTDIR)$(PATHSEP)$(LIB_PREFIX)kuzzlesdk$(STATICLIB).$(VERSION)
-	mkdir $(ROOTOUTDIR)$(PATHSEP)lib
-	mkdir $(ROOTOUTDIR)$(PATHSEP)include
-	cp -fr $(ROOT_DIR)$(PATHSEP)include$(PATHSEP)*.hpp $(ROOTOUTDIR)$(PATHSEP)include
-	cp $(ROOT_DIR)$(PATHSEP)sdk-c$(PATHSEP)include$(PATHSEP)kuzzlesdk.h $(ROOTOUTDIR)$(PATHSEP)include
-	cp $(ROOT_DIR)$(PATHSEP)sdk-c$(PATHSEP)include$(PATHSEP)sdk_wrappers_internal.h $(ROOTOUTDIR)$(PATHSEP)include
-	cp $(ROOT_DIR)$(PATHSEP)sdk-c$(PATHSEP)build$(PATHSEP)kuzzle.h $(ROOTOUTDIR)$(PATHSEP)include
-	cp $(ROOTOUTDIR)$(PATHSEP)*.so  $(ROOTOUTDIR)$(PATHSEP)lib
-	cp $(ROOTOUTDIR)$(PATHSEP)*.a  $(ROOTOUTDIR)$(PATHSEP)lib
+package: $(BUILD_DIR)$(PATHSEP)$(LIB_PREFIX)kuzzlesdk$(DYNLIB).$(VERSION) $(BUILD_DIR)$(PATHSEP)$(LIB_PREFIX)kuzzlesdk$(STATICLIB).$(VERSION)
+	mkdir -p $(BUILD_DIR)$(PATHSEP)$(SDK_FOLDER_NAME)/lib
+	mkdir -p $(BUILD_DIR)$(PATHSEP)$(SDK_FOLDER_NAME)/include/internal
+	cp -fr include  $(BUILD_DIR)$(PATHSEP)$(SDK_FOLDER_NAME)/include
+	cp sdk-c$(PATHSEP)include$(PATHSEP)kuzzlesdk.h $(BUILD_DIR)$(PATHSEP)$(SDK_FOLDER_NAME)/include/internal
+	cp sdk-c$(PATHSEP)include$(PATHSEP)sdk_wrappers_internal.h $(BUILD_DIR)$(PATHSEP)$(SDK_FOLDER_NAME)/include
+	cp sdk-c$(PATHSEP)include$(PATHSEP)protocol.h $(BUILD_DIR)$(PATHSEP)$(SDK_FOLDER_NAME)/include
+	cp sdk-c$(PATHSEP)build$(PATHSEP)kuzzle.h $(BUILD_DIR)$(PATHSEP)$(SDK_FOLDER_NAME)/include/internal
+	cp $(BUILD_DIR)$(PATHSEP)*.so  $(BUILD_DIR)$(PATHSEP)*.a $(BUILD_DIR)$(PATHSEP)$(SDK_FOLDER_NAME)/lib
 
-	mkdir deploy && cd $(ROOTOUTDIR) && tar cfz ..$(PATHSEP)deploy$(PATHSEP)kuzzlesdk-cpp-$(VERSION)-$(ARCH).tar.gz lib include
+	mkdir -p deploy && cd $(BUILD_DIR) && tar cfz ..$(PATHSEP)deploy$(PATHSEP)kuzzlesdk-cpp-$(VERSION)-$(ARCH).tar.gz $(SDK_FOLDER_NAME)
 
-build_test: $(ROOTOUTDIR)$(PATHSEP)$(LIB_PREFIX)kuzzlesdk$(DYNLIB).$(VERSION) $(ROOTOUTDIR)$(PATHSEP)$(LIB_PREFIX)kuzzlesdk$(STATICLIB).$(VERSION)
+build_test: $(BUILD_DIR)$(PATHSEP)$(LIB_PREFIX)kuzzlesdk$(DYNLIB).$(VERSION) $(BUILD_DIR)$(PATHSEP)$(LIB_PREFIX)kuzzlesdk$(STATICLIB).$(VERSION)
 	cd $(ROOT_DIR)$(PATHSEP)test && sh build_cpp_tests.sh
 
 run_test: $(ROOT_DIR)$(PATHSEP)test$(PATHSEP)_build_cpp_tests$(PATHSEP)KuzzleSDKStepDefs
@@ -107,14 +98,13 @@ run_test: $(ROOT_DIR)$(PATHSEP)test$(PATHSEP)_build_cpp_tests$(PATHSEP)KuzzleSDK
 clean:
 	cd sdk-c && make clean
 ifeq ($(OS),Windows_NT)
-	$(RRM) $(ROOTOUTDIR)
-	$(RRM) src$(PATHSEP)*.o
+	$(RRM) $(BUILD_DIR)
 	$(RRM) $(ROOT_DIR)$(PATHSEP)deploy
 	$(RRM) $(ROOT_DIR)$(PATHSEP)test$(PATHSEP)_build_cpp_tests
 else
-	$(RRM) $(ROOTOUTDIR) src/*.o $(ROOT_DIR)$(PATHSEP)deploy $(ROOT_DIR)$(PATHSEP)test$(PATHSEP)_build_cpp_tests
+	$(RRM) $(BUILD_DIR) deploy test$(PATHSEP)_build_cpp_tests
 endif
-.PHONY: all cpp core clean
+.PHONY: all core clean
 
 
 .DEFAULT_GOAL := all
