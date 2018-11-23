@@ -14,7 +14,6 @@
 
 #ifndef _CORE_HPP_
 #define _CORE_HPP_
-#define _Complex
 #define _Bool bool
 #include <cstdio>
 
