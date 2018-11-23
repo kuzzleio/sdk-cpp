@@ -34,17 +34,17 @@
 namespace kuzzleio {
 
   // Bridges for protocol
-  void bridge_add_listener(int event, kuzzle_event_listener* listener, void* data) {
+  void bridge_add_listener(int event, kuzzle_event_listener* listener, void* protocol_instance) {
     EventListener *l = new std::function<void(const std::string)>([=](const std::string& res) {
       if (res != "null") {
-        (*listener)(event, const_cast<char*>(res.c_str()), data);        
+        (*listener)(event, const_cast<char*>(res.c_str()), protocol_instance);        
       } else {
-        (*listener)(event, nullptr, data);
+        (*listener)(event, nullptr, protocol_instance);
       }
     });
 
-    static_cast<Protocol*>(data)->listener_instances[event].insert(std::make_pair(listener, l));
-    static_cast<Protocol*>(data)->addListener((Event)event, l);
+    static_cast<Protocol*>(protocol_instance)->listener_instances[event].insert(std::make_pair(listener, l));
+    static_cast<Protocol*>(protocol_instance)->addListener(static_cast<Event>(event), l);
   }
 
   void bridge_once(int event, kuzzle_event_listener* listener, void* data) {
@@ -125,7 +125,7 @@ namespace kuzzleio {
   }
 
   void bridge_remove_all_listeners(int event, void* data) {
-    static_cast<Protocol*>(data)->removeAllListeners((Event)event);
+    static_cast<Protocol*>(data)->removeAllListeners(static_cast<Event>(event));
   }
 
   bool bridge_is_auto_reconnect(void* data) {
@@ -191,7 +191,7 @@ namespace kuzzleio {
     proto->_protocol->is_ssl_connection = bridge_is_ssl_connection;
 
     this->_protocol = proto->_protocol;
-    this->_cppProtocol = proto;
+    this->_cpp_protocol = proto;
 
     kuzzle_new_kuzzle(this->_kuzzle, this->_protocol, opts);
 
@@ -270,7 +270,7 @@ namespace kuzzleio {
   }
 
   Protocol* Kuzzle::getProtocol() noexcept {
-    return _cppProtocol;
+    return _cpp_protocol;
   }
 
   void trigger_event_listener(int event, char* res, void* data) {
@@ -285,7 +285,7 @@ namespace kuzzleio {
   }
 
   void Kuzzle::emitEvent(Event event, const std::string& body) noexcept {
-    kuzzle_emit_event(_kuzzle, event, nullptr);
+    kuzzle_emit_event(_kuzzle, event, const_cast<char*>(body.c_str()));
   }
 
   KuzzleEventEmitter* Kuzzle::addListener(Event event, EventListener* listener) {
