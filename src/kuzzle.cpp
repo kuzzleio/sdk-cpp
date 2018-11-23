@@ -58,7 +58,7 @@ namespace kuzzleio {
     });
 
     static_cast<Protocol*>(data)->listener_once_instances[event].insert(std::make_pair(listener, l));
-    static_cast<Protocol*>(data)->once((Event)event, l);
+    static_cast<Protocol*>(data)->once(static_cast<Event>(event), l);
   }
 
   void bridge_remove_listener(int event, kuzzle_event_listener* listener, void* data) {
