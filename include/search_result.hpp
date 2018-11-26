@@ -35,7 +35,7 @@ namespace kuzzleio {
             SearchResult* next();
     };
 
-    class SpecificationSearchResult : SearchResult {
+    class SpecificationSearchResult : public SearchResult {
         public:
             SpecificationSearchResult(search_result* sr);
             virtual ~SpecificationSearchResult();
