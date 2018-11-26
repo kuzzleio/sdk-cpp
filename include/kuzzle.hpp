@@ -15,6 +15,10 @@
 #ifndef _KUZZLE_HPP_
 #define _KUZZLE_HPP_
 
+#include "protocol.hpp"
+#include "exceptions.hpp"
+#include "core.hpp"
+#include "event_emitter.hpp"
 #include <string>
 #include <iostream>
 #include <vector>
@@ -32,13 +36,16 @@ namespace kuzzleio {
   class Index;
   class Server;
   class Realtime;
+  class Protocol;
 
   class Kuzzle : public KuzzleEventEmitter {
     private:
       std::map<int, EventListener*>  _listener_instances;
+      Protocol *_cpp_protocol;
 
     public:
       kuzzle *_kuzzle;
+      protocol *_protocol;
       Auth *auth;
       Index *index;
       Server *server;
@@ -46,7 +53,7 @@ namespace kuzzleio {
       Document *document;
       Realtime *realtime;
 
-      Kuzzle(const std::string& host, options *options=nullptr);
+      Kuzzle(Protocol* protocol, options *options=nullptr);
       virtual ~Kuzzle();
 
       char* connect() noexcept;
@@ -62,7 +69,8 @@ namespace kuzzleio {
       std::string getVolatile() noexcept;
       Kuzzle* setVolatile(const std::string& volatiles) noexcept;
       std::map<int, EventListener*> getListeners() noexcept;
-      void emitEvent(Event& event, const std::string& body) noexcept;
+      void emitEvent(Event event, const std::string& body) noexcept;
+      Protocol* getProtocol() noexcept;
 
       virtual KuzzleEventEmitter* addListener(Event event, EventListener* listener) override;
       virtual KuzzleEventEmitter* removeListener(Event event, EventListener* listener) override;

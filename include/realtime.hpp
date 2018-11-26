@@ -8,7 +8,7 @@
 #include "core.hpp"
 
 namespace kuzzleio {
-  typedef std::function<void(const kuzzleio::notification_result*)> NotificationListener;
+  typedef std::function<void(kuzzleio::notification_result*)> NotificationListener;
 
   class Kuzzle;
 

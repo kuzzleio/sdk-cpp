@@ -21,12 +21,138 @@
 #include "auth.hpp"
 #include "index.hpp"
 #include "server.hpp"
+#include "protocol.hpp"
 #include "collection.hpp"
 #include "document.hpp"
 #include "realtime.hpp"
+#include "kuzzle.hpp"
+#include <iostream>
+#include <vector>
+#include <iostream>
+#include <functional>
 
 namespace kuzzleio {
 
+  // Bridges for protocol
+  void bridge_add_listener(int event, kuzzle_event_listener* listener, void* protocol_instance) {
+    EventListener *l = new std::function<void(const std::string)>([=](const std::string& res) {
+      if (res != "null") {
+        (*listener)(event, const_cast<char*>(res.c_str()), protocol_instance);        
+      } else {
+        (*listener)(event, nullptr, protocol_instance);
+      }
+    });
+
+    static_cast<Protocol*>(protocol_instance)->listener_instances[event].insert(std::make_pair(listener, l));
+    static_cast<Protocol*>(protocol_instance)->addListener(static_cast<Event>(event), l);
+  }
+
+  void bridge_once(int event, kuzzle_event_listener* listener, void* data) {
+    EventListener *l = new std::function<void(const std::string)>([=](const std::string& res) {
+      if (res != "null") {
+        (*listener)(event, const_cast<char*>(res.c_str()), data);        
+      } else {
+        (*listener)(event, nullptr, data);
+      }
+      static_cast<Protocol*>(data)->listener_once_instances[event].erase(listener);
+    });
+
+    static_cast<Protocol*>(data)->listener_once_instances[event].insert(std::make_pair(listener, l));
+    static_cast<Protocol*>(data)->once(static_cast<Event>(event), l);
+  }
+
+  void bridge_remove_listener(int event, kuzzle_event_listener* listener, void* data) {
+    static_cast<Protocol*>(data)->removeListener(static_cast<Event>(event), static_cast<Protocol*>(data)->listener_instances[event][listener]);
+    delete static_cast<Protocol*>(data)->listener_instances[event][listener];
+  }
+
+  void bridge_emit_event(int event, void* res, void* data) {
+    static_cast<Protocol*>(data)->emitEvent((Event)event);
+  }
+
+  char* bridge_connect(void* data) {
+    return static_cast<Protocol*>(data)->connect();
+  }
+
+  int bridge_get_state(void* data) {
+    return static_cast<Protocol*>(data)->getState();
+  }
+
+  kuzzle_response* bridge_send(const char* query, query_options* options, char* request_id, void* data) {
+    return static_cast<Protocol*>(data)->send(std::string(query), options, std::string(request_id));
+  }
+
+  int bridge_listener_count(int event, void* data) {
+    return static_cast<Protocol*>(data)->listenerCount(static_cast<Event>(event));
+  }
+
+  const char* bridge_close(void* data) {
+    return static_cast<Protocol*>(data)->close().c_str();
+  }
+
+  void bridge_register_sub(const char* channel, const char* room_id, const char* filters, bool subscribe_to_self, kuzzle_notification_listener* listener, void* data) {
+    NotificationListener *nl = new std::function<void(kuzzleio::notification_result*)>([=](kuzzleio::notification_result* res) {
+      (*listener)(res, data);
+    });
+    
+    static_cast<Protocol*>(data)->notification_listener_instances[channel] = nl;
+    static_cast<Protocol*>(data)->registerSub(std::string(channel), std::string(room_id), std::string(filters), subscribe_to_self, nl);
+  }
+
+  void bridge_unregister_sub(const char* id, void* data) {
+    static_cast<Protocol*>(data)->unregisterSub(std::string(id));
+    static_cast<Protocol*>(data)->notification_listener_instances[id] = nullptr;
+  }
+
+  void bridge_cancel_subs(void* data) {
+    static_cast<Protocol*>(data)->cancelSubs();
+  }
+
+  void bridge_start_queuing(void* data) {
+    static_cast<Protocol*>(data)->startQueuing();
+  }
+
+  void bridge_stop_queuing(void* data) {
+    static_cast<Protocol*>(data)->stopQueuing();
+  }
+
+  void bridge_play_queue(void* data) {
+    static_cast<Protocol*>(data)->playQueue();
+  }
+
+  void bridge_clear_queue(void* data) {
+    static_cast<Protocol*>(data)->clearQueue();
+  }
+
+  void bridge_remove_all_listeners(int event, void* data) {
+    static_cast<Protocol*>(data)->removeAllListeners(static_cast<Event>(event));
+  }
+
+  bool bridge_is_auto_reconnect(void* data) {
+    return static_cast<Protocol*>(data)->isAutoReconnect();
+  }
+
+  bool bridge_is_auto_resubscribe(void* data) {
+    return static_cast<Protocol*>(data)->isAutoResubscribe();
+  }
+
+  const char* bridge_get_host(void* data) {
+    return static_cast<Protocol*>(data)->getHost().c_str();
+  }
+
+  unsigned int bridge_get_port(void* data) {
+    return static_cast<Protocol*>(data)->getPort();
+  }
+
+  unsigned long long bridge_get_reconnection_delay(void* data) {
+    return static_cast<Protocol*>(data)->getReconnectionDelay();
+  }
+
+  bool bridge_is_ssl_connection(void* data) {
+    return static_cast<Protocol*>(data)->isSslConnection();
+  }
+
+  // Class
   KuzzleException::KuzzleException(int status, const std::string& error)
     : std::runtime_error(error), status(status) {}
 
@@ -34,9 +160,40 @@ namespace kuzzleio {
     return what();
   }
 
-  Kuzzle::Kuzzle(const std::string& host, options *opts) {
+  Kuzzle::Kuzzle(Protocol* proto, options *opts) {
     this->_kuzzle = new kuzzle();
-    kuzzle_new_kuzzle(this->_kuzzle, const_cast<char*>(host.c_str()), (char*)"websocket", opts);
+
+    proto->_protocol = new protocol();
+    proto->_protocol->instance = proto;
+
+    proto->_protocol->add_listener = bridge_add_listener;
+    proto->_protocol->once = bridge_once;
+    proto->_protocol->remove_listener = bridge_remove_listener;
+    proto->_protocol->emit_event = bridge_emit_event;
+    proto->_protocol->connect = bridge_connect;
+    proto->_protocol->send = bridge_send;
+    proto->_protocol->get_state = bridge_get_state;
+    proto->_protocol->listener_count = bridge_listener_count;
+    proto->_protocol->close = bridge_close;
+    proto->_protocol->register_sub = bridge_register_sub;
+    proto->_protocol->unregister_sub = bridge_unregister_sub;
+    proto->_protocol->cancel_subs = bridge_cancel_subs;
+    proto->_protocol->start_queuing = bridge_start_queuing;
+    proto->_protocol->stop_queuing = bridge_stop_queuing;
+    proto->_protocol->play_queue = bridge_play_queue;
+    proto->_protocol->clear_queue = bridge_clear_queue;
+    proto->_protocol->remove_all_listeners = bridge_remove_all_listeners;
+    proto->_protocol->is_auto_reconnect = bridge_is_auto_reconnect;
+    proto->_protocol->is_auto_resubscribe = bridge_is_auto_resubscribe;
+    proto->_protocol->get_host = bridge_get_host;
+    proto->_protocol->get_port = bridge_get_port;
+    proto->_protocol->get_reconnection_delay = bridge_get_reconnection_delay;
+    proto->_protocol->is_ssl_connection = bridge_is_ssl_connection;
+
+    this->_protocol = proto->_protocol;
+    this->_cpp_protocol = proto;
+
+    kuzzle_new_kuzzle(this->_kuzzle, this->_protocol, opts);
 
     this->document = new Document(this, kuzzle_get_document_controller(_kuzzle));
     this->auth = new Auth(this, kuzzle_get_auth_controller(_kuzzle));
@@ -48,6 +205,7 @@ namespace kuzzleio {
 
   Kuzzle::~Kuzzle() {
     unregisterKuzzle(this->_kuzzle);
+    unregisterProtocol(this->_protocol);
     delete(this->_kuzzle);
     delete(this->document);
     delete(this->auth);
@@ -67,6 +225,7 @@ namespace kuzzleio {
 
   kuzzle_response* Kuzzle::query(kuzzle_request* query, query_options* options) {
     kuzzle_response *r = kuzzle_query(_kuzzle, query, options);
+
     if (r->error != nullptr)
         throwExceptionFromStatus(r);
     return r;
@@ -110,6 +269,10 @@ namespace kuzzleio {
     return std::string(kuzzle_get_jwt(_kuzzle));
   }
 
+  Protocol* Kuzzle::getProtocol() noexcept {
+    return _cpp_protocol;
+  }
+
   void trigger_event_listener(int event, char* res, void* data) {
     EventListener* listener = static_cast<Kuzzle*>(data)->getListeners()[event];
     if (listener) {
@@ -121,12 +284,12 @@ namespace kuzzleio {
     return _listener_instances;
   }
 
-  void Kuzzle::emitEvent(Event& event, const std::string& body) noexcept {
+  void Kuzzle::emitEvent(Event event, const std::string& body) noexcept {
     kuzzle_emit_event(_kuzzle, event, const_cast<char*>(body.c_str()));
   }
 
   KuzzleEventEmitter* Kuzzle::addListener(Event event, EventListener* listener) {
-    kuzzle_add_listener(_kuzzle, event, &trigger_event_listener, this);
+    kuzzle_add_listener(_kuzzle, event, trigger_event_listener, this);
     _listener_instances[event] = listener;
 
     return this;

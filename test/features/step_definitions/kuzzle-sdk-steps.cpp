@@ -104,12 +104,13 @@ namespace {
     }
 
     try {
-      ctx->kuzzle = new Kuzzle(hostname, &ctx->kuzzle_options);
+      ctx->protocol = new WebSocket(hostname);
+      ctx->kuzzle = new Kuzzle(ctx->protocol, &ctx->kuzzle_options);
     } catch (KuzzleException e) {
       K_LOG_E(e.getMessage().c_str());
     }
     char* error = ctx->kuzzle->connect();
-    BOOST_CHECK(error == NULL);
+    BOOST_CHECK(std::string(error) == "");
   }
 
   THEN("^I get an error$")
