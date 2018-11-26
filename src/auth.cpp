@@ -81,14 +81,21 @@ namespace kuzzleio {
     return ret;
   }
 
-  user_right** Auth::getMyRights(query_options* options) {
+  std::vector<user_right*> Auth::getMyRights(query_options* options) {
     user_rights_result *r = kuzzle_get_my_rights(_auth, options);
     if (r->error != nullptr)
         throwExceptionFromStatus(r);
 
-    user_right** ret = r->result;
+    std::vector<user_right*> user_rights;
+    size_t i = 0;
+
+    while (r->result[i]) {
+      user_rights.push_back(r->result[i++]);
+    }
+
     kuzzle_free_user_rights_result(r);
-    return ret;
+    free(r->result);
+    return user_rights;
   }
 
   std::vector<std::string> Auth::getStrategies(query_options *options) {
