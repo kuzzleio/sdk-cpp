@@ -58,11 +58,11 @@ namespace kuzzleio {
     });
 
     static_cast<Protocol*>(data)->listener_once_instances[event].insert(std::make_pair(listener, l));
-    static_cast<Protocol*>(data)->once((Event)event, l);
+    static_cast<Protocol*>(data)->once(static_cast<Event>(event), l);
   }
 
   void bridge_remove_listener(int event, kuzzle_event_listener* listener, void* data) {
-    static_cast<Protocol*>(data)->removeListener((Event)event, static_cast<Protocol*>(data)->listener_instances[event][listener]);
+    static_cast<Protocol*>(data)->removeListener(static_cast<Event>(event), static_cast<Protocol*>(data)->listener_instances[event][listener]);
     delete static_cast<Protocol*>(data)->listener_instances[event][listener];
   }
 
@@ -83,7 +83,7 @@ namespace kuzzleio {
   }
 
   int bridge_listener_count(int event, void* data) {
-    return static_cast<Protocol*>(data)->listenerCount((Event)event);
+    return static_cast<Protocol*>(data)->listenerCount(static_cast<Event>(event));
   }
 
   const char* bridge_close(void* data) {
