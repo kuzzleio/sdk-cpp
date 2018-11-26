@@ -104,7 +104,7 @@ namespace kuzzleio {
     }
 
     SpecificationSearchResult* Collection::searchSpecifications(const std::string& body, query_options *options) {
-        search_result *r = kuzzle_collection_search_specifications(_collection, body, options);
+        search_result *r = kuzzle_collection_search_specifications(_collection, const_cast<char*>(body.c_str()), options);
         if (r->error != nullptr)
             throwExceptionFromStatus(r);
 
