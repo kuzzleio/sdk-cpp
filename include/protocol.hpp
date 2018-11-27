@@ -4,7 +4,7 @@
 #include <string>
 #include <map>
 #include "kuzzle.hpp"
-#include "protocol.h"
+#include "internal/protocol.h"
 
 namespace kuzzleio {
 

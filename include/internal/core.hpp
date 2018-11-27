@@ -18,8 +18,8 @@
 #include <cstdio>
 
 extern "C" {
-  #include "kuzzle.h"
-  #include "kuzzlesdk.h"
+  #include "internal/kuzzle.h"
+  #include "internal/kuzzle_structs.h"
 }
 
 #endif

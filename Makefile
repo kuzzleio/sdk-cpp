@@ -37,9 +37,8 @@ AR ?= ar
 
 CXXFLAGS = -g -fPIC -std=c++11 -MMD \
 	-I.$(PATHSEP)include \
-	-I.$(PATHSEP)sdk-c$(PATHSEP)include$(PATHSEP) \
-	-I.$(PATHSEP)sdk-c$(PATHSEP)build$(PATHSEP) \
-	-L.$(PATHSEP)sdk-c$(PATHSEP)build
+	-I.$(PATHSEP)sdk-c$(PATHSEP)build$(PATHSEP)kuzzle-c-sdk$(PATHSEP)include \
+	-L.$(PATHSEP)sdk-c$(PATHSEP)build$(PATHSEP)kuzzle-c-sdk$(PATHSEP)lib
 
 LDFLAGS = -lkuzzlesdk
 
@@ -70,20 +69,18 @@ make_c_sdk:
 	cd sdk-c && $(MAKE)
 
 $(BUILD_DIR)/cpp: $(BUILD_DIR) make_c_sdk $(OBJECTS)
-		$(AR) rvs $(BUILD_DIR)$(PATHSEP)libkuzzlesdk$(STATICLIB).$(VERSION) $(OBJECTS)
-		$(CXX) -shared -fPIC -o $(BUILD_DIR)$(PATHSEP)$(LIB_PREFIX)kuzzlesdk$(DYNLIB).$(VERSION) -Wl,--whole-archive $(BUILD_DIR)$(PATHSEP)$(LIB_PREFIX)kuzzlesdk$(STATICLIB).$(VERSION) sdk-c$(PATHSEP)build$(PATHSEP)$(LIB_PREFIX)kuzzlesdk$(STATICLIB) -Wl,--no-whole-archive
-		cd $(BUILD_DIR) && ln -srf $(LIB_PREFIX)kuzzlesdk$(DYNLIB).$(VERSION) $(LIB_PREFIX)kuzzlesdk$(DYNLIB)
-		cd $(BUILD_DIR) && ln -srf $(LIB_PREFIX)kuzzlesdk$(STATICLIB).$(VERSION) $(LIB_PREFIX)kuzzlesdk$(STATICLIB)
-		touch $@
+	$(AR) rvs $(BUILD_DIR)$(PATHSEP)libkuzzlesdk$(STATICLIB).$(VERSION) $(OBJECTS)
+	$(CXX) -shared -fPIC -o $(BUILD_DIR)$(PATHSEP)$(LIB_PREFIX)kuzzlesdk$(DYNLIB).$(VERSION) -Wl,--whole-archive $(BUILD_DIR)$(PATHSEP)$(LIB_PREFIX)kuzzlesdk$(STATICLIB).$(VERSION) sdk-c$(PATHSEP)build$(PATHSEP)$(LIB_PREFIX)kuzzlesdk$(STATICLIB) -Wl,--no-whole-archive
+	cd $(BUILD_DIR) && ln -srf $(LIB_PREFIX)kuzzlesdk$(DYNLIB).$(VERSION) $(LIB_PREFIX)kuzzlesdk$(DYNLIB)
+	cd $(BUILD_DIR) && ln -srf $(LIB_PREFIX)kuzzlesdk$(STATICLIB).$(VERSION) $(LIB_PREFIX)kuzzlesdk$(STATICLIB)
+	@touch $@
 
 package: $(BUILD_DIR)$(PATHSEP)$(LIB_PREFIX)kuzzlesdk$(DYNLIB).$(VERSION) $(BUILD_DIR)$(PATHSEP)$(LIB_PREFIX)kuzzlesdk$(STATICLIB).$(VERSION)
 	mkdir -p $(BUILD_DIR)$(PATHSEP)$(SDK_FOLDER_NAME)/lib
-	mkdir -p $(BUILD_DIR)$(PATHSEP)$(SDK_FOLDER_NAME)/include/internal
-	cp -fr include  $(BUILD_DIR)$(PATHSEP)$(SDK_FOLDER_NAME)/include
-	cp sdk-c$(PATHSEP)include$(PATHSEP)kuzzlesdk.h $(BUILD_DIR)$(PATHSEP)$(SDK_FOLDER_NAME)/include/internal
-	cp sdk-c$(PATHSEP)include$(PATHSEP)sdk_wrappers_internal.h $(BUILD_DIR)$(PATHSEP)$(SDK_FOLDER_NAME)/include
-	cp sdk-c$(PATHSEP)include$(PATHSEP)protocol.h $(BUILD_DIR)$(PATHSEP)$(SDK_FOLDER_NAME)/include
-	cp sdk-c$(PATHSEP)build$(PATHSEP)kuzzle.h $(BUILD_DIR)$(PATHSEP)$(SDK_FOLDER_NAME)/include/internal
+	mkdir -p $(BUILD_DIR)$(PATHSEP)$(SDK_FOLDER_NAME)/include
+
+	cp -fr include/*  $(BUILD_DIR)$(PATHSEP)$(SDK_FOLDER_NAME)/include
+	cp -ra sdk-c$(PATHSEP)build/kuzzle-c-sdk/include/* $(BUILD_DIR)$(PATHSEP)$(SDK_FOLDER_NAME)/include
 	cp $(BUILD_DIR)$(PATHSEP)*.so  $(BUILD_DIR)$(PATHSEP)*.a $(BUILD_DIR)$(PATHSEP)$(SDK_FOLDER_NAME)/lib
 
 	mkdir -p deploy && cd $(BUILD_DIR) && tar cfz ..$(PATHSEP)deploy$(PATHSEP)kuzzlesdk-cpp-$(VERSION)-$(ARCH).tar.gz $(SDK_FOLDER_NAME)
