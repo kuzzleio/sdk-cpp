@@ -81,7 +81,7 @@ package: $(BUILD_DIR)$(PATHSEP)$(LIB_PREFIX)kuzzlesdk$(DYNLIB).$(VERSION) $(BUIL
 
 	cp -fr include/*  $(BUILD_DIR)$(PATHSEP)$(SDK_FOLDER_NAME)/include
 	cp -ra sdk-c$(PATHSEP)build/kuzzle-c-sdk/include/* $(BUILD_DIR)$(PATHSEP)$(SDK_FOLDER_NAME)/include
-	cp $(BUILD_DIR)$(PATHSEP)*.so  $(BUILD_DIR)$(PATHSEP)*.a $(BUILD_DIR)$(PATHSEP)$(SDK_FOLDER_NAME)/lib
+	cp -a $(BUILD_DIR)$(PATHSEP)*.so*  $(BUILD_DIR)$(PATHSEP)*.a* $(BUILD_DIR)$(PATHSEP)$(SDK_FOLDER_NAME)/lib
 
 	mkdir -p deploy && cd $(BUILD_DIR) && tar cfz ..$(PATHSEP)deploy$(PATHSEP)kuzzlesdk-cpp-$(VERSION)-$(ARCH).tar.gz $(SDK_FOLDER_NAME)
 
