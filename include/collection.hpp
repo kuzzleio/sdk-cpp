@@ -23,8 +23,6 @@
 
 namespace kuzzleio {
     class Kuzzle;
-    class SearchResult;
-    
     class Collection {
         collection* _collection;
         Collection();
