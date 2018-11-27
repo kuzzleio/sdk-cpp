@@ -82,6 +82,7 @@ package: $(ROOTOUTDIR)$(PATHSEP)$(LIB_PREFIX)kuzzlesdk$(DYNLIB).$(VERSION) $(ROO
 	cp -fr $(ROOT_DIR)$(PATHSEP)include$(PATHSEP)*.hpp $(ROOTOUTDIR)$(PATHSEP)include
 	cp $(ROOT_DIR)$(PATHSEP)sdk-c$(PATHSEP)include$(PATHSEP)kuzzlesdk.h $(ROOTOUTDIR)$(PATHSEP)include
 	cp $(ROOT_DIR)$(PATHSEP)sdk-c$(PATHSEP)include$(PATHSEP)sdk_wrappers_internal.h $(ROOTOUTDIR)$(PATHSEP)include
+	cp $(ROOT_DIR)$(PATHSEP)sdk-c$(PATHSEP)include$(PATHSEP)protocol.h $(ROOTOUTDIR)$(PATHSEP)include
 	cp $(ROOT_DIR)$(PATHSEP)sdk-c$(PATHSEP)build$(PATHSEP)kuzzle.h $(ROOTOUTDIR)$(PATHSEP)include
 	cp $(ROOTOUTDIR)$(PATHSEP)*.so  $(ROOTOUTDIR)$(PATHSEP)lib
 	cp $(ROOTOUTDIR)$(PATHSEP)*.a  $(ROOTOUTDIR)$(PATHSEP)lib
