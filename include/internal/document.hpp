@@ -30,6 +30,7 @@ namespace kuzzleio {
             Document(Kuzzle* kuzzle, document *document);
             virtual ~Document();
             int count(const std::string& index, const std::string& collection, const std::string& body, query_options *options=nullptr);
+            int count(const std::string& index, const std::string& collection, query_options *options=nullptr);
             bool exists(const std::string& index, const std::string& collection, const std::string& id, query_options *options=nullptr);
             std::string create(const std::string& index, const std::string& collection, const std::string& id, const std::string& body, query_options *options=nullptr);
             std::string createOrReplace(const std::string& index, const std::string& collection, const std::string& id, const std::string& body, query_options *options=nullptr);

@@ -33,12 +33,22 @@ namespace kuzzleio {
     }
 
     int Document::count(const std::string& index, const std::string& collection, const std::string& body, query_options *options) {
-      int_result *r = kuzzle_document_count(_document, const_cast<char*>(index.c_str()), const_cast<char*>(collection.c_str()), const_cast<char*>(body.c_str()), options);
-      if (r->error != nullptr)
-          throwExceptionFromStatus(r);
-      int ret = r->result;
-      kuzzle_free_int_result(r);
-      return ret;
+        char* rbody;
+
+        if (!body.empty()) {
+            rbody = const_cast<char*>(body.c_str());
+        }
+
+        int_result *r = kuzzle_document_count(_document, const_cast<char*>(index.c_str()), const_cast<char*>(collection.c_str()), rbody, options);
+        if (r->error != nullptr)
+            throwExceptionFromStatus(r);
+        int ret = r->result;
+        kuzzle_free_int_result(r);
+        return ret;
+    }
+
+    int Document::count(const std::string& index, const std::string& collection, query_options *options) {
+        return count(index, collection, "", options);
     }
 
     bool Document::exists(const std::string& index, const std::string& collection, const std::string& id, query_options *options) {
@@ -173,8 +183,10 @@ namespace kuzzleio {
 
         string_array_result *r = kuzzle_document_mdelete(_document, const_cast<char*>(index.c_str()), const_cast<char*>(collection.c_str()), idsArray, ids.size(), options);
         delete[] idsArray;
-        if (r->error != nullptr)
+        if (r->error != nullptr) {
+          fflush(NULL);
           throwExceptionFromStatus(r);
+        }
 
         std::vector<std::string> v;
         for (int i = 0; i < r->result_length; i++)

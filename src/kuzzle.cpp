@@ -21,20 +21,20 @@
 namespace kuzzleio {
 
   // Bridges for protocol
-  void bridge_add_listener(int event, kuzzle_event_listener* listener, void* data) {
+  void bridge_cpp_add_listener(int event, kuzzle_event_listener* listener, void* protocol_instance) {
     EventListener *l = new std::function<void(const std::string)>([=](const std::string& res) {
       if (res != "null") {
-        (*listener)(event, const_cast<char*>(res.c_str()), data);        
+        (*listener)(event, const_cast<char*>(res.c_str()), protocol_instance);        
       } else {
-        (*listener)(event, nullptr, data);
+        (*listener)(event, nullptr, protocol_instance);
       }
     });
 
-    static_cast<Protocol*>(data)->listener_instances[event].insert(std::make_pair(listener, l));
-    static_cast<Protocol*>(data)->addListener((Event)event, l);
+    static_cast<Protocol*>(protocol_instance)->listener_instances[event].insert(std::make_pair(listener, l));
+    static_cast<Protocol*>(protocol_instance)->addListener(static_cast<Event>(event), l);
   }
 
-  void bridge_once(int event, kuzzle_event_listener* listener, void* data) {
+  void bridge_cpp_once(int event, kuzzle_event_listener* listener, void* data) {
     EventListener *l = new std::function<void(const std::string)>([=](const std::string& res) {
       if (res != "null") {
         (*listener)(event, const_cast<char*>(res.c_str()), data);        
@@ -45,88 +45,97 @@ namespace kuzzleio {
     });
 
     static_cast<Protocol*>(data)->listener_once_instances[event].insert(std::make_pair(listener, l));
-    static_cast<Protocol*>(data)->once((Event)event, l);
+    static_cast<Protocol*>(data)->once(static_cast<Event>(event), l);
   }
 
-
-  void bridge_remove_listener(int event, kuzzle_event_listener* listener, void* data) {
-    static_cast<Protocol*>(data)->removeListener((Event)event, static_cast<Protocol*>(data)->listener_instances[event][listener]);
+  static void bridge_cpp_remove_listener(int event, kuzzle_event_listener* listener, void* data) {
+    static_cast<Protocol*>(data)->removeListener(static_cast<Event>(event), static_cast<Protocol*>(data)->listener_instances[event][listener]);
     delete static_cast<Protocol*>(data)->listener_instances[event][listener];
   }
 
-  void bridge_emit_event(int event, void* res, void* data) {
+  static void bridge_cpp_emit_event(int event, void* res, void* data) {
     static_cast<Protocol*>(data)->emitEvent((Event)event);
   }
 
-  char* bridge_connect(void* data) {
+  char* bridge_cpp_connect(void* data) {
     return static_cast<Protocol*>(data)->connect();
   }
 
-  int bridge_get_state(void* data) {
+  int bridge_cpp_get_state(void* data) {
     return static_cast<Protocol*>(data)->getState();
   }
 
-  kuzzle_response* bridge_send(const char* query, query_options* options, char* request_id, void* data) {
+  kuzzle_response* bridge_cpp_send(const char* query, query_options* options, char* request_id, void* data) {
     return static_cast<Protocol*>(data)->send(std::string(query), options, std::string(request_id));
   }
 
-  int bridge_listener_count(int event, void* data) {
-    return static_cast<Protocol*>(data)->listenerCount((Event)event);
+  int bridge_cpp_listener_count(int event, void* data) {
+    return static_cast<Protocol*>(data)->listenerCount(static_cast<Event>(event));
   }
 
-  const char* bridge_close(void* data) {
+  const char* bridge_cpp_close(void* data) {
     return static_cast<Protocol*>(data)->close().c_str();
   }
 
-  void bridge_unregister_sub(const char* id, void* data) {
-    static_cast<Protocol*>(data)->unregisterSub(std::string(id));
+  void bridge_cpp_register_sub(const char* channel, const char* room_id, const char* filters, bool subscribe_to_self, kuzzle_notification_listener* listener, void* data) {
+    NotificationListener *nl = new std::function<void(kuzzleio::notification_result*)>([=](kuzzleio::notification_result* res) {
+      (*listener)(res, data);
+    });
+    
+    static_cast<Protocol*>(data)->notification_listener_instances[channel] = nl;
+    static_cast<Protocol*>(data)->registerSub(std::string(channel), std::string(room_id), std::string(filters), subscribe_to_self, nl);
   }
 
-  void bridge_cancel_subs(void* data) {
+  void bridge_cpp_unregister_sub(const char* id, void* data) {
+    static_cast<Protocol*>(data)->unregisterSub(std::string(id));
+    static_cast<Protocol*>(data)->notification_listener_instances[id] = nullptr;
+  }
+
+  void bridge_cpp_cancel_subs(void* data) {
     static_cast<Protocol*>(data)->cancelSubs();
   }
 
-  void bridge_start_queuing(void* data) {
+  void bridge_cpp_start_queuing(void* data) {
     static_cast<Protocol*>(data)->startQueuing();
   }
 
-  void bridge_stop_queuing(void* data) {
+  void bridge_cpp_stop_queuing(void* data) {
     static_cast<Protocol*>(data)->stopQueuing();
   }
 
-  void bridge_play_queue(void* data) {
+  void bridge_cpp_play_queue(void* data) {
     static_cast<Protocol*>(data)->playQueue();
   }
 
-  void bridge_clear_queue(void* data) {
+  void bridge_cpp_clear_queue(void* data) {
     static_cast<Protocol*>(data)->clearQueue();
   }
 
-  void bridge_remove_all_listeners(int event, void* data) {
-    static_cast<Protocol*>(data)->removeAllListeners((Event)event);
+  void bridge_cpp_remove_all_listeners(int event, void* data) {
+    static_cast<Protocol*>(data)->removeAllListeners(static_cast<Event>(event));
   }
 
-  bool bridge_is_auto_reconnect(void* data) {
+  bool bridge_cpp_is_auto_reconnect(void* data) {
     return static_cast<Protocol*>(data)->isAutoReconnect();
   }
 
-  bool bridge_is_auto_resubscribe(void* data) {
+  bool bridge_cpp_is_auto_resubscribe(void* data) {
     return static_cast<Protocol*>(data)->isAutoResubscribe();
   }
 
-  const char* bridge_get_host(void* data) {
+  const char* bridge_cpp_get_host(void* data) {
     return static_cast<Protocol*>(data)->getHost().c_str();
   }
 
-  unsigned int bridge_get_port(void* data) {
+  unsigned int bridge_cpp_get_port(void* data) {
     return static_cast<Protocol*>(data)->getPort();
   }
 
-  unsigned long long bridge_get_reconnection_delay(void* data) {
+  unsigned long long bridge_cpp_get_reconnection_delay(void* data) {
     return static_cast<Protocol*>(data)->getReconnectionDelay();
   }
 
-  bool bridge_is_ssl_connection(void* data) {
+  bool bridge_cpp_is_ssl_connection(void* data) {
     return static_cast<Protocol*>(data)->isSslConnection();
   }
 
@@ -144,31 +153,32 @@ namespace kuzzleio {
     proto->_protocol = new protocol();
     proto->_protocol->instance = proto;
 
-    proto->_protocol->add_listener = bridge_add_listener;
-    proto->_protocol->once = bridge_once;
-    proto->_protocol->remove_listener = bridge_remove_listener;
-    proto->_protocol->emit_event = bridge_emit_event;
-    proto->_protocol->connect = bridge_connect;
-    proto->_protocol->send = bridge_send;
-    proto->_protocol->get_state = bridge_get_state;
-    proto->_protocol->listener_count = bridge_listener_count;
-    proto->_protocol->close = bridge_close;
-    proto->_protocol->unregister_sub = bridge_unregister_sub;
-    proto->_protocol->cancel_subs = bridge_cancel_subs;
-    proto->_protocol->start_queuing = bridge_start_queuing;
-    proto->_protocol->stop_queuing = bridge_stop_queuing;
-    proto->_protocol->play_queue = bridge_play_queue;
-    proto->_protocol->clear_queue = bridge_clear_queue;
-    proto->_protocol->remove_all_listeners = bridge_remove_all_listeners;
-    proto->_protocol->is_auto_reconnect = bridge_is_auto_reconnect;
-    proto->_protocol->is_auto_resubscribe = bridge_is_auto_resubscribe;
-    proto->_protocol->get_host = bridge_get_host;
-    proto->_protocol->get_port = bridge_get_port;
-    proto->_protocol->get_reconnection_delay = bridge_get_reconnection_delay;
-    proto->_protocol->is_ssl_connection = bridge_is_ssl_connection;
+    proto->_protocol->add_listener = bridge_cpp_add_listener;
+    proto->_protocol->once = bridge_cpp_once;
+    proto->_protocol->remove_listener = bridge_cpp_remove_listener;
+    proto->_protocol->emit_event = bridge_cpp_emit_event;
+    proto->_protocol->connect = bridge_cpp_connect;
+    proto->_protocol->send = bridge_cpp_send;
+    proto->_protocol->get_state = bridge_cpp_get_state;
+    proto->_protocol->listener_count = bridge_cpp_listener_count;
+    proto->_protocol->close = bridge_cpp_close;
+    proto->_protocol->register_sub = bridge_cpp_register_sub;
+    proto->_protocol->unregister_sub = bridge_cpp_unregister_sub;
+    proto->_protocol->cancel_subs = bridge_cpp_cancel_subs;
+    proto->_protocol->start_queuing = bridge_cpp_start_queuing;
+    proto->_protocol->stop_queuing = bridge_cpp_stop_queuing;
+    proto->_protocol->play_queue = bridge_cpp_play_queue;
+    proto->_protocol->clear_queue = bridge_cpp_clear_queue;
+    proto->_protocol->remove_all_listeners = bridge_cpp_remove_all_listeners;
+    proto->_protocol->is_auto_reconnect = bridge_cpp_is_auto_reconnect;
+    proto->_protocol->is_auto_resubscribe = bridge_cpp_is_auto_resubscribe;
+    proto->_protocol->get_host = bridge_cpp_get_host;
+    proto->_protocol->get_port = bridge_cpp_get_port;
+    proto->_protocol->get_reconnection_delay = bridge_cpp_get_reconnection_delay;
+    proto->_protocol->is_ssl_connection = bridge_cpp_is_ssl_connection;
 
     this->_protocol = proto->_protocol;
-    this->_cppProtocol = proto;
+    this->_cpp_protocol = proto;
 
     kuzzle_new_kuzzle(this->_kuzzle, this->_protocol, opts);
 
@@ -247,7 +257,7 @@ namespace kuzzleio {
   }
 
   Protocol* Kuzzle::getProtocol() noexcept {
-    return _cppProtocol;
+    return _cpp_protocol;
   }
 
   void trigger_event_listener(int event, char* res, void* data) {
@@ -262,7 +272,7 @@ namespace kuzzleio {
   }
 
   void Kuzzle::emitEvent(Event event, const std::string& body) noexcept {
-    kuzzle_emit_event(_kuzzle, event, nullptr);
+    kuzzle_emit_event(_kuzzle, event, const_cast<char*>(body.c_str()));
   }
 
   KuzzleEventEmitter* Kuzzle::addListener(Event event, EventListener* listener) {

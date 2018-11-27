@@ -49,7 +49,7 @@ namespace kuzzleio {
   class Kuzzle : public KuzzleEventEmitter {
     private:
       std::map<int, EventListener*>  _listener_instances;
-      Protocol *_cppProtocol;
+      Protocol *_cpp_protocol;
 
     public:
       kuzzle *_kuzzle;

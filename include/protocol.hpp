@@ -13,6 +13,7 @@ namespace kuzzleio {
       protocol *_protocol;
       std::map<int, std::map<kuzzle_event_listener*, EventListener*>>  listener_instances;
       std::map<int, std::map<kuzzle_event_listener*, EventListener*>>  listener_once_instances;
+      std::map<std::string, NotificationListener*> notification_listener_instances;
 
     virtual void addListener(Event, EventListener*) = 0;
     virtual void removeListener(Event, EventListener*) = 0;
@@ -24,7 +25,7 @@ namespace kuzzleio {
     virtual std::string close() = 0;
     virtual int getState() = 0;
     virtual void emitEvent(Event) = 0;
-    virtual void registerSub(const std::string&, const std::string&, const std::string&, int, NotificationListener*, void*) = 0;
+    virtual void registerSub(const std::string&, const std::string&, const std::string&, bool, NotificationListener*) = 0;
     virtual void unregisterSub(const std::string&) = 0;
     virtual void cancelSubs() = 0;
     virtual void startQueuing() = 0;

@@ -28,8 +28,8 @@ using std::endl;
 using std::string;
 
 struct KuzzleCtx {
-  Kuzzle* kuzzle = NULL;
-  Protocol* protocol = NULL;
+  Kuzzle* kuzzle = nullptr;
+  Protocol* protocol = nullptr;
   options kuzzle_options;
 
   string user_id;
@@ -41,7 +41,7 @@ struct KuzzleCtx {
 
   string room_id;
 
-  kuzzle_user*                   currentUser        = NULL;
+  kuzzle_user*                   currentUser        = nullptr;
   json_spirit::Value_type customUserDataType = json_spirit::null_type;
 
   // 1 mean success, 0 failure and -1 is base state
@@ -53,7 +53,7 @@ struct KuzzleCtx {
   int partial_exception = -1;
   std::vector<string> string_array;
 
-  notification_result *notif_result = NULL;
+  notification_result *notif_result = nullptr;
 };
 
 class CustomNotificationListener {
