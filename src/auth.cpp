@@ -87,14 +87,12 @@ namespace kuzzleio {
         throwExceptionFromStatus(r);
 
     std::vector<user_right*> user_rights;
-    size_t i = 0;
 
-    while (r->result[i]) {
-      user_rights.push_back(r->result[i++]);
+    for (size_t i = 0; r->result[i]; ++i) {
+      user_rights.push_back(r->result[i]);
     }
 
     kuzzle_free_user_rights_result(r);
-    free(r->result);
     return user_rights;
   }
 
@@ -103,12 +101,13 @@ namespace kuzzleio {
     if (r->error != nullptr)
         throwExceptionFromStatus(r);
 
-    std::vector<std::string> v;
-    for (int i = 0; r->result[i]; i++)
-        v.push_back(r->result[i]);
+    std::vector<std::string> strategies;
+
+    for (size_t i = 0; r->result[i]; ++i)
+      strategies.push_back(r->result[i]);
 
     kuzzle_free_string_array_result(r);
-    return v;
+    return strategies;
   }
 
   std::string Auth::login(const std::string& strategy, const std::string& credentials) {
