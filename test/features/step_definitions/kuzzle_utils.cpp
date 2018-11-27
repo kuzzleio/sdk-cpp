@@ -5,10 +5,7 @@
 #include <map>
 #include <sstream>
 
-#include <exceptions.hpp>
 #include <kuzzle.hpp>
-#include <kuzzlesdk.h>
-
 #include "kuzzle_utils.h"
 
 using boost::property_tree::ptree;
