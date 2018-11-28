@@ -14,14 +14,12 @@
 
 #ifndef _CORE_HPP_
 #define _CORE_HPP_
-#define _Complex
 #define _Bool bool
 #include <cstdio>
 
 extern "C" {
-  #include "kuzzle.h"
-  #include "kuzzlesdk.h"
-  #include "protocol.h"
+  #include "internal/kuzzle.h"
+  #include "internal/kuzzle_structs.h"
 }
 
 #endif

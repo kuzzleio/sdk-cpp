@@ -13,7 +13,7 @@
 // limitations under the License.
 
 #include "kuzzle.hpp"
-#include "collection.hpp"
+#include "internal/collection.hpp"
 
 namespace kuzzleio {
     Collection::Collection(Kuzzle* kuzzle) {

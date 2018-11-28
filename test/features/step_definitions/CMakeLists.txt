@@ -106,11 +106,9 @@ if(Boost_UNIT_TEST_FRAMEWORK_FOUND)
     )
 
     add_library(cpp SHARED IMPORTED) # or STATIC instead of SHARED
-    list(APPEND SDK_INCLUDE_DIRECTORY "${KUZZLE_SDK_ROOT}/../include")
-    list(APPEND SDK_INCLUDE_DIRECTORY "${KUZZLE_SDK_ROOT}/../sdk-c/build")
-    list(APPEND SDK_INCLUDE_DIRECTORY "${KUZZLE_SDK_ROOT}/../sdk-c/include")
+    list(APPEND SDK_INCLUDE_DIRECTORY "${KUZZLE_SDK_ROOT}/../build/kuzzle-cpp-sdk/include")
     set_target_properties(cpp PROPERTIES
-    IMPORTED_LOCATION  "${KUZZLE_SDK_ROOT}/../build/libkuzzlesdk.a"
+    IMPORTED_LOCATION  "${KUZZLE_SDK_ROOT}/../build/kuzzle-cpp-sdk/lib/libkuzzlesdk.a"
     INTERFACE_INCLUDE_DIRECTORIES "${SDK_INCLUDE_DIRECTORY}"
     )
 
