@@ -109,8 +109,13 @@ namespace {
     } catch (KuzzleException e) {
       K_LOG_E(e.getMessage().c_str());
     }
-    char* error = ctx->kuzzle->connect();
-    BOOST_CHECK(std::string(error) == "");
+
+    // throws if it fails to connect
+    try {
+      ctx->kuzzle->connect();
+    } catch(KuzzleException e) {
+      BOOST_FAIL(e.what());
+    }
   }
 
   THEN("^I get an error$")

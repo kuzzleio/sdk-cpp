@@ -4,7 +4,7 @@
 // you may not use this file except in compliance with the License.
 // You may obtain a copy of the License at
 //
-// 		http://www.apache.org/licenses/LICENSE-2.0
+//      http://www.apache.org/licenses/LICENSE-2.0
 //
 // Unless required by applicable law or agreed to in writing, software
 // distributed under the License is distributed on an "AS IS" BASIS,
@@ -25,7 +25,7 @@ namespace kuzzleio {
     class Kuzzle;
     class SpecificationSearchResult;
     class SearchResult;
-    
+
     class Collection {
         collection* _collection;
         Collection();
@@ -41,7 +41,7 @@ namespace kuzzleio {
             std::string getMapping(const std::string& index, const std::string& collection, query_options *options=nullptr);
             void updateMapping(const std::string& index, const std::string& collection, const std::string& body, query_options *options=nullptr);
             std::string getSpecifications(const std::string& index, const std::string& collection, query_options *options=nullptr);
-            SpecificationSearchResult* searchSpecifications(query_options *options=nullptr);
+            SpecificationSearchResult* searchSpecifications(const std::string& body, query_options *options=nullptr);
             std::string updateSpecifications(const std::string& index, const std::string& collection, const std::string& specifications, query_options *options=nullptr);
             validation_response* validateSpecifications(const std::string& index, const std::string& collection, const std::string& specifications, query_options *options=nullptr);
             void deleteSpecifications(const std::string& index, const std::string& collection, query_options *options=nullptr);
