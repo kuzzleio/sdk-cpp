@@ -21,6 +21,7 @@
 extern "C" {
   #include "kuzzle.h"
   #include "kuzzlesdk.h"
+  #include "protocol.h"
 }
 
 #endif
