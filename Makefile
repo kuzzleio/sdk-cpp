@@ -24,7 +24,7 @@ else
 	MV = mv -f
 	ROOT_DIR_CLEAN = $(ROOT_DIR)
 	LIB_PREFIX = lib
-	ARCH=$(shell uname -p)
+	ARCH?=$(shell uname -p)
 endif
 
 SDK_FOLDER_NAME=kuzzle-cpp-sdk
