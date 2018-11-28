@@ -1,3 +1,4 @@
 test/_build_cpp_tests/
+deploy/
 *.o
 build/
