@@ -13,8 +13,8 @@
 // limitations under the License.
 
 #include "kuzzle.hpp"
-#include "document.hpp"
-#include "search_result.hpp"
+#include "internal/document.hpp"
+#include "internal/search_result.hpp"
 
 namespace kuzzleio {
     Document::Document(Kuzzle* kuzzle) {

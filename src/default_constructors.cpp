@@ -12,7 +12,7 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-#include "core.hpp"
+#include "internal/core.hpp"
 
 namespace kuzzleio {
   s_options::s_options() {

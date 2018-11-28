@@ -23,6 +23,9 @@
 
 namespace kuzzleio {
     class Kuzzle;
+    class SpecificationSearchResult;
+    class SearchResult;
+    
     class Collection {
         collection* _collection;
         Collection();

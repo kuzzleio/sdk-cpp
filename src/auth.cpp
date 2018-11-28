@@ -13,7 +13,7 @@
 // limitations under the License.
 
 #include "kuzzle.hpp"
-#include "auth.hpp"
+#include "internal/auth.hpp"
 
 namespace kuzzleio {
   Auth::Auth(Kuzzle *kuzzle) {

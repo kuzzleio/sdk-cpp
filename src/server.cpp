@@ -13,7 +13,7 @@
 // limitations under the License.
 
 #include "kuzzle.hpp"
-#include "server.hpp"
+#include "internal/server.hpp"
 
 namespace kuzzleio {
   Server::Server(Kuzzle* kuzzle) {
