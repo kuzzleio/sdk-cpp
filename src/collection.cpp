@@ -103,12 +103,12 @@ namespace kuzzleio {
         return ret;
     }
 
-    SpecificationSearchResult* Collection::searchSpecifications(const std::string& body, query_options *options) {
+    SearchResult* Collection::searchSpecifications(const std::string& body, query_options *options) {
         search_result *r = kuzzle_collection_search_specifications(_collection, const_cast<char*>(body.c_str()), options);
         if (r->error != nullptr)
             throwExceptionFromStatus(r);
 
-        return new SpecificationSearchResult(r);
+        return new SearchResult(r);
     }
 
     std::string Collection::updateSpecifications(const std::string& index, const std::string& collection, const std::string& specifications, query_options *options) {
