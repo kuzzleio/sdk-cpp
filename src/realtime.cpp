@@ -13,7 +13,7 @@
 // limitations under the License.
 
 #include "kuzzle.hpp"
-#include "realtime.hpp"
+#include "internal/realtime.hpp"
 
 namespace kuzzleio {
   Realtime::Realtime(Kuzzle *kuzzle) {

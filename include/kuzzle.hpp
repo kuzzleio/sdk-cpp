@@ -4,7 +4,7 @@
 // you may not use this file except in compliance with the License.
 // You may obtain a copy of the License at
 //
-// 		http://www.apache.org/licenses/LICENSE-2.0
+//    http://www.apache.org/licenses/LICENSE-2.0
 //
 // Unless required by applicable law or agreed to in writing, software
 // distributed under the License is distributed on an "AS IS" BASIS,
@@ -15,19 +15,25 @@
 #ifndef _KUZZLE_HPP_
 #define _KUZZLE_HPP_
 
-#include "protocol.hpp"
-#include "exceptions.hpp"
-#include "core.hpp"
-#include "event_emitter.hpp"
 #include <string>
 #include <iostream>
 #include <vector>
 #include <map>
 #include <functional>
 
-#include "exceptions.hpp"
-#include "core.hpp"
-#include "event_emitter.hpp"
+#include "internal/exceptions.hpp"
+#include "internal/core.hpp"
+#include "internal/event_emitter.hpp"
+
+#include "internal/realtime.hpp"
+#include "internal/auth.hpp"
+#include "internal/index.hpp"
+#include "internal/server.hpp"
+#include "internal/collection.hpp"
+#include "internal/document.hpp"
+#include "protocol.hpp"
+
+#include "internal/search_result.hpp"
 
 namespace kuzzleio {
   class Collection;
@@ -56,7 +62,7 @@ namespace kuzzleio {
       Kuzzle(Protocol* protocol, options *options=nullptr);
       virtual ~Kuzzle();
 
-      char* connect() noexcept;
+      void connect();
 
       std::string getJwt() noexcept;
       void disconnect() noexcept;

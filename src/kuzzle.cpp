@@ -14,22 +14,10 @@
 
 #include <exception>
 #include <stdexcept>
-#include <iostream>
-#include <vector>
+#include <cstdlib>
 
 #include "kuzzle.hpp"
-#include "auth.hpp"
-#include "index.hpp"
-#include "server.hpp"
-#include "protocol.hpp"
-#include "collection.hpp"
-#include "document.hpp"
-#include "realtime.hpp"
-#include "kuzzle.hpp"
-#include <iostream>
-#include <vector>
-#include <iostream>
-#include <functional>
+#include "internal/event_emitter.hpp"
 
 namespace kuzzleio {
 
@@ -37,7 +25,7 @@ namespace kuzzleio {
   void bridge_cpp_add_listener(int event, kuzzle_event_listener* listener, void* protocol_instance) {
     EventListener *l = new std::function<void(const std::string)>([=](const std::string& res) {
       if (res != "null") {
-        (*listener)(event, const_cast<char*>(res.c_str()), protocol_instance);        
+        (*listener)(event, const_cast<char*>(res.c_str()), protocol_instance);
       } else {
         (*listener)(event, nullptr, protocol_instance);
       }
@@ -50,7 +38,7 @@ namespace kuzzleio {
   void bridge_cpp_once(int event, kuzzle_event_listener* listener, void* data) {
     EventListener *l = new std::function<void(const std::string)>([=](const std::string& res) {
       if (res != "null") {
-        (*listener)(event, const_cast<char*>(res.c_str()), data);        
+        (*listener)(event, const_cast<char*>(res.c_str()), data);
       } else {
         (*listener)(event, nullptr, data);
       }
@@ -94,7 +82,7 @@ namespace kuzzleio {
     NotificationListener *nl = new std::function<void(kuzzleio::notification_result*)>([=](kuzzleio::notification_result* res) {
       (*listener)(res, data);
     });
-    
+
     static_cast<Protocol*>(data)->notification_listener_instances[channel] = nl;
     static_cast<Protocol*>(data)->registerSub(std::string(channel), std::string(room_id), std::string(filters), subscribe_to_self, nl);
   }
@@ -215,8 +203,13 @@ namespace kuzzleio {
     delete(this->realtime);
   }
 
-  char* Kuzzle::connect() noexcept {
-    return kuzzle_connect(_kuzzle);
+  void Kuzzle::connect() {
+    char * err = kuzzle_connect(_kuzzle);
+    if (err != NULL) {
+      const std::string cppError = err;
+      free(err);
+      throw InternalException(cppError);
+    }
   }
 
   void Kuzzle::disconnect() noexcept {
