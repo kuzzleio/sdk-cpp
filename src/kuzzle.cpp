@@ -116,6 +116,10 @@ namespace kuzzleio {
     static_cast<Protocol*>(data)->removeAllListeners(static_cast<Event>(event));
   }
 
+  const char* bridge_cpp_get_host(void* data) {
+    return static_cast<Protocol*>(data)->getHost().c_str();
+  }
+
   // Class
   KuzzleException::KuzzleException(int status, const std::string& error)
     : std::runtime_error(error), status(status) {}
@@ -147,7 +151,8 @@ namespace kuzzleio {
     proto->_protocol->play_queue = bridge_cpp_play_queue;
     proto->_protocol->clear_queue = bridge_cpp_clear_queue;
     proto->_protocol->remove_all_listeners = bridge_cpp_remove_all_listeners;
-    
+    proto->_protocol->get_host = bridge_cpp_get_host;
+
     this->_protocol = proto->_protocol;
     this->_cpp_protocol = proto;
 

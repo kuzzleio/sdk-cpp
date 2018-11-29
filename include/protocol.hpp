@@ -32,6 +32,7 @@ namespace kuzzleio {
     virtual void stopQueuing() = 0;
     virtual void playQueue() = 0;
     virtual void clearQueue() = 0;
+    virtual std::string getHost() = 0;
   };
 
 }
