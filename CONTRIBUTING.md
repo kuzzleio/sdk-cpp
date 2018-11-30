@@ -4,7 +4,7 @@ Here are a few rules and guidelines to follow if you want to contribute to the J
 
 ## Build the SDK
 
-You can use this Docker image to build the SDK:  
+You can use this Docker image to build the SDK:
 ```
 docker run --rm -it --network ci_default --link kuzzle -v "$(pwd)":/mnt kuzzleio/sdk-cross:gcc make clean all
 ```
@@ -20,20 +20,21 @@ Then run the compiled program with: `LD_LIBRARY_PATH=./build ./a.out`
 
 ## Tools
 
-This SDK inherits from the following repositories, linked as git submodules: sdk-c, sdk-go.  
+This SDK inherits from the following repositories, linked as git submodules: sdk-c, sdk-go.
 Whenever significant changes are applied to the parent SDKs, you need to align the linked submodules accordingly.
 You can use `align-submodules.sh` script to achieve this. (e.g.: `./align-submodules.sh 1-dev` to align all submodules on `1-dev` branch)
 
 ## Running Tests
 
-Tests are handled by [cucumber](https://cucumber.io/).  
+Tests are handled by [cucumber](https://cucumber.io/).
 First build the SDK, install `Bundler`, install cucumber and run a Kuzzle stack:
 
 ```bash
 gem install bundler
 cd test
 bundle install
-.ci/start_kuzzle.sh
+cd ..
+bash .ci/start_kuzzle.sh
 ```
 
 Then run features tests

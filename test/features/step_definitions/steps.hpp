@@ -33,6 +33,7 @@ struct KuzzleCtx {
   string jwt;
   string document_id;
   SearchResult *documents;
+  std::vector<user_right*> user_rights;
 
   string room_id;
 
