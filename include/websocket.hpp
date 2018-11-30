@@ -37,14 +37,14 @@ namespace kuzzleio {
     virtual void stopQueuing();
     virtual void playQueue();
     virtual void clearQueue();
+    virtual std::string getHost();
 
     // Getters
-    virtual bool isAutoReconnect();
-    virtual bool isAutoResubscribe();
-    virtual std::string getHost();
-    virtual unsigned int getPort();
-    virtual unsigned long long getReconnectionDelay();
-    virtual bool isSslConnection();
+    bool isAutoReconnect();
+    bool isAutoResubscribe();
+    unsigned int getPort();
+    unsigned long long getReconnectionDelay();
+    bool isSslConnection();
   };
 
 }
