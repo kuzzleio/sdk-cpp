@@ -1,0 +1,115 @@
+{
+   bufio.fill
+   Memcheck:Addr8
+   fun:bufio.*
+}
+{
+   crypto
+   Memcheck:Addr8
+   fun:crypto/*
+}
+{
+   crypto
+   Memcheck:Addr1
+   fun:crypto/*
+}
+{
+   encoding
+   Memcheck:Addr1
+   fun:encoding/*
+}
+{
+   encoding
+   Memcheck:Addr8
+   fun:encoding/*
+}
+{
+   fmt
+   Memcheck:Addr8
+   fun:fmt.*
+}
+{
+   internal
+   Memcheck:Addr1
+   fun:internal/poll.*
+}
+{
+   internal
+   Memcheck:Addr8
+   fun:internal/poll.*
+}
+{
+   io
+   Memcheck:Addr8
+   fun:io.*
+}
+{
+   net.*
+   Memcheck:Addr8
+   fun:net.*
+}
+{
+   net/http
+   Memcheck:Addr8
+   fun:net/http.*
+}
+{
+   reflect
+   Memcheck:Addr8
+   fun:reflect.*
+}
+{
+   runtime
+   Memcheck:Addr1
+   fun:runtime.*
+}
+{
+   runtime
+   Memcheck:Addr4
+   fun:runtime.*
+}
+{
+   runtime
+   Memcheck:Addr8
+   fun:runtime.*
+}
+{
+   runtime
+   Memcheck:Addr16
+   fun:runtime.*
+}
+{
+   runtime
+   Memcheck:Addr32
+   fun:runtime.*
+}
+{
+   sync/*
+   Memcheck:Addr8
+   fun:sync/*
+}
+{
+   sync.*
+   Memcheck:Addr8
+   fun:sync.*
+}
+{
+   strconv
+   Memcheck:Addr8
+   fun:strconv.*
+}
+{
+   strings.EqualFold
+   Memcheck:Addr1
+   fun:strings.EqualFold
+}
+{
+   strings.EqualFold
+   Memcheck:Addr8
+   fun:strings.EqualFold
+}
+{
+   syscall.Read
+   Memcheck:Addr8
+   fun:syscall.Read
+}
