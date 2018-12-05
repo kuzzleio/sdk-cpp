@@ -4,6 +4,21 @@
    fun:bufio.*
 }
 {
+  bytes.*
+  Memcheck:Addr1
+  fun:bytes.*
+}
+{
+  bytes.*
+  Memcheck:Addr8
+  fun:bytes.*
+}
+{
+  context.*
+  Memcheck:Addr8
+  fun:context.*
+}
+{
    crypto
    Memcheck:Addr8
    fun:crypto/*
@@ -21,6 +36,7 @@
 {
    encoding
    Memcheck:Addr8
+   ...
    fun:encoding/*
 }
 {
@@ -31,17 +47,27 @@
 {
    internal
    Memcheck:Addr1
-   fun:internal/poll.*
+   fun:internal/*
 }
 {
    internal
    Memcheck:Addr8
-   fun:internal/poll.*
+   fun:internal/*
 }
 {
    io
    Memcheck:Addr8
    fun:io.*
+}
+{
+   net.*
+   Memcheck:Addr1
+   fun:net.*
+}
+{
+   net.*
+   Memcheck:Addr4
+   fun:net.*
 }
 {
    net.*
@@ -54,6 +80,16 @@
    fun:net/http.*
 }
 {
+   net/textproto
+   Memcheck:Addr1
+   fun:net/textproto.*
+}
+{
+   reflect
+   Memcheck:Addr1
+   fun:reflect.*
+}
+{
    reflect
    Memcheck:Addr8
    fun:reflect.*
@@ -61,6 +97,11 @@
 {
    runtime
    Memcheck:Addr1
+   fun:runtime.*
+}
+{
+   runtime
+   Memcheck:Addr2
    fun:runtime.*
 }
 {
@@ -90,8 +131,18 @@
 }
 {
    sync.*
+   Memcheck:Addr1
+   fun:sync.*
+}
+{
+   sync.*
    Memcheck:Addr8
    fun:sync.*
+}
+{
+   strconv
+   Memcheck:Addr1
+   fun:strconv.*
 }
 {
    strconv
@@ -99,17 +150,34 @@
    fun:strconv.*
 }
 {
-   strings.EqualFold
+   strings.*
    Memcheck:Addr1
-   fun:strings.EqualFold
+   fun:strings.*
 }
 {
-   strings.EqualFold
+   strings.*
    Memcheck:Addr8
-   fun:strings.EqualFold
+   fun:strings.*
+}
+{
+   syscall.anyToSockaddr
+   Memcheck:Addr1
+   fun:syscall.anyToSockaddr
 }
 {
    syscall.Read
    Memcheck:Addr8
    fun:syscall.Read
+}
+{
+   syscall.Syscall
+   Memcheck:Param
+   read(buf)
+   fun:syscall.Syscall
+}
+{
+   syscall.Syscall
+   Memcheck:Param
+   write(buf)
+   fun:syscall.Syscall
 }

@@ -36,6 +36,12 @@
 }
 {
    Gorilla WebSocket
+   Memcheck:Addr2
+   ...
+   fun:github.com/gorilla/websocket.*
+}
+{
+   Gorilla WebSocket
    Memcheck:Addr4
    ...
    fun:github.com/gorilla/websocket.*
