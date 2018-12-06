@@ -1,4 +1,5 @@
 VERSION = 1.0.0
+SHELL = /bin/bash
 
 ROOT_DIR = $(dir $(abspath $(lastword $(MAKEFILE_LIST))))
 ifeq ($(OS),Windows_NT)

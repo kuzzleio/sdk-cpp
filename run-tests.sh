@@ -20,7 +20,7 @@ if [ -z "${SKIPBUILD}" -o "${SKIPBUILD}" = 0 ]; then
   ./build_cpp_tests.sh
 fi
 
- #valgrind --leak-check=full --show-reachable=yes --gen-suppressions=all ${VALGRIND_SUPPR} --log-file=${VALGRIND_LOGFILE} ./_build_cpp_tests/KuzzleSDKStepDefs &
+valgrind --leak-check=full --show-reachable=yes --gen-suppressions=all ${VALGRIND_SUPPR} --log-file=${VALGRIND_LOGFILE} ./_build_cpp_tests/KuzzleSDKStepDefs &
 
 # Should generally be enough to let valgrind initialize
 # and start the server.
@@ -34,6 +34,7 @@ if [ ! -z "$FEATURE_FILE" ]; then
 fi
 
 ${CMD} 2>&1 | tee ${CUCUMBER_LOGFILE}
+CUCUMBER_STATUS=${PIPESTATUS[0]}
 
 # Restart Cucumber if the wire server wasn't ready
 # We cannot check the connection port beforehand (e.g. with netcat),
@@ -41,7 +42,7 @@ ${CMD} 2>&1 | tee ${CUCUMBER_LOGFILE}
 # a disconnection is detected
 retries=5
 
-while [ "$(grep 'Unable to contact the wire server' ${CUCUMBER_LOGFILE})" ]; do
+while [ ${CUCUMBER_STATUS} -eq 2 ]; do
   if [ ${retries} -eq 0 ]; then
     echo "No more retries available. Aborting."
     exit 2
@@ -54,6 +55,9 @@ while [ "$(grep 'Unable to contact the wire server' ${CUCUMBER_LOGFILE})" ]; do
   sleep 5
 
   ${CMD} 2>&1 | tee ${CUCUMBER_LOGFILE}
+  CUCUMBER_STATUS=${PIPESTATUS[0]}
 done
 
 cd -
+
+exit ${CUCUMBER_STATUS}
