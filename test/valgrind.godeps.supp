@@ -50,11 +50,11 @@
    uuid
    Memcheck:Addr8
    ...
-   fun:github.com/satori/go%2euuid.*
+   fun:github.com/satori/*uuid.*
 }
 {
    uuid
    Memcheck:Addr16
    ...
-   fun:github.com/satori/go%2euuid.*
+   fun:github.com/satori/*uuid.*
 }

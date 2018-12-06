@@ -125,6 +125,11 @@
    fun:runtime.*
 }
 {
+   runtime
+   Memcheck:Cond
+   fun:runtime.*
+}
+{
    sync/*
    Memcheck:Addr8
    fun:sync/*
