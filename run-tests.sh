@@ -14,4 +14,5 @@ if [ ! -z "$FEATURE_FILE" ]; then
 else
   bundle exec cucumber
 fi
- cd -
+
+cd -
