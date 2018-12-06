@@ -27,10 +27,10 @@ valgrind --leak-check=full --show-reachable=yes --gen-suppressions=all ${VALGRIN
 # If not, there is a retry mechanism fallback below
 sleep 2
 
+CMD="cucumber"
+
 if [ ! -z "$FEATURE_FILE" ]; then
-  CMD="bundle exec cucumber ./features/sdk-features/$FEATURE_FILE"
-else
-  CMD="bundle exec cucumber"
+  CMD="${CMD} ./features/sdk-features/$FEATURE_FILE"
 fi
 
 ${CMD} 2>&1 | tee ${CUCUMBER_LOGFILE}

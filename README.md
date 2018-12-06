@@ -45,10 +45,7 @@ x86:  https://dl.kuzzle.io/sdk/c/master/kuzzlesdk-cpp-x86-1.0.0.tar.gz
 To manually run the bundled tests on this SDK, you need the following dependencies installed:
 
 - boost libraries (https://www.boost.org/)
-- ruby
-- the `bundler` gem (`gem install bundler`)
-- tests' dependencies: `bundle install --gemfile test/Gemfile`
-- valgrind: `sudo apt install -y valgrind`
+- cucumber, cmake & valgrind: `sudo apt install -y cmake cucumber valgrind`
 
 Once done, you can start the functional tests with the following command:
 
