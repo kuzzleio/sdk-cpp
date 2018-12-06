@@ -48,9 +48,14 @@ To manually run the bundled tests on this SDK, you need the following dependenci
 - ruby
 - the `bundler` gem (`gem install bundler`)
 - tests' dependencies: `bundle install --gemfile test/Gemfile`
+- valgrind: `sudo apt install -y valgrind`
 
 Once done, you can start the functional tests with the following command:
 
 ```
 ./run-tests.sh
 ```
+
+The test results are printed to the standard output.
+
+Functional tests are monitored by valgrind. The report is available here: `./test/_build_cpp_tests/valgrind_report.log`
