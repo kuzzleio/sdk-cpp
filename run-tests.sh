@@ -20,7 +20,7 @@ if [ -z "${SKIPBUILD}" -o "${SKIPBUILD}" = 0 ]; then
   ./build_cpp_tests.sh
 fi
 
-valgrind --leak-check=full --show-reachable=yes --gen-suppressions=all ${VALGRIND_SUPPR} --log-file=${VALGRIND_LOGFILE} ./_build_cpp_tests/KuzzleSDKStepDefs &
+ #valgrind --leak-check=full --show-reachable=yes --gen-suppressions=all ${VALGRIND_SUPPR} --log-file=${VALGRIND_LOGFILE} ./_build_cpp_tests/KuzzleSDKStepDefs &
 
 # Should generally be enough to let valgrind initialize
 # and start the server.
@@ -39,7 +39,7 @@ ${CMD} 2>&1 | tee ${CUCUMBER_LOGFILE}
 # We cannot check the connection port beforehand (e.g. with netcat),
 # because the wire protocol makes the step definitions exit whenever
 # a disconnection is detected
-let retries=5
+retries=5
 
 while [ "$(grep 'Unable to contact the wire server' ${CUCUMBER_LOGFILE})" ]; do
   if [ ${retries} -eq 0 ]; then
@@ -47,7 +47,7 @@ while [ "$(grep 'Unable to contact the wire server' ${CUCUMBER_LOGFILE})" ]; do
     exit 2
   fi
 
-  let retries--
+  retries=$((retries-1))
 
   echo "Cucumber Wire connection problem detected."
   echo "Retrying in 5 seconds (${retries} retries left)."
