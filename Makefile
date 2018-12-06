@@ -86,10 +86,10 @@ package: $(BUILD_DIR)$(PATHSEP)$(LIB_PREFIX)kuzzlesdk$(DYNLIB).$(VERSION) $(BUIL
 	mkdir -p deploy && cd $(BUILD_DIR) && tar cfz ..$(PATHSEP)deploy$(PATHSEP)kuzzlesdk-cpp-$(VERSION)-$(ARCH).tar.gz $(SDK_FOLDER_NAME)
 
 build_test: $(BUILD_DIR)$(PATHSEP)$(LIB_PREFIX)kuzzlesdk$(DYNLIB).$(VERSION) $(BUILD_DIR)$(PATHSEP)$(LIB_PREFIX)kuzzlesdk$(STATICLIB).$(VERSION)
-	cd test && sh build_cpp_tests.sh
+	cd test && ./build_cpp_tests.sh
 
 run_test:
-	SKIPBUILD=1 sh run-tests.sh
+	SKIPBUILD=1 ./run-tests.sh
 
 clean:
 	cd sdk-c && make clean
