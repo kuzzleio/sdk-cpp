@@ -11,7 +11,7 @@ CUCUMBER_LOGFILE='./_build_cpp_tests/cucumber.log'
 
 # initializes the valgrind suppression arguments
 for supp in ./valgrind.*.supp; do
-  VALGRIND_SUPPR="${VALGRIND_ARG_SUPP} --suppressions=${supp}"
+  VALGRIND_SUPPR="${VALGRIND_SUPPR} --suppressions=${supp}"
 done
 
 FEATURE_FILE=$1
