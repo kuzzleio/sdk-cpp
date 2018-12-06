@@ -16,7 +16,9 @@ done
 
 FEATURE_FILE=$1
 
-./build_cpp_tests.sh
+if [ -z "${SKIPBUILD}" -o "${SKIPBUILD}" = 0 ]; then
+  ./build_cpp_tests.sh
+fi
 
 valgrind --leak-check=full --show-reachable=yes --gen-suppressions=all ${VALGRIND_SUPPR} --log-file=${VALGRIND_LOGFILE} ./_build_cpp_tests/KuzzleSDKStepDefs &
 

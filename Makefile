@@ -87,9 +87,8 @@ package: $(BUILD_DIR)$(PATHSEP)$(LIB_PREFIX)kuzzlesdk$(DYNLIB).$(VERSION) $(BUIL
 build_test: $(BUILD_DIR)$(PATHSEP)$(LIB_PREFIX)kuzzlesdk$(DYNLIB).$(VERSION) $(BUILD_DIR)$(PATHSEP)$(LIB_PREFIX)kuzzlesdk$(STATICLIB).$(VERSION)
 	cd test && sh build_cpp_tests.sh
 
-run_test:
-	cd test && .$(PATHSEP)_build_cpp_tests$(PATHSEP)KuzzleSDKStepDefs > /dev/null &
-	cd test && cucumber
+run_test: $(BUILD_DIR)$(PATHSEP)$(LIB_PREFIX)kuzzlesdk$(DYNLIB).$(VERSION) $(BUILD_DIR)$(PATHSEP)$(LIB_PREFIX)kuzzlesdk$(STATICLIB).$(VERSION)
+	SKIPBUILD=1 sh run-tests.sh
 
 clean:
 	cd sdk-c && make clean
@@ -100,7 +99,7 @@ ifeq ($(OS),Windows_NT)
 else
 	$(RRM) $(BUILD_DIR) deploy test$(PATHSEP)_build_cpp_tests
 endif
-.PHONY: all core clean run_test 
+.PHONY: all core clean run_test
 
 
 .DEFAULT_GOAL := all
