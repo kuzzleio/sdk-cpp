@@ -96,57 +96,39 @@ namespace kuzzleio {
     UnauthorizedException(const UnauthorizedException& ue) : KuzzleException(ue.status, ue.getMessage()) {}
   };
 
-  template <class T>
-  void throwExceptionFromStatus(T *result) {
-    const std::string error = std::string(result->error);
-    delete(result->error);
-    if (result->stack) {
-      free(const_cast<char *>(result->stack));
-    }
-
-    switch(result->status) {
+  static void throwKuzzleException(int status, const std::string& error) {
+    switch(status) {
       case PARTIAL_EXCEPTION:
-        delete(result);
         throw PartialException(error);
       break;
       case BAD_REQUEST_EXCEPTION:
-        delete(result);
         throw BadRequestException(error);
       break;
       case UNAUTHORIZED_EXCEPTION:
-        delete(result);
         throw UnauthorizedException(error);
       break;
       case FORBIDDEN_EXCEPTION:
-        delete(result);
         throw ForbiddenException(error);
       break;
       case NOT_FOUND_EXCEPTION:
-        delete(result);
         throw NotFoundException(error);
       break;
       case PRECONDITION_EXCEPTION:
-        delete(result);
         throw PreconditionException(error);
       break;
       case SIZE_LIMIT_EXCEPTION:
-        delete(result);
         throw SizeLimitException(error);
       break;
       case INTERNAL_EXCEPTION:
-        delete(result);
         throw InternalException(error);
       break;
       case SERVICE_UNAVAILABLE_EXCEPTION:
-        delete(result);
         throw ServiceUnavailableException(error);
       break;
       case GATEWAY_TIMEOUT_EXCEPTION:
-        delete(result);
         throw GatewayTimeoutException(error);
       break;
       default:
-        delete(result);
         throw KuzzleException(500, error);
     }
   }
