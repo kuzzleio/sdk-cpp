@@ -75,13 +75,13 @@ namespace kuzzleio {
     return ret;
   }
 
-  std::vector<user_right*> Auth::getMyRights(query_options* options) {
+  std::vector<UserRight> Auth::getMyRights(query_options* options) {
     KUZZLE_API(user_rights_result, r, kuzzle_get_my_rights(_auth, options))
 
-    std::vector<user_right*> user_rights;
+    std::vector<UserRight> user_rights;
 
     for (size_t i = 0; i < r->rights_length; ++i) {
-      user_rights.push_back(r->rights[i]);
+      user_rights.push_back(UserRight(r->rights[i]));
     }
 
     kuzzle_free_user_rights_result(r);

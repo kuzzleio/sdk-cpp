@@ -34,6 +34,7 @@
 #include "protocol.hpp"
 
 #include "internal/search_result.hpp"
+#include "internal/user_right.hpp"
 
 /*
  * Macro used by controller actions.
