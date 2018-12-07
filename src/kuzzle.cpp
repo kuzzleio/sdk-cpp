@@ -192,10 +192,7 @@ namespace kuzzleio {
   }
 
   kuzzle_response* Kuzzle::query(kuzzle_request* query, query_options* options) {
-    kuzzle_response *r = kuzzle_query(_kuzzle, query, options);
-
-    if (r->error != nullptr)
-        throwExceptionFromStatus(r);
+    KUZZLE_API(kuzzle_response, r, kuzzle_query(_kuzzle, query, options))
     return r;
   }
 
