@@ -46,26 +46,26 @@ namespace kuzzleio {
       return _websocket_notification_listener_instances[room_id];
     }
 
-    void WebSocket::addListener(Event event, EventListener* listener) {
+    void WebSocket::addListener(KuzzleEvent event, EventListener* listener) {
       _websocket_listener_instances[event].push_back(listener);
       kuzzle_websocket_add_listener(this->_web_socket, event, trigger_websocket_event_listener);
     }
 
-    void WebSocket::removeListener(Event event, EventListener* listener) {
+    void WebSocket::removeListener(KuzzleEvent event, EventListener* listener) {
       _websocket_listener_instances[event].remove(listener);
     }
 
-    void WebSocket::removeAllListeners(Event event) {
+    void WebSocket::removeAllListeners(KuzzleEvent event) {
       kuzzle_websocket_remove_all_listeners(this->_web_socket, event);
       _websocket_listener_instances[event].clear();
     }
 
-    void WebSocket::once(Event event, EventListener* listener) {
+    void WebSocket::once(KuzzleEvent event, EventListener* listener) {
       _websocket_once_listener_instances[event].push_back(listener);
       kuzzle_websocket_once(this->_web_socket, event, trigger_websocket_once);
     }
 
-    int WebSocket::listenerCount(Event event) {
+    int WebSocket::listenerCount(KuzzleEvent event) {
       return kuzzle_websocket_listener_count(this->_web_socket, event);
     }
 
@@ -90,7 +90,7 @@ namespace kuzzleio {
       return kuzzle_websocket_get_state(this->_web_socket);
     }
     
-    void WebSocket::emitEvent(Event event) {
+    void WebSocket::emitEvent(KuzzleEvent event) {
       kuzzle_websocket_emit_event(this->_web_socket, event, nullptr);
     }
 

@@ -15,16 +15,16 @@ namespace kuzzleio {
       std::map<int, std::map<kuzzle_event_listener*, EventListener*>>  listener_once_instances;
       std::map<std::string, NotificationListener*> notification_listener_instances;
 
-    virtual void addListener(Event, EventListener*) = 0;
-    virtual void removeListener(Event, EventListener*) = 0;
-    virtual void removeAllListeners(Event) = 0;
-    virtual void once(Event, EventListener*) = 0;
-    virtual int listenerCount(Event) = 0;
+    virtual void addListener(KuzzleEvent, EventListener*) = 0;
+    virtual void removeListener(KuzzleEvent, EventListener*) = 0;
+    virtual void removeAllListeners(KuzzleEvent) = 0;
+    virtual void once(KuzzleEvent, EventListener*) = 0;
+    virtual int listenerCount(KuzzleEvent) = 0;
     virtual char* connect() = 0;
     virtual kuzzle_response* send(const std::string&, query_options *, const std::string&) = 0;
     virtual std::string close() = 0;
     virtual int getState() = 0;
-    virtual void emitEvent(Event) = 0;
+    virtual void emitEvent(KuzzleEvent) = 0;
     virtual void registerSub(const std::string&, const std::string&, const std::string&, bool, NotificationListener*) = 0;
     virtual void unregisterSub(const std::string&) = 0;
     virtual void cancelSubs() = 0;
