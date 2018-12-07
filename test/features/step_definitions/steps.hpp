@@ -37,7 +37,7 @@ struct KuzzleCtx {
 
   string room_id;
 
-  kuzzle_user*                   currentUser        = nullptr;
+  User currentUser;
   json_spirit::Value_type customUserDataType = json_spirit::null_type;
 
   // 1 mean success, 0 failure and -1 is base state
