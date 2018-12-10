@@ -59,7 +59,12 @@ namespace kuzzleio {
   }
 
   char* bridge_cpp_connect(void* data) {
-    return static_cast<Protocol*>(data)->connect();
+    try {
+      static_cast<Protocol*>(data)->connect();
+    } catch (KuzzleException& e) {
+      return const_cast<char*>(e.what());
+    }
+    return nullptr;
   }
 
   int bridge_cpp_get_state(void* data) {
@@ -75,7 +80,12 @@ namespace kuzzleio {
   }
 
   const char* bridge_cpp_close(void* data) {
-    return static_cast<Protocol*>(data)->close().c_str();
+    try {
+      static_cast<Protocol*>(data)->close();
+    } catch (KuzzleException& e) {
+      return e.what();
+    }
+    return nullptr;
   }
 
   void bridge_cpp_register_sub(const char* channel, const char* room_id, const char* filters, bool subscribe_to_self, kuzzle_notification_listener* listener, void* data) {
