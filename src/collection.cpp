@@ -16,124 +16,98 @@
 #include "internal/collection.hpp"
 
 namespace kuzzleio {
-    Collection::Collection(Kuzzle* kuzzle) {
-        _collection = new collection();
-        kuzzle_new_collection(_collection, kuzzle->_kuzzle);
-    }
+  Collection::Collection(Kuzzle* kuzzle) {
+    _collection = new collection();
+    kuzzle_new_collection(_collection, kuzzle->_kuzzle);
+  }
 
-    Collection::Collection(Kuzzle* kuzzle, collection *collection) {
-        _collection = collection;
-        kuzzle_new_collection(collection, kuzzle->_kuzzle);
-    }
+  Collection::Collection(Kuzzle* kuzzle, collection *collection) {
+    _collection = collection;
+    kuzzle_new_collection(collection, kuzzle->_kuzzle);
+  }
 
-    Collection::~Collection() {
-        unregisterCollection(_collection);
-        delete(_collection);
-    }
+  Collection::~Collection() {
+    unregisterCollection(_collection);
+    delete(_collection);
+  }
 
-    void Collection::create(const std::string& index, const std::string& collection, const std::string* body, query_options *options) {
-        error_result *r = kuzzle_collection_create(
-            _collection,
-            const_cast<char*>(index.c_str()),
-            const_cast<char*>(collection.c_str()),
-            body != nullptr ? const_cast<char*>(body->c_str()) : nullptr,
-            options);
+  void Collection::create(const std::string& index, const std::string& collection, const std::string* body, query_options *options) {
+    char * bodystr = body != nullptr ? const_cast<char*>(body->c_str()) : nullptr;
+    KUZZLE_API(error_result, r, kuzzle_collection_create(
+      _collection,
+      const_cast<char*>(index.c_str()),
+      const_cast<char*>(collection.c_str()),
+      bodystr,
+      options))
 
-        if (r != nullptr)
-            throwExceptionFromStatus(r);
+    kuzzle_free_error_result(r);
+  }
 
-        kuzzle_free_error_result(r);
-    }
+  bool Collection::exists(const std::string& index, const std::string& collection, query_options *options) {
+    KUZZLE_API(bool_result, r, kuzzle_collection_exists(_collection, const_cast<char*>(index.c_str()), const_cast<char*>(collection.c_str()), options))
 
-    bool Collection::exists(const std::string& index, const std::string& collection, query_options *options) {
-        bool_result *r = kuzzle_collection_exists(_collection, const_cast<char*>(index.c_str()), const_cast<char*>(collection.c_str()), options);
-        if (r->error != nullptr)
-            throwExceptionFromStatus(r);
+    bool ret = r->result;
+    kuzzle_free_bool_result(r);
+    return ret;
+  }
 
-        bool ret = r->result;
-        kuzzle_free_bool_result(r);
-        return ret;
-    }
+  std::string Collection::list(const std::string& index, query_options *options) {
+    KUZZLE_API(string_result, r, kuzzle_collection_list(_collection, const_cast<char*>(index.c_str()), options))
 
-    std::string Collection::list(const std::string& index, query_options *options) {
-        string_result *r = kuzzle_collection_list(_collection, const_cast<char*>(index.c_str()), options);
-        if (r->error != nullptr)
-            throwExceptionFromStatus(r);
+    std::string ret = r->result;
+    kuzzle_free_string_result(r);
+    return ret;
+  }
 
-        std::string ret = r->result;
-        kuzzle_free_string_result(r);
-        return ret;
-    }
+  void Collection::truncate(const std::string& index, const std::string& collection, query_options *options) {
+    KUZZLE_API(error_result, r, kuzzle_collection_truncate(_collection, const_cast<char*>(index.c_str()), const_cast<char*>(collection.c_str()), options))
+    kuzzle_free_error_result(r);
+  }
 
-    void Collection::truncate(const std::string& index, const std::string& collection, query_options *options) {
-        error_result *r = kuzzle_collection_truncate(_collection, const_cast<char*>(index.c_str()), const_cast<char*>(collection.c_str()), options);
-        if (r != nullptr)
-            throwExceptionFromStatus(r);
+  std::string Collection::getMapping(const std::string& index, const std::string& collection, query_options *options) {
+    KUZZLE_API(string_result, r, kuzzle_collection_get_mapping(_collection, const_cast<char*>(index.c_str()), const_cast<char*>(collection.c_str()), options))
 
-        kuzzle_free_error_result(r);
-    }
+    std::string ret = r->result;
+    kuzzle_free_string_result(r);
 
-    std::string Collection::getMapping(const std::string& index, const std::string& collection, query_options *options) {
-        string_result *r = kuzzle_collection_get_mapping(_collection, const_cast<char*>(index.c_str()), const_cast<char*>(collection.c_str()), options);
-        if (r->error != nullptr)
-            throwExceptionFromStatus(r);
+    return ret;
+  }
 
-        std::string ret = r->result;
-        kuzzle_free_string_result(r);
+  void Collection::updateMapping(const std::string& index, const std::string& collection, const std::string& body, query_options *options) {
+    KUZZLE_API(error_result, r, kuzzle_collection_update_mapping(_collection, const_cast<char*>(index.c_str()), const_cast<char*>(collection.c_str()), const_cast<char*>(body.c_str()), options))
+    kuzzle_free_error_result(r);
+  }
 
-        return ret;
-    }
+  std::string Collection::getSpecifications(const std::string& index, const std::string& collection, query_options *options) {
+    KUZZLE_API(string_result, r, kuzzle_collection_get_specifications(_collection, const_cast<char*>(index.c_str()), const_cast<char*>(collection.c_str()), options))
 
-    void Collection::updateMapping(const std::string& index, const std::string& collection, const std::string& body, query_options *options) {
-        error_result *r = kuzzle_collection_update_mapping(_collection, const_cast<char*>(index.c_str()), const_cast<char*>(collection.c_str()), const_cast<char*>(body.c_str()), options);
-        if (r != nullptr)
-            throwExceptionFromStatus(r);
+    std::string ret = r->result;
+    kuzzle_free_string_result(r);
 
-        kuzzle_free_error_result(r);
-    }
+    return ret;
+  }
 
-    std::string Collection::getSpecifications(const std::string& index, const std::string& collection, query_options *options) {
-        string_result *r = kuzzle_collection_get_specifications(_collection, const_cast<char*>(index.c_str()), const_cast<char*>(collection.c_str()), options);
-        if (r->error != nullptr)
-            throwExceptionFromStatus(r);
+  SearchResult* Collection::searchSpecifications(const std::string& body, query_options *options) {
+    KUZZLE_API(search_result, r, kuzzle_collection_search_specifications(_collection, const_cast<char*>(body.c_str()), options))
+    return new SearchResult(r);
+  }
 
-        std::string ret = r->result;
-        kuzzle_free_string_result(r);
+  std::string Collection::updateSpecifications(const std::string& index, const std::string& collection, const std::string& specifications, query_options *options) {
+    KUZZLE_API(string_result, r, kuzzle_collection_update_specifications(_collection, const_cast<char*>(index.c_str()), const_cast<char*>(collection.c_str()), const_cast<char*>(specifications.c_str()), options))
 
-        return ret;
-    }
+    std::string ret = r->result;
+    kuzzle_free_string_result(r);
 
-    SearchResult* Collection::searchSpecifications(const std::string& body, query_options *options) {
-        search_result *r = kuzzle_collection_search_specifications(_collection, const_cast<char*>(body.c_str()), options);
-        if (r->error != nullptr)
-            throwExceptionFromStatus(r);
+    return ret;
+  }
 
-        return new SearchResult(r);
-    }
+  validation_response* Collection::validateSpecifications(const std::string& index, const std::string& collection, const std::string& specifications, query_options *options) {
+    KUZZLE_API(validation_response, r, kuzzle_collection_validate_specifications(_collection, const_cast<char*>(index.c_str()), const_cast<char*>(collection.c_str()), const_cast<char*>(specifications.c_str()), options))
+    return r;
+  }
 
-    std::string Collection::updateSpecifications(const std::string& index, const std::string& collection, const std::string& specifications, query_options *options) {
-        string_result *r = kuzzle_collection_update_specifications(_collection, const_cast<char*>(index.c_str()), const_cast<char*>(collection.c_str()), const_cast<char*>(specifications.c_str()), options);
-        if (r->error != nullptr)
-            throwExceptionFromStatus(r);
-        std::string ret = r->result;
-        kuzzle_free_string_result(r);
-
-        return ret;
-    }
-
-    validation_response* Collection::validateSpecifications(const std::string& index, const std::string& collection, const std::string& specifications, query_options *options) {
-        validation_response *r = kuzzle_collection_validate_specifications(_collection, const_cast<char*>(index.c_str()), const_cast<char*>(collection.c_str()), const_cast<char*>(specifications.c_str()), options);
-        if (r->error != nullptr)
-            throwExceptionFromStatus(r);
-
-        return r;
-    }
-
-    void Collection::deleteSpecifications(const std::string& index, const std::string& collection, query_options *options) {
-        error_result *r = kuzzle_collection_delete_specifications(_collection, const_cast<char*>(index.c_str()), const_cast<char*>(collection.c_str()), options);
-        if (r != nullptr)
-            throwExceptionFromStatus(r);
-
-        kuzzle_free_error_result(r);
-    }
+  void Collection::deleteSpecifications(const std::string& index, const std::string& collection, query_options *options) {
+    KUZZLE_API(error_result, r, kuzzle_collection_delete_specifications(_collection, const_cast<char*>(index.c_str()), const_cast<char*>(collection.c_str()), options))
+    kuzzle_free_error_result(r);
+  }
 }
