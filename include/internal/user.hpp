@@ -12,21 +12,9 @@ namespace kuzzleio {
       std::string content;
       std::vector<std::string> profile_ids;
 
-      User(kuzzle_user*);
-      User();
-
-      User& operator=(kuzzle_user* u) {
-        id = u->id;
-        content = u->content;
-
-        profile_ids.clear();
-
-        for(size_t i = 0; i < u->profile_ids_length; i++) {
-          profile_ids.push_back(u->profile_ids[i]);
-        }
-
-        return *this;
-      }
+      User(const kuzzle_user*);
+      User() = default;
+      User& operator=(const kuzzle_user*);
   };
 }
 
