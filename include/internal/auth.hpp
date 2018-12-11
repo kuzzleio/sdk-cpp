@@ -15,6 +15,9 @@
 #ifndef _AUTH_HPP
 #define _AUTH_HPP
 
+#include <string>
+#include <vector>
+#include <memory>
 #include "user_right.hpp"
 #include "core.hpp"
 
@@ -37,7 +40,7 @@ namespace kuzzleio {
       void deleteMyCredentials(const std::string& strategy, query_options *options=nullptr);
       kuzzle_user* getCurrentUser();
       std::string getMyCredentials(const std::string& strategy, query_options *options=nullptr);
-      std::vector<UserRight> getMyRights(query_options *options=nullptr);
+      std::vector<std::unique_ptr<UserRight>> getMyRights(query_options *options=nullptr);
       std::vector<std::string> getStrategies(query_options *options=nullptr);
       std::string login(const std::string& strategy, const std::string& credentials, int expiresIn);
       std::string login(const std::string& strategy, const std::string& credentials);
