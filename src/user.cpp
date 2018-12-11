@@ -23,4 +23,16 @@ namespace kuzzleio {
 
     return *this;
   }
+
+  std::string const& User::id() const {
+    return _id;
+  }
+
+  std::string const& User::content() const {
+    return _content;
+  }
+
+  std::vector<std::string> const& User::profile_ids() const {
+    return _profile_ids;
+  }
 }
