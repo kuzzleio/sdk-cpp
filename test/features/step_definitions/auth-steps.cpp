@@ -70,7 +70,7 @@ namespace {
     }
 
     K_LOG_D("current user = 0x%p", ctx->currentUser);
-    K_LOG_D("Current user content: %s", ctx->currentUser.content.c_str());
+    K_LOG_D("Current user content: %s", ctx->currentUser.content().c_str());
   }
 
   GIVEN("^I get my rights$") {

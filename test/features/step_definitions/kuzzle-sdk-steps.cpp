@@ -32,7 +32,7 @@ namespace {
     ScenarioScope<KuzzleCtx> ctx;
 
     json_spirit::Value userContentValue;
-    json_spirit::read(ctx->currentUser.content, userContentValue);
+    json_spirit::read(ctx->currentUser.content(), userContentValue);
 
     json_spirit::write_formatted(userContentValue);
 
