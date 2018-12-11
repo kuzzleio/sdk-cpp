@@ -72,9 +72,7 @@ namespace kuzzleio {
       kuzzle_realtime_subscribe(_realtime, const_cast<char*>(index.c_str()), const_cast<char*>(collection.c_str()),  const_cast<char*>(body.c_str()), call_subscribe_cb, this, options))
 
     std::string roomId = r->room;
-    std::string channel = r->channel;
-
-    _listener_instances[channel] = cb;
+    _listener_instances[r->channel] = cb;
     kuzzle_free_subscribe_result(r);
     return roomId;
   }

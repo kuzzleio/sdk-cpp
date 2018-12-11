@@ -43,10 +43,8 @@ namespace kuzzleio {
 
   std::vector<std::string> Index::mDelete(const std::vector<std::string>& indexes, query_options *options) {
     char **indexesArray = new char *[indexes.size()];
-    int i = 0;
-    for (auto& index : indexes) {
-      indexesArray[i] = const_cast<char*>(index.c_str());
-      i++;
+    for (size_t i = 0; i < indexes.size(); i++) {
+      indexesArray[i] = const_cast<char*>(indexes[i].c_str());
     }
 
     KUZZLE_API(
@@ -56,10 +54,7 @@ namespace kuzzleio {
       delete[] indexesArray
     )
 
-    std::vector<std::string> v;
-    for (int i = 0; i < r->result_length; i++)
-      v.push_back(r->result[i]);
-
+    std::vector<std::string> v = std::vector<std::string>(r->result, r->result + r->result_length);
     kuzzle_free_string_array_result(r);
     return v;
   }
@@ -98,10 +93,7 @@ namespace kuzzleio {
   std::vector<std::string> Index::list(query_options *options) {
     KUZZLE_API(string_array_result, r, kuzzle_index_list(_index, options))
 
-    std::vector<std::string> v;
-    for (int i = 0; i < r->result_length; i++)
-      v.push_back(r->result[i]);
-
+    std::vector<std::string> v = std::vector<std::string>(r->result, r->result + r->result_length);
     kuzzle_free_string_array_result(r);
     return v;
   }
