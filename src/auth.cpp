@@ -91,10 +91,7 @@ namespace kuzzleio {
   std::vector<std::string> Auth::getStrategies(query_options *options) {
     KUZZLE_API(string_array_result, r, kuzzle_get_strategies(_auth, options))
 
-    std::vector<std::string> strategies;
-
-    for (size_t i = 0; i < r->result_length; ++i)
-      strategies.push_back(r->result[i]);
+    std::vector<std::string> strategies = std::vector<std::string>(r->result, r->result + r->result_length);
 
     kuzzle_free_string_array_result(r);
     return strategies;

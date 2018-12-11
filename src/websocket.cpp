@@ -9,20 +9,16 @@ namespace kuzzleio {
 
   void trigger_websocket_event_listener(int event, char* res, void* data) {
     std::list<EventListener*> listeners = static_cast<WebSocket*>(data)->getListeners(event);
-    if (listeners.size()) {
-      for (EventListener*& listener : listeners) {
-        (*listener)(res);
-      }
+    for (EventListener*& listener : listeners) {
+      (*listener)(res);
     }
   }
 
   void trigger_websocket_once(int event, char* res, void* data) {
     std::list<EventListener*> listeners = static_cast<WebSocket*>(data)->getOnceListeners(event);
-    if (listeners.size()) {
-      for (EventListener*& listener : listeners) {
-        (*listener)(res);
-        static_cast<WebSocket*>(data)->getOnceListeners(event).remove(listener);
-      }
+    for (EventListener*& listener : listeners) {
+      (*listener)(res);
+      static_cast<WebSocket*>(data)->getOnceListeners(event).remove(listener);
     }
   }
 
