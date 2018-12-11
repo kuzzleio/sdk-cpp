@@ -26,7 +26,13 @@ namespace kuzzleio {
       std::string index;
       std::string collection;
       std::string value;
-      UserRight(user_right*);
+      UserRight(const user_right* r) :
+        controller(r->controller),
+        action(r->action),
+        index(r->index),
+        collection(r->collection),
+        value(r->value)
+        {};
   };
 }
 
