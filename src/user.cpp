@@ -16,16 +16,10 @@
 #include "internal/user.hpp"
 
 namespace kuzzleio {
-  User::User(const kuzzle_user* u) {
-    id = u->id;
-    content = u->content;
-    profile_ids = std::vector<std::string>(u->profile_ids, u->profile_ids + u->profile_ids_length);
-  }
-
   User& User::operator=(const kuzzle_user* u) {
-    id = u->id;
-    content = u->content;
-    profile_ids = std::vector<std::string>(u->profile_ids, u->profile_ids + u->profile_ids_length);
+    _id = u->id;
+    _content = u->content;
+    _profile_ids = std::vector<std::string>(u->profile_ids, u->profile_ids + u->profile_ids_length);
 
     return *this;
   }
