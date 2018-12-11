@@ -20,7 +20,13 @@ if [ -z "${SKIPBUILD}" -o "${SKIPBUILD}" = 0 ]; then
   ./build_cpp_tests.sh
 fi
 
-valgrind --leak-check=full --show-reachable=yes --gen-suppressions=all ${VALGRIND_SUPPR} --log-file=${VALGRIND_LOGFILE} ./_build_cpp_tests/KuzzleSDKStepDefs &
+VALGRIND=""
+
+if [ -z "${SKIPVALGRIND}" -o "${SKIPVALGRIND}" = 0 ]; then
+  VALGRIND="valgrind --leak-check=full --show-reachable=yes --gen-suppressions=all ${VALGRIND_SUPPR} --log-file=${VALGRIND_LOGFILE}"
+fi
+
+${VALGRIND} ./_build_cpp_tests/KuzzleSDKStepDefs &
 
 # Should generally be enough to let valgrind initialize
 # and start the server.

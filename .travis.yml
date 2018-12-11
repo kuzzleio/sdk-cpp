@@ -132,7 +132,7 @@ jobs:
         - docker run --rm -it -v "$(pwd)":/mnt kuzzleio/sdk-cross:gcc-armhf make all build_test
         # Test
         - docker run --rm --privileged multiarch/qemu-user-static:register
-        - docker run --rm -it --network ci_default --link kuzzle -v "$(pwd)":/mnt kuzzleio/sdk-cross:armhf-cpp-runner make run_test
+        - docker run --rm -it -e SKIPVALGRIND=1 --network ci_default --link kuzzle -v "$(pwd)":/mnt kuzzleio/sdk-cross:armhf-cpp-runner make run_test
 
       after_success:
         - docker run --rm -it -e ARCH=armhf -v "$(pwd)":/mnt kuzzleio/sdk-cross:gcc-armhf make package
@@ -179,7 +179,7 @@ jobs:
         - docker run --rm -it -v "$(pwd)":/mnt kuzzleio/sdk-cross:gcc-aarch64 make all build_test
         # Test
         - docker run --rm --privileged multiarch/qemu-user-static:register
-        - docker run --rm -it --network ci_default --link kuzzle -v "$(pwd)":/mnt kuzzleio/sdk-cross:aarch64-cpp-runner make run_test
+        - docker run --rm -it -e SKIPVALGRIND=1 --network ci_default --link kuzzle -v "$(pwd)":/mnt kuzzleio/sdk-cross:aarch64-cpp-runner make run_test
 
       after_success:
         - docker run --rm -it -e ARCH=aarch64 -v "$(pwd)":/mnt kuzzleio/sdk-cross:gcc-aarch64 make package
