@@ -9,20 +9,16 @@ namespace kuzzleio {
 
   void trigger_websocket_event_listener(int event, char* res, void* data) {
     std::list<EventListener*> listeners = static_cast<WebSocket*>(data)->getListeners(event);
-    if (listeners.size()) {
-      for (EventListener*& listener : listeners) {
-        (*listener)(res);
-      }
+    for (EventListener*& listener : listeners) {
+      (*listener)(res);
     }
   }
 
   void trigger_websocket_once(int event, char* res, void* data) {
     std::list<EventListener*> listeners = static_cast<WebSocket*>(data)->getOnceListeners(event);
-    if (listeners.size()) {
-      for (EventListener*& listener : listeners) {
-        (*listener)(res);
-        static_cast<WebSocket*>(data)->getOnceListeners(event).remove(listener);
-      }
+    for (EventListener*& listener : listeners) {
+      (*listener)(res);
+      static_cast<WebSocket*>(data)->getOnceListeners(event).remove(listener);
     }
   }
 
@@ -68,8 +64,13 @@ namespace kuzzleio {
     return kuzzle_websocket_listener_count(this->_web_socket, event);
   }
 
-  char* WebSocket::connect() {
-    return kuzzle_websocket_connect(this->_web_socket);
+  void WebSocket::connect() {
+    char* err = kuzzle_websocket_connect(this->_web_socket);
+    if (err != NULL) {
+      const std::string cppError = err;
+      free(err);
+      throw InternalException(cppError);
+    }
   }
 
   kuzzle_response* WebSocket::send(const std::string& query, query_options *options, const std::string& request_id) {
@@ -77,12 +78,14 @@ namespace kuzzleio {
     return res;
   }
 
-  std::string WebSocket::close() {
-    const char* res = kuzzle_websocket_close(this->_web_socket);
-    if (res) {
-      return std::string(res);
+  void WebSocket::close() {
+    char* err = kuzzle_websocket_close(this->_web_socket);
+
+    if (err != NULL) {
+      const std::string cppError = err;
+      free(err);
+      throw InternalException(cppError);
     }
-    return "";
   }
 
   int WebSocket::getState() {

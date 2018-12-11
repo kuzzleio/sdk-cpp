@@ -25,9 +25,9 @@ namespace kuzzleio {
     virtual void removeAllListeners(Event);
     virtual void once(Event, EventListener*);
     virtual int listenerCount(Event);
-    virtual char* connect();
+    virtual void connect();
     virtual kuzzle_response* send(const std::string&, query_options *, const std::string&);
-    virtual std::string close();
+    virtual void close();
     virtual int getState();
     virtual void emitEvent(Event);
     virtual void registerSub(const std::string&, const std::string&, const std::string&, bool, NotificationListener*);
