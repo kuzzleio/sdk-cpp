@@ -7,7 +7,7 @@
 #include "internal/protocol.h"
 
 namespace kuzzleio {
-
+  
   class Protocol {
     public:
       protocol *_protocol;
@@ -20,9 +20,9 @@ namespace kuzzleio {
     virtual void removeAllListeners(Event) = 0;
     virtual void once(Event, EventListener*) = 0;
     virtual int listenerCount(Event) = 0;
-    virtual char* connect() = 0;
+    virtual void connect() = 0;
     virtual kuzzle_response* send(const std::string&, query_options *, const std::string&) = 0;
-    virtual std::string close() = 0;
+    virtual void close() = 0;
     virtual int getState() = 0;
     virtual void emitEvent(Event) = 0;
     virtual void registerSub(const std::string&, const std::string&, const std::string&, bool, NotificationListener*) = 0;
