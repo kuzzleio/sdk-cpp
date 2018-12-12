@@ -7,7 +7,6 @@ export CUCUMBER_HOST='localhost'
 export CUCUMBER_PORT='3902'
 
 VALGRIND_LOGFILE='./_build_cpp_tests/valgrind_report.log'
-CUCUMBER_LOGFILE='./_build_cpp_tests/cucumber.log'
 
 # initializes the valgrind suppression arguments
 for supp in ./valgrind.*.supp; do
@@ -23,15 +22,15 @@ fi
 VALGRIND=""
 
 if [ -z "${SKIPVALGRIND}" -o "${SKIPVALGRIND}" = 0 ]; then
-  VALGRIND="valgrind --leak-check=full --show-reachable=yes --gen-suppressions=all ${VALGRIND_SUPPR} --log-file=${VALGRIND_LOGFILE}"
+  valgrind --leak-check=full --show-reachable=yes --gen-suppressions=all ${VALGRIND_SUPPR} --log-file=${VALGRIND_LOGFILE} ./_build_cpp_tests/KuzzleSDKStepDefs &
+
+  # Should generally be enough to let valgrind initialize
+  # and start the server.
+  # If not, there is a retry mechanism fallback below
+  sleep 2
+else
+  ./_build_cpp_tests/KuzzleSDKStepDefs &
 fi
-
-${VALGRIND} ./_build_cpp_tests/KuzzleSDKStepDefs &
-
-# Should generally be enough to let valgrind initialize
-# and start the server.
-# If not, there is a retry mechanism fallback below
-sleep 2
 
 CMD="cucumber"
 
@@ -39,8 +38,8 @@ if [ ! -z "$FEATURE_FILE" ]; then
   CMD="${CMD} ./features/sdk-features/$FEATURE_FILE"
 fi
 
-${CMD} 2>&1 | tee ${CUCUMBER_LOGFILE}
-CUCUMBER_STATUS=${PIPESTATUS[0]}
+${CMD}
+CUCUMBER_STATUS=$?
 
 # Restart Cucumber if the wire server wasn't ready
 # We cannot check the connection port beforehand (e.g. with netcat),
@@ -60,8 +59,8 @@ while [ ${CUCUMBER_STATUS} -eq 2 ]; do
   echo "Retrying in 5 seconds (${retries} retries left)."
   sleep 5
 
-  ${CMD} 2>&1 | tee ${CUCUMBER_LOGFILE}
-  CUCUMBER_STATUS=${PIPESTATUS[0]}
+  ${CMD}
+  CUCUMBER_STATUS=$?
 done
 
 cd -
