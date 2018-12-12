@@ -4,6 +4,11 @@ project(KuzzleSKDTests)
 include(ExternalProject)
 
 #
+# Force debug flags for valgrind
+#
+SET(CMAKE_CXX_FLAGS  "${CMAKE_CXX_FLAGS} -g -O0")
+
+#
 # Cucumber CPP
 #
 
@@ -13,8 +18,8 @@ ExternalProject_Add(
     INSTALL_COMMAND ""
 
     CMAKE_CACHE_ARGS
-      -DCUKE_DISABLE_QT:BOOL=ON 
-      -DCUKE_ENABLE_EXAMPLES:BOOL=OFF 
+      -DCUKE_DISABLE_QT:BOOL=ON
+      -DCUKE_ENABLE_EXAMPLES:BOOL=OFF
       -DCUKE_DISABLE_GTEST:BOOL=ON
       -DCUKE_DISABLE_UNIT_TESTS:BOOL=ON
       -DCUKE_DISABLE_E2E_TESTS:BOOL=ON
@@ -41,7 +46,7 @@ add_library(cucumber-cpp STATIC IMPORTED) # or STATIC instead of SHARED
 add_dependencies(cucumber-cpp project_cucumber_cpp)
 set_target_properties(cucumber-cpp PROPERTIES
     IMPORTED_LOCATION ${CUCUMBER_CPP_LIBRARY_PATH}
-    INTERFACE_INCLUDE_DIRECTORIES  
+    INTERFACE_INCLUDE_DIRECTORIES
         "${CUCUMBER_CPP_INCLUDE_PATH}"
     DEPENDS project_cucumber_cpp
 )
@@ -53,7 +58,7 @@ set_target_properties(cucumber-cpp PROPERTIES
 add_subdirectory(3rdparty/json_spirit)
 
 #
-# Kuzzle SDK 
+# Kuzzle SDK
 #
 
 get_filename_component(KUZZLE_SDK_ROOT "${CMAKE_SOURCE_DIR}/../../../src" ABSOLUTE)
@@ -101,7 +106,7 @@ if(Boost_UNIT_TEST_FRAMEWORK_FOUND)
 
     add_library(kuzzlesdk SHARED IMPORTED) # or STATIC instead of SHARED
     set_target_properties(kuzzlesdk PROPERTIES
-    IMPORTED_LOCATION "${KUZZLE_SDK_ROOT}/../sdk-c/build/libkuzzlesdk.a" 
+    IMPORTED_LOCATION "${KUZZLE_SDK_ROOT}/../sdk-c/build/libkuzzlesdk.so"
     INTERFACE_INCLUDE_DIRECTORIES "${KUZZLE_SDK_ROOT}/../include/"
     )
 

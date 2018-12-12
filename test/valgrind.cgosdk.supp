@@ -1,0 +1,87 @@
+{
+   Cgo wrapper
+   Memcheck:Addr8
+   ...
+   obj:*/libkuzzlesdk.so*
+}
+{
+   Cgo wrapper
+   Memcheck:Cond
+   obj:*/libkuzzlesdk.so*
+}
+{
+   Cgo wrapper
+   Memcheck:Value8
+   obj:*/libkuzzlesdk.so*
+}
+{
+   kuzzle_connect through bridge
+   Memcheck:Addr8
+   fun:_*func_bridge_connect
+   fun:runtime.asmcgocall
+   ...
+   fun:runtime.cgocallback_gofunc
+   fun:runtime.cgocallback
+   fun:*kuzzle_connect
+}
+{
+   main.bridge_notification
+   Memcheck:Addr1
+   fun:main.bridge_notification
+}
+{
+   main.cToGo*
+   Memcheck:Addr8
+   fun:main.cToGo*
+}
+{
+   main.func_bridge_connect
+   Memcheck:Addr8
+   fun:main._Cfunc_bridge_connect
+}
+{
+   func_CString
+   Memcheck:Addr8
+   fun:main._Cfunc_CString
+}
+{
+   main.goToC*
+   Memcheck:Addr1
+   fun:main.goToC*
+}
+{
+   main.goToC*
+   Memcheck:Addr8
+   fun:main.goToC*
+}
+{
+   main.kuzzle_connect
+   Memcheck:Addr8
+   fun:main.*kuzzle_connect*
+}
+{
+   main.kuzzle_set_default_query_options
+   Memcheck:Addr1
+   fun:main.kuzzle_set_default_query_options
+}
+{
+   main.kuzzle_set_default_query_options
+   Memcheck:Addr8
+   fun:main.kuzzle_set_default_query_options
+}
+{
+   main.*kuzzle_websocket_*
+   Memcheck:Addr8
+   ...
+   fun:main.*kuzzle_websocket_*
+}
+{
+   main.WrapProtocol
+   Memcheck:Addr1
+   fun:main.WrapProtocol.*
+}
+{
+   main.WrapProtocol
+   Memcheck:Addr8
+   fun:main.WrapProtocol.*
+}
