@@ -65,6 +65,35 @@
     throwKuzzleException(status, err); \
   }
 
+/*
+ * Macro used by controller actions.
+ * This standardizes and DRYifies the following process, making sure
+ * that the underlying API result structure is correctly
+ * freed when an error is received and when an exception
+ * has to be thrown:
+ *
+ * - call the <_call> function, usually a kuzzle cgo function (with args)
+ * - stores the result in a <_type> variable of name <_name>
+ * - if an error has been received:
+ *   - create an exception
+ *   - free the result structure
+ *   - throw the exception
+ *
+ * The last variadic parameter is a single line of code to be called
+ * after the API result has been received, but before the error handling.
+ * This is usually used to free intermediate variables instantiated to
+ * convert a C++ arg into a cgo-compatible one
+ */
+#define KUZZLE_API(_type, _name, _call, ... ) \
+  _type * _name = _call; \
+  __VA_ARGS__; \
+  if (_name != nullptr && _name->error != nullptr) {\
+    int status = _name->status; \
+    std::string err = _name->error; \
+    kuzzle_free_##_type(_name); \
+    throwKuzzleException(status, err); \
+  }
+
 namespace kuzzleio {
   class Collection;
   class Document;
