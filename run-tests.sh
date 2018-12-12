@@ -1,6 +1,5 @@
 #!/usr/bin/env bash
 
-set -e
 cd test
 
 export CUCUMBER_HOST='localhost'
@@ -18,8 +17,6 @@ FEATURE_FILE=$1
 if [ -z "${SKIPBUILD}" -o "${SKIPBUILD}" = 0 ]; then
   ./build_cpp_tests.sh
 fi
-
-VALGRIND=""
 
 if [ -z "${SKIPVALGRIND}" -o "${SKIPVALGRIND}" = 0 ]; then
   valgrind --leak-check=full --show-reachable=yes --gen-suppressions=all ${VALGRIND_SUPPR} --log-file=${VALGRIND_LOGFILE} ./_build_cpp_tests/KuzzleSDKStepDefs &
