@@ -150,7 +150,7 @@ void kuzzle_user_create(Kuzzle *kuzzle, const string &user_id,
 
  // if (kuzzle_user_exists(kuzzle, user_id.c_str()))
   {
-    K_LOG_W("An user with id: '%s' already exists, deleteting it...",
+    K_LOG_W("An user with id: '%s' already exists, deleting it...",
             user_id.c_str());
     kuzzle_credentials_delete(kuzzle, "local", user_id);
     kuzzle_user_delete(kuzzle, user_id);
