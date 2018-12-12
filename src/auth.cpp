@@ -59,10 +59,10 @@ namespace kuzzleio {
     kuzzle_free_error_result(r);
   }
 
-  kuzzle_user* Auth::getCurrentUser() {
+  User Auth::getCurrentUser() {
     KUZZLE_API(user_result, r, kuzzle_get_current_user(_auth))
 
-    kuzzle_user *u = r->result;
+    User u = r->result;
     kuzzle_free_user_result(r);
     return u;
   }
@@ -131,10 +131,10 @@ namespace kuzzleio {
     return ret;
   }
 
-  kuzzle_user* Auth::updateSelf(const std::string& content, query_options* options) {
+  User Auth::updateSelf(const std::string& content, query_options* options) {
     KUZZLE_API(user_result, r, kuzzle_update_self(_auth, const_cast<char*>(content.c_str()), options))
 
-    kuzzle_user *ret = r->result;
+    User ret = r->result;
     kuzzle_free_user_result(r);
     return ret;
   }

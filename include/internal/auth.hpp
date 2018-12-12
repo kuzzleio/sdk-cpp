@@ -19,6 +19,7 @@
 #include <vector>
 #include <memory>
 #include "user_right.hpp"
+#include "user.hpp"
 #include "core.hpp"
 
 namespace kuzzleio {
@@ -38,7 +39,7 @@ namespace kuzzleio {
       std::string createMyCredentials(const std::string& strategy, const std::string& credentials, query_options* options=nullptr);
       bool credentialsExist(const std::string& strategy, query_options *options=nullptr);
       void deleteMyCredentials(const std::string& strategy, query_options *options=nullptr);
-      kuzzle_user* getCurrentUser();
+      User getCurrentUser();
       std::string getMyCredentials(const std::string& strategy, query_options *options=nullptr);
       std::vector<std::unique_ptr<UserRight>> getMyRights(query_options *options=nullptr);
       std::vector<std::string> getStrategies(query_options *options=nullptr);
@@ -47,7 +48,7 @@ namespace kuzzleio {
       void logout() noexcept;
       void setJwt(const std::string& jwt) noexcept;
       std::string updateMyCredentials(const std::string& strategy, const std::string& credentials, query_options *options=nullptr);
-      kuzzle_user* updateSelf(const std::string& content, query_options* options=nullptr);
+      User updateSelf(const std::string& content, query_options* options=nullptr);
       bool validateMyCredentials(const std::string& strategy, const std::string& credentials, query_options* options=nullptr);
   };
 }
