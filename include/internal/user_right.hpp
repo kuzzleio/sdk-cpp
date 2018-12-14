@@ -21,13 +21,13 @@
 namespace kuzzleio {
   class UserRight {
     private:
+      std::string _controller;
       std::string _action;
       std::string _index;
       std::string _collection;
       std::string _value;
 
     public:
-      std::string _controller;
       std::string const& controller() const;
       std::string const& action() const;
       std::string const& index() const;
