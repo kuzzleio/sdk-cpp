@@ -31,13 +31,16 @@ namespace kuzzleio {
     delete(_collection);
   }
 
-  void Collection::create(const std::string& index, const std::string& collection, const std::string* body, query_options *options) {
-    char * bodystr = body != nullptr ? const_cast<char*>(body->c_str()) : nullptr;
+  void Collection::create(const std::string& index, const std::string& collection, query_options *options) {
+    this->create(index, collection, "{}", options);
+  }
+
+  void Collection::create(const std::string& index, const std::string& collection, const std::string& body, query_options *options) {
     KUZZLE_API(error_result, r, kuzzle_collection_create(
       _collection,
       const_cast<char*>(index.c_str()),
       const_cast<char*>(collection.c_str()),
-      bodystr,
+      const_cast<char*>(body.c_str()),
       options))
 
     kuzzle_free_error_result(r);
