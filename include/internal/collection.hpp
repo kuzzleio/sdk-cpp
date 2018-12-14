@@ -13,14 +13,14 @@
 // limitations under the License.
 
 #ifndef _COLLECTION_HPP_
-# define _COLLECTION_HPP_
+#define _COLLECTION_HPP_
 
-# include <iostream>
-# include <list>
+#include <iostream>
+#include <list>
 
-# include "core.hpp"
-# include "exceptions.hpp"
-# include "search_result.hpp"
+#include "core.hpp"
+#include "exceptions.hpp"
+#include "search_result.hpp"
 
 namespace kuzzleio {
     class Kuzzle;
