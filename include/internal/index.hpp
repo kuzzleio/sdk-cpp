@@ -14,7 +14,7 @@
 
 #ifndef _KUZZLE_INDEX_HPP
 #define _KUZZLE_INDEX_HPP
-#include <stdlib.h>
+#include <cstdlib>
 #include <vector>
 #include "exceptions.hpp"
 #include "core.hpp"
@@ -22,12 +22,11 @@
 namespace kuzzleio {
   class Kuzzle;
   class Index {
-    kuzzle_index *_index;
-    Index();
+    private:
+      kuzzle_index *_index;
 
     public:
-      Index(Kuzzle* kuzzle);
-      Index(Kuzzle* kuzzle, kuzzle_index *index);
+      Index(kuzzle* kuzzle);
       virtual ~Index();
       void create(const std::string& index, query_options *options=nullptr);
       void delete_(const std::string& index, query_options *options=nullptr);

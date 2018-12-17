@@ -16,19 +16,17 @@
 #include "internal/collection.hpp"
 
 namespace kuzzleio {
-  Collection::Collection(Kuzzle* kuzzle) {
-    _collection = new collection();
-    kuzzle_new_collection(_collection, kuzzle->_kuzzle);
-  }
-
-  Collection::Collection(Kuzzle* kuzzle, collection *collection) {
-    _collection = collection;
-    kuzzle_new_collection(collection, kuzzle->_kuzzle);
+  Collection::Collection(kuzzle* kuzzle) {
+    _collection = kuzzle_get_collection_controller(kuzzle);
+    kuzzle_new_collection(_collection, kuzzle);
   }
 
   Collection::~Collection() {
     unregisterCollection(_collection);
-    delete(_collection);
+
+    // do not use "delete":
+    // _collection is allocating in the cgo world, using calloc
+    free(_collection);
   }
 
   void Collection::create(const std::string& index, const std::string& collection, const std::string* body, query_options *options) {

@@ -16,19 +16,17 @@
 #include "internal/index.hpp"
 
 namespace kuzzleio {
-  Index::Index(Kuzzle* kuzzle) {
-    _index = new kuzzle_index();
-    kuzzle_new_index(_index, kuzzle->_kuzzle);
-  }
-
-  Index::Index(Kuzzle* kuzzle, kuzzle_index *index) {
-    _index = index;
-    kuzzle_new_index(index, kuzzle->_kuzzle);
+  Index::Index(kuzzle* kuzzle) {
+    _index = kuzzle_get_index_controller(kuzzle);
+    kuzzle_new_index(_index, kuzzle);
   }
 
   Index::~Index() {
     unregisterIndex(_index);
-    delete(_index);
+
+    // do not use "delete":
+    // _index is allocating in the cgo world, using calloc
+    free(_index);
   }
 
   void Index::create(const std::string& index, query_options *options) {

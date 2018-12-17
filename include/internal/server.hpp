@@ -20,12 +20,11 @@
 
 namespace kuzzleio {
   class Server {
-    server *_server;
-    Server();
+    private:
+      server *_server;
 
     public:
-      Server(Kuzzle* kuzzle);
-      Server(Kuzzle *kuzzle, server *server);
+      Server(kuzzle* kuzzle);
       virtual ~Server();
       bool adminExists(query_options *options=nullptr);
       std::string getAllStats(query_options* options=nullptr);
