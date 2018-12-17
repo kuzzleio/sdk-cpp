@@ -28,11 +28,11 @@ namespace kuzzleio {
       std::string _value;
 
     public:
-      std::string const& controller() const;
-      std::string const& action() const;
-      std::string const& index() const;
-      std::string const& collection() const;
-      std::string const& value() const;
+      const std::string& controller() const;
+      const std::string& action() const;
+      const std::string& index() const;
+      const std::string& collection() const;
+      const std::string& value() const;
 
       void controller(std::string const&);
       void action(std::string const&);
