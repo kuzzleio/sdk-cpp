@@ -16,21 +16,18 @@
 #include "internal/auth.hpp"
 
 namespace kuzzleio {
-  Auth::Auth(Kuzzle *kuzzle) {
-      _auth = new auth();
-      _kuzzle = kuzzle;
-      kuzzle_new_auth(_auth, kuzzle->_kuzzle);
-  }
-
-  Auth::Auth(Kuzzle *kuzzle, auth *auth) {
-    _auth = auth;
+  Auth::Auth(kuzzle *kuzzle) {
     _kuzzle = kuzzle;
-    kuzzle_new_auth(_auth, kuzzle->_kuzzle);
+    _auth = kuzzle_get_auth_controller(_kuzzle);
+    kuzzle_new_auth(_auth, _kuzzle);
   }
 
   Auth::~Auth() {
       unregisterAuth(_auth);
-      delete(_auth);
+
+      // do not use "delete":
+      // _auth is allocating in the cgo world, using calloc
+      free(_auth);
   }
 
   token_validity* Auth::checkToken(const std::string& token) {
@@ -120,7 +117,7 @@ namespace kuzzleio {
   }
 
   void Auth::setJwt(const std::string& jwt) noexcept {
-    kuzzle_set_jwt(_kuzzle->_kuzzle, const_cast<char*>(jwt.c_str()));
+    kuzzle_set_jwt(_kuzzle, const_cast<char*>(jwt.c_str()));
   }
 
   std::string Auth::updateMyCredentials(const std::string& strategy, const std::string& credentials, query_options *options) {

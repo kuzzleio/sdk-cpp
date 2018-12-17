@@ -17,19 +17,17 @@
 #include "internal/search_result.hpp"
 
 namespace kuzzleio {
-  Document::Document(Kuzzle* kuzzle) {
-    _document = new document();
-    kuzzle_new_document(_document, kuzzle->_kuzzle);
-  }
-
-  Document::Document(Kuzzle* kuzzle, document *document) {
-    _document = document;
-    kuzzle_new_document(_document, kuzzle->_kuzzle);
+  Document::Document(kuzzle* kuzzle) {
+    _document = kuzzle_get_document_controller(kuzzle);
+    kuzzle_new_document(_document, kuzzle);
   }
 
   Document::~Document() {
     unregisterDocument(_document);
-    delete(_document);
+
+    // do not use "delete":
+    // _document is allocating in the cgo world, using calloc
+    free(_document);
   }
 
   int Document::count(const std::string& index, const std::string& collection, const std::string& body, query_options *options) {

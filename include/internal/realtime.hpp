@@ -13,13 +13,12 @@ namespace kuzzleio {
   class Kuzzle;
 
   class Realtime {
-    realtime *_realtime;
-    std::map<std::string, NotificationListener*> _listener_instances;
-    Realtime();
+    private:
+      realtime *_realtime;
+      std::map<std::string, NotificationListener*> _listener_instances;
 
     public:
-      Realtime(Kuzzle* kuzzle);
-      Realtime(Kuzzle* kuzzle, realtime* realtime);
+      Realtime(kuzzle* kuzzle);
       virtual ~Realtime();
       int count(const std::string& roomId, query_options *options=nullptr);
       void publish(const std::string& index, const std::string& collection, const std::string& body, query_options *options=nullptr);

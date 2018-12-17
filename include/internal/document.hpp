@@ -22,12 +22,11 @@
 namespace kuzzleio {
 
     class Document {
-        document* _document;
-        Document();
+        private:
+            document* _document;
 
         public:
-            Document(Kuzzle* kuzzle);
-            Document(Kuzzle* kuzzle, document *document);
+            Document(kuzzle* kuzzle);
             virtual ~Document();
             int count(const std::string& index, const std::string& collection, const std::string& body, query_options *options=nullptr);
             int count(const std::string& index, const std::string& collection, query_options *options=nullptr);
