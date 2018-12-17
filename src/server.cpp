@@ -16,19 +16,17 @@
 #include "internal/server.hpp"
 
 namespace kuzzleio {
-  Server::Server(Kuzzle* kuzzle) {
-    _server = new server();
-    kuzzle_new_server(_server, kuzzle->_kuzzle);
-  }
-
-  Server::Server(Kuzzle* kuzzle, server *server) {
-    _server = server;
-    kuzzle_new_server(_server, kuzzle->_kuzzle);
+  Server::Server(kuzzle* kuzzle) {
+    _server = kuzzle_get_server_controller(kuzzle);
+    kuzzle_new_server(_server, kuzzle);
   }
 
   Server::~Server() {
     unregisterServer(_server);
-    delete(_server);
+
+    // do not use "delete":
+    // _server is allocating in the cgo world, using calloc
+    free(_server);
   }
 
   bool Server::adminExists(query_options *options) {

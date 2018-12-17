@@ -16,19 +16,17 @@
 #include "internal/realtime.hpp"
 
 namespace kuzzleio {
-  Realtime::Realtime(Kuzzle *kuzzle) {
-    _realtime = new realtime();
-    kuzzle_new_realtime(_realtime, kuzzle->_kuzzle);
-  }
-
-  Realtime::Realtime(Kuzzle *kuzzle, realtime *realtime) {
-    _realtime = realtime;
-    kuzzle_new_realtime(_realtime, kuzzle->_kuzzle);
+  Realtime::Realtime(kuzzle *kuzzle) {
+    _realtime = kuzzle_get_realtime_controller(kuzzle);
+    kuzzle_new_realtime(_realtime, kuzzle);
   }
 
   Realtime::~Realtime() {
     unregisterRealtime(_realtime);
-    delete(_realtime);
+
+    // do not use "delete":
+    // _realtime is allocating in the cgo world, using calloc
+    free(_realtime);
   }
 
   int Realtime::count(const std::string& roomId, query_options *options) {

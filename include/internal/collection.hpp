@@ -27,12 +27,11 @@ namespace kuzzleio {
     class SearchResult;
 
     class Collection {
-        collection* _collection;
-        Collection();
+        private:
+            collection* _collection;
 
         public:
-            Collection(Kuzzle* kuzzle);
-            Collection(Kuzzle* kuzzle, collection *collection);
+            Collection(kuzzle* kuzzle);
             virtual ~Collection();
             void create(const std::string& index, const std::string& collection, const std::string* body=nullptr, query_options *options=nullptr);
             bool exists(const std::string& index, const std::string& collection, query_options *options=nullptr);

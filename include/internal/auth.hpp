@@ -26,14 +26,11 @@ namespace kuzzleio {
   class Kuzzle;
 
   class Auth {
-    auth *_auth;
-    Auth();
-
+    private:
+      auth *_auth;
+      kuzzle *_kuzzle;
     public:
-      Kuzzle *_kuzzle;
-
-      Auth(Kuzzle *kuzzle);
-      Auth(Kuzzle *kuzzle, auth *auth);
+      Auth(kuzzle *kuzzle);
       virtual ~Auth();
       token_validity* checkToken(const std::string& token);
       std::string createMyCredentials(const std::string& strategy, const std::string& credentials, query_options* options=nullptr);
