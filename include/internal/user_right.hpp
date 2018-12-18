@@ -20,33 +20,26 @@
 
 namespace kuzzleio {
   class UserRight {
-    private:
-      std::string _controller;
-      std::string _action;
-      std::string _index;
-      std::string _collection;
-      std::string _value;
-
     public:
-      const std::string& controller() const;
-      const std::string& action() const;
-      const std::string& index() const;
-      const std::string& collection() const;
-      const std::string& value() const;
+      const std::string controller;
+      const std::string action;
+      const std::string index;
+      const std::string collection;
+      const std::string value;
 
-      void controller(std::string const&);
-      void action(std::string const&);
-      void index(std::string const&);
-      void collection(std::string const&);
-      void value(std::string const&);
-
-      UserRight() = default;
       UserRight(const user_right* r) :
-        _controller(r->controller),
-        _action(r->action),
-        _index(r->index),
-        _collection(r->collection),
-        _value(r->value)
+        controller(r->controller),
+        action(r->action),
+        index(r->index),
+        collection(r->collection),
+        value(r->value)
+        {};
+      UserRight(UserRight* r) :
+        controller(r->controller),
+        action(r->action),
+        index(r->index),
+        collection(r->collection),
+        value(r->value)
         {};
   };
 }

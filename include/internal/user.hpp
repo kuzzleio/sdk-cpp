@@ -7,23 +7,21 @@
 
 namespace kuzzleio {
   class User {
-    private:
-      std::string _id;
-      std::string _content;
-      std::vector<std::string> _profile_ids;
-
     public:
-      std::string const& id() const;
-      std::string const& content() const;
-      std::vector<std::string> const& profile_ids() const;
+      const std::string id;
+      const std::string content;
+      const std::vector<std::string> profile_ids;
 
       User(const kuzzle_user* u) :
-        _id(u->id),
-        _content(u->content),
-        _profile_ids(std::vector<std::string>(u->profile_ids, u->profile_ids + u->profile_ids_length))
+        id(u->id),
+        content(u->content),
+        profile_ids(std::vector<std::string>(u->profile_ids, u->profile_ids + u->profile_ids_length))
         {};
-      User() = default;
-      User& operator=(const kuzzle_user*);
+      User(User* u) :
+        id(u->id),
+        content(u->content),
+        profile_ids(u->profile_ids)
+        {};
   };
 }
 
