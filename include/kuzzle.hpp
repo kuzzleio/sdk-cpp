@@ -37,6 +37,7 @@
 #include "internal/user_right.hpp"
 #include "internal/user.hpp"
 #include "internal/kuzzle_response.hpp"
+#include "internal/meta.hpp"
 
 /*
  * Macro used by controller actions.
