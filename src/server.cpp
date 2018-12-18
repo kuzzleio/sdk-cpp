@@ -16,83 +16,68 @@
 #include "internal/server.hpp"
 
 namespace kuzzleio {
-  Server::Server(Kuzzle* kuzzle) {
-      _server = new server();
-      kuzzle_new_server(_server, kuzzle->_kuzzle);
-  }
-
-  Server::Server(Kuzzle* kuzzle, server *server) {
-      _server = server;
-      kuzzle_new_server(_server, kuzzle->_kuzzle);
+  Server::Server(kuzzle* kuzzle) {
+    _server = kuzzle_get_server_controller(kuzzle);
+    kuzzle_new_server(_server, kuzzle);
   }
 
   Server::~Server() {
-      unregisterServer(_server);
-      delete(_server);
+    unregisterServer(_server);
+
+    // do not use "delete":
+    // _server is allocating in the cgo world, using calloc
+    free(_server);
   }
 
   bool Server::adminExists(query_options *options) {
-    bool_result* r = kuzzle_admin_exists(_server, options);
-    if (r->error != nullptr)
-        throwExceptionFromStatus(r);
+    KUZZLE_API(bool_result, r, kuzzle_admin_exists(_server, options))
     bool ret = r->result;
-    delete(r);
+    kuzzle_free_bool_result(r);
     return ret;
   }
 
   std::string Server::getAllStats(query_options* options) {
-    string_result* r = kuzzle_get_all_stats(_server, options);
-    if (r->error != nullptr)
-        throwExceptionFromStatus(r);
+    KUZZLE_API(string_result, r, kuzzle_get_all_stats(_server, options))
     std::string ret = r->result;
-    delete(r);
+    kuzzle_free_string_result(r);
     return ret;
   }
 
   std::string Server::getStats(time_t start, time_t end, query_options* options) {
-    string_result* r = kuzzle_get_stats(_server, start, end, options);
-    if (r->error != nullptr)
-        throwExceptionFromStatus(r);
+    KUZZLE_API(string_result, r, kuzzle_get_stats(_server, start, end, options))
     std::string ret = r->result;
-    delete(r);
+    kuzzle_free_string_result(r);
     return ret;
   }
 
   std::string Server::getLastStats(query_options* options) {
-    string_result* r = kuzzle_get_last_stats(_server, options);
-    if (r->error != nullptr)
-        throwExceptionFromStatus(r);
+    KUZZLE_API(string_result, r, kuzzle_get_last_stats(_server, options))
     std::string ret = r->result;
-    delete(r);
+    kuzzle_free_string_result(r);
     return ret;
   }
 
   std::string Server::getConfig(query_options* options) {
-    string_result* r = kuzzle_get_config(_server, options);
-    if (r->error != nullptr)
-        throwExceptionFromStatus(r);
+    KUZZLE_API(string_result, r, kuzzle_get_config(_server, options))
     std::string ret = r->result;
-    delete(r);
+    kuzzle_free_string_result(r);
     return ret;
   }
 
   std::string Server::info(query_options* options) {
-    string_result* r = kuzzle_info(_server, options);
-    if (r->error != nullptr)
-        throwExceptionFromStatus(r);
+    KUZZLE_API(string_result, r, kuzzle_info(_server, options))
+
     std::string ret = r->result;
-    delete(r);
+    kuzzle_free_string_result(r);
     return ret;
   }
 
   // java wrapper for this method is in typemap.i
   long long Server::now(query_options* options) {
-    date_result *r = kuzzle_now(_server, options);
-    if (r->error != nullptr)
-        throwExceptionFromStatus(r);
+    KUZZLE_API(date_result, r, kuzzle_now(_server, options))
+
     long long ret = r->result;
-    delete(r);
+    kuzzle_free_date_result(r);
     return ret;
   }
-
 }

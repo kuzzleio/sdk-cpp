@@ -1,0 +1,60 @@
+{
+   Kuzzle Go SDK
+   Memcheck:Addr1
+   ...
+   fun:github.com/kuzzleio/sdk-go/*
+}
+{
+   Kuzzle Go SDK
+   Memcheck:Addr4
+   ...
+   fun:github.com/kuzzleio/sdk-go/*
+}
+{
+   Kuzzle Go SDK
+   Memcheck:Addr8
+   ...
+   fun:github.com/kuzzleio/sdk-go/*
+}
+{
+   Kuzzle Go SDK
+   Memcheck:Addr16
+   ...
+   fun:github.com/kuzzleio/sdk-go/*
+}
+{
+   Gorilla WebSocket
+   Memcheck:Addr8
+   ...
+   fun:github.com/gorilla/websocket.*
+}
+{
+   Gorilla WebSocket
+   Memcheck:Addr1
+   ...
+   fun:github.com/gorilla/websocket.*
+}
+{
+   Gorilla WebSocket
+   Memcheck:Addr2
+   ...
+   fun:github.com/gorilla/websocket.*
+}
+{
+   Gorilla WebSocket
+   Memcheck:Addr4
+   ...
+   fun:github.com/gorilla/websocket.*
+}
+{
+   uuid
+   Memcheck:Addr8
+   ...
+   fun:github.com/satori/*uuid.*
+}
+{
+   uuid
+   Memcheck:Addr16
+   ...
+   fun:github.com/satori/*uuid.*
+}

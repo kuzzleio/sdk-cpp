@@ -7,6 +7,7 @@
 #include <cstdlib>
 #include <iostream>
 #include <functional>
+#include <memory>
 
 #include "kuzzle.hpp"
 #include "websocket.hpp"
@@ -33,11 +34,11 @@ struct KuzzleCtx {
   string jwt;
   string document_id;
   SearchResult *documents;
-  std::vector<user_right*> user_rights;
+  std::vector<std::shared_ptr<UserRight>> user_rights;
 
   string room_id;
 
-  kuzzle_user*                   currentUser        = nullptr;
+  User currentUser;
   json_spirit::Value_type customUserDataType = json_spirit::null_type;
 
   // 1 mean success, 0 failure and -1 is base state

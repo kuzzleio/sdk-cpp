@@ -16,21 +16,18 @@
 #include "internal/auth.hpp"
 
 namespace kuzzleio {
-  Auth::Auth(Kuzzle *kuzzle) {
-      _auth = new auth();
-      _kuzzle = kuzzle;
-      kuzzle_new_auth(_auth, kuzzle->_kuzzle);
-  }
-
-  Auth::Auth(Kuzzle *kuzzle, auth *auth) {
-    _auth = auth;
+  Auth::Auth(kuzzle *kuzzle) {
     _kuzzle = kuzzle;
-    kuzzle_new_auth(_auth, kuzzle->_kuzzle);
+    _auth = kuzzle_get_auth_controller(_kuzzle);
+    kuzzle_new_auth(_auth, _kuzzle);
   }
 
   Auth::~Auth() {
       unregisterAuth(_auth);
-      delete(_auth);
+
+      // do not use "delete":
+      // _auth is allocating in the cgo world, using calloc
+      free(_auth);
   }
 
   token_validity* Auth::checkToken(const std::string& token) {
@@ -38,58 +35,52 @@ namespace kuzzleio {
   }
 
   std::string Auth::createMyCredentials(const std::string& strategy, const std::string& credentials, query_options* options) {
-    string_result* r = kuzzle_create_my_credentials(_auth, const_cast<char*>(strategy.c_str()), const_cast<char*>(credentials.c_str()), options);
-    if (r->error)
-        throwExceptionFromStatus(r);
+    KUZZLE_API(string_result, r, kuzzle_create_my_credentials(_auth, const_cast<char*>(strategy.c_str()), const_cast<char*>(credentials.c_str()), options))
+
     std::string ret = r->result;
-    delete(r);
+
+    kuzzle_free_string_result(r);
     return ret;
   }
 
   bool Auth::credentialsExist(const std::string& strategy, query_options *options) {
-    bool_result* r = kuzzle_credentials_exist(_auth, const_cast<char*>(strategy.c_str()), options);
-    if (r->error != nullptr)
-        throwExceptionFromStatus(r);
+    KUZZLE_API(bool_result, r, kuzzle_credentials_exist(_auth, const_cast<char*>(strategy.c_str()), options))
+
     bool ret = r->result;
-    delete(r);
+    kuzzle_free_bool_result(r);
     return ret;
   }
 
   void Auth::deleteMyCredentials(const std::string& strategy, query_options *options) {
-    error_result *r = kuzzle_delete_my_credentials(_auth, const_cast<char*>(strategy.c_str()), options);
-    if (r != nullptr)
-        throwExceptionFromStatus(r);
-    delete(r);
+    KUZZLE_API(error_result, r, kuzzle_delete_my_credentials(_auth, const_cast<char*>(strategy.c_str()), options))
+    kuzzle_free_error_result(r);
   }
 
-  kuzzle_user* Auth::getCurrentUser() {
-    user_result *r = kuzzle_get_current_user(_auth);
-    if (r->error != nullptr)
-        throwExceptionFromStatus(r);
+  User Auth::getCurrentUser() {
+    KUZZLE_API(user_result, r, kuzzle_get_current_user(_auth))
 
-    kuzzle_user *u = r->result;
+    User u = r->result;
     kuzzle_free_user_result(r);
     return u;
   }
 
   std::string Auth::getMyCredentials(const std::string& strategy, query_options *options) {
-    string_result *r = kuzzle_get_my_credentials(_auth, const_cast<char*>(strategy.c_str()), options);
-    if (r->error != nullptr)
-        throwExceptionFromStatus(r);
+    KUZZLE_API(string_result, r, kuzzle_get_my_credentials(_auth, const_cast<char*>(strategy.c_str()), options))
+
     std::string ret = r->result;
     kuzzle_free_string_result(r);
     return ret;
   }
 
-  std::vector<user_right*> Auth::getMyRights(query_options* options) {
-    user_rights_result *r = kuzzle_get_my_rights(_auth, options);
-    if (r->error != nullptr)
-        throwExceptionFromStatus(r);
+  std::vector<std::shared_ptr<UserRight>> Auth::getMyRights(query_options* options) {
+    KUZZLE_API(user_rights_result, r, kuzzle_get_my_rights(_auth, options))
 
-    std::vector<user_right*> user_rights;
+    std::vector<std::shared_ptr<UserRight>> user_rights;
+    user_rights.reserve(r->rights_length);
 
-    for (size_t i = 0; r->result[i]; ++i) {
-      user_rights.push_back(r->result[i]);
+    for (size_t i = 0; i < r->rights_length; ++i) {
+      std::shared_ptr<UserRight> right(new UserRight(r->rights[i]));
+      user_rights.push_back(std::move(right));
     }
 
     kuzzle_free_user_rights_result(r);
@@ -97,32 +88,25 @@ namespace kuzzleio {
   }
 
   std::vector<std::string> Auth::getStrategies(query_options *options) {
-    string_array_result *r = kuzzle_get_strategies(_auth, options);
-    if (r->error != nullptr)
-        throwExceptionFromStatus(r);
+    KUZZLE_API(string_array_result, r, kuzzle_get_strategies(_auth, options))
 
-    std::vector<std::string> strategies;
-
-    for (size_t i = 0; r->result[i]; ++i)
-      strategies.push_back(r->result[i]);
+    std::vector<std::string> strategies = std::vector<std::string>(r->result, r->result + r->result_length);
 
     kuzzle_free_string_array_result(r);
     return strategies;
   }
 
   std::string Auth::login(const std::string& strategy, const std::string& credentials) {
-    string_result* r = kuzzle_login(_auth, const_cast<char*>(strategy.c_str()), const_cast<char*>(credentials.c_str()), nullptr);
-    if (r->error != nullptr)
-        throwExceptionFromStatus(r);
+    KUZZLE_API(string_result, r, kuzzle_login(_auth, const_cast<char*>(strategy.c_str()), const_cast<char*>(credentials.c_str()), nullptr))
+
     std::string ret = r->result;
     kuzzle_free_string_result(r);
     return ret;
   }
 
   std::string Auth::login(const std::string& strategy, const std::string& credentials, int expires_in) {
-    string_result* r = kuzzle_login(_auth, const_cast<char*>(strategy.c_str()), const_cast<char*>(credentials.c_str()), &expires_in);
-    if (r->error != nullptr)
-        throwExceptionFromStatus(r);
+    KUZZLE_API(string_result, r, kuzzle_login(_auth, const_cast<char*>(strategy.c_str()), const_cast<char*>(credentials.c_str()), &expires_in))
+
     std::string ret = r->result;
     kuzzle_free_string_result(r);
     return ret;
@@ -133,34 +117,30 @@ namespace kuzzleio {
   }
 
   void Auth::setJwt(const std::string& jwt) noexcept {
-    kuzzle_set_jwt(_kuzzle->_kuzzle, const_cast<char*>(jwt.c_str()));
+    kuzzle_set_jwt(_kuzzle, const_cast<char*>(jwt.c_str()));
   }
 
   std::string Auth::updateMyCredentials(const std::string& strategy, const std::string& credentials, query_options *options) {
-    string_result *r = kuzzle_update_my_credentials(_auth, const_cast<char*>(strategy.c_str()), const_cast<char*>(credentials.c_str()), options);
-    if (r->error != nullptr)
-        throwExceptionFromStatus(r);
+    KUZZLE_API(string_result, r, kuzzle_update_my_credentials(_auth, const_cast<char*>(strategy.c_str()), const_cast<char*>(credentials.c_str()), options))
+
     std::string ret = r->result;
     kuzzle_free_string_result(r);
     return ret;
   }
 
-  kuzzle_user* Auth::updateSelf(const std::string& content, query_options* options) {
-    user_result *r = kuzzle_update_self(_auth, const_cast<char*>(content.c_str()), options);
-    if (r->error != nullptr)
-      throwExceptionFromStatus(r);
-    kuzzle_user *ret = r->result;
+  User Auth::updateSelf(const std::string& content, query_options* options) {
+    KUZZLE_API(user_result, r, kuzzle_update_self(_auth, const_cast<char*>(content.c_str()), options))
+
+    User ret = r->result;
     kuzzle_free_user_result(r);
     return ret;
   }
 
   bool Auth::validateMyCredentials(const std::string& strategy, const std::string& credentials, query_options* options) {
-    bool_result *r = kuzzle_validate_my_credentials(_auth, const_cast<char*>(strategy.c_str()), const_cast<char*>(credentials.c_str()), options);
-    if (r->error != nullptr)
-        throwExceptionFromStatus(r);
+    KUZZLE_API(bool_result, r, kuzzle_validate_my_credentials(_auth, const_cast<char*>(strategy.c_str()), const_cast<char*>(credentials.c_str()), options))
+
     bool ret = r->result;
     kuzzle_free_bool_result(r);
     return ret;
   }
-
 }

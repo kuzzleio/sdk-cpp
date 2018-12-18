@@ -168,12 +168,12 @@ namespace kuzzleio {
 
     kuzzle_new_kuzzle(this->_kuzzle, this->_protocol, opts);
 
-    this->document = new Document(this, kuzzle_get_document_controller(_kuzzle));
-    this->auth = new Auth(this, kuzzle_get_auth_controller(_kuzzle));
-    this->index = new Index(this, kuzzle_get_index_controller(_kuzzle));
-    this->server = new Server(this, kuzzle_get_server_controller(_kuzzle));
-    this->collection = new Collection(this, kuzzle_get_collection_controller(_kuzzle));
-    this->realtime = new Realtime(this, kuzzle_get_realtime_controller(_kuzzle));
+    this->document = new Document(_kuzzle);
+    this->auth = new Auth(_kuzzle);
+    this->index = new Index(_kuzzle);
+    this->server = new Server(_kuzzle);
+    this->collection = new Collection(_kuzzle);
+    this->realtime = new Realtime(_kuzzle);
   }
 
   Kuzzle::~Kuzzle() {
@@ -202,10 +202,7 @@ namespace kuzzleio {
   }
 
   kuzzle_response* Kuzzle::query(kuzzle_request* query, query_options* options) {
-    kuzzle_response *r = kuzzle_query(_kuzzle, query, options);
-
-    if (r->error != nullptr)
-        throwExceptionFromStatus(r);
+    KUZZLE_API(kuzzle_response, r, kuzzle_query(_kuzzle, query, options))
     return r;
   }
 

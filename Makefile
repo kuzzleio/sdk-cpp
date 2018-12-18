@@ -1,4 +1,5 @@
 VERSION = 1.0.0
+SHELL = /bin/bash
 
 ROOT_DIR = $(dir $(abspath $(lastword $(MAKEFILE_LIST))))
 ifeq ($(OS),Windows_NT)
@@ -85,11 +86,10 @@ package: $(BUILD_DIR)$(PATHSEP)$(LIB_PREFIX)kuzzlesdk$(DYNLIB).$(VERSION) $(BUIL
 	mkdir -p deploy && cd $(BUILD_DIR) && tar cfz ..$(PATHSEP)deploy$(PATHSEP)kuzzlesdk-cpp-$(VERSION)-$(ARCH).tar.gz $(SDK_FOLDER_NAME)
 
 build_test: $(BUILD_DIR)$(PATHSEP)$(LIB_PREFIX)kuzzlesdk$(DYNLIB).$(VERSION) $(BUILD_DIR)$(PATHSEP)$(LIB_PREFIX)kuzzlesdk$(STATICLIB).$(VERSION)
-	cd test && sh build_cpp_tests.sh
+	cd test && ./build_cpp_tests.sh
 
 run_test:
-	cd test && .$(PATHSEP)_build_cpp_tests$(PATHSEP)KuzzleSDKStepDefs > /dev/null &
-	cd test && cucumber
+	SKIPBUILD=1 ./run-tests.sh
 
 clean:
 	cd sdk-c && make clean
@@ -100,7 +100,7 @@ ifeq ($(OS),Windows_NT)
 else
 	$(RRM) $(BUILD_DIR) deploy test$(PATHSEP)_build_cpp_tests
 endif
-.PHONY: all core clean run_test 
+.PHONY: all core clean run_test
 
 
 .DEFAULT_GOAL := all

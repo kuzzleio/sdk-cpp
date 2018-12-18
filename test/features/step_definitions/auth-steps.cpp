@@ -66,13 +66,11 @@ namespace {
     try {
       ctx->currentUser = ctx->kuzzle->auth->getCurrentUser();
     } catch (KuzzleException e) {
-      K_LOG_E(e.getMessage().c_str());
+      BOOST_FAIL(e.what());
     }
 
-    K_LOG_D("current user = 0x%p", ctx->currentUser);
-    K_LOG_D("Current user content: %s", ctx->currentUser->content);
-
-    BOOST_CHECK_MESSAGE(ctx->currentUser != NULL, "Failed to retrieve current user");
+    K_LOG_D("current user = 0x%p", &(ctx->currentUser));
+    K_LOG_D("Current user content: %s", ctx->currentUser.content().c_str());
   }
 
   GIVEN("^I get my rights$") {
