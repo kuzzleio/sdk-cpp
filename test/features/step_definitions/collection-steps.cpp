@@ -209,7 +209,7 @@ namespace {
     string mapping = "{\"properties\": {\"gordon\": {\"type\": \"keyword\"}}}";
 
     try {
-      ctx->kuzzle->collection->create(ctx->index, collection_id, &mapping);
+      ctx->kuzzle->collection->create(ctx->index, collection_id, mapping);
     } catch (KuzzleException e) {
       BOOST_FAIL(e.getMessage());
     }
