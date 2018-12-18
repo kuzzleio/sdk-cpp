@@ -32,7 +32,7 @@ namespace kuzzleio {
     });
 
     static_cast<Protocol*>(protocol_instance)->listener_instances[event].insert(std::make_pair(listener, l));
-    static_cast<Protocol*>(protocol_instance)->addListener(static_cast<KuzzleEvent>(event), l);
+    static_cast<Protocol*>(protocol_instance)->addListener(static_cast<Event>(event), l);
   }
 
   void bridge_cpp_once(int event, kuzzle_event_listener* listener, void* data) {
@@ -46,16 +46,16 @@ namespace kuzzleio {
     });
 
     static_cast<Protocol*>(data)->listener_once_instances[event].insert(std::make_pair(listener, l));
-    static_cast<Protocol*>(data)->once(static_cast<KuzzleEvent>(event), l);
+    static_cast<Protocol*>(data)->once(static_cast<Event>(event), l);
   }
 
   static void bridge_cpp_remove_listener(int event, kuzzle_event_listener* listener, void* data) {
-    static_cast<Protocol*>(data)->removeListener(static_cast<KuzzleEvent>(event), static_cast<Protocol*>(data)->listener_instances[event][listener]);
+    static_cast<Protocol*>(data)->removeListener(static_cast<Event>(event), static_cast<Protocol*>(data)->listener_instances[event][listener]);
     delete static_cast<Protocol*>(data)->listener_instances[event][listener];
   }
 
   static void bridge_cpp_emit_event(int event, void* res, void* data) {
-    static_cast<Protocol*>(data)->emitEvent(static_cast<KuzzleEvent>(event));
+    static_cast<Protocol*>(data)->emitEvent(static_cast<Event>(event));
   }
 
   char* bridge_cpp_connect(void* data) {
@@ -76,7 +76,7 @@ namespace kuzzleio {
   }
 
   int bridge_cpp_listener_count(int event, void* data) {
-    return static_cast<Protocol*>(data)->listenerCount(static_cast<KuzzleEvent>(event));
+    return static_cast<Protocol*>(data)->listenerCount(static_cast<Event>(event));
   }
 
   const char* bridge_cpp_close(void* data) {
@@ -123,7 +123,7 @@ namespace kuzzleio {
   }
 
   void bridge_cpp_remove_all_listeners(int event, void* data) {
-    static_cast<Protocol*>(data)->removeAllListeners(static_cast<KuzzleEvent>(event));
+    static_cast<Protocol*>(data)->removeAllListeners(static_cast<Event>(event));
   }
 
   const char* bridge_cpp_get_host(void* data) {
@@ -259,35 +259,35 @@ namespace kuzzleio {
     return _listener_instances;
   }
 
-  void Kuzzle::emitEvent(KuzzleEvent event, const std::string& body) noexcept {
+  void Kuzzle::emitEvent(Event event, const std::string& body) noexcept {
     kuzzle_emit_event(_kuzzle, event, const_cast<char*>(body.c_str()));
   }
 
-  KuzzleEventEmitter* Kuzzle::addListener(KuzzleEvent event, EventListener* listener) {
+  KuzzleEventEmitter* Kuzzle::addListener(Event event, EventListener* listener) {
     kuzzle_add_listener(_kuzzle, event, trigger_event_listener, this);
     _listener_instances[event] = listener;
 
     return this;
   }
 
-  KuzzleEventEmitter* Kuzzle::removeListener(KuzzleEvent event, EventListener* listener) {
+  KuzzleEventEmitter* Kuzzle::removeListener(Event event, EventListener* listener) {
     kuzzle_remove_listener(_kuzzle, event, (void*)&trigger_event_listener);
     _listener_instances[event] = nullptr;
 
     return this;
   }
 
-  KuzzleEventEmitter* Kuzzle::removeAllListeners(KuzzleEvent event) {
+  KuzzleEventEmitter* Kuzzle::removeAllListeners(Event event) {
     kuzzle_remove_all_listeners(_kuzzle, event);
 
     return this;
   }
 
-  KuzzleEventEmitter* Kuzzle::once(KuzzleEvent event, EventListener* listener) {
+  KuzzleEventEmitter* Kuzzle::once(Event event, EventListener* listener) {
     kuzzle_once(_kuzzle, event, &trigger_event_listener, this);
   }
 
-  int Kuzzle::listenerCount(KuzzleEvent event) {
+  int Kuzzle::listenerCount(Event event) {
     return kuzzle_listener_count(_kuzzle, event);
   }
 

@@ -106,14 +106,14 @@ namespace kuzzleio {
       std::string getVolatile() noexcept;
       Kuzzle* setVolatile(const std::string& volatiles) noexcept;
       std::map<int, EventListener*> getListeners() noexcept;
-      void emitEvent(KuzzleEvent event, const std::string& body) noexcept;
+      void emitEvent(Event event, const std::string& body) noexcept;
       Protocol* getProtocol() noexcept;
 
-      virtual KuzzleEventEmitter* addListener(KuzzleEvent event, EventListener* listener) override;
-      virtual KuzzleEventEmitter* removeListener(KuzzleEvent event, EventListener* listener) override;
-      virtual KuzzleEventEmitter* removeAllListeners(KuzzleEvent event) override;
-      virtual KuzzleEventEmitter* once(KuzzleEvent event, EventListener* listener) override;
-      virtual int listenerCount(KuzzleEvent event) override;
+      virtual KuzzleEventEmitter* addListener(Event event, EventListener* listener) override;
+      virtual KuzzleEventEmitter* removeListener(Event event, EventListener* listener) override;
+      virtual KuzzleEventEmitter* removeAllListeners(Event event) override;
+      virtual KuzzleEventEmitter* once(Event event, EventListener* listener) override;
+      virtual int listenerCount(Event event) override;
 
   };
 }

@@ -24,11 +24,11 @@ namespace kuzzleio {
 
   class KuzzleEventEmitter {
     public:
-      virtual KuzzleEventEmitter* addListener(KuzzleEvent e, EventListener* listener) = 0;
-      virtual KuzzleEventEmitter* removeListener(KuzzleEvent e, EventListener* listener) = 0;
-      virtual KuzzleEventEmitter* removeAllListeners(KuzzleEvent e) = 0;
-      virtual KuzzleEventEmitter* once(KuzzleEvent e, EventListener* listener) = 0;
-      virtual int listenerCount(KuzzleEvent e) = 0;
+      virtual KuzzleEventEmitter* addListener(Event e, EventListener* listener) = 0;
+      virtual KuzzleEventEmitter* removeListener(Event e, EventListener* listener) = 0;
+      virtual KuzzleEventEmitter* removeAllListeners(Event e) = 0;
+      virtual KuzzleEventEmitter* once(Event e, EventListener* listener) = 0;
+      virtual int listenerCount(Event e) = 0;
   };
 }
 

@@ -20,16 +20,16 @@ namespace kuzzleio {
     std::list<EventListener*> getOnceListeners(int) noexcept;
     NotificationListener* getNotificationListener(const std::string&) noexcept;
 
-    virtual void addListener(KuzzleEvent, EventListener*);
-    virtual void removeListener(KuzzleEvent, EventListener*);
-    virtual void removeAllListeners(KuzzleEvent);
-    virtual void once(KuzzleEvent, EventListener*);
-    virtual int listenerCount(KuzzleEvent);
+    virtual void addListener(Event, EventListener*);
+    virtual void removeListener(Event, EventListener*);
+    virtual void removeAllListeners(Event);
+    virtual void once(Event, EventListener*);
+    virtual int listenerCount(Event);
     virtual void connect();
     virtual kuzzle_response* send(const std::string&, query_options *, const std::string&);
     virtual void close();
     virtual int getState();
-    virtual void emitEvent(KuzzleEvent);
+    virtual void emitEvent(Event);
     virtual void registerSub(const std::string&, const std::string&, const std::string&, bool, NotificationListener*);
     virtual void unregisterSub(const std::string&);
     virtual void cancelSubs();
