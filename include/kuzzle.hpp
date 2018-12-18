@@ -36,6 +36,7 @@
 #include "internal/search_result.hpp"
 #include "internal/user_right.hpp"
 #include "internal/user.hpp"
+#include "internal/kuzzle_response.hpp"
 
 /*
  * Macro used by controller actions.
@@ -97,7 +98,7 @@ namespace kuzzleio {
 
       std::string getJwt() noexcept;
       void disconnect() noexcept;
-      kuzzle_response* query(kuzzle_request* query, query_options* options=nullptr);
+      KuzzleResponse query(kuzzle_request* query, query_options* options=nullptr);
       Kuzzle* playQueue() noexcept;
       Kuzzle* setAutoReplay(bool autoReplay) noexcept;
       Kuzzle* startQueuing() noexcept;

@@ -201,9 +201,12 @@ namespace kuzzleio {
     kuzzle_disconnect(_kuzzle);
   }
 
-  kuzzle_response* Kuzzle::query(kuzzle_request* query, query_options* options) {
+  KuzzleResponse Kuzzle::query(kuzzle_request* query, query_options* options) {
     KUZZLE_API(kuzzle_response, r, kuzzle_query(_kuzzle, query, options))
-    return r;
+
+    KuzzleResponse res(r);
+    kuzzle_free_kuzzle_response(r);
+    return res;
   }
 
   Kuzzle* Kuzzle::playQueue() noexcept {
