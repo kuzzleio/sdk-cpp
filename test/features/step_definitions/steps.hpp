@@ -50,15 +50,15 @@ struct KuzzleCtx {
   int partial_exception = -1;
   std::vector<string> string_array;
 
-  notification_result *notif_result = nullptr;
+  NotificationResult *notif_result = nullptr;
 };
 
 class CustomNotificationListener {
   private:
     CustomNotificationListener() {
-      listener = [](const kuzzleio::notification_result* res) {
+      listener = [](const kuzzleio::NotificationResult* res) {
         ScenarioScope<KuzzleCtx> ctx;
-        ctx->notif_result = const_cast<notification_result*>(res);
+        ctx->notif_result = const_cast<NotificationResult*>(res);
       };
     };
     static CustomNotificationListener* _singleton;

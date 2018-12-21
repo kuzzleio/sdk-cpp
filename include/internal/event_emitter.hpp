@@ -18,7 +18,6 @@
 #include <functional>
 #include "kuzzle.hpp"
 
-
 namespace kuzzleio {
   typedef const std::function<void(const std::string)> EventListener;
 

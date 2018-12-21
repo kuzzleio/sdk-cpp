@@ -6,9 +6,10 @@
 
 #include "exceptions.hpp"
 #include "core.hpp"
+#include "internal/notification_result.hpp"
 
 namespace kuzzleio {
-  typedef std::function<void(kuzzleio::notification_result*)> NotificationListener;
+  typedef std::function<void(kuzzleio::NotificationResult*)> NotificationListener;
 
   class Kuzzle;
 

@@ -89,8 +89,45 @@ namespace kuzzleio {
   }
 
   void bridge_cpp_register_sub(const char* channel, const char* room_id, const char* filters, bool subscribe_to_self, kuzzle_notification_listener* listener, void* data) {
-    NotificationListener *nl = new std::function<void(kuzzleio::notification_result*)>([=](kuzzleio::notification_result* res) {
-      (*listener)(res, data);
+    NotificationListener *nl = new std::function<void(kuzzleio::NotificationResult*)>([=](kuzzleio::NotificationResult* res) {
+      notification_result nr;
+      notification_content nc;
+
+      if (res->result.meta) {
+        meta m;
+
+        m.author = res->result.meta->author.c_str();
+        m.created_at = res->result.meta->created_at;
+        m.updated_at = res->result.meta->updated_at;
+        m.updater = res->result.meta->updater.c_str();
+        m.active = res->result.meta->active;
+        m.deleted_at = res->result.meta->deleted_at;
+        nc.m = &m;
+
+        nc.content = res->result.content.c_str();
+        nc.count = res->result.count;
+        nc.id = res->result.id.c_str();
+      }
+
+      nr.request_id = res->request_id.c_str();
+      nr.result = &nc;
+      nr.volatiles = res->volatiles.c_str();
+      nr.index = res->index.c_str();
+      nr.collection = res->collection.c_str();
+      nr.controller = res->controller.c_str();
+      nr.action = res->action.c_str();
+      nr.protocol = res->protocol.c_str();
+      nr.scope = res->scope.c_str();
+      nr.state = res->state.c_str();
+      nr.user = res->user.c_str();
+      nr.n_type = res->n_type.c_str();
+      nr.room_id = res->room_id.c_str();
+      nr.timestamp = res->timestamp;
+      nr.status = res->status;
+      nr.error = res->error.c_str();
+      nr.stack = res->stack.c_str();
+
+      (*listener)(&nr, data);
     });
 
     static_cast<Protocol*>(data)->notification_listener_instances[channel] = nl;
@@ -288,6 +325,8 @@ namespace kuzzleio {
 
   KuzzleEventEmitter* Kuzzle::once(Event event, EventListener* listener) {
     kuzzle_once(_kuzzle, event, &trigger_event_listener, this);
+
+    return this;
   }
 
   int Kuzzle::listenerCount(Event event) {

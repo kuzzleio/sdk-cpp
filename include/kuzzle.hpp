@@ -38,7 +38,8 @@
 #include "internal/user.hpp"
 #include "internal/kuzzle_response.hpp"
 #include "internal/meta.hpp"
-#include "internal/notification_result"
+#include "internal/notification_content.hpp"
+#include "internal/notification_result.hpp"
 
 /*
  * Macro used by controller actions.

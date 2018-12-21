@@ -25,7 +25,7 @@ namespace kuzzleio {
   void trigger_websocket_notification_listener(notification_result* result, void* data) {
     NotificationListener* listener = static_cast<WebSocket*>(data)->getNotificationListener(result->room_id);
     if (listener) {
-      (*listener)(result);
+      (*listener)(new NotificationResult(result));
     }
   }
 

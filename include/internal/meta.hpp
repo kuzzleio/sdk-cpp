@@ -2,7 +2,6 @@
 #define _META_HPP
 
 #include <string>
-#include "core.hpp"
 
 namespace kuzzleio {
   class Meta {

@@ -49,7 +49,7 @@ namespace kuzzleio {
       NotificationListener* listener = static_cast<Realtime*>(data)->getListener(res->room_id);
 
       if (listener) {
-        (*listener)(res);
+        (*listener)(new NotificationResult(res));
       }
     }
   }
