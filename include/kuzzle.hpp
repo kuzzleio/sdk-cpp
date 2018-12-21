@@ -77,12 +77,10 @@ namespace kuzzleio {
 
   class Kuzzle : public KuzzleEventEmitter {
     private:
-      std::map<int, EventListener*>  _listener_instances;
-      Protocol *_cpp_protocol;
-
-    public:
       kuzzle *_kuzzle;
       protocol *_protocol;
+
+    public:
       Auth *auth;
       Index *index;
       Server *server;
@@ -97,7 +95,9 @@ namespace kuzzleio {
 
       std::string getJwt() noexcept;
       void disconnect() noexcept;
-      kuzzle_response* query(kuzzle_request* query, query_options* options=nullptr);
+      kuzzle_response* query(
+          kuzzle_request* query,
+          query_options* options=nullptr);
       Kuzzle* playQueue() noexcept;
       Kuzzle* setAutoReplay(bool autoReplay) noexcept;
       Kuzzle* startQueuing() noexcept;
@@ -106,15 +106,20 @@ namespace kuzzleio {
       std::string getVolatile() noexcept;
       Kuzzle* setVolatile(const std::string& volatiles) noexcept;
       std::map<int, EventListener*> getListeners() noexcept;
-      void emitEvent(Event event, const std::string& body) noexcept;
       Protocol* getProtocol() noexcept;
 
-      virtual KuzzleEventEmitter* addListener(Event event, EventListener* listener) override;
-      virtual KuzzleEventEmitter* removeListener(Event event, EventListener* listener) override;
-      virtual KuzzleEventEmitter* removeAllListeners(Event event) override;
-      virtual KuzzleEventEmitter* once(Event event, EventListener* listener) override;
-      virtual int listenerCount(Event event) override;
-
+      // event emitter overrides
+      virtual void emitEvent(Event, const std::string&) noexcept override;
+      virtual KuzzleEventEmitter* addListener(
+          Event,
+          SharedEventListener) noexcept override;
+      virtual KuzzleEventEmitter* removeListener(
+          Event,
+          SharedEventListener) noexcept override;
+      virtual KuzzleEventEmitter* removeAllListeners(Event) noexcept override;
+      virtual KuzzleEventEmitter* once(
+          Event,
+          SharedEventListener) noexcept override;
   };
 }
 
