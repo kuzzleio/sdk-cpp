@@ -15,7 +15,9 @@ namespace kuzzleio {
       std::map<std::string, NotificationListener*>  _websocket_notification_listener_instances;
     public:
     web_socket* _web_socket;
-    WebSocket(const std::string&, options* query_options=nullptr);
+    WebSocket(const std::string& host);
+    WebSocket(const std::string& host, const options& query_options);
+
     std::list<EventListener*> getListeners(int) noexcept;
     std::list<EventListener*> getOnceListeners(int) noexcept;
     NotificationListener* getNotificationListener(const std::string&) noexcept;
