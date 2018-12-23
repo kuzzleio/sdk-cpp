@@ -90,31 +90,39 @@ namespace kuzzleio {
       Document *document;
       Realtime *realtime;
 
-      Kuzzle(Protocol* protocol, options *options=nullptr);
+
+      Kuzzle(Protocol* protocol);
+      Kuzzle(Protocol* protocol, const options& options);
       virtual ~Kuzzle();
 
       void connect();
-
-      std::string getJwt() noexcept;
       void disconnect() noexcept;
-      kuzzle_response* query(kuzzle_request* query, query_options* options=nullptr);
-      Kuzzle* playQueue() noexcept;
-      Kuzzle* setAutoReplay(bool autoReplay) noexcept;
+      void emitEvent(Event event, const std::string& payload) noexcept;
+      kuzzle_response* query(const kuzzle_request& request);
+      kuzzle_response* query(const kuzzle_request& request, const query_options& options);
+
+      // Offline queue
       Kuzzle* startQueuing() noexcept;
       Kuzzle* stopQueuing() noexcept;
+      Kuzzle* playQueue() noexcept;
       Kuzzle* flushQueue() noexcept;
-      std::string getVolatile() noexcept;
-      Kuzzle* setVolatile(const std::string& volatiles) noexcept;
-      std::map<int, EventListener*> getListeners() noexcept;
-      void emitEvent(Event event, const std::string& body) noexcept;
-      Protocol* getProtocol() noexcept;
 
+      // Setters
+      Kuzzle* setAutoReplay(bool value) noexcept;
+      Kuzzle* setVolatile(const std::string& volatile_data) noexcept;
+
+      // Getters
+      Protocol* getProtocol() noexcept;
+      std::string getJwt() noexcept;
+      std::string getVolatile() noexcept;
+      std::map<int, EventListener*> getListeners() noexcept;
+
+      // KuzzleEventEmitter implementation
+      virtual int listenerCount(Event event) override;
       virtual KuzzleEventEmitter* addListener(Event event, EventListener* listener) override;
       virtual KuzzleEventEmitter* removeListener(Event event, EventListener* listener) override;
       virtual KuzzleEventEmitter* removeAllListeners(Event event) override;
       virtual KuzzleEventEmitter* once(Event event, EventListener* listener) override;
-      virtual int listenerCount(Event event) override;
-
   };
 }
 
