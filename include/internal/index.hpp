@@ -28,15 +28,33 @@ namespace kuzzleio {
     public:
       Index(kuzzle* kuzzle);
       virtual ~Index();
-      void create(const std::string& index, query_options *options=nullptr);
-      void delete_(const std::string& index, query_options *options=nullptr);
-      std::vector<std::string> mDelete(const std::vector<std::string>& indexes, query_options *options=nullptr);
-      bool exists(const std::string& index, query_options *options=nullptr);
-      void refresh(const std::string& index, query_options *options=nullptr);
-      void refreshInternal(query_options *options=nullptr);
-      void setAutoRefresh(const std::string& index, bool autoRefresh, query_options *options=nullptr);
-      bool getAutoRefresh(const std::string& index, query_options *options=nullptr);
-      std::vector<std::string> list(query_options *options=nullptr);
+
+      void create(const std::string& index);
+      void create(const std::string& index, const query_options& options);
+
+      void delete_(const std::string& index);
+      void delete_(const std::string& index, const query_options& options);
+
+      std::vector<std::string> mDelete(const std::vector<std::string>& indexes);
+      std::vector<std::string> mDelete(const std::vector<std::string>& indexes, const query_options& options);
+
+      bool exists(const std::string& index);
+      bool exists(const std::string& index, const query_options& options);
+
+      void refresh(const std::string& index);
+      void refresh(const std::string& index, const query_options& options);
+
+      void refreshInternal();
+      void refreshInternal(const query_options& options);
+
+      void setAutoRefresh(const std::string& index, bool auto_refresh);
+      void setAutoRefresh(const std::string& index, bool auto_refresh, const query_options& options);
+
+      bool getAutoRefresh(const std::string& index);
+      bool getAutoRefresh(const std::string& index, const query_options& options);
+
+      std::vector<std::string> list();
+      std::vector<std::string> list(const query_options& options);
   };
 }
 

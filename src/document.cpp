@@ -321,10 +321,10 @@ namespace kuzzleio {
   }
 
   std::vector<std::string> Document::mDelete(const std::string& index, const std::string& collection, const std::vector<std::string>& ids, const query_options& options) {
-    char **idsArray = new char *[ids.size()];
+    char **ids_array = new char *[ids.size()];
 
     for (size_t i = 0; i < ids.size(); i++) {
-      idsArray[i] = const_cast<char*>(ids[i].c_str());
+      ids_array[i] = const_cast<char*>(ids[i].c_str());
     }
 
     KUZZLE_API(
@@ -333,10 +333,10 @@ namespace kuzzleio {
       kuzzle_document_mdelete(_document,
         const_cast<char*>(index.c_str()),
         const_cast<char*>(collection.c_str()),
-        idsArray,
+        ids_array,
         ids.size(),
         const_cast<query_options*>(&options)),
-      delete[] idsArray)
+      delete[] ids_array)
 
     std::vector<std::string> v = std::vector<std::string>(r->result, r->result + r->result_length);
     kuzzle_free_string_array_result(r);
@@ -352,10 +352,10 @@ namespace kuzzleio {
   }
 
   std::string Document::mGet(const std::string& index, const std::string& collection, const std::vector<std::string>& ids, const query_options& options) {
-    char **idsArray = new char *[ids.size()];
+    char **ids_array = new char *[ids.size()];
 
     for (size_t i = 0; i < ids.size(); i++) {
-      idsArray[i] = const_cast<char*>(ids[i].c_str());
+      ids_array[i] = const_cast<char*>(ids[i].c_str());
     }
 
     KUZZLE_API(
@@ -365,10 +365,10 @@ namespace kuzzleio {
         _document,
         const_cast<char*>(index.c_str()),
         const_cast<char*>(collection.c_str()),
-        idsArray,
+        ids_array,
         ids.size(),
         const_cast<query_options*>(&options)),
-      delete[] idsArray)
+      delete[] ids_array)
 
     std::string ret = r->result;
     kuzzle_free_string_result(r);
