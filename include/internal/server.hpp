@@ -26,13 +26,27 @@ namespace kuzzleio {
     public:
       Server(kuzzle* kuzzle);
       virtual ~Server();
-      bool adminExists(query_options *options=nullptr);
-      std::string getAllStats(query_options* options=nullptr);
-      std::string getStats(time_t start, time_t end, query_options* options=nullptr);
-      std::string getLastStats(query_options* options=nullptr);
-      std::string getConfig(query_options* options=nullptr);
-      std::string info(query_options* options=nullptr);
-      long long now(query_options* options=nullptr);
+
+      bool adminExists();
+      bool adminExists(const query_options& options);
+
+      std::string getAllStats();
+      std::string getAllStats(const query_options& options);
+
+      std::string getStats(time_t start, time_t end);
+      std::string getStats(time_t start, time_t end, const query_options& options);
+
+      std::string getLastStats();
+      std::string getLastStats(const query_options& options);
+
+      std::string getConfig();
+      std::string getConfig(const query_options& options);
+
+      std::string info();
+      std::string info(const query_options& options);
+
+      long long now();
+      long long now(const query_options& options);
   };
 }
 

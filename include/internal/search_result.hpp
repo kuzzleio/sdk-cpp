@@ -21,7 +21,7 @@ namespace kuzzleio {
 
     class SearchResult {
         protected:
-            search_result* _sr;
+            const search_result* _sr;
 
         public:
             std::string aggregations;
@@ -30,16 +30,16 @@ namespace kuzzleio {
             unsigned fetched;
             std::string scroll_id;
 
-            SearchResult(search_result* sr);
+            SearchResult(const search_result* sr);
             virtual ~SearchResult();
-            SearchResult* next();
+            SearchResult* next() const;
     };
 
     class SpecificationSearchResult : public SearchResult {
         public:
-            SpecificationSearchResult(search_result* sr);
+            SpecificationSearchResult(const search_result* sr);
             virtual ~SpecificationSearchResult();
-            SpecificationSearchResult* next();
+            SpecificationSearchResult* next() const;
     };
 
 }
