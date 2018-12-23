@@ -30,9 +30,7 @@ namespace kuzzleio {
   }
 
   bool Server::adminExists() {
-    query_options options;
-
-    return this->adminExists(options);
+    return this->adminExists(query_options());
   }
 
   bool Server::adminExists(const query_options& options) {
@@ -46,9 +44,7 @@ namespace kuzzleio {
 
 
   std::string Server::getAllStats() {
-    query_options options;
-
-    return this->getAllStats(options);
+    return this->getAllStats(query_options());
   }
 
   std::string Server::getAllStats(const query_options& options) {
@@ -62,9 +58,7 @@ namespace kuzzleio {
 
 
   std::string Server::getStats(time_t start, time_t end) {
-    query_options options;
-
-    return this->getStats(start, end, options);
+    return this->getStats(start, end, query_options());
   }
 
   std::string Server::getStats(time_t start, time_t end, const query_options& options) {
@@ -78,9 +72,7 @@ namespace kuzzleio {
 
 
   std::string Server::getLastStats() {
-    query_options options;
-
-    return this->getLastStats(options);
+    return this->getLastStats(query_options());
   }
 
   std::string Server::getLastStats(const query_options& options) {
@@ -94,9 +86,7 @@ namespace kuzzleio {
 
 
   std::string Server::getConfig() {
-    query_options options;
-
-    return this->getConfig(options);
+    return this->getConfig(query_options());
   }
 
   std::string Server::getConfig(const query_options& options) {
@@ -110,9 +100,7 @@ namespace kuzzleio {
 
 
   std::string Server::info() {
-    query_options options;
-
-    return this->info(options);
+    return this->info(query_options());
   }
 
   std::string Server::info(const query_options& options) {
@@ -126,9 +114,7 @@ namespace kuzzleio {
 
 
   long long Server::now() {
-    query_options options;
-
-    return this->now(options);
+    return this->now(query_options());
   }
 
   // java wrapper for this method is in typemap.i

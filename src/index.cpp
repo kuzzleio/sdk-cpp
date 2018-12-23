@@ -30,9 +30,7 @@ namespace kuzzleio {
   }
 
   void Index::create(const std::string& index) {
-    query_options options;
-
-    this->create(index, options);
+    this->create(index, query_options());
   }
 
   void Index::create(const std::string& index, const query_options& options) {
@@ -46,9 +44,7 @@ namespace kuzzleio {
 
 
   void Index::delete_(const std::string& index) {
-    query_options options;
-
-    this->delete_(index, options);
+    this->delete_(index, query_options());
   }
 
   void Index::delete_(const std::string& index, const query_options& options) {
@@ -62,9 +58,7 @@ namespace kuzzleio {
 
 
   std::vector<std::string> Index::mDelete(const std::vector<std::string>& indexes) {
-    query_options options;
-
-    return this->mDelete(indexes, options);
+    return this->mDelete(indexes, query_options());
   }
 
   std::vector<std::string> Index::mDelete(const std::vector<std::string>& indexes, const query_options& options) {
@@ -89,9 +83,7 @@ namespace kuzzleio {
 
 
   bool Index::exists(const std::string& index) {
-    query_options options;
-
-    return this->exists(index, options);
+    return this->exists(index, query_options());
   }
 
   bool Index::exists(const std::string& index, const query_options& options) {
@@ -108,9 +100,7 @@ namespace kuzzleio {
 
 
   void Index::refresh(const std::string& index) {
-    query_options options;
-
-    this->refresh(index, options);
+    this->refresh(index, query_options());
   }
 
   void Index::refresh(const std::string& index, const query_options& options) {
@@ -124,9 +114,7 @@ namespace kuzzleio {
 
 
   void Index::refreshInternal() {
-    query_options options;
-
-    this->refreshInternal(options);
+    this->refreshInternal(query_options());
   }
 
   void Index::refreshInternal(const query_options& options) {
@@ -139,9 +127,7 @@ namespace kuzzleio {
 
 
   void Index::setAutoRefresh(const std::string& index, bool auto_refresh) {
-    query_options options;
-
-    this->setAutoRefresh(index, auto_refresh, options);
+    this->setAutoRefresh(index, auto_refresh, query_options());
   }
 
   void Index::setAutoRefresh(const std::string& index, bool auto_refresh, const query_options& options) {
@@ -156,9 +142,7 @@ namespace kuzzleio {
 
 
   bool Index::getAutoRefresh(const std::string& index) {
-    query_options options;
-
-    return this->getAutoRefresh(index, options);
+    return this->getAutoRefresh(index, query_options());
   }
 
   bool Index::getAutoRefresh(const std::string& index, const query_options& options) {
@@ -175,9 +159,7 @@ namespace kuzzleio {
 
 
   std::vector<std::string> Index::list() {
-    query_options options;
-
-    return this->list(options);
+    return this->list(query_options());
   }
 
   std::vector<std::string> Index::list(const query_options& options) {

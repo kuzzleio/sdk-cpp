@@ -31,9 +31,7 @@ namespace kuzzleio {
   }
 
   int Document::count(const std::string& index, const std::string& collection) {
-    query_options options;
-
-    return this->count(index, collection, options);
+    return this->count(index, collection, query_options());
   }
 
   int Document::count(const std::string& index, const std::string& collection, const query_options& options) {
@@ -41,9 +39,7 @@ namespace kuzzleio {
   }
 
   int Document::count(const std::string& index, const std::string& collection, const std::string& query) {
-    query_options options;
-
-    return this->count(index, collection, options);
+    return this->count(index, collection, query_options());
   }
 
   int Document::count(const std::string& index, const std::string& collection, const std::string& query, const query_options& options) {
@@ -62,9 +58,7 @@ namespace kuzzleio {
 
 
   bool Document::exists(const std::string& index, const std::string& collection, const std::string& id) {
-    query_options options;
-
-    return this->exists(index, collection, id, options);
+    return this->exists(index, collection, id, query_options());
   }
 
   bool Document::exists(const std::string& index, const std::string& collection, const std::string& id, const query_options& options) {
@@ -83,9 +77,7 @@ namespace kuzzleio {
 
 
   std::string Document::create(const std::string& index, const std::string& collection, const std::string& id, const std::string& document) {
-    query_options options;
-
-    return this->create(index, collection, id, document, options);
+    return this->create(index, collection, id, document, query_options());
   }
 
   std::string Document::create(const std::string& index, const std::string& collection, const std::string& id, const std::string& document, const query_options& options) {
@@ -105,9 +97,7 @@ namespace kuzzleio {
 
 
   std::string Document::createOrReplace(const std::string& index, const std::string& collection, const std::string& id, const std::string& document) {
-    query_options options;
-
-    return this->createOrReplace(index, collection, id, document, options);
+    return this->createOrReplace(index, collection, id, document, query_options());
   }
 
   std::string Document::createOrReplace(const std::string& index, const std::string& collection, const std::string& id, const std::string& document, const query_options& options) {
@@ -127,9 +117,7 @@ namespace kuzzleio {
 
 
   std::string Document::delete_(const std::string& index, const std::string& collection, const std::string& id) {
-    query_options options;
-
-    return this->delete_(index, collection, id, options);
+    return this->delete_(index, collection, id, query_options());
   }
 
   std::string Document::delete_(const std::string& index, const std::string& collection, const std::string& id, const query_options& options) {
@@ -148,9 +136,7 @@ namespace kuzzleio {
 
 
   std::vector<std::string> Document::deleteByQuery(const std::string& index, const std::string& collection, const std::string& query) {
-    query_options options;
-
-    return this->deleteByQuery(index, collection, query, options);
+    return this->deleteByQuery(index, collection, query, query_options());
   }
 
   std::vector<std::string> Document::deleteByQuery(const std::string& index, const std::string& collection, const std::string& query, const query_options& options) {
@@ -169,9 +155,7 @@ namespace kuzzleio {
 
 
   std::string Document::get(const std::string& index, const std::string& collection, const std::string& id) {
-    query_options options;
-
-    return this->get(index, collection, id, options);
+    return this->get(index, collection, id, query_options());
   }
 
   std::string Document::get(const std::string& index, const std::string& collection, const std::string& id, const query_options& options) {
@@ -190,9 +174,7 @@ namespace kuzzleio {
 
 
   std::string Document::replace(const std::string& index, const std::string& collection, const std::string& id, const std::string& document) {
-    query_options options;
-
-    return this->replace(index, collection, id, document, options);
+    return this->replace(index, collection, id, document, query_options());
   }
 
   std::string Document::replace(const std::string& index, const std::string& collection, const std::string& id, const std::string& document, const query_options& options) {
@@ -212,9 +194,7 @@ namespace kuzzleio {
 
 
   std::string Document::update(const std::string& index, const std::string& collection, const std::string& id, const std::string& document) {
-    query_options options;
-
-    return this->update(index, collection, id, document, options);
+    return this->update(index, collection, id, document, query_options());
   }
 
   std::string Document::update(const std::string& index, const std::string& collection, const std::string& id, const std::string& document, const query_options& options) {
@@ -234,9 +214,7 @@ namespace kuzzleio {
 
 
   bool Document::validate(const std::string& index, const std::string& collection, const std::string& document) {
-    query_options options;
-
-    return this->validate(index, collection, document, options);
+    return this->validate(index, collection, document, query_options());
   }
 
   bool Document::validate(const std::string& index, const std::string& collection, const std::string& document, const query_options& options) {
@@ -255,9 +233,7 @@ namespace kuzzleio {
 
 
   SearchResult* Document::search(const std::string& index, const std::string& collection, const std::string& query) {
-    query_options options;
-
-    return this->search(index, collection, query, options);
+    return this->search(index, collection, query, query_options());
   }
 
   SearchResult* Document::search(const std::string& index, const std::string& collection, const std::string& query, const query_options& options) {
@@ -273,9 +249,7 @@ namespace kuzzleio {
 
 
   std::string Document::mCreate(const std::string& index, const std::string& collection, const std::string& documents) {
-    query_options options;
-
-    return this->mCreate(index, collection, documents, options);
+    return this->mCreate(index, collection, documents, query_options());
   }
 
   std::string Document::mCreate(const std::string& index, const std::string& collection, const std::string& documents, const query_options& options) {
@@ -294,9 +268,7 @@ namespace kuzzleio {
 
 
   std::string Document::mCreateOrReplace(const std::string& index, const std::string& collection, const std::string& documents) {
-    query_options options;
-
-    return this->mCreateOrReplace(index, collection, documents, options);
+    return this->mCreateOrReplace(index, collection, documents, query_options());
   }
 
   std::string Document::mCreateOrReplace(const std::string& index, const std::string& collection, const std::string& documents, const query_options& options) {
@@ -315,9 +287,7 @@ namespace kuzzleio {
 
 
   std::vector<std::string> Document::mDelete(const std::string& index, const std::string& collection, const std::vector<std::string>& ids) {
-    query_options options;
-
-    return this->mDelete(index, collection, ids, options);
+    return this->mDelete(index, collection, ids, query_options());
   }
 
   std::vector<std::string> Document::mDelete(const std::string& index, const std::string& collection, const std::vector<std::string>& ids, const query_options& options) {
@@ -346,9 +316,7 @@ namespace kuzzleio {
 
 
   std::string Document::mGet(const std::string& index, const std::string& collection, const std::vector<std::string>& ids) {
-    query_options options;
-
-    return this->mGet(index, collection, ids, options);
+    return this->mGet(index, collection, ids, query_options());
   }
 
   std::string Document::mGet(const std::string& index, const std::string& collection, const std::vector<std::string>& ids, const query_options& options) {
@@ -378,9 +346,7 @@ namespace kuzzleio {
 
 
   std::string Document::mReplace(const std::string& index, const std::string& collection, const std::string& documents) {
-    query_options options;
-
-    return this->mReplace(index, collection, documents, options);
+    return this->mReplace(index, collection, documents, query_options());
   }
 
   std::string Document::mReplace(const std::string& index, const std::string& collection, const std::string& documents, const query_options& options) {
@@ -399,9 +365,7 @@ namespace kuzzleio {
 
 
   std::string Document::mUpdate(const std::string& index, const std::string& collection, const std::string& documents) {
-    query_options options;
-
-    return this->mUpdate(index, collection, documents, options);
+    return this->mUpdate(index, collection, documents, query_options());
   }
 
   std::string Document::mUpdate(const std::string& index, const std::string& collection, const std::string& documents, const query_options& options) {

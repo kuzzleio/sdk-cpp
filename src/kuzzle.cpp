@@ -206,9 +206,7 @@ namespace kuzzleio {
   }
 
   kuzzle_response* Kuzzle::query(const kuzzle_request& request) {
-    query_options options;
-
-    return this->query(request, options);
+    return this->query(request, query_options());
   }
 
   kuzzle_response* Kuzzle::query(const kuzzle_request& request, const query_options& options) {

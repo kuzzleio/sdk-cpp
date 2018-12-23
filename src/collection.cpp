@@ -30,15 +30,11 @@ namespace kuzzleio {
   }
 
   void Collection::create(const std::string& index, const std::string& collection) {
-    query_options options;
-
-    this->create(index, collection, "{}", options);
+    this->create(index, collection, "{}", query_options());
   }
 
   void Collection::create(const std::string& index, const std::string& collection, const std::string& mapping) {
-    query_options options;
-
-    this->create(index, collection, mapping, options);
+    this->create(index, collection, mapping, query_options());
   }
 
   void Collection::create(const std::string& index, const std::string& collection, const query_options& options) {
@@ -58,9 +54,7 @@ namespace kuzzleio {
 
 
   bool Collection::exists(const std::string& index, const std::string& collection) {
-    query_options options;
-
-    return this->exists(index, collection, options);
+    return this->exists(index, collection, query_options());
   }
 
   bool Collection::exists(const std::string& index, const std::string& collection, const query_options& options) {
@@ -78,9 +72,7 @@ namespace kuzzleio {
 
 
   std::string Collection::list(const std::string& index) {
-    query_options options;
-
-    return this->list(index, options);
+    return this->list(index, query_options());
   }
 
   std::string Collection::list(const std::string& index, const query_options& options) {
@@ -97,9 +89,7 @@ namespace kuzzleio {
 
 
   void Collection::truncate(const std::string& index, const std::string& collection) {
-    query_options options;
-
-    this->truncate(index, collection, options);
+    this->truncate(index, collection, query_options());
   }
 
   void Collection::truncate(const std::string& index, const std::string& collection, const query_options& options) {
@@ -114,9 +104,7 @@ namespace kuzzleio {
 
 
   std::string Collection::getMapping(const std::string& index, const std::string& collection) {
-    query_options options;
-
-    return this->getMapping(index, collection, options);
+    return this->getMapping(index, collection, query_options());
   }
 
   std::string Collection::getMapping(const std::string& index, const std::string& collection, const query_options& options) {
@@ -134,9 +122,7 @@ namespace kuzzleio {
 
 
   void Collection::updateMapping(const std::string& index, const std::string& collection, const std::string& mapping) {
-    query_options options;
-
-    this->updateMapping(index, collection, mapping, options);
+    this->updateMapping(index, collection, mapping, query_options());
   }
 
   void Collection::updateMapping(const std::string& index, const std::string& collection, const std::string& mapping, const query_options& options) {
@@ -152,9 +138,7 @@ namespace kuzzleio {
 
 
   std::string Collection::getSpecifications(const std::string& index, const std::string& collection) {
-    query_options options;
-
-    return this->getSpecifications(index, collection, options);
+    return this->getSpecifications(index, collection, query_options());
   }
 
   std::string Collection::getSpecifications(const std::string& index, const std::string& collection, const query_options& options) {
@@ -172,9 +156,7 @@ namespace kuzzleio {
 
 
   SearchResult* Collection::searchSpecifications(const std::string& query) {
-    query_options options;
-
-    return this->searchSpecifications(query, options);
+    return this->searchSpecifications(query, query_options());
   }
 
   SearchResult* Collection::searchSpecifications(const std::string& query, const query_options& options) {
@@ -188,9 +170,7 @@ namespace kuzzleio {
 
 
   std::string Collection::updateSpecifications(const std::string& index, const std::string& collection, const std::string& specifications) {
-    query_options options;
-
-    return this->updateSpecifications(index, collection, specifications, options);
+    return this->updateSpecifications(index, collection, specifications, query_options());
   }
 
   std::string Collection::updateSpecifications(const std::string& index, const std::string& collection, const std::string& specifications, const query_options& options) {
@@ -209,9 +189,7 @@ namespace kuzzleio {
 
 
   validation_response* Collection::validateSpecifications(const std::string& index, const std::string& collection, const std::string& specifications) {
-    query_options options;
-
-    return this->validateSpecifications(index, collection, specifications, options);
+    return this->validateSpecifications(index, collection, specifications, query_options());
   }
 
   validation_response* Collection::validateSpecifications(const std::string& index, const std::string& collection, const std::string& specifications, const query_options& options) {
@@ -227,9 +205,7 @@ namespace kuzzleio {
 
 
   void Collection::deleteSpecifications(const std::string& index, const std::string& collection) {
-    query_options options;
-
-    this->deleteSpecifications(index, collection, options);
+    this->deleteSpecifications(index, collection, query_options());
   }
 
   void Collection::deleteSpecifications(const std::string& index, const std::string& collection, const query_options& options) {

@@ -47,9 +47,7 @@ namespace kuzzleio {
 
 
   int Realtime::count(const std::string& room_id) {
-    query_options options;
-
-    return this->count(room_id, options);
+    return this->count(room_id, query_options());
   }
 
   int Realtime::count(const std::string& room_id, const query_options& options) {
@@ -66,9 +64,7 @@ namespace kuzzleio {
 
 
   void Realtime::publish(const std::string& index, const std::string& collection, const std::string& message) {
-    query_options options;
-
-    this->publish(index, collection, message, options);
+    this->publish(index, collection, message, query_options());
   }
 
   void Realtime::publish(const std::string& index, const std::string& collection, const std::string& message, const query_options& options) {
@@ -84,9 +80,7 @@ namespace kuzzleio {
 
 
   std::string Realtime::subscribe(const std::string& index, const std::string& collection, const std::string& filters, NotificationListener* listener) {
-    room_options options;
-
-    return this->subscribe(index, collection, filters, listener, options);
+    return this->subscribe(index, collection, filters, listener, room_options());
   }
 
   std::string Realtime::subscribe(const std::string& index, const std::string& collection, const std::string& filters, NotificationListener* listener, const room_options& options) {
@@ -108,9 +102,7 @@ namespace kuzzleio {
 
 
   void Realtime::unsubscribe(const std::string& room_id) {
-    query_options options;
-
-    return this->unsubscribe(room_id, options);
+    return this->unsubscribe(room_id, query_options());
   }
 
   void Realtime::unsubscribe(const std::string& room_id, const query_options& options) {

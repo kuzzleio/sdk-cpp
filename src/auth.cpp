@@ -35,9 +35,7 @@ namespace kuzzleio {
   }
 
   std::string Auth::createMyCredentials(const std::string& strategy, const std::string& credentials) {
-    query_options options;
-
-    return this->createMyCredentials(strategy, credentials, options);
+    return this->createMyCredentials(strategy, credentials, query_options());
   }
 
   std::string Auth::createMyCredentials(const std::string& strategy, const std::string& credentials, const query_options& options) {
@@ -50,9 +48,7 @@ namespace kuzzleio {
   }
 
   bool Auth::credentialsExist(const std::string& strategy) {
-    query_options options;
-
-    return this->credentialsExist(strategy, options);
+    return this->credentialsExist(strategy, query_options());
   }
 
   bool Auth::credentialsExist(const std::string& strategy, const query_options& options) {
@@ -64,9 +60,7 @@ namespace kuzzleio {
   }
 
   void Auth::deleteMyCredentials(const std::string& strategy) {
-    query_options options;
-
-    this->deleteMyCredentials(strategy, options);
+    this->deleteMyCredentials(strategy, query_options());
   }
 
   void Auth::deleteMyCredentials(const std::string& strategy, const query_options& options) {
@@ -84,9 +78,7 @@ namespace kuzzleio {
 
 
   std::string Auth::getMyCredentials(const std::string& strategy) {
-    query_options options;
-
-    return this->getMyCredentials(strategy, options);
+    return this->getMyCredentials(strategy, query_options());
   }
 
   std::string Auth::getMyCredentials(const std::string& strategy, const query_options& options) {
@@ -98,9 +90,7 @@ namespace kuzzleio {
   }
 
   std::vector<std::shared_ptr<UserRight>> Auth::getMyRights() {
-    query_options options;
-
-    return this->getMyRights(options);
+    return this->getMyRights(query_options());
   }
 
   std::vector<std::shared_ptr<UserRight>> Auth::getMyRights(const query_options& options) {
@@ -119,9 +109,7 @@ namespace kuzzleio {
   }
 
   std::vector<std::string> Auth::getStrategies() {
-    query_options options;
-
-    return this->getStrategies(options);
+    return this->getStrategies(query_options());
   }
 
   std::vector<std::string> Auth::getStrategies(const query_options& options) {
@@ -161,9 +149,7 @@ namespace kuzzleio {
 
 
   std::string Auth::updateMyCredentials(const std::string& strategy, const std::string& credentials) {
-    query_options options;
-
-    return this->updateMyCredentials(strategy, credentials, options);
+    return this->updateMyCredentials(strategy, credentials, query_options());
   }
 
   std::string Auth::updateMyCredentials(const std::string& strategy, const std::string& credentials, const query_options& options) {
@@ -175,9 +161,7 @@ namespace kuzzleio {
   }
 
   User Auth::updateSelf(const std::string& content) {
-    query_options options;
-
-    return this->updateSelf(content, options);
+    return this->updateSelf(content, query_options());
   }
 
   User Auth::updateSelf(const std::string& content, const query_options& options) {
@@ -190,9 +174,7 @@ namespace kuzzleio {
 
 
   bool Auth::validateMyCredentials(const std::string& strategy, const std::string& credentials) {
-    query_options options;
-
-    return this->validateMyCredentials(strategy, credentials, options);
+    return this->validateMyCredentials(strategy, credentials, query_options());
   }
 
   bool Auth::validateMyCredentials(const std::string& strategy, const std::string& credentials, const query_options& options) {
