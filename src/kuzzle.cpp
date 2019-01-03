@@ -138,7 +138,9 @@ namespace kuzzleio {
     return what();
   }
 
-  Kuzzle::Kuzzle(Protocol* proto, options *opts) {
+  Kuzzle::Kuzzle(Protocol* proto) : Kuzzle(proto, options()) {}
+
+  Kuzzle::Kuzzle(Protocol* proto, const options& options) {
     this->_kuzzle = new kuzzle();
 
     proto->_protocol = new protocol();
@@ -166,7 +168,7 @@ namespace kuzzleio {
     this->_protocol = proto->_protocol;
     this->_cpp_protocol = proto;
 
-    kuzzle_new_kuzzle(this->_kuzzle, this->_protocol, opts);
+    kuzzle_new_kuzzle(this->_kuzzle, this->_protocol, const_cast<kuzzleio::options*>(&options));
 
     this->document = new Document(_kuzzle);
     this->auth = new Auth(_kuzzle);
@@ -179,6 +181,7 @@ namespace kuzzleio {
   Kuzzle::~Kuzzle() {
     unregisterKuzzle(this->_kuzzle);
     unregisterProtocol(this->_protocol);
+
     delete(this->_kuzzle);
     delete(this->document);
     delete(this->auth);
@@ -190,7 +193,8 @@ namespace kuzzleio {
 
   void Kuzzle::connect() {
     char * err = kuzzle_connect(_kuzzle);
-    if (err != NULL) {
+
+    if (err != nullptr) {
       const std::string cppError = err;
       free(err);
       throw InternalException(cppError);
@@ -201,8 +205,16 @@ namespace kuzzleio {
     kuzzle_disconnect(_kuzzle);
   }
 
-  kuzzle_response* Kuzzle::query(kuzzle_request* query, query_options* options) {
-    KUZZLE_API(kuzzle_response, r, kuzzle_query(_kuzzle, query, options))
+  kuzzle_response* Kuzzle::query(const kuzzle_request& request) {
+    return this->query(request, query_options());
+  }
+
+  kuzzle_response* Kuzzle::query(const kuzzle_request& request, const query_options& options) {
+    KUZZLE_API(kuzzle_response, r, kuzzle_query(
+      _kuzzle,
+      const_cast<kuzzle_request*>(&request),
+      const_cast<query_options*>(&options)))
+
     return r;
   }
 
@@ -211,8 +223,8 @@ namespace kuzzleio {
     return this;
   }
 
-  Kuzzle* Kuzzle::setAutoReplay(bool autoReplay) noexcept {
-    kuzzle_set_auto_replay(_kuzzle, autoReplay);
+  Kuzzle* Kuzzle::setAutoReplay(bool auto_replay) noexcept {
+    kuzzle_set_auto_replay(_kuzzle, auto_replay);
     return this;
   }
 
@@ -231,8 +243,8 @@ namespace kuzzleio {
     return this;
   }
 
-  Kuzzle* Kuzzle::setVolatile(const std::string& volatiles) noexcept {
-    kuzzle_set_volatile(_kuzzle, const_cast<char*>(volatiles.c_str()));
+  Kuzzle* Kuzzle::setVolatile(const std::string& volatile_data) noexcept {
+    kuzzle_set_volatile(_kuzzle, const_cast<char*>(volatile_data.c_str()));
     return this;
   }
 
@@ -248,8 +260,9 @@ namespace kuzzleio {
     return _cpp_protocol;
   }
 
-  void trigger_event_listener(int event, char* res, void* data) {
-    EventListener* listener = static_cast<Kuzzle*>(data)->getListeners()[event];
+  void trigger_event_listener(int event, char* res, void* kuzzle_instance) {
+    EventListener* listener = static_cast<Kuzzle*>(kuzzle_instance)->getListeners()[event];
+
     if (listener) {
       (*listener)(res);
     }
@@ -259,8 +272,8 @@ namespace kuzzleio {
     return _listener_instances;
   }
 
-  void Kuzzle::emitEvent(Event event, const std::string& body) noexcept {
-    kuzzle_emit_event(_kuzzle, event, const_cast<char*>(body.c_str()));
+  void Kuzzle::emitEvent(Event event, const std::string& payload) noexcept {
+    kuzzle_emit_event(_kuzzle, event, const_cast<char*>(payload.c_str()));
   }
 
   KuzzleEventEmitter* Kuzzle::addListener(Event event, EventListener* listener) {

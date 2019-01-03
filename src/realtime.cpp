@@ -29,24 +29,15 @@ namespace kuzzleio {
     free(_realtime);
   }
 
-  int Realtime::count(const std::string& roomId, query_options *options) {
-    KUZZLE_API(
-      int_result,
-      r,
-      kuzzle_realtime_count(_realtime, const_cast<char*>(roomId.c_str()), options))
-
-    int ret = r->result;
-    kuzzle_free_int_result(r);
-    return ret;
+  // Internal use only
+  NotificationListener* Realtime::getListener(const std::string& room_id) {
+    return _listener_instances[room_id];
   }
 
-  NotificationListener* Realtime::getListener(const std::string& roomId) {
-    return _listener_instances[roomId];
-  }
-
-  void call_subscribe_cb(notification_result* res, void* data) {
-    if (data) {
-      NotificationListener* listener = static_cast<Realtime*>(data)->getListener(res->room_id);
+  // Internal use only
+  void call_subscribe_cb(notification_result* res, void* realtime_controller) {
+    if (realtime_controller) {
+      NotificationListener* listener = static_cast<Realtime*>(realtime_controller)->getListener(res->room_id);
 
       if (listener) {
         (*listener)(res);
@@ -54,34 +45,73 @@ namespace kuzzleio {
     }
   }
 
-  void Realtime::publish(const std::string& index, const std::string& collection, const std::string& body, query_options *options) {
-    KUZZLE_API(
-      error_result,
-      r,
-      kuzzle_realtime_publish(_realtime, const_cast<char*>(index.c_str()), const_cast<char*>(collection.c_str()), const_cast<char*>(body.c_str()), options))
+
+  int Realtime::count(const std::string& room_id) {
+    return this->count(room_id, query_options());
+  }
+
+  int Realtime::count(const std::string& room_id, const query_options& options) {
+    KUZZLE_API(int_result, r, kuzzle_realtime_count(
+      _realtime,
+      const_cast<char*>(room_id.c_str()),
+      const_cast<query_options*>(&options)))
+
+    int ret = r->result;
+    kuzzle_free_int_result(r);
+
+    return ret;
+  }
+
+
+  void Realtime::publish(const std::string& index, const std::string& collection, const std::string& message) {
+    this->publish(index, collection, message, query_options());
+  }
+
+  void Realtime::publish(const std::string& index, const std::string& collection, const std::string& message, const query_options& options) {
+    KUZZLE_API(error_result, r, kuzzle_realtime_publish(
+      _realtime,
+      const_cast<char*>(index.c_str()),
+      const_cast<char*>(collection.c_str()),
+      const_cast<char*>(message.c_str()),
+      const_cast<query_options*>(&options)))
 
     kuzzle_free_error_result(r);
   }
 
-  std::string Realtime::subscribe(const std::string& index, const std::string& collection, const std::string& body, NotificationListener* cb, room_options* options) {
-    KUZZLE_API(
-      subscribe_result,
-      r,
-      kuzzle_realtime_subscribe(_realtime, const_cast<char*>(index.c_str()), const_cast<char*>(collection.c_str()),  const_cast<char*>(body.c_str()), call_subscribe_cb, this, options))
 
-    std::string roomId = r->room;
-    _listener_instances[r->channel] = cb;
-    kuzzle_free_subscribe_result(r);
-    return roomId;
+  std::string Realtime::subscribe(const std::string& index, const std::string& collection, const std::string& filters, NotificationListener* listener) {
+    return this->subscribe(index, collection, filters, listener, room_options());
   }
 
-  void Realtime::unsubscribe(const std::string& roomId, query_options *options) {
-    KUZZLE_API(
-      error_result,
-      r,
-      kuzzle_realtime_unsubscribe(_realtime, const_cast<char*>(roomId.c_str()), options))
+  std::string Realtime::subscribe(const std::string& index, const std::string& collection, const std::string& filters, NotificationListener* listener, const room_options& options) {
+    KUZZLE_API(subscribe_result, r, kuzzle_realtime_subscribe(
+      _realtime,
+      const_cast<char*>(index.c_str()),
+      const_cast<char*>(collection.c_str()),
+      const_cast<char*>(filters.c_str()),
+      call_subscribe_cb,
+      this,
+      const_cast<room_options*>(&options)))
 
-    _listener_instances[roomId] = nullptr;
+    std::string room_id = r->room;
+    _listener_instances[r->channel] = listener;
+    kuzzle_free_subscribe_result(r);
+
+    return room_id;
+  }
+
+
+  void Realtime::unsubscribe(const std::string& room_id) {
+    return this->unsubscribe(room_id, query_options());
+  }
+
+  void Realtime::unsubscribe(const std::string& room_id, const query_options& options) {
+    KUZZLE_API(error_result, r, kuzzle_realtime_unsubscribe(
+      _realtime,
+      const_cast<char*>(room_id.c_str()),
+      const_cast<query_options*>(&options)))
+
+    _listener_instances[room_id] = nullptr;
     kuzzle_free_error_result(r);
   }
 }

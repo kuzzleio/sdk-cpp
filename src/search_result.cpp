@@ -16,9 +16,9 @@
 #include "internal/core.hpp"
 
 namespace kuzzleio {
-    SearchResult::SearchResult(search_result* sr) {
-        _sr = sr;
-
+    SearchResult::SearchResult(const search_result* sr)
+      : _sr(sr)
+    {
         aggregations = std::string(_sr->aggregations);
         hits = std::string(_sr->hits);
         total = _sr->total;
@@ -27,11 +27,11 @@ namespace kuzzleio {
     }
 
     SearchResult::~SearchResult() {
-        kuzzle_free_search_result(_sr);
+        kuzzle_free_search_result(const_cast<search_result*>(_sr));
     }
 
-    SearchResult* SearchResult::next() {
-        search_result *sr = kuzzle_document_search_next(_sr);
+    SearchResult* SearchResult::next() const{
+        search_result *sr = kuzzle_document_search_next(const_cast<search_result*>(_sr));
         return new SearchResult(sr);
     }
 }

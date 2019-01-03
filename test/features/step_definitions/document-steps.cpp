@@ -12,7 +12,7 @@ namespace {
       query_options options;
       options.refresh = const_cast<char*>("wait_for");
 
-      ctx->kuzzle->document->create(ctx->index, ctx->collection, document_id, "{\"a\":\"document\"}", &options);
+      ctx->kuzzle->document->create(ctx->index, ctx->collection, document_id, "{\"a\":\"document\"}", options);
       ctx->success = 1;
     } catch (KuzzleException e) {
       ctx->success = 0;
@@ -46,7 +46,7 @@ namespace {
       query_options options;
       options.refresh = const_cast<char*>("wait_for");
 
-      ctx->kuzzle->document->delete_(ctx->index, ctx->collection, document_id, &options);
+      ctx->kuzzle->document->delete_(ctx->index, ctx->collection, document_id, options);
     } catch (KuzzleException e) {
       ctx->error_message = e.getMessage();
       ctx->success = 0;
@@ -62,7 +62,7 @@ namespace {
       query_options options;
       options.refresh = const_cast<char*>("wait_for");
 
-      ctx->kuzzle->document->createOrReplace(ctx->index, ctx->collection, document_id, "{\"a\":\"replaced document\"}", &options);
+      ctx->kuzzle->document->createOrReplace(ctx->index, ctx->collection, document_id, "{\"a\":\"replaced document\"}", options);
       ctx->document_id = document_id;
       ctx->success = 1;
     } catch (KuzzleException e) {
@@ -90,7 +90,7 @@ namespace {
       query_options options;
       options.refresh = const_cast<char*>("wait_for");
 
-      ctx->kuzzle->document->replace(ctx->index, ctx->collection, document_id, "{\"a\":\"replaced document\"}", &options);
+      ctx->kuzzle->document->replace(ctx->index, ctx->collection, document_id, "{\"a\":\"replaced document\"}", options);
       ctx->document_id = document_id;
       ctx->success = 1;
     } catch (KuzzleException e) {
@@ -115,7 +115,7 @@ namespace {
       query_options options;
       options.refresh = const_cast<char*>("wait_for");
 
-      ctx->kuzzle->document->update(ctx->index, ctx->collection, document_id, "{\"a\":\"updated document\"}", &options);
+      ctx->kuzzle->document->update(ctx->index, ctx->collection, document_id, "{\"a\":\"updated document\"}", options);
       ctx->document_id = document_id;
       ctx->success = 1;
     } catch (KuzzleException e) {
@@ -160,7 +160,7 @@ namespace {
       options.from = from;
       options.size = size;
 
-      ctx->documents = ctx->kuzzle->document->search(ctx->index, ctx->collection, query, &options);
+      ctx->documents = ctx->kuzzle->document->search(ctx->index, ctx->collection, query, options);
     } catch (KuzzleException e) {
       BOOST_FAIL(e.getMessage());
     }
@@ -217,7 +217,7 @@ namespace {
       document_ids.push_back(document1_id);
       document_ids.push_back(document2_id);
 
-      ctx->kuzzle->document->mDelete(ctx->index, ctx->collection, document_ids, &options);
+      ctx->kuzzle->document->mDelete(ctx->index, ctx->collection, document_ids, options);
       ctx->success = 1;
       ctx->partial_exception = 0;
     } catch (PartialException e) {
@@ -253,7 +253,7 @@ namespace {
       options.refresh = const_cast<char*>("wait_for");
 
       string documents = "[{\"_id\":\"" + document1_id + "\", \"body\":{}}, {\"_id\":\"" + document2_id + "\", \"body\":{}}]";
-      ctx->kuzzle->document->mCreate(ctx->index, ctx->collection, documents, &options);
+      ctx->kuzzle->document->mCreate(ctx->index, ctx->collection, documents, options);
       ctx->success = 1;
       ctx->partial_exception = 0;
     } catch (PartialException e) {
@@ -276,7 +276,7 @@ namespace {
       options.refresh = const_cast<char*>("wait_for");
 
       string documents = "[{\"_id\":\"" + document1_id + "\", \"body\":{\"a\":\"replaced document\"}}, {\"_id\":\"" + document2_id + "\", \"body\":{\"a\":\"replaced document\"}}]";
-      ctx->kuzzle->document->mReplace(ctx->index, ctx->collection, documents, &options);
+      ctx->kuzzle->document->mReplace(ctx->index, ctx->collection, documents, options);
       ctx->success = 1;
       ctx->partial_exception = 0;
     } catch (PartialException e) {
@@ -310,7 +310,7 @@ namespace {
       options.refresh = const_cast<char*>("wait_for");
 
       string documents = "[{\"_id\":\"" + document1_id + "\", \"body\":{\"a\":\"replaced document\"}}, {\"_id\":\"" + document2_id + "\", \"body\":{\"a\":\"replaced document\"}}]";
-      ctx->kuzzle->document->mUpdate(ctx->index, ctx->collection, documents, &options);
+      ctx->kuzzle->document->mUpdate(ctx->index, ctx->collection, documents, options);
       ctx->success = 1;
       ctx->partial_exception = 0;
     } catch (PartialException e) {
@@ -344,7 +344,7 @@ namespace {
       options.refresh = const_cast<char*>("wait_for");
 
       string documents = "[{\"_id\":\"" + document1_id + "\", \"body\":{\"a\":\"replaced document\"}}, {\"_id\":\"" + document2_id + "\", \"body\":{\"a\":\"replaced document\"}}]";
-      ctx->kuzzle->document->mCreateOrReplace(ctx->index, ctx->collection, documents, &options);
+      ctx->kuzzle->document->mCreateOrReplace(ctx->index, ctx->collection, documents, options);
       ctx->success = 1;
       ctx->partial_exception = 0;
     } catch (PartialException e) {

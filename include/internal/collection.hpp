@@ -35,22 +35,40 @@ namespace kuzzleio {
             Collection(kuzzle* kuzzle);
             virtual ~Collection();
 
-            void create(const std::string& index, const std::string& collection, query_options *options=nullptr);
-            void create(const std::string& index, const std::string& collection, const std::string& body, query_options *options=nullptr);
-            void truncate(const std::string& index, const std::string& collection, query_options *options=nullptr);
-            void updateMapping(const std::string& index, const std::string& collection, const std::string& body, query_options *options=nullptr);
-            void deleteSpecifications(const std::string& index, const std::string& collection, query_options *options=nullptr);
+            void create(const std::string& index, const std::string& collection);
+            void create(const std::string& index, const std::string& collection, const std::string& mapping);
+            void create(const std::string& index, const std::string& collection, const query_options& options);
+            void create(const std::string& index, const std::string& collection, const std::string& mapping, const query_options& options);
 
-            bool exists(const std::string& index, const std::string& collection, query_options *options=nullptr);
+            void truncate(const std::string& index, const std::string& collection);
+            void truncate(const std::string& index, const std::string& collection, const query_options& options);
 
-            std::string list(const std::string& index, query_options *options=nullptr);
-            std::string getMapping(const std::string& index, const std::string& collection, query_options *options=nullptr);
-            std::string getSpecifications(const std::string& index, const std::string& collection, query_options *options=nullptr);
-            std::string updateSpecifications(const std::string& index, const std::string& collection, const std::string& specifications, query_options *options=nullptr);
+            void updateMapping(const std::string& index, const std::string& collection, const std::string& mapping);
+            void updateMapping(const std::string& index, const std::string& collection, const std::string& mapping, const query_options& options);
 
-            SearchResult* searchSpecifications(const std::string& body, query_options *options=nullptr);
+            void deleteSpecifications(const std::string& index, const std::string& collection);
+            void deleteSpecifications(const std::string& index, const std::string& collection, const query_options& options);
 
-            validation_response* validateSpecifications(const std::string& index, const std::string& collection, const std::string& specifications, query_options *options=nullptr);
+            bool exists(const std::string& index, const std::string& collection);
+            bool exists(const std::string& index, const std::string& collection, const query_options& options);
+
+            std::string list(const std::string& index);
+            std::string list(const std::string& index, const query_options& options);
+
+            std::string getMapping(const std::string& index, const std::string& collection);
+            std::string getMapping(const std::string& index, const std::string& collection, const query_options& options);
+
+            std::string getSpecifications(const std::string& index, const std::string& collection);
+            std::string getSpecifications(const std::string& index, const std::string& collection, const query_options& options);
+
+            std::string updateSpecifications(const std::string& index, const std::string& collection, const std::string& specifications);
+            std::string updateSpecifications(const std::string& index, const std::string& collection, const std::string& specifications, const query_options& options);
+
+            SearchResult* searchSpecifications(const std::string& query);
+            SearchResult* searchSpecifications(const std::string& query, const query_options& options);
+
+            validation_response* validateSpecifications(const std::string& index, const std::string& collection, const std::string& specifications);
+            validation_response* validateSpecifications(const std::string& index, const std::string& collection, const std::string& specifications, const query_options& options);
     };
 }
 
