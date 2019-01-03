@@ -39,7 +39,7 @@ namespace kuzzleio {
   }
 
   int Document::count(const std::string& index, const std::string& collection, const std::string& query) {
-    return this->count(index, collection, query_options());
+    return this->count(index, collection, query, query_options());
   }
 
   int Document::count(const std::string& index, const std::string& collection, const std::string& query, const query_options& options) {
