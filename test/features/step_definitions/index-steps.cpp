@@ -12,8 +12,8 @@ namespace {
     try {
       ctx->kuzzle->index->delete_(index_name);
     } catch (KuzzleException e) {
-      K_LOG_E(e.message().c_str());
-      BOOST_FAIL(e.message());
+      K_LOG_E(e.getMessage().c_str());
+      BOOST_FAIL(e.getMessage());
     }
   }
 
@@ -28,8 +28,8 @@ namespace {
       try {
         ctx->kuzzle->index->create(index_name);
       } catch (KuzzleException e) {
-        K_LOG_E(e.message().c_str());
-        BOOST_FAIL(e.message());
+        K_LOG_E(e.getMessage().c_str());
+        BOOST_FAIL(e.getMessage());
       }
     } else {
       K_LOG_D("Using existing index: %s", index_name.c_str());
@@ -46,8 +46,8 @@ namespace {
       try {
         ctx->kuzzle->index->create(index_name1);
       } catch(KuzzleException e) {
-        K_LOG_E(e.message().c_str());
-        BOOST_FAIL(e.message());
+        K_LOG_E(e.getMessage().c_str());
+        BOOST_FAIL(e.getMessage());
       }
     } else {
       K_LOG_D("Using existing index: %s", index_name1.c_str());
@@ -57,8 +57,8 @@ namespace {
       try {
         ctx->kuzzle->index->create(index_name2);
       } catch(KuzzleException e) {
-        K_LOG_E(e.message().c_str());
-        BOOST_FAIL(e.message());
+        K_LOG_E(e.getMessage().c_str());
+        BOOST_FAIL(e.getMessage());
       }
     } else {
       K_LOG_D("Using existing index: %s", index_name2.c_str());
@@ -79,8 +79,8 @@ namespace {
     try {
       ctx->kuzzle->index->mDelete(v);
     } catch(KuzzleException e) {
-      K_LOG_E(e.message().c_str());
-      BOOST_FAIL(e.message());
+      K_LOG_E(e.getMessage().c_str());
+      BOOST_FAIL(e.getMessage());
     }
   }
 
@@ -96,7 +96,7 @@ namespace {
       ctx->index = index_name;
     } catch (KuzzleException e) {
       ctx->success = false;
-      K_LOG_E(e.message().c_str());
+      K_LOG_E(e.getMessage().c_str());
     }
   }
 

@@ -83,7 +83,7 @@ bool kuzzle_user_exists(Kuzzle *kuzzle, const string &user_id)
   }
   catch (KuzzleException e)
   {
-    K_LOG_W(e.message().c_str());
+    K_LOG_W(e.getMessage().c_str());
   }
   return user_exists;
 }
@@ -131,7 +131,7 @@ void kuzzle_credentials_delete(Kuzzle *kuzzle, const string &strategy,
   {
     K_LOG_E("Failed to delete '%s' credentials for userId '%s'",
             strategy.c_str(), user_id.c_str());
-    K_LOG_E(e.message().c_str());
+    K_LOG_E(e.getMessage().c_str());
   }
 }
 
@@ -167,7 +167,7 @@ void kuzzle_user_create(Kuzzle *kuzzle, const string &user_id,
   }
   catch (KuzzleException e)
   {
-    K_LOG_E("Status (%d): %s", e.status, e.message().c_str());
+    K_LOG_E("Status (%d): %s", e.status, e.getMessage().c_str());
     if (kuzzle_user_exists(kuzzle, user_id.c_str())) {
       K_LOG_W("But user seems to exist anyway?????");
     }

@@ -12,7 +12,7 @@ namespace {
     try {
       ctx->kuzzle->collection->create(ctx->index, collection_id);
     } catch (KuzzleException e) {
-      BOOST_FAIL(e.message());
+      BOOST_FAIL(e.getMessage());
     }
   }
 
@@ -52,8 +52,8 @@ namespace {
     try {
       ctx->kuzzle->collection->create(ctx->index, ctx->collection);
     } catch (KuzzleException e) {
-      K_LOG_E(e.message().c_str());
-      BOOST_FAIL(e.message());
+      K_LOG_E(e.getMessage().c_str());
+      BOOST_FAIL(e.getMessage());
     }
   }
 
@@ -211,7 +211,7 @@ namespace {
     try {
       ctx->kuzzle->collection->create(ctx->index, collection_id, mapping);
     } catch (KuzzleException e) {
-      BOOST_FAIL(e.message());
+      BOOST_FAIL(e.getMessage());
     }
   }
 }

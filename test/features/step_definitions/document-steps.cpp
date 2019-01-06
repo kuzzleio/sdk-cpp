@@ -16,7 +16,7 @@ namespace {
       ctx->success = 1;
     } catch (KuzzleException e) {
       ctx->success = 0;
-      ctx->error_message = e.message();
+      ctx->error_message = e.getMessage();
     }
   }
 
@@ -48,7 +48,7 @@ namespace {
 
       ctx->kuzzle->document->delete_(ctx->index, ctx->collection, document_id, options);
     } catch (KuzzleException e) {
-      ctx->error_message = e.message();
+      ctx->error_message = e.getMessage();
       ctx->success = 0;
     }
   }
@@ -66,7 +66,7 @@ namespace {
       ctx->document_id = document_id;
       ctx->success = 1;
     } catch (KuzzleException e) {
-      BOOST_FAIL(e.message());
+      BOOST_FAIL(e.getMessage());
     }
   }
 
@@ -94,7 +94,7 @@ namespace {
       ctx->document_id = document_id;
       ctx->success = 1;
     } catch (KuzzleException e) {
-      BOOST_FAIL(e.message());
+      BOOST_FAIL(e.getMessage());
     }
   }
 
@@ -119,7 +119,7 @@ namespace {
       ctx->document_id = document_id;
       ctx->success = 1;
     } catch (KuzzleException e) {
-      BOOST_FAIL(e.message());
+      BOOST_FAIL(e.getMessage());
     }
   }
 
@@ -143,7 +143,7 @@ namespace {
       ctx->documents = ctx->kuzzle->document->search(ctx->index, ctx->collection, "{\"query\": {\"bool\": {\"should\":[{\"match\":{\"_id\": \"" + document_id + "\"}}]}}}");
       ctx->success = 1;
     } catch (KuzzleException e) {
-      BOOST_FAIL(e.message());
+      BOOST_FAIL(e.getMessage());
     }
   }
 
@@ -162,7 +162,7 @@ namespace {
 
       ctx->documents = ctx->kuzzle->document->search(ctx->index, ctx->collection, query, options);
     } catch (KuzzleException e) {
-      BOOST_FAIL(e.message());
+      BOOST_FAIL(e.getMessage());
     }
   }
 
@@ -173,7 +173,7 @@ namespace {
     try {
       ctx->documents = ctx->documents->next();
     } catch (KuzzleException e) {
-      BOOST_FAIL(e.message());
+      BOOST_FAIL(e.getMessage());
     }
   }
 
@@ -198,7 +198,7 @@ namespace {
     try {
       ctx->hits = ctx->kuzzle->document->count(ctx->index, ctx->collection, "{}");
     } catch (KuzzleException e) {
-      BOOST_FAIL(e.message());
+      BOOST_FAIL(e.getMessage());
     }
   }
 
@@ -224,7 +224,7 @@ namespace {
       ctx->partial_exception = 1;
       ctx->success = 0;
     } catch (KuzzleException e) {
-      BOOST_FAIL(e.message());
+      BOOST_FAIL(e.getMessage());
     }
   }
 
@@ -237,7 +237,7 @@ namespace {
     try {
       BOOST_CHECK(ctx->kuzzle->document->count(ctx->index, ctx->collection, "{}") == documents_count);
     } catch (KuzzleException e) {
-      BOOST_FAIL(e.message());
+      BOOST_FAIL(e.getMessage());
     }
   }
 
@@ -260,7 +260,7 @@ namespace {
       ctx->partial_exception = 1;
       ctx->success = 0;
     } catch (KuzzleException e) {
-      BOOST_FAIL(e.message());
+      BOOST_FAIL(e.getMessage());
     }
   }
 
@@ -283,7 +283,7 @@ namespace {
       ctx->partial_exception = 1;
       ctx->success = 0;
     } catch (KuzzleException e) {
-      BOOST_FAIL(e.message());
+      BOOST_FAIL(e.getMessage());
     }
   }
 
@@ -317,7 +317,7 @@ namespace {
       ctx->partial_exception = 1;
       ctx->success = 0;
     } catch (KuzzleException e) {
-      BOOST_FAIL(e.message());
+      BOOST_FAIL(e.getMessage());
     }
   }
 
@@ -351,7 +351,7 @@ namespace {
       ctx->partial_exception = 1;
       ctx->success = 0;
     } catch (KuzzleException e) {
-      BOOST_FAIL(e.message());
+      BOOST_FAIL(e.getMessage());
     }
   }
 
