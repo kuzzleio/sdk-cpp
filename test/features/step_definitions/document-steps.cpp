@@ -140,7 +140,7 @@ namespace {
     ScenarioScope<KuzzleCtx> ctx;
 
     try {
-      ctx->documents = ctx->kuzzle->document->search(ctx->index, ctx->collection, "{\"query\": {\"bool\": {\"should\":[{\"match\":{\"_id\": \"" + document_id + "\"}}]}}}");
+      ctx->search_result = ctx->kuzzle->document->search(ctx->index, ctx->collection, "{\"query\": {\"bool\": {\"should\":[{\"match\":{\"_id\": \"" + document_id + "\"}}]}}}");
       ctx->success = 1;
     } catch (KuzzleException e) {
       BOOST_FAIL(e.getMessage());
@@ -160,7 +160,7 @@ namespace {
       options.from = from;
       options.size = size;
 
-      ctx->documents = ctx->kuzzle->document->search(ctx->index, ctx->collection, query, options);
+      ctx->search_result = ctx->kuzzle->document->search(ctx->index, ctx->collection, query, options);
     } catch (KuzzleException e) {
       BOOST_FAIL(e.getMessage());
     }
@@ -171,7 +171,7 @@ namespace {
     ScenarioScope<KuzzleCtx> ctx;
 
     try {
-      ctx->documents = ctx->documents->next();
+      ctx->search_result = ctx->search_result->next();
     } catch (KuzzleException e) {
       BOOST_FAIL(e.getMessage());
     }
@@ -186,9 +186,9 @@ namespace {
     BOOST_CHECK(ctx->success == 1);
 
     if (search_status == "successfully")
-      BOOST_CHECK(ctx->documents->total == 1);
+      BOOST_CHECK(ctx->search_result->total() == 1);
     else
-      BOOST_CHECK(ctx->documents->total == 0);
+      BOOST_CHECK(ctx->search_result->total() == 0);
   }
 
   WHEN("^I count how many documents there is in the collection$")
@@ -417,15 +417,15 @@ namespace {
   THEN(R"(^The search result should have (a total of|fetched) (\d+) documents$)")
   {
     REGEX_PARAM(std::string, field);
-    REGEX_PARAM(unsigned, number);
+    REGEX_PARAM(size_t, number);
 
     ScenarioScope<KuzzleCtx> ctx;
 
     if (field == "a total of") {
-      BOOST_CHECK(ctx->documents->total == number);
+      BOOST_CHECK(ctx->search_result->total() == number);
     }
     else if (field == "fetched") {
-      BOOST_CHECK(ctx->documents->fetched == number);
+      BOOST_CHECK(ctx->search_result->fetched() == number);
     }
   }
 }
