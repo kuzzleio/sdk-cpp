@@ -35,7 +35,6 @@ namespace kuzzleio {
 
   class KuzzleException : public std::runtime_error {
     private:
-      const std::string _message;
       const int _status;
 
     public:
