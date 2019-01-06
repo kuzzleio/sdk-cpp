@@ -52,7 +52,7 @@ namespace {
     try {
       ctx->kuzzle->collection->create(ctx->index, ctx->collection);
     } catch (KuzzleException e) {
-      K_LOG_E(e.what().c_str());
+      K_LOG_E(e.what());
       BOOST_FAIL(e.what());
     }
   }

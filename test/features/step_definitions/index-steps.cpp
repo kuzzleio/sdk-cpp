@@ -12,7 +12,7 @@ namespace {
     try {
       ctx->kuzzle->index->delete_(index_name);
     } catch (KuzzleException e) {
-      K_LOG_E(e.what().c_str());
+      K_LOG_E(e.what());
       BOOST_FAIL(e.what());
     }
   }
@@ -28,7 +28,7 @@ namespace {
       try {
         ctx->kuzzle->index->create(index_name);
       } catch (KuzzleException e) {
-        K_LOG_E(e.what().c_str());
+        K_LOG_E(e.what());
         BOOST_FAIL(e.what());
       }
     } else {
@@ -46,7 +46,7 @@ namespace {
       try {
         ctx->kuzzle->index->create(index_name1);
       } catch(KuzzleException e) {
-        K_LOG_E(e.what().c_str());
+        K_LOG_E(e.what());
         BOOST_FAIL(e.what());
       }
     } else {
@@ -57,7 +57,7 @@ namespace {
       try {
         ctx->kuzzle->index->create(index_name2);
       } catch(KuzzleException e) {
-        K_LOG_E(e.what().c_str());
+        K_LOG_E(e.what());
         BOOST_FAIL(e.what());
       }
     } else {
@@ -79,7 +79,7 @@ namespace {
     try {
       ctx->kuzzle->index->mDelete(v);
     } catch(KuzzleException e) {
-      K_LOG_E(e.what().c_str());
+      K_LOG_E(e.what());
       BOOST_FAIL(e.what());
     }
   }
@@ -96,7 +96,7 @@ namespace {
       ctx->index = index_name;
     } catch (KuzzleException e) {
       ctx->success = false;
-      K_LOG_E(e.what().c_str());
+      K_LOG_E(e.what());
     }
   }
 
