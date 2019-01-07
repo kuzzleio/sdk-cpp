@@ -22,17 +22,23 @@ namespace kuzzleio {
     class SearchResult {
         protected:
             const search_result* _sr;
+            const std::string _aggregations;
+            const std::string _hits;
+            const size_t _total;
+            const size_t _fetched;
+            const std::string _scroll_id;
 
         public:
-            std::string aggregations;
-            std::string hits;
-            unsigned total;
-            unsigned fetched;
-            std::string scroll_id;
-
             SearchResult(const search_result* sr);
             virtual ~SearchResult();
+
             SearchResult* next() const;
+
+            size_t total() const;
+            size_t fetched() const;
+            const std::string& aggregations() const;
+            const std::string& hits() const;
+            const std::string& scroll_id() const;
     };
 
     class SpecificationSearchResult : public SearchResult {
