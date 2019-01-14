@@ -130,14 +130,6 @@ namespace kuzzleio {
     return static_cast<Protocol*>(data)->getHost().c_str();
   }
 
-  // Class
-  KuzzleException::KuzzleException(int status, const std::string& error)
-    : std::runtime_error(error), status(status) {}
-
-  std::string KuzzleException::getMessage() const {
-    return what();
-  }
-
   Kuzzle::Kuzzle(Protocol* proto) : Kuzzle(proto, options()) {}
 
   Kuzzle::Kuzzle(Protocol* proto, const options& options) {
