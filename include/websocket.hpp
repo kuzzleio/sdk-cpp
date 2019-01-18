@@ -47,6 +47,7 @@ namespace kuzzleio {
       unsigned long long getReconnectionDelay();
       bool isSslConnection();
   };
+
 }
 
 #endif

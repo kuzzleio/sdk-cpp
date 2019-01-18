@@ -10,13 +10,15 @@ namespace kuzzleio {
   }
 
   // WebSocket class implementation
-  WebSocket::WebSocket(const std::string& host, options *opts) {
+  WebSocket::WebSocket(const std::string& host) : WebSocket(host, options()) {}
+
+  WebSocket::WebSocket(const std::string& host, const options& options) {
     this->_web_socket = new web_socket();
     printf("++++++++ NEW WS OBJ: %p\n", this->_web_socket);
     kuzzle_websocket_new_web_socket(
       this->_web_socket,
       const_cast<char*>(host.c_str()),
-      opts,
+      const_cast<kuzzleio::options*>(&options),
       this);
   }
 
@@ -34,6 +36,7 @@ namespace kuzzleio {
       // closing the socket fails, since we're destroying
       // it anyway
     }
+  }
 
     unregisterWebSocket(this->_web_socket);
     delete this->_web_socket;

@@ -74,7 +74,7 @@ bool kuzzle_user_exists(Kuzzle *kuzzle, const string &user_id)
     req.controller = "security";
     req.action = "getUser";
     req.id = user_id.c_str();
-    kuzzle->query(&req);
+    kuzzle->query(req);
     user_exists = true;
   }
   catch (kuzzleio::NotFoundException e)
@@ -83,7 +83,7 @@ bool kuzzle_user_exists(Kuzzle *kuzzle, const string &user_id)
   }
   catch (KuzzleException e)
   {
-    K_LOG_W(e.getMessage().c_str());
+    K_LOG_W(e.what());
   }
   return user_exists;
 }
@@ -101,8 +101,7 @@ void kuzzle_user_delete(Kuzzle *kuzzle, const string &user_id)
     query_options options;
     options.refresh = const_cast<char*>("wait_for");
     options.volatiles = const_cast<char*>("{}");
-    kuzzle->query(
-        &req, &options); // TODO: test if we can delete with options
+    kuzzle->query(req, options); // TODO: test if we can delete with options
 
     K_LOG_D("Deleted user \"%s\"", user_id.c_str());
   }
@@ -123,7 +122,7 @@ void kuzzle_credentials_delete(Kuzzle *kuzzle, const string &strategy,
     req.strategy = "local";
     req.id = user_id.c_str();
 
-    kuzzle->query(&req);
+    kuzzle->query(req);
 
     K_LOG_D("Deleted '%s' credentials for userId '%s'", strategy.c_str(),
             user_id.c_str());
@@ -132,7 +131,7 @@ void kuzzle_credentials_delete(Kuzzle *kuzzle, const string &strategy,
   {
     K_LOG_E("Failed to delete '%s' credentials for userId '%s'",
             strategy.c_str(), user_id.c_str());
-    K_LOG_E(e.getMessage().c_str());
+    K_LOG_E(e.what());
   }
 }
 
@@ -163,12 +162,12 @@ void kuzzle_user_create(Kuzzle *kuzzle, const string &user_id,
   K_LOG_D("Req body: %s", req.body);
   try
   {
-    kuzzle_response *resp = kuzzle->query(&req);
+    kuzzle_response *resp = kuzzle->query(req);
     K_LOG_D("createUser ended with status: %d", resp->status);
   }
   catch (KuzzleException e)
   {
-    K_LOG_E("Status (%d): %s", e.status, e.getMessage().c_str());
+    K_LOG_E("Status (%d): %s", e.status(), e.what());
     if (kuzzle_user_exists(kuzzle, user_id.c_str())) {
       K_LOG_W("But user seems to exist anyway?????");
     }

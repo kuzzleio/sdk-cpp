@@ -88,7 +88,8 @@ namespace kuzzleio {
       Document *document;
       Realtime *realtime;
 
-      Kuzzle(Protocol* protocol, options *options=nullptr);
+      Kuzzle(Protocol* protocol);
+      Kuzzle(Protocol* protocol, const options& options);
       virtual ~Kuzzle();
 
       void connect();

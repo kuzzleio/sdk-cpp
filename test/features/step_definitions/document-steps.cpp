@@ -12,11 +12,11 @@ namespace {
       query_options options;
       options.refresh = const_cast<char*>("wait_for");
 
-      ctx->kuzzle->document->create(ctx->index, ctx->collection, document_id, "{\"a\":\"document\"}", &options);
+      ctx->kuzzle->document->create(ctx->index, ctx->collection, document_id, "{\"a\":\"document\"}", options);
       ctx->success = 1;
     } catch (KuzzleException e) {
       ctx->success = 0;
-      ctx->error_message = e.getMessage();
+      ctx->error_message = e.what();
     }
   }
 
@@ -46,9 +46,9 @@ namespace {
       query_options options;
       options.refresh = const_cast<char*>("wait_for");
 
-      ctx->kuzzle->document->delete_(ctx->index, ctx->collection, document_id, &options);
+      ctx->kuzzle->document->delete_(ctx->index, ctx->collection, document_id, options);
     } catch (KuzzleException e) {
-      ctx->error_message = e.getMessage();
+      ctx->error_message = e.what();
       ctx->success = 0;
     }
   }
@@ -62,11 +62,11 @@ namespace {
       query_options options;
       options.refresh = const_cast<char*>("wait_for");
 
-      ctx->kuzzle->document->createOrReplace(ctx->index, ctx->collection, document_id, "{\"a\":\"replaced document\"}", &options);
+      ctx->kuzzle->document->createOrReplace(ctx->index, ctx->collection, document_id, "{\"a\":\"replaced document\"}", options);
       ctx->document_id = document_id;
       ctx->success = 1;
     } catch (KuzzleException e) {
-      BOOST_FAIL(e.getMessage());
+      BOOST_FAIL(e.what());
     }
   }
 
@@ -90,11 +90,11 @@ namespace {
       query_options options;
       options.refresh = const_cast<char*>("wait_for");
 
-      ctx->kuzzle->document->replace(ctx->index, ctx->collection, document_id, "{\"a\":\"replaced document\"}", &options);
+      ctx->kuzzle->document->replace(ctx->index, ctx->collection, document_id, "{\"a\":\"replaced document\"}", options);
       ctx->document_id = document_id;
       ctx->success = 1;
     } catch (KuzzleException e) {
-      BOOST_FAIL(e.getMessage());
+      BOOST_FAIL(e.what());
     }
   }
 
@@ -115,11 +115,11 @@ namespace {
       query_options options;
       options.refresh = const_cast<char*>("wait_for");
 
-      ctx->kuzzle->document->update(ctx->index, ctx->collection, document_id, "{\"a\":\"updated document\"}", &options);
+      ctx->kuzzle->document->update(ctx->index, ctx->collection, document_id, "{\"a\":\"updated document\"}", options);
       ctx->document_id = document_id;
       ctx->success = 1;
     } catch (KuzzleException e) {
-      BOOST_FAIL(e.getMessage());
+      BOOST_FAIL(e.what());
     }
   }
 
@@ -140,10 +140,10 @@ namespace {
     ScenarioScope<KuzzleCtx> ctx;
 
     try {
-      ctx->documents = ctx->kuzzle->document->search(ctx->index, ctx->collection, "{\"query\": {\"bool\": {\"should\":[{\"match\":{\"_id\": \"" + document_id + "\"}}]}}}");
+      ctx->search_result = ctx->kuzzle->document->search(ctx->index, ctx->collection, "{\"query\": {\"bool\": {\"should\":[{\"match\":{\"_id\": \"" + document_id + "\"}}]}}}");
       ctx->success = 1;
     } catch (KuzzleException e) {
-      BOOST_FAIL(e.getMessage());
+      BOOST_FAIL(e.what());
     }
   }
 
@@ -160,9 +160,9 @@ namespace {
       options.from = from;
       options.size = size;
 
-      ctx->documents = ctx->kuzzle->document->search(ctx->index, ctx->collection, query, &options);
+      ctx->search_result = ctx->kuzzle->document->search(ctx->index, ctx->collection, query, options);
     } catch (KuzzleException e) {
-      BOOST_FAIL(e.getMessage());
+      BOOST_FAIL(e.what());
     }
   }
 
@@ -171,9 +171,9 @@ namespace {
     ScenarioScope<KuzzleCtx> ctx;
 
     try {
-      ctx->documents = ctx->documents->next();
+      ctx->search_result = ctx->search_result->next();
     } catch (KuzzleException e) {
-      BOOST_FAIL(e.getMessage());
+      BOOST_FAIL(e.what());
     }
   }
 
@@ -186,9 +186,9 @@ namespace {
     BOOST_CHECK(ctx->success == 1);
 
     if (search_status == "successfully")
-      BOOST_CHECK(ctx->documents->total() == 1);
+      BOOST_CHECK(ctx->search_result->total() == 1);
     else
-      BOOST_CHECK(ctx->documents->total() == 0);
+      BOOST_CHECK(ctx->search_result->total() == 0);
   }
 
   WHEN("^I count how many documents there is in the collection$")
@@ -198,7 +198,7 @@ namespace {
     try {
       ctx->hits = ctx->kuzzle->document->count(ctx->index, ctx->collection, "{}");
     } catch (KuzzleException e) {
-      BOOST_FAIL(e.getMessage());
+      BOOST_FAIL(e.what());
     }
   }
 
@@ -217,14 +217,14 @@ namespace {
       document_ids.push_back(document1_id);
       document_ids.push_back(document2_id);
 
-      ctx->kuzzle->document->mDelete(ctx->index, ctx->collection, document_ids, &options);
+      ctx->kuzzle->document->mDelete(ctx->index, ctx->collection, document_ids, options);
       ctx->success = 1;
       ctx->partial_exception = 0;
     } catch (PartialException e) {
       ctx->partial_exception = 1;
       ctx->success = 0;
     } catch (KuzzleException e) {
-      BOOST_FAIL(e.getMessage());
+      BOOST_FAIL(e.what());
     }
   }
 
@@ -237,7 +237,7 @@ namespace {
     try {
       BOOST_CHECK(ctx->kuzzle->document->count(ctx->index, ctx->collection, "{}") == documents_count);
     } catch (KuzzleException e) {
-      BOOST_FAIL(e.getMessage());
+      BOOST_FAIL(e.what());
     }
   }
 
@@ -253,14 +253,14 @@ namespace {
       options.refresh = const_cast<char*>("wait_for");
 
       string documents = "[{\"_id\":\"" + document1_id + "\", \"body\":{}}, {\"_id\":\"" + document2_id + "\", \"body\":{}}]";
-      ctx->kuzzle->document->mCreate(ctx->index, ctx->collection, documents, &options);
+      ctx->kuzzle->document->mCreate(ctx->index, ctx->collection, documents, options);
       ctx->success = 1;
       ctx->partial_exception = 0;
     } catch (PartialException e) {
       ctx->partial_exception = 1;
       ctx->success = 0;
     } catch (KuzzleException e) {
-      BOOST_FAIL(e.getMessage());
+      BOOST_FAIL(e.what());
     }
   }
 
@@ -276,14 +276,14 @@ namespace {
       options.refresh = const_cast<char*>("wait_for");
 
       string documents = "[{\"_id\":\"" + document1_id + "\", \"body\":{\"a\":\"replaced document\"}}, {\"_id\":\"" + document2_id + "\", \"body\":{\"a\":\"replaced document\"}}]";
-      ctx->kuzzle->document->mReplace(ctx->index, ctx->collection, documents, &options);
+      ctx->kuzzle->document->mReplace(ctx->index, ctx->collection, documents, options);
       ctx->success = 1;
       ctx->partial_exception = 0;
     } catch (PartialException e) {
       ctx->partial_exception = 1;
       ctx->success = 0;
     } catch (KuzzleException e) {
-      BOOST_FAIL(e.getMessage());
+      BOOST_FAIL(e.what());
     }
   }
 
@@ -310,14 +310,14 @@ namespace {
       options.refresh = const_cast<char*>("wait_for");
 
       string documents = "[{\"_id\":\"" + document1_id + "\", \"body\":{\"a\":\"replaced document\"}}, {\"_id\":\"" + document2_id + "\", \"body\":{\"a\":\"replaced document\"}}]";
-      ctx->kuzzle->document->mUpdate(ctx->index, ctx->collection, documents, &options);
+      ctx->kuzzle->document->mUpdate(ctx->index, ctx->collection, documents, options);
       ctx->success = 1;
       ctx->partial_exception = 0;
     } catch (PartialException e) {
       ctx->partial_exception = 1;
       ctx->success = 0;
     } catch (KuzzleException e) {
-      BOOST_FAIL(e.getMessage());
+      BOOST_FAIL(e.what());
     }
   }
 
@@ -344,14 +344,14 @@ namespace {
       options.refresh = const_cast<char*>("wait_for");
 
       string documents = "[{\"_id\":\"" + document1_id + "\", \"body\":{\"a\":\"replaced document\"}}, {\"_id\":\"" + document2_id + "\", \"body\":{\"a\":\"replaced document\"}}]";
-      ctx->kuzzle->document->mCreateOrReplace(ctx->index, ctx->collection, documents, &options);
+      ctx->kuzzle->document->mCreateOrReplace(ctx->index, ctx->collection, documents, options);
       ctx->success = 1;
       ctx->partial_exception = 0;
     } catch (PartialException e) {
       ctx->partial_exception = 1;
       ctx->success = 0;
     } catch (KuzzleException e) {
-      BOOST_FAIL(e.getMessage());
+      BOOST_FAIL(e.what());
     }
   }
 
@@ -417,17 +417,17 @@ namespace {
   THEN(R"(^The search result should have (a total of|fetched) (\d+) documents$)")
   {
     REGEX_PARAM(std::string, field);
-    REGEX_PARAM(unsigned, number);
+    REGEX_PARAM(size_t, number);
 
     ScenarioScope<KuzzleCtx> ctx;
 
     BOOST_REQUIRE(ctx->documents != nullptr);
 
     if (field == "a total of") {
-      BOOST_CHECK(ctx->documents->total() == number);
+      BOOST_CHECK(ctx->search_result->total() == number);
     }
     else if (field == "fetched") {
-      BOOST_CHECK(ctx->documents->fetched() == number);
+      BOOST_CHECK(ctx->search_result->fetched() == number);
     }
   }
 }

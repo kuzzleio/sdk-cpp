@@ -24,15 +24,17 @@ namespace kuzzleio {
   KuzzleException::KuzzleException(int status, const std::string& error)
     : std::runtime_error(error), status(status) {}
 
-  std::string KuzzleException::getMessage() const {
-    return what();
-  }
 
-  Kuzzle::Kuzzle(Protocol* proto, options *opts) {
+  Kuzzle::Kuzzle(Protocol* proto) : Kuzzle(proto, options()) {}
+
+  Kuzzle::Kuzzle(Protocol* proto, const options& options) {
     this->_kuzzle = new kuzzle();
     this->_protocol = new_protocol_bridge(proto);
 
-    kuzzle_new_kuzzle(this->_kuzzle, this->_protocol, opts);
+    kuzzle_new_kuzzle(
+      this->_kuzzle, 
+      this->_protocol, 
+      const_cast<kuzzleio::options*>(&options));
 
     this->document = new Document(_kuzzle);
     this->auth = new Auth(_kuzzle);
@@ -58,7 +60,8 @@ namespace kuzzleio {
 
   void Kuzzle::connect() {
     char * err = kuzzle_connect(_kuzzle);
-    if (err != NULL) {
+
+    if (err != nullptr) {
       const std::string cppError = err;
       free(err);
       throw InternalException(cppError);
@@ -67,6 +70,10 @@ namespace kuzzleio {
 
   void Kuzzle::disconnect() noexcept {
     kuzzle_disconnect(_kuzzle);
+  }
+
+  kuzzle_response* Kuzzle::query(const kuzzle_request& request) {
+    return this->query(request, query_options());
   }
 
   kuzzle_response* Kuzzle::query(
@@ -81,8 +88,8 @@ namespace kuzzleio {
     return this;
   }
 
-  Kuzzle* Kuzzle::setAutoReplay(bool autoReplay) noexcept {
-    kuzzle_set_auto_replay(_kuzzle, autoReplay);
+  Kuzzle* Kuzzle::setAutoReplay(bool auto_replay) noexcept {
+    kuzzle_set_auto_replay(_kuzzle, auto_replay);
     return this;
   }
 
@@ -101,8 +108,8 @@ namespace kuzzleio {
     return this;
   }
 
-  Kuzzle* Kuzzle::setVolatile(const std::string& volatiles) noexcept {
-    kuzzle_set_volatile(_kuzzle, const_cast<char*>(volatiles.c_str()));
+  Kuzzle* Kuzzle::setVolatile(const std::string& volatile_data) noexcept {
+    kuzzle_set_volatile(_kuzzle, const_cast<char*>(volatile_data.c_str()));
     return this;
   }
 

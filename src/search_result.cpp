@@ -46,12 +46,9 @@ namespace kuzzleio {
   }
 
   std::shared_ptr<SearchResult> SearchResult::next() {
-    std::cout << "==== next ==== " << std::endl;
-    std::cout << "fetched/total = " << fetched() << "/" << total() << std::endl;
     search_result *sr = kuzzle_document_search_next(_sr);
 
     if (sr == nullptr) {
-      std::cout << "returning null :-(" << std::endl;
       return nullptr;
     }
 

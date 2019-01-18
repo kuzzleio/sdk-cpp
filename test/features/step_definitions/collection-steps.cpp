@@ -12,7 +12,7 @@ namespace {
     try {
       ctx->kuzzle->collection->create(ctx->index, collection_id);
     } catch (KuzzleException e) {
-      BOOST_FAIL(e.getMessage());
+      BOOST_FAIL(e.what());
     }
   }
 
@@ -52,8 +52,8 @@ namespace {
     try {
       ctx->kuzzle->collection->create(ctx->index, ctx->collection);
     } catch (KuzzleException e) {
-      K_LOG_E(e.getMessage().c_str());
-      BOOST_FAIL(e.getMessage());
+      K_LOG_E(e.what());
+      BOOST_FAIL(e.what());
     }
   }
 
@@ -81,7 +81,7 @@ namespace {
     query_options options;
     options.refresh = const_cast<char*>("wait_for");
 
-    ctx->kuzzle->document->create(ctx->index, ctx->collection, document_id, "{\"a\":\"document\"}", &options);
+    ctx->kuzzle->document->create(ctx->index, ctx->collection, document_id, "{\"a\":\"document\"}", options);
   }
 
   WHEN("^I truncate the collection \'([^\"]*)\'$")
@@ -93,7 +93,7 @@ namespace {
     query_options options;
     options.refresh = const_cast<char*>("wait_for");
 
-    ctx->kuzzle->collection->truncate(ctx->index, collection_id, &options);
+    ctx->kuzzle->collection->truncate(ctx->index, collection_id, options);
   }
 
   THEN("^the collection \'([^\"]*)\' should be empty$")
@@ -212,9 +212,9 @@ namespace {
     string mapping = "{\"properties\": {\"gordon\": {\"type\": \"keyword\"}}}";
 
     try {
-      ctx->kuzzle->collection->create(ctx->index, collection_id, &mapping);
+      ctx->kuzzle->collection->create(ctx->index, collection_id, mapping);
     } catch (KuzzleException e) {
-      BOOST_FAIL(e.getMessage());
+      BOOST_FAIL(e.what());
     }
   }
 }

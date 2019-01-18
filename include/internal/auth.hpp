@@ -29,24 +29,48 @@ namespace kuzzleio {
     private:
       auth *_auth;
       kuzzle *_kuzzle;
+
     public:
       Auth(kuzzle *kuzzle);
       virtual ~Auth();
+
       token_validity* checkToken(const std::string& token);
-      std::string createMyCredentials(const std::string& strategy, const std::string& credentials, query_options* options=nullptr);
-      bool credentialsExist(const std::string& strategy, query_options *options=nullptr);
-      void deleteMyCredentials(const std::string& strategy, query_options *options=nullptr);
+
+      std::string createMyCredentials(const std::string& strategy, const std::string& credentials);
+      std::string createMyCredentials(const std::string& strategy, const std::string& credentials, const query_options& options);
+
+      bool credentialsExist(const std::string& strategy);
+      bool credentialsExist(const std::string& strategy, const query_options& options);
+
+      void deleteMyCredentials(const std::string& strategy);
+      void deleteMyCredentials(const std::string& strategy, const query_options& options);
+
       User getCurrentUser();
-      std::string getMyCredentials(const std::string& strategy, query_options *options=nullptr);
-      std::vector<std::shared_ptr<UserRight>> getMyRights(query_options *options=nullptr);
-      std::vector<std::string> getStrategies(query_options *options=nullptr);
-      std::string login(const std::string& strategy, const std::string& credentials, int expiresIn);
+
+      std::string getMyCredentials(const std::string& strategy);
+      std::string getMyCredentials(const std::string& strategy, const query_options& options);
+
+      std::vector<std::shared_ptr<UserRight>> getMyRights();
+      std::vector<std::shared_ptr<UserRight>> getMyRights(const query_options& options);
+
+      std::vector<std::string> getStrategies();
+      std::vector<std::string> getStrategies(const query_options& options);
+
       std::string login(const std::string& strategy, const std::string& credentials);
+      std::string login(const std::string& strategy, const std::string& credentials, int expiresIn);
+
       void logout() noexcept;
+
       void setJwt(const std::string& jwt) noexcept;
-      std::string updateMyCredentials(const std::string& strategy, const std::string& credentials, query_options *options=nullptr);
-      User updateSelf(const std::string& content, query_options* options=nullptr);
-      bool validateMyCredentials(const std::string& strategy, const std::string& credentials, query_options* options=nullptr);
+
+      std::string updateMyCredentials(const std::string& strategy, const std::string& credentials);
+      std::string updateMyCredentials(const std::string& strategy, const std::string& credentials, const query_options& options);
+
+      User updateSelf(const std::string& content);
+      User updateSelf(const std::string& content, const query_options& options);
+
+      bool validateMyCredentials(const std::string& strategy, const std::string& credentials);
+      bool validateMyCredentials(const std::string& strategy, const std::string& credentials, const query_options& options);
   };
 }
 

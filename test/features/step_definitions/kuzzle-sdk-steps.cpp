@@ -33,7 +33,7 @@ namespace {
     try {
       ctx->kuzzle->auth->updateSelf(data);
     } catch (KuzzleException e) {
-      K_LOG_E(e.getMessage().c_str());
+      K_LOG_E(e.what());
     }
   }
 
@@ -116,9 +116,9 @@ namespace {
 
     try {
       ctx->protocol = new WebSocket(hostname);
-      ctx->kuzzle = new Kuzzle(ctx->protocol, &ctx->kuzzle_options);
+      ctx->kuzzle = new Kuzzle(ctx->protocol, ctx->kuzzle_options);
     } catch (KuzzleException e) {
-      K_LOG_E(e.getMessage().c_str());
+      K_LOG_E(e.what());
     }
 
     // throws if it fails to connect

@@ -36,7 +36,7 @@ namespace {
       K_LOG_D("Logged in as '%s'", username.c_str());
       K_LOG_D("JWT is: %s", jwt.c_str());
     } catch (KuzzleException e) {
-      K_LOG_W(e.getMessage().c_str());
+      K_LOG_W(e.what());
     }
     ctx->jwt = jwt;
   }
@@ -81,7 +81,7 @@ namespace {
       ctx->success = 1;
     } catch (KuzzleException e) {
       ctx->success = 0;
-      K_LOG_E(e.getMessage().c_str());
+      K_LOG_E(e.what());
     }
   }
 

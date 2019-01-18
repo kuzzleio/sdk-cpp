@@ -21,7 +21,7 @@
 namespace kuzzleio {
     class SearchResult {
         protected:
-            search_result *_sr;
+            const search_result* _sr;
 
         public:
             char const* aggregations() const;
@@ -37,7 +37,7 @@ namespace kuzzleio {
 
     class SpecificationSearchResult : public SearchResult {
         public:
-            SpecificationSearchResult(search_result* sr);
+            SpecificationSearchResult(const search_result* sr);
             virtual ~SpecificationSearchResult();
     };
 
