@@ -3,6 +3,9 @@
 namespace kuzzleio {
   // go websocket listener bridges
   void bridge_notify(notification_result* payload, void* _ws) {
+    std::cout << "==== NOTIFICATION " << std::endl;
+    std::cout << "=== ROOM: " << payload->room_id << std::endl;
+    std::cout << "==== " << payload->result->content << std::endl;
     static_cast<WebSocket*>(_ws)->notify(payload);
   }
 
@@ -113,6 +116,7 @@ namespace kuzzleio {
   // this ones is only used to change the "notify" method visibility
   // from protected to public
   void WebSocket::notify(notification_result* payload) noexcept {
+    std::cout << "+++ WS NOTIFY" << std::endl;
     Protocol::notify(payload);
   }
 
@@ -127,9 +131,12 @@ namespace kuzzleio {
         channel, room_id, filters, subscribe_to_self, listener);
 
     kuzzle_websocket_register_sub(
-        this->_web_socket, const_cast<char*>(channel.c_str()),
-        const_cast<char*>(room_id.c_str()), const_cast<char*>(filters.c_str()),
-        subscribe_to_self, bridge_notify);
+        this->_web_socket,
+        const_cast<char*>(channel.c_str()),
+        const_cast<char*>(room_id.c_str()),
+        const_cast<char*>(filters.c_str()),
+        subscribe_to_self,
+        bridge_notify);
   }
 
   void WebSocket::unregisterSub(const std::string& channel) {

@@ -186,9 +186,9 @@ namespace {
     BOOST_CHECK(ctx->success == 1);
 
     if (search_status == "successfully")
-      BOOST_CHECK(ctx->documents->total == 1);
+      BOOST_CHECK(ctx->documents->total() == 1);
     else
-      BOOST_CHECK(ctx->documents->total == 0);
+      BOOST_CHECK(ctx->documents->total() == 0);
   }
 
   WHEN("^I count how many documents there is in the collection$")
@@ -421,11 +421,13 @@ namespace {
 
     ScenarioScope<KuzzleCtx> ctx;
 
+    BOOST_REQUIRE(ctx->documents != nullptr);
+
     if (field == "a total of") {
-      BOOST_CHECK(ctx->documents->total == number);
+      BOOST_CHECK(ctx->documents->total() == number);
     }
     else if (field == "fetched") {
-      BOOST_CHECK(ctx->documents->fetched == number);
+      BOOST_CHECK(ctx->documents->fetched() == number);
     }
   }
 }

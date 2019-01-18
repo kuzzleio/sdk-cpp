@@ -19,14 +19,14 @@
 namespace kuzzleio {
   Document::Document(kuzzle* kuzzle) {
     _document = kuzzle_get_document_controller(kuzzle);
-    kuzzle_new_document(_document, kuzzle);
+    kuzzle_new_document(_document);
   }
 
   Document::~Document() {
     unregisterDocument(_document);
 
     // do not use "delete":
-    // _document is allocating in the cgo world, using calloc
+    // _document is allocated in the cgo world, using calloc
     free(_document);
   }
 
@@ -120,9 +120,23 @@ namespace kuzzleio {
     return ret;
   }
 
-  SearchResult* Document::search(const std::string& index, const std::string& collection, const std::string& body, query_options *options) {
-    KUZZLE_API(search_result, r, kuzzle_document_search(_document, const_cast<char*>(index.c_str()), const_cast<char*>(collection.c_str()), const_cast<char*>(body.c_str()), options))
-    return new SearchResult(r);
+  std::shared_ptr<SearchResult> Document::search(
+      const std::string& index,
+      const std::string& collection,
+      const std::string& body,
+      query_options *options) {
+    KUZZLE_API(
+        search_result,
+        r,
+        kuzzle_document_search(_document, const_cast<char*>(index.c_str()),
+                               const_cast<char*>(collection.c_str()),
+                               const_cast<char*>(body.c_str()), options))
+
+    if (r == nullptr) {
+      return nullptr;
+    }
+
+    return std::make_shared<SearchResult>(r);
   }
 
   std::string Document::mCreate(const std::string& index, const std::string& collection, const std::string& body, query_options *options) {

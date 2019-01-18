@@ -80,9 +80,10 @@ namespace kuzzleio {
       const char* room_id,
       const char* filters,
       bool subscribe_to_self,
-      kuzzle_notification_listener* listener,
+      kuzzle_notification_listener *listener,
       void* _p) {
 
+    printf("briding listener %p\n", listener);
     static_cast<Protocol*>(_p)->registerSub(channel, room_id, filters,
                                             subscribe_to_self, listener);
   }
@@ -216,14 +217,19 @@ namespace kuzzleio {
         const std::string& channel,
         const std::string& roomId,
         const std::string& filters, bool subscribetoSelf,
-        kuzzle_notification_listener* listener) {
+        kuzzle_notification_listener *listener) {
     auto chan = this->bridgeSubs[channel];
+    kuzzle_notification_listener *l = listener;
 
     // do not create a new shared pointer on a already existing listener
+    std::cout << "Holy COW I'm BRIDGING like a mad man!" << std::endl;
+    printf("creating listener based on listener %p (%p)\n", listener, l);
     if (chan.find(listener) == chan.end()) {
       auto nl = std::make_shared<NotificationListener>(
           [&, this](notification_result* notification) {
-        (*listener)(notification, this);
+        std::cout << "O RLY?" << std::endl;
+        printf("calling listener: %p\n", l);
+        (*l)(notification, this);
       });
 
       chan[listener] = nl;
@@ -237,6 +243,8 @@ namespace kuzzleio {
       const std::string& filters,
       bool subscribetoSelf,
       std::shared_ptr<NotificationListener> listener) {
+    std::cout << "sub registered on " << roomId << std::endl;
+    printf("listener pointer = %p\n", listener.get());
     this->notificationListeners[channel].insert(listener);
   }
 
@@ -276,10 +284,12 @@ namespace kuzzleio {
   }
 
   void Protocol::notify(notification_result* payload) noexcept {
+    std::cout << "~~~~ PROTOCOL NOTIFY" << std::endl;
     auto l = this->notificationListeners.find(payload->room_id);
 
     if (l != this->notificationListeners.end()) {
       for (auto sub : l->second) {
+        printf("===> CALLING LISTENER %p\n", sub.get());
         (*sub)(payload);
       }
     }

@@ -102,9 +102,12 @@ namespace {
 
     ScenarioScope<KuzzleCtx> ctx;
 
-    SearchResult * result = ctx->kuzzle->document->search(ctx->index, collection_id, "{}");
+    std::shared_ptr<SearchResult> result = ctx->kuzzle->document->search(
+        ctx->index,
+        collection_id,
+        "{}");
 
-    BOOST_CHECK(result->total == 0);
+    BOOST_CHECK(result->total() == 0);
   }
 
   WHEN("^I update the mapping of collection \'([^\"]*)\'$")

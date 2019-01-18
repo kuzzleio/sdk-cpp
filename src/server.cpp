@@ -25,7 +25,7 @@ namespace kuzzleio {
     unregisterServer(_server);
 
     // do not use "delete":
-    // _server is allocating in the cgo world, using calloc
+    // _server is allocated in the cgo world, using calloc
     free(_server);
   }
 

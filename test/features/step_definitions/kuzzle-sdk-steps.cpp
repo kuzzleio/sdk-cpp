@@ -7,19 +7,15 @@ namespace {
 
   AFTER() {
     ScenarioScope<KuzzleCtx> ctx;
-    std::cout << "=============== AFTER SCENARIO" << std::endl;
+
     if (ctx->kuzzle != nullptr) {
-      std::cout << "(invoking kuzzle dtor)" << std::endl;
       delete ctx->kuzzle;
       ctx->kuzzle = nullptr;
-      std::cout << "______________DONE" << std::endl;
     }
 
     if (ctx->protocol != nullptr) {
-      std::cout << "(invoking protocol dtor)" << std::endl;
       delete ctx->protocol;
       ctx->protocol = nullptr;
-      std::cout << "______________DONE" << std::endl;
     }
   }
 

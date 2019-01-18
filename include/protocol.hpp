@@ -48,7 +48,8 @@ namespace kuzzleio {
 
       // to be overridden: though the NotificationListener storage is
       // handled by this class, you still need to send a subscribe request
-      // to Kuzzle, using the provided arguments, using the implemented protocol
+      // to Kuzzle, using the provided arguments, using the implemented
+      // protocol
       virtual void registerSub(
           const std::string& channel, const std::string& roomId,
           const std::string& filters, bool subscribetoSelf,
@@ -72,7 +73,7 @@ namespace kuzzleio {
       virtual void registerSub(
         const std::string& channel, const std::string& roomId,
         const std::string& filters, bool subscribetoSelf,
-        kuzzle_notification_listener* listener);
+        kuzzle_notification_listener *listener);
   };
 
   protocol* new_protocol_bridge(Protocol*);

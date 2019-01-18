@@ -15,6 +15,7 @@
 #ifndef _DOCUMENT_HPP_
 #define _DOCUMENT_HPP_
 
+#include <memory>
 #include "exceptions.hpp"
 #include "search_result.hpp"
 #include "core.hpp"
@@ -39,7 +40,7 @@ namespace kuzzleio {
             std::string replace(const std::string& index, const std::string& collection, const std::string& id, const std::string& body, query_options *options=nullptr);
             std::string update(const std::string& index, const std::string& collection, const std::string& id, const std::string& body, query_options *options=nullptr);
             bool validate(const std::string& index, const std::string& collection, const std::string& body, query_options *options=nullptr);
-            SearchResult* search(const std::string& index, const std::string& collection, const std::string& body, query_options *options=nullptr);
+            std::shared_ptr<SearchResult> search(const std::string& index, const std::string& collection, const std::string& body, query_options *options=nullptr);
             std::string mCreate(const std::string& index, const std::string& collection, const std::string& body, query_options *options=nullptr);
             std::string mCreateOrReplace(const std::string& index, const std::string& collection, const std::string& body, query_options *options=nullptr);
             std::vector<std::string> mDelete(const std::string& index, const std::string& collection, const std::vector<std::string>& ids, query_options *options=nullptr);

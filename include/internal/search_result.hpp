@@ -16,30 +16,29 @@
 #define _SEARCH_RESULT_HPP_
 
 #include "kuzzle.hpp"
+#include <memory>
 
 namespace kuzzleio {
-
     class SearchResult {
         protected:
-            search_result* _sr;
+            search_result *_sr;
 
         public:
-            std::string aggregations;
-            std::string hits;
-            unsigned total;
-            unsigned fetched;
-            std::string scroll_id;
+            char const* aggregations() const;
+            char const* hits() const;
+            char const* scroll_id() const;
+            unsigned total() const;
+            unsigned fetched() const;
 
             SearchResult(search_result* sr);
             virtual ~SearchResult();
-            SearchResult* next();
+            virtual std::shared_ptr<SearchResult> next();
     };
 
     class SpecificationSearchResult : public SearchResult {
         public:
             SpecificationSearchResult(search_result* sr);
             virtual ~SpecificationSearchResult();
-            SpecificationSearchResult* next();
     };
 
 }
