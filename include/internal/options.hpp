@@ -17,18 +17,23 @@
 
 #include "internal/core.hpp"
 #include <string>
+#include <unordered_map>
 
 namespace kuzzleio {
   class Options {
     private:
       options *c_options;
+      std::unordered_map<std::string, std::string> headers;
+      bool headers_changed;
+
+      void resyncHeaders();
 
     public:
       Options();
       virtual ~Options();
 
       // getters
-      options* c_opts() const noexcept;
+      options* c_opts() noexcept;
       bool autoQueue() const noexcept;
       bool autoReconnect() const noexcept;
       bool autoReplay() const noexcept;
@@ -49,6 +54,11 @@ namespace kuzzleio {
       void queueTTL(unsigned int value) noexcept;
       void reconnectionDelay(unsigned long value) noexcept;
       void replayInterval(unsigned long value) noexcept;
+
+      // headers
+      void setHeader(std::string & name, std::string & value) noexcept;
+      void delHeader(std::string & name) noexcept;
+      void clearHeaders() noexcept;
   };
 }
 

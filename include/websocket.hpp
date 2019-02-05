@@ -16,7 +16,7 @@ namespace kuzzleio {
     public:
     web_socket* _web_socket;
     WebSocket(const std::string& host);
-    WebSocket(const std::string& host, const Options& options);
+    WebSocket(const std::string& host, Options& options);
 
     std::list<EventListener*> getListeners(int) noexcept;
     std::list<EventListener*> getOnceListeners(int) noexcept;

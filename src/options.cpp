@@ -17,17 +17,59 @@
 #include <cstdlib>
 
 namespace kuzzleio {
+  void Options::resyncHeaders() {
+    if (this->c_options->header_length > 0) {
+      for(size_t i = 0; i < this->c_options->header_length; i++) {
+        free(this->c_options->header_names[i]);
+        free(this->c_options->header_values[i]);
+      }
+
+      free(this->c_options->header_names);
+      free(this->c_options->header_values);
+
+      this->c_options->header_names = nullptr;
+      this->c_options->header_values = nullptr;
+    }
+
+    if (this->headers.size() > 0) {
+      this->c_options->header_names =
+          static_cast<char**>(malloc(this->headers.size() * sizeof(char*)));
+
+      this->c_options->header_values =
+          static_cast<char**>(malloc(this->headers.size() * sizeof(char*)));
+
+      size_t count = 0;
+      for(auto hdr : this->headers) {
+        this->c_options->header_names[count] =
+          static_cast<char*>(malloc(1+hdr.first.size()));
+        strcpy(this->c_options->header_names[count], hdr.first.c_str());
+
+        this->c_options->header_values[count] =
+          static_cast<char*>(malloc(1+hdr.second.size()));
+        strcpy(this->c_options->header_values[count], hdr.second.c_str());
+
+        count++;
+      }
+    }
+  }
+
   Options::Options() {
     // CGo functions use ?alloc/free => do not use C++ new/delete
     this->c_options = static_cast<options*>(malloc(sizeof(options)));
     kuzzle_set_default_options(this->c_options);
+    this->headers_changed = false;
   }
 
   Options::~Options() {
     kuzzle_free_options(this->c_options);
   }
 
-  options* Options::c_opts() const noexcept {
+  options* Options::c_opts() noexcept {
+    if (this->headers_changed) {
+      this->resyncHeaders();
+      this->headers_changed = false;
+    }
+
     return this->c_options;
   }
 
@@ -101,5 +143,21 @@ namespace kuzzleio {
 
   void Options::replayInterval(unsigned long value) noexcept {
     this->c_options->replay_interval = value;
+  }
+
+  void Options::clearHeaders() noexcept {
+    this->headers.clear();
+    this->headers_changed = true;
+  }
+
+  void Options::delHeader(std::string & name) noexcept {
+    if (this->headers.erase(name) > 0) {
+      this->headers_changed = true;
+    }
+  }
+
+  void Options::setHeader(std::string & name, std::string & value) noexcept {
+    this->headers[name] = value;
+    this->headers_changed = true;
   }
 }

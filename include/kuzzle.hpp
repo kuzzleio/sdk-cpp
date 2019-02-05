@@ -93,7 +93,7 @@ namespace kuzzleio {
 
 
       Kuzzle(Protocol* protocol);
-      Kuzzle(Protocol* protocol, const Options& options);
+      Kuzzle(Protocol* protocol, Options& options);
       virtual ~Kuzzle();
 
       void connect();
