@@ -1,12 +1,12 @@
 #include "websocket.hpp"
 
 namespace kuzzleio {
-  WebSocket::WebSocket(const std::string& host) : WebSocket(host, options()) {}
+  WebSocket::WebSocket(const std::string& host) : WebSocket(host, Options()) {}
 
-  WebSocket::WebSocket(const std::string& host, const options& options) {
+  WebSocket::WebSocket(const std::string& host, const Options& options) {
     this->_web_socket = new web_socket();
 
-    kuzzle_websocket_new_web_socket(this->_web_socket, const_cast<char*>(host.c_str()), const_cast<kuzzleio::options*>(&options), this);
+    kuzzle_websocket_new_web_socket(this->_web_socket, const_cast<char*>(host.c_str()), options.c_opts(), this);
   }
 
   void trigger_websocket_event_listener(int event, char* res, void* data) {
