@@ -2,7 +2,7 @@
 
 namespace kuzzleio {
   WebSocket::WebSocket(const std::string& host) {
-    Options defaultOpts = Options();
+    kuzzleio::Options defaultOpts;
     WebSocket(host, defaultOpts);
   }
 

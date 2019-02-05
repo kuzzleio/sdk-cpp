@@ -3,6 +3,7 @@
 
 #include <map>
 #include <list>
+#include "internal/options.hpp"
 #include "internal/core.hpp"
 #include "protocol.hpp"
 

@@ -131,7 +131,7 @@ namespace kuzzleio {
   }
 
   Kuzzle::Kuzzle(Protocol* proto) {
-    Options defaultOpts = Options();
+    Options defaultOpts;
     Kuzzle(proto, defaultOpts);
   }
 
