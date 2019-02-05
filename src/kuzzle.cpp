@@ -20,11 +20,6 @@
 #include "internal/event_emitter.hpp"
 
 namespace kuzzleio {
-  // Class
-  KuzzleException::KuzzleException(int status, const std::string& error)
-    : std::runtime_error(error), status(status) {}
-
-
   Kuzzle::Kuzzle(Protocol* proto) : Kuzzle(proto, options()) {}
 
   Kuzzle::Kuzzle(Protocol* proto, const options& options) {
@@ -32,8 +27,8 @@ namespace kuzzleio {
     this->_protocol = new_protocol_bridge(proto);
 
     kuzzle_new_kuzzle(
-      this->_kuzzle, 
-      this->_protocol, 
+      this->_kuzzle,
+      this->_protocol,
       const_cast<kuzzleio::options*>(&options));
 
     this->document = new Document(_kuzzle);
@@ -77,9 +72,12 @@ namespace kuzzleio {
   }
 
   kuzzle_response* Kuzzle::query(
-      kuzzle_request* query,
-      query_options* options) {
-    KUZZLE_API(kuzzle_response, r, kuzzle_query(_kuzzle, query, options))
+      const kuzzle_request& request,
+      const query_options& options) {
+    KUZZLE_API(kuzzle_response, r, kuzzle_query(
+        _kuzzle,
+        const_cast<kuzzle_request*>(&request),
+        const_cast<query_options*>(&options)))
     return r;
   }
 

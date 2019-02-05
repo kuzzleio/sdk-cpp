@@ -36,7 +36,6 @@ namespace kuzzleio {
       // closing the socket fails, since we're destroying
       // it anyway
     }
-  }
 
     unregisterWebSocket(this->_web_socket);
     delete this->_web_socket;

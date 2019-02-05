@@ -232,8 +232,8 @@ namespace kuzzleio {
   }
 
   std::shared_ptr<SearchResult> Document::search(
-      const std::string& index, 
-      const std::string& collection, 
+      const std::string& index,
+      const std::string& collection,
       const std::string& query) {
     return this->search(index, collection, query, query_options());
   }
@@ -241,14 +241,15 @@ namespace kuzzleio {
   std::shared_ptr<SearchResult> Document::search(
       const std::string& index,
       const std::string& collection,
-      const std::string& body,
-      query_options *options) {
+      const std::string& query,
+      const query_options& options) {
     KUZZLE_API(
         search_result,
         r,
         kuzzle_document_search(_document, const_cast<char*>(index.c_str()),
                                const_cast<char*>(collection.c_str()),
-                               const_cast<char*>(body.c_str()), options))
+                               const_cast<char*>(query.c_str()),
+                               const_cast<query_options*>(&options)))
 
     if (r == nullptr) {
       return nullptr;

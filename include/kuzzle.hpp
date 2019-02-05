@@ -96,9 +96,10 @@ namespace kuzzleio {
 
       std::string getJwt() noexcept;
       void disconnect() noexcept;
+      kuzzle_response* query(const kuzzle_request& request);
       kuzzle_response* query(
-          kuzzle_request* query,
-          query_options* options=nullptr);
+          const kuzzle_request& request,
+          const query_options& options);
       Kuzzle* playQueue() noexcept;
       Kuzzle* setAutoReplay(bool autoReplay) noexcept;
       Kuzzle* startQueuing() noexcept;

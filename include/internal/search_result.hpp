@@ -21,7 +21,7 @@
 namespace kuzzleio {
     class SearchResult {
         protected:
-            const search_result* _sr;
+            search_result* _sr;
 
         public:
             char const* aggregations() const;
