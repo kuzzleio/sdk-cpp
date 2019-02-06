@@ -1,5 +1,5 @@
 host: <%= ENV['CUCUMBER_HOST'] || 'localhost' %>
 port: <%= ENV['CUCUMBER_PORT'] || 3902 %>
 timeout:
-  invoke: 30
+  invoke: 60
   step_matches: 60
