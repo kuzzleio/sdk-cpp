@@ -31,23 +31,21 @@ namespace kuzzleio {
         public:
             SearchResult(const search_result* sr);
             virtual ~SearchResult();
-
-            SearchResult* next() const;
-
             size_t total() const;
             size_t fetched() const;
             const std::string& aggregations() const;
             const std::string& hits() const;
             const std::string& scroll_id() const;
+            virtual SearchResult* next() const;
     };
 
     class SpecificationSearchResult : public SearchResult {
         public:
-            SpecificationSearchResult(const search_result* sr);
-            virtual ~SpecificationSearchResult();
-            SpecificationSearchResult* next() const;
+            SpecificationSearchResult(const search_result* sr) 
+            : SearchResult(sr) {};
+            virtual ~SpecificationSearchResult() {};
+            virtual SpecificationSearchResult* next() const = 0;
     };
-
 }
 
 #endif
