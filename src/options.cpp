@@ -151,7 +151,7 @@ namespace kuzzleio {
     this->headers_changed = true;
   }
 
-  void Options::delHeader(std::string & name) noexcept {
+  void Options::delHeader(const std::string & name) noexcept {
     if (this->headers.erase(name) > 0) {
       this->headers_changed = true;
     }
