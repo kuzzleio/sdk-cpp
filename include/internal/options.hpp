@@ -56,7 +56,7 @@ namespace kuzzleio {
       void replayInterval(unsigned long value) noexcept;
 
       // headers
-      void setHeader(std::string & name, std::string & value) noexcept;
+      void setHeader(const std::string & name, const std::string & value) noexcept;
       void delHeader(std::string & name) noexcept;
       void clearHeaders() noexcept;
   };
