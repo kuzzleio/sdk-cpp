@@ -57,7 +57,7 @@ namespace kuzzleio {
 
       // headers
       void setHeader(const std::string & name, const std::string & value) noexcept;
-      void delHeader(std::string & name) noexcept;
+      void delHeader(const std::string & name) noexcept;
       void clearHeaders() noexcept;
   };
 }
