@@ -143,18 +143,6 @@ namespace kuzzleio {
     p->get_host = bridge_cpp_get_host;
   }
 
-  // std::list<EventListener*> _listenerToList(std::map<kuzzle_event_listener*, EventListener*> const & listeners) {
-  //   std::list<EventListener*> values;
-
-  //   std::transform(
-  //     listeners.begin(),
-  //     listeners.end(),
-  //     back_inserter(values),
-  //     [](const std::map<kuzzle_event_listener*, EventListener*>::value_type& val){ return val.second; });
-
-  //   return values;
-  // }
-
   // Protocol class implementation
   void Protocol::addListener(int event, kuzzle_event_listener *listener) {
     auto bl = this->bridgeListeners.find(listener);
