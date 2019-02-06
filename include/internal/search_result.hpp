@@ -32,16 +32,16 @@ namespace kuzzleio {
 
             SearchResult(const search_result* sr);
             virtual ~SearchResult();
-            SearchResult* next() const;
+            virtual SearchResult* next() const;
     };
 
     class SpecificationSearchResult : public SearchResult {
         public:
-            SpecificationSearchResult(const search_result* sr);
-            virtual ~SpecificationSearchResult();
-            SpecificationSearchResult* next() const;
+            SpecificationSearchResult(const search_result* sr) 
+            : SearchResult(sr) {};
+            virtual ~SpecificationSearchResult() {};
+            virtual SpecificationSearchResult* next() const = 0;
     };
-
 }
 
 #endif
