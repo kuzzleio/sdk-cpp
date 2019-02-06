@@ -157,7 +157,7 @@ namespace kuzzleio {
     }
   }
 
-  void Options::setHeader(std::string & name, std::string & value) noexcept {
+  void Options::setHeader(const std::string & name, const std::string & value) noexcept {
     this->headers[name] = value;
     this->headers_changed = true;
   }
