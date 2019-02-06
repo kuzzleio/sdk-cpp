@@ -15,7 +15,8 @@ namespace {
 
     try {
       CustomNotificationListener *l =
-        CustomNotificationListener::getSingleton();
+          CustomNotificationListener::getSingleton();
+      ctx->notif_result = nullptr;
       ctx->room_id = ctx->kuzzle->realtime->subscribe(ctx->index, collection_id, "{}", &l->listener);
     } catch (KuzzleException e) {
       BOOST_FAIL(e.what());
@@ -42,10 +43,10 @@ namespace {
 
     sleep(1);
     BOOST_CHECK(ctx->notif_result != nullptr);
-    // ctx->kuzzle->realtime->unsubscribe(ctx->room_id);
+    ctx->kuzzle->realtime->unsubscribe(ctx->room_id);
 
-    // delete ctx->notif_result;
-    // ctx->notif_result = nullptr;
+    delete ctx->notif_result;
+    ctx->notif_result = nullptr;
   }
 
   GIVEN("^I subscribe to \'([^\"]*)\' with \'(.*)\' as filter$") {

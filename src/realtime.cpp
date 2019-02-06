@@ -37,8 +37,6 @@ namespace kuzzleio {
   // Internal use only
   void call_subscribe_cb(notification_result* res, void* realtime_controller) {
     if (realtime_controller) {
-      std::cout << "CALL SUBSCRIBE CB" << std::endl;
-
       NotificationListener* listener =
         static_cast<Realtime*>(realtime_controller)->getListener(res->room_id);
 

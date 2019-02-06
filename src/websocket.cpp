@@ -3,9 +3,6 @@
 namespace kuzzleio {
   // go websocket listener bridges
   void bridge_notify(notification_result* payload, void* _ws) {
-    std::cout << "==== NOTIFICATION " << std::endl;
-    std::cout << "=== ROOM: " << payload->room_id << std::endl;
-    std::cout << "==== " << payload->result->content << std::endl;
     static_cast<WebSocket*>(_ws)->notify(payload);
   }
 
@@ -14,7 +11,7 @@ namespace kuzzleio {
 
   WebSocket::WebSocket(const std::string& host, const options& options) {
     this->_web_socket = new web_socket();
-    printf("++++++++ NEW WS OBJ: %p\n", this->_web_socket);
+
     kuzzle_websocket_new_web_socket(
       this->_web_socket,
       const_cast<char*>(host.c_str()),
@@ -23,9 +20,6 @@ namespace kuzzleio {
   }
 
   WebSocket::~WebSocket() {
-    std::cout << "~~~~~~~~~ WebSocket dtor called" << std::endl;
-    printf("++++++++ DESTROYING OBJ: %p\n", this->_web_socket);
-
     kuzzle_websocket_remove_all_listeners(this->_web_socket, -1);
     kuzzle_websocket_cancel_subs(this->_web_socket);
 
@@ -118,7 +112,6 @@ namespace kuzzleio {
   // this ones is only used to change the "notify" method visibility
   // from protected to public
   void WebSocket::notify(notification_result* payload) noexcept {
-    std::cout << "+++ WS NOTIFY" << std::endl;
     Protocol::notify(payload);
   }
 

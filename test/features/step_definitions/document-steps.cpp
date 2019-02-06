@@ -421,8 +421,6 @@ namespace {
 
     ScenarioScope<KuzzleCtx> ctx;
 
-    BOOST_REQUIRE(ctx->documents != nullptr);
-
     if (field == "a total of") {
       BOOST_CHECK(ctx->search_result->total() == number);
     }

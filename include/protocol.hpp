@@ -17,7 +17,7 @@ namespace kuzzleio {
       std::unordered_map<
           std::string,
           std::unordered_map<
-            kuzzle_notification_listener*,
+            kuzzle_notification_listener,
             std::shared_ptr<NotificationListener>
           >
       > bridgeSubs;
@@ -73,7 +73,7 @@ namespace kuzzleio {
       virtual void registerSub(
         const std::string& channel, const std::string& roomId,
         const std::string& filters, bool subscribetoSelf,
-        kuzzle_notification_listener *listener);
+        kuzzle_notification_listener listener);
   };
 
   protocol* new_protocol_bridge(Protocol*);
