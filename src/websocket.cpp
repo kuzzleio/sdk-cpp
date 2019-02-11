@@ -1,10 +1,8 @@
 #include "websocket.hpp"
 
 namespace kuzzleio {
-  WebSocket::WebSocket(const std::string& host) {
-    kuzzleio::Options defaultOpts;
-    WebSocket(host, defaultOpts);
-  }
+  WebSocket::WebSocket(const std::string& host)
+    : WebSocket(host, defaultOptions) {}
 
   WebSocket::WebSocket(const std::string& host, Options& options) {
     this->_web_socket = new web_socket();

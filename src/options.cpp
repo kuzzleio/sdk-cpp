@@ -57,7 +57,6 @@ namespace kuzzleio {
     // CGo functions use ?alloc/free => do not use C++ new/delete
     this->c_options = static_cast<options*>(malloc(sizeof(options)));
     kuzzle_set_default_options(this->c_options);
-    std::cout << "headers: " << this->c_options->header_length << std::endl;
     this->headers_changed = false;
   }
 

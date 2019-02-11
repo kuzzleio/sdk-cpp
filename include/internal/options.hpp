@@ -60,6 +60,8 @@ namespace kuzzleio {
       void delHeader(std::string & name) noexcept;
       void clearHeaders() noexcept;
   };
+
+  static Options defaultOptions;
 }
 
 #endif
