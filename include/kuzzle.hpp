@@ -21,6 +21,7 @@
 #include <map>
 #include <functional>
 
+#include "internal/options.hpp"
 #include "internal/exceptions.hpp"
 #include "internal/core.hpp"
 #include "internal/event_emitter.hpp"
@@ -89,7 +90,7 @@ namespace kuzzleio {
       Realtime *realtime;
 
       Kuzzle(Protocol* protocol);
-      Kuzzle(Protocol* protocol, const options& options);
+      Kuzzle(Protocol* protocol, Options& options);
       virtual ~Kuzzle();
 
       void connect();

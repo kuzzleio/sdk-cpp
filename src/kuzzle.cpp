@@ -20,16 +20,16 @@
 #include "internal/event_emitter.hpp"
 
 namespace kuzzleio {
-  Kuzzle::Kuzzle(Protocol* proto) : Kuzzle(proto, options()) {}
+  Kuzzle::Kuzzle(Protocol* proto) : Kuzzle(proto, defaultOptions) {}
 
-  Kuzzle::Kuzzle(Protocol* proto, const options& options) {
+  Kuzzle::Kuzzle(Protocol* proto, Options& options) {
     this->_kuzzle = new kuzzle();
     this->_protocol = new_protocol_bridge(proto);
 
     kuzzle_new_kuzzle(
       this->_kuzzle,
       this->_protocol,
-      const_cast<kuzzleio::options*>(&options));
+      options.c_opts());
 
     this->document = new Document(_kuzzle);
     this->auth = new Auth(_kuzzle);

@@ -1,6 +1,7 @@
 #ifndef KUZZLE_WEBSOCKET_HPP
 #define KUZZLE_WEBSOCKET_HPP
 
+#include "internal/options.hpp"
 #include "internal/core.hpp"
 #include "protocol.hpp"
 
@@ -11,7 +12,7 @@ namespace kuzzleio {
 
     public:
       WebSocket(const std::string& host);
-      WebSocket(const std::string& host, const options& options);
+      WebSocket(const std::string& host, Options& options);
       virtual ~WebSocket();
 
       virtual KuzzleEventEmitter* addListener(
