@@ -33,7 +33,7 @@ namespace kuzzleio {
       virtual ~Options();
 
       // getters
-      options* c_opts() noexcept;
+      const options* c_opts() noexcept;
       bool autoQueue() const noexcept;
       bool autoReconnect() const noexcept;
       bool autoReplay() const noexcept;
@@ -56,8 +56,8 @@ namespace kuzzleio {
       void replayInterval(unsigned long value) noexcept;
 
       // headers
-      void setHeader(std::string & name, std::string & value) noexcept;
-      void delHeader(std::string & name) noexcept;
+      void setHeader(const std::string & name, const std::string & value) noexcept;
+      void delHeader(const std::string & name) noexcept;
       void clearHeaders() noexcept;
   };
 

@@ -150,13 +150,13 @@ namespace kuzzleio {
     this->headers_changed = true;
   }
 
-  void Options::delHeader(std::string & name) noexcept {
+  void Options::delHeader(const std::string & name) noexcept {
     if (this->headers.erase(name) > 0) {
       this->headers_changed = true;
     }
   }
 
-  void Options::setHeader(std::string & name, std::string & value) noexcept {
+  void Options::setHeader(const std::string & name, const std::string & value) noexcept {
     this->headers[name] = value;
     this->headers_changed = true;
   }
