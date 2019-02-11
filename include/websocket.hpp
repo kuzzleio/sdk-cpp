@@ -22,24 +22,24 @@ namespace kuzzleio {
       virtual KuzzleEventEmitter* once(
           Event, SharedEventListener) noexcept override;
 
-      virtual void notify(notification_result* payload) noexcept;
+      virtual void notify(notification_result* payload) noexcept override;
 
-      virtual void connect();
+      virtual void connect() override;
       virtual kuzzle_response* send(const std::string&, query_options *,
-          const std::string&);
-      virtual void close();
-      virtual int getState();
+          const std::string&) override;
+      virtual void close() override;
+      virtual int getState() override;
       virtual void registerSub(
           const std::string& channel, const std::string& room_id,
           const std::string& filters, bool subscribe_to_self,
-          std::shared_ptr<NotificationListener>);
-      virtual void unregisterSub(const std::string&);
-      virtual void cancelSubs();
-      virtual void startQueuing();
-      virtual void stopQueuing();
-      virtual void playQueue();
-      virtual void clearQueue();
-      virtual std::string getHost();
+          std::shared_ptr<NotificationListener>) override;
+      virtual void unregisterSub(const std::string&) override;
+      virtual void cancelSubs() override;
+      virtual void startQueuing() override;
+      virtual void stopQueuing() override;
+      virtual void playQueue() override;
+      virtual void clearQueue() override;
+      virtual std::string getHost() override;
 
       // Getters
       bool isAutoReconnect();

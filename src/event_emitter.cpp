@@ -32,6 +32,8 @@ namespace kuzzleio {
 
   KuzzleEventEmitter* KuzzleEventEmitter::removeAllListeners(Event e) noexcept {
     this->listeners.erase(e);
+
+    return this;
   }
 
   KuzzleEventEmitter* KuzzleEventEmitter::once(

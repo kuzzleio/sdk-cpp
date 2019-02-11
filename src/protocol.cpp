@@ -141,6 +141,8 @@ namespace kuzzleio {
     p->clear_queue = bridge_cpp_clear_queue;
     p->remove_all_listeners = bridge_cpp_remove_all_listeners;
     p->get_host = bridge_cpp_get_host;
+
+    return p;
   }
 
   // Protocol class implementation
