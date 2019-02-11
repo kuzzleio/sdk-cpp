@@ -33,7 +33,7 @@ namespace kuzzleio {
       virtual ~Options();
 
       // getters
-      const options* c_opts() noexcept;
+      options* c_opts() noexcept;
       bool autoQueue() const noexcept;
       bool autoReconnect() const noexcept;
       bool autoReplay() const noexcept;
