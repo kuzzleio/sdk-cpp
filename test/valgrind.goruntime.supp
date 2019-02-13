@@ -35,6 +35,11 @@
 }
 {
    encoding
+   Memcheck:Addr2
+   fun:encoding/*
+}
+{
+   encoding
    Memcheck:Addr8
    ...
    fun:encoding/*

@@ -14,7 +14,9 @@ namespace {
     ScenarioScope<KuzzleCtx> ctx;
 
     try {
-      CustomNotificationListener *l = CustomNotificationListener::getSingleton();
+      CustomNotificationListener *l =
+          CustomNotificationListener::getSingleton();
+      ctx->notif_result = nullptr;
       ctx->room_id = ctx->kuzzle->realtime->subscribe(ctx->index, collection_id, "{}", &l->listener);
     } catch (KuzzleException e) {
       BOOST_FAIL(e.what());
@@ -55,7 +57,8 @@ namespace {
 
     try {
       CustomNotificationListener *l = CustomNotificationListener::getSingleton();
-      ctx->kuzzle->realtime->subscribe(ctx->index, collection_id, filter, &l->listener);
+      ctx->kuzzle->realtime->subscribe(ctx->index, collection_id, filter,
+                                       &l->listener);
     } catch (KuzzleException e) {
       BOOST_FAIL(e.what());
     }

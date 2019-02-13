@@ -26,7 +26,7 @@ namespace kuzzleio {
       unregisterAuth(_auth);
 
       // do not use "delete":
-      // _auth is allocating in the cgo world, using calloc
+      // _auth is allocated in the cgo world, using calloc
       free(_auth);
   }
 

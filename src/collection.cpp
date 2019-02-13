@@ -25,7 +25,7 @@ namespace kuzzleio {
     unregisterCollection(_collection);
 
     // do not use "delete":
-    // _collection is allocating in the cgo world, using calloc
+    // _collection is allocated in the cgo world, using calloc
     free(_collection);
   }
 
