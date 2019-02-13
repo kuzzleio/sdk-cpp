@@ -90,7 +90,7 @@ namespace kuzzleio {
       Realtime *realtime;
 
       Kuzzle(Protocol* protocol);
-      Kuzzle(Protocol* protocol, Options& options);
+      Kuzzle(Protocol* protocol, const Options& options);
       virtual ~Kuzzle();
 
       void connect();

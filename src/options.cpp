@@ -14,63 +14,40 @@
 
 #include "kuzzle.hpp"
 #include "internal/options.hpp"
+#include "internal/exceptions.hpp"
 #include <cstdlib>
+#include <cstring>
+
+#define DEFAULT_HEADER_CAPACITY 5
 
 namespace kuzzleio {
-  void Options::resyncHeaders() {
-    if (this->c_options->header_length > 0) {
-      for(size_t i = 0; i < this->c_options->header_length; i++) {
-        free(this->c_options->header_names[i]);
-        free(this->c_options->header_values[i]);
-      }
-
-      free(this->c_options->header_names);
-      free(this->c_options->header_values);
-
-      this->c_options->header_names = nullptr;
-      this->c_options->header_values = nullptr;
-    }
-
-    if (this->headers.size() > 0) {
-      this->c_options->header_names =
-          static_cast<char**>(malloc(this->headers.size() * sizeof(char*)));
-
-      this->c_options->header_values =
-          static_cast<char**>(malloc(this->headers.size() * sizeof(char*)));
-
-      size_t count = 0;
-      for(auto hdr : this->headers) {
-        this->c_options->header_names[count] =
-          static_cast<char*>(malloc(1+hdr.first.size()));
-        strcpy(this->c_options->header_names[count], hdr.first.c_str());
-
-        this->c_options->header_values[count] =
-          static_cast<char*>(malloc(1+hdr.second.size()));
-        strcpy(this->c_options->header_values[count], hdr.second.c_str());
-
-        count++;
-      }
-    }
-  }
-
   Options::Options() {
     // CGo functions use ?alloc/free => do not use C++ new/delete
-    this->c_options = static_cast<options*>(malloc(sizeof(options)));
-    kuzzle_set_default_options(this->c_options);
-    this->headers_changed = false;
+    c_options = static_cast<options*>(malloc(sizeof(options)));
+    kuzzle_set_default_options(c_options);
+
+    header_capacity = 0;
   }
 
   Options::~Options() {
-    kuzzle_free_options(this->c_options);
-  }
+    // before freeing the C struct, we have to handle a special case about
+    // headers: if there is a length of 0, but a capacity > 0
+    // This means that headers have been cleared but, for efficiency reasons,
+    // we did not deallocate the header containers themselves.
+    // To prevent a memleak, we have to do it here
+    if (c_options->header_length == 0 && header_capacity > 0) {
+      free(c_options->header_names);
+      c_options->header_names = nullptr;
 
-  options* Options::c_opts() noexcept {
-    if (this->headers_changed) {
-      this->resyncHeaders();
-      this->headers_changed = false;
+      free(c_options->header_values);
+      c_options->header_values = nullptr;
     }
 
-    return this->c_options;
+    kuzzle_free_options(c_options);
+  }
+
+  options* Options::c_opts() const noexcept {
+    return c_options;
   }
 
   unsigned int Options::port() const noexcept {
@@ -146,19 +123,70 @@ namespace kuzzleio {
   }
 
   void Options::clearHeaders() noexcept {
-    this->headers.clear();
-    this->headers_changed = true;
+    for(size_t i = 0; i < c_options->header_length; i++) {
+      free(c_options->header_names[i]);
+      free(c_options->header_values[i]);
+    }
+    c_options->header_length = 0;
   }
 
   void Options::delHeader(const std::string & name) noexcept {
-    if (this->headers.erase(name) > 0) {
-      this->headers_changed = true;
+    int index = -1;
+
+    for (size_t i = 0; i < c_options->header_length && index < 0; i++) {
+      if (!strcmp(c_options->header_names[i], name.c_str())) {
+        index = i;
+      }
+    }
+
+    if (index >= 0) {
+      free(c_options->header_names[index]);
+      free(c_options->header_values[index]);
+
+      if (index != (c_options->header_length-1)) {
+        memmove(
+            c_options->header_names[index],
+            c_options->header_names[index+1],
+            c_options->header_length - (index+1));
+        memmove(
+            c_options->header_values[index],
+            c_options->header_values[index+1],
+            c_options->header_length - (index+1));
+      }
+
+      c_options->header_length--;
     }
   }
 
-  void Options::setHeader(const std::string & name, const std::string & value) noexcept {
-    this->headers[name] = value;
-    this->headers_changed = true;
+  void Options::setHeader(const std::string & name,
+                          const std::string & value) {
+    if (header_capacity == 0) {
+      c_options->header_names =
+        static_cast<char**>(malloc(DEFAULT_HEADER_CAPACITY * sizeof(char*)));
+      c_options->header_names =
+        static_cast<char**>(malloc(DEFAULT_HEADER_CAPACITY * sizeof(char*)));
+      header_capacity = DEFAULT_HEADER_CAPACITY;
+    } else if (c_options->header_length == header_capacity) {
+      header_capacity *= 2;
+      c_options->header_names =
+        static_cast<char**>(realloc(c_options->header_names,
+                                    header_capacity * sizeof(char*)));
+      c_options->header_values =
+        static_cast<char**>(realloc(c_options->header_values,
+                                    header_capacity * sizeof(char*)));
+    }
+
+    if (c_options->header_values == nullptr ||
+        c_options->header_names == nullptr) {
+      throw InternalException("not enough memory");
+    }
+
+    size_t idx = c_options->header_length;
+    c_options->header_names[idx] = static_cast<char*>(malloc(1+name.size()));
+    strcpy(c_options->header_names[idx], name.c_str());
+    c_options->header_values[idx] = static_cast<char*>(malloc(1+value.size()));
+    strcpy(c_options->header_values[idx], value.c_str());
+    c_options->header_length++;
   }
 
   bool Options::sslConnection() const noexcept {

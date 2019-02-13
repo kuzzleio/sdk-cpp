@@ -20,9 +20,9 @@
 #include "internal/event_emitter.hpp"
 
 namespace kuzzleio {
-  Kuzzle::Kuzzle(Protocol* proto) : Kuzzle(proto, defaultOptions) {}
+  Kuzzle::Kuzzle(Protocol* proto) : Kuzzle(proto, Options()) {}
 
-  Kuzzle::Kuzzle(Protocol* proto, Options& options) {
+  Kuzzle::Kuzzle(Protocol* proto, const Options& options) {
     this->_kuzzle = new kuzzle();
     this->_protocol = new_protocol_bridge(proto);
 
