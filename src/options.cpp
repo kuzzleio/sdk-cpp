@@ -160,4 +160,12 @@ namespace kuzzleio {
     this->headers[name] = value;
     this->headers_changed = true;
   }
+
+  bool Options::sslConnection() const noexcept {
+    return this->c_options->ssl_connection;
+  }
+
+  void Options::sslConnection(bool value) noexcept {
+    this->c_options->ssl_connection = value;
+  }
 }
