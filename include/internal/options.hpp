@@ -43,6 +43,7 @@ namespace kuzzleio {
       unsigned int queueTTL() const noexcept;
       unsigned long reconnectionDelay() const noexcept;
       unsigned long replayInterval() const noexcept;
+      bool sslConnection() const noexcept;
 
       // setters
       void autoQueue(bool value) noexcept;
@@ -54,6 +55,7 @@ namespace kuzzleio {
       void queueTTL(unsigned int value) noexcept;
       void reconnectionDelay(unsigned long value) noexcept;
       void replayInterval(unsigned long value) noexcept;
+      void sslConnection(bool value) noexcept;
 
       // headers
       void setHeader(const std::string & name, const std::string & value) noexcept;

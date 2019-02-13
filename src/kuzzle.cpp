@@ -88,7 +88,7 @@ namespace kuzzleio {
     return nullptr;
   }
 
-  void bridge_cpp_register_sub(const char* channel, const char* room_id, const char* filters, bool subscribe_to_self, kuzzle_notification_listener* listener, void* data) {
+  void bridge_cpp_register_sub(const char* channel, const char* room_id, const char* filters, bool subscribe_to_self, kuzzle_notification_listener listener, void* data) {
     NotificationListener *nl = new std::function<void(kuzzleio::notification_result*)>([=](kuzzleio::notification_result* res) {
       (*listener)(res, data);
     });
@@ -276,7 +276,7 @@ namespace kuzzleio {
   }
 
   KuzzleEventEmitter* Kuzzle::removeListener(Event event, EventListener* listener) {
-    kuzzle_remove_listener(_kuzzle, event, (void*)&trigger_event_listener);
+    kuzzle_remove_listener(_kuzzle, event, trigger_event_listener);
     _listener_instances[event] = nullptr;
 
     return this;
