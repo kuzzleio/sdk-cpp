@@ -61,14 +61,13 @@ class CustomNotificationListener {
         ctx->notif_result = const_cast<notification_result*>(res);
       };
     };
-    static CustomNotificationListener* _singleton;
   public:
     NotificationListener listener;
     static CustomNotificationListener* getSingleton() {
-      if (!_singleton) {
-        _singleton = new CustomNotificationListener();
-      }
-      return _singleton;
+      static CustomNotificationListener* instance =
+        new CustomNotificationListener();
+
+      return instance;
     }
 };
 
