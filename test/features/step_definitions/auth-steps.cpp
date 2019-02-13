@@ -30,21 +30,15 @@ namespace {
     REGEX_PARAM(std::string, password);
     ScenarioScope<KuzzleCtx> ctx;
 
-    string jwt;
-    try {
-      jwt = ctx->kuzzle->auth->login("local", get_login_creds(username, password));
-      K_LOG_D("Logged in as '%s'", username.c_str());
-      K_LOG_D("JWT is: %s", jwt.c_str());
-    } catch (KuzzleException e) {
-      K_LOG_W(e.what());
-    }
-    ctx->jwt = jwt;
+    ctx->jwt = ctx->kuzzle->auth->login("local", get_login_creds(username, password));
+    K_LOG_D("Logged in as '%s'", username.c_str());
+    K_LOG_D("JWT is: %s", ctx->jwt.c_str());
   }
 
   THEN("^the JWT is valid$")
   {
     ScenarioScope<KuzzleCtx> ctx;
-    token_validity*          v = ctx->kuzzle->auth->checkToken(ctx->jwt);
+    token_validity* v = ctx->kuzzle->auth->checkToken(ctx->jwt);
     BOOST_CHECK(v->valid);
   }
 

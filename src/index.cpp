@@ -25,7 +25,7 @@ namespace kuzzleio {
     unregisterIndex(_index);
 
     // do not use "delete":
-    // _index is allocating in the cgo world, using calloc
+    // _index is allocated in the cgo world, using calloc
     free(_index);
   }
 

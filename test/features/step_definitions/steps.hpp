@@ -33,7 +33,7 @@ struct KuzzleCtx {
   string collection;
   string jwt;
   string document_id;
-  SearchResult *search_result;
+  std::shared_ptr<SearchResult> search_result;
   std::vector<std::shared_ptr<UserRight>> user_rights;
 
   string room_id;

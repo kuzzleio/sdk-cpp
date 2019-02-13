@@ -25,6 +25,46 @@
    fun:*kuzzle_connect
 }
 {
+   cgo malloc/calloc sanitizer
+   Memcheck:Leak
+   match-leak-kinds: indirect
+   fun:?alloc
+   fun:_cgo_*_Cfunc_*alloc
+   fun:runtime.asmcgocall
+   ...
+   obj:*
+}
+{
+   cgo malloc/calloc sanitizer
+   Memcheck:Leak
+   match-leak-kinds: definite
+   fun:?alloc
+   fun:_cgo_*_Cfunc_*alloc
+   fun:runtime.asmcgocall
+   ...
+   obj:*
+}
+{
+   cgo getaddrinfo wrapper
+   Memcheck:Leak
+   match-leak-kinds: definite
+   fun:malloc
+   fun:__libc_alloc_buffer_allocate
+   fun:alloc_buffer_allocate
+   fun:__resolv_conf_allocate
+   fun:__resolv_conf_load
+   fun:__resolv_conf_get_current
+   fun:__res_vinit
+   fun:maybe_init
+   fun:context_get
+   fun:__resolv_context_get
+   fun:gaih_inet.constprop.7
+   fun:getaddrinfo
+   fun:_cgo_*_C2func_getaddrinfo
+   fun:runtime.asmcgocall
+   obj:*
+}
+{
    main.bridge_notification
    Memcheck:Addr1
    fun:main.bridge_notification

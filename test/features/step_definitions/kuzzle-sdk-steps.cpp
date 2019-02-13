@@ -5,6 +5,20 @@
 namespace {
   BEFORE() { kuz_log_sep(); }
 
+  AFTER() {
+    ScenarioScope<KuzzleCtx> ctx;
+
+    if (ctx->kuzzle != nullptr) {
+      delete ctx->kuzzle;
+      ctx->kuzzle = nullptr;
+    }
+
+    if (ctx->protocol != nullptr) {
+      delete ctx->protocol;
+      ctx->protocol = nullptr;
+    }
+  }
+
   GIVEN("^I update my user custom data with the pair '(.+)':'(.+)'$")
   {
     REGEX_PARAM(std::string, fieldname);

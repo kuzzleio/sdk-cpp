@@ -2,39 +2,81 @@
 #define KUZZLE_PROTOCOL_HPP
 
 #include <string>
-#include <map>
+#include <unordered_map>
+#include <memory>
 #include "kuzzle.hpp"
 #include "internal/protocol.h"
+#include "internal/event_emitter.hpp"
 
 namespace kuzzleio {
-  
-  class Protocol {
-    public:
-      protocol *_protocol;
-      std::map<int, std::map<kuzzle_event_listener*, EventListener*>>  listener_instances;
-      std::map<int, std::map<kuzzle_event_listener*, EventListener*>>  listener_once_instances;
-      std::map<std::string, NotificationListener*> notification_listener_instances;
+  class Protocol : public KuzzleEventEmitter {
+    private:
+      std::unordered_map<
+          kuzzle_event_listener*, SharedEventListener> bridgeListeners;
 
-    virtual void addListener(Event, EventListener*) = 0;
-    virtual void removeListener(Event, EventListener*) = 0;
-    virtual void removeAllListeners(Event) = 0;
-    virtual void once(Event, EventListener*) = 0;
-    virtual int listenerCount(Event) = 0;
-    virtual void connect() = 0;
-    virtual kuzzle_response* send(const std::string&, query_options *, const std::string&) = 0;
-    virtual void close() = 0;
-    virtual int getState() = 0;
-    virtual void emitEvent(Event) = 0;
-    virtual void registerSub(const std::string&, const std::string&, const std::string&, bool, NotificationListener*) = 0;
-    virtual void unregisterSub(const std::string&) = 0;
-    virtual void cancelSubs() = 0;
-    virtual void startQueuing() = 0;
-    virtual void stopQueuing() = 0;
-    virtual void playQueue() = 0;
-    virtual void clearQueue() = 0;
-    virtual std::string getHost() = 0;
+      std::unordered_map<
+          std::string,
+          std::unordered_map<
+            kuzzle_notification_listener,
+            std::shared_ptr<NotificationListener>
+          >
+      > bridgeSubs;
+
+    protected:
+      std::unordered_map<
+          std::string,
+          std::set<std::shared_ptr<NotificationListener>>
+      > notificationListeners;
+
+      virtual void notify(notification_result* payload) noexcept;
+
+    public:
+      virtual ~Protocol() = default;
+
+      // to be implemented
+      virtual void connect() = 0;
+      virtual kuzzle_response* send(
+          const std::string& query, query_options * options,
+          const std::string& requestId) = 0;
+      virtual void close() = 0;
+      virtual int getState() =0 ;
+      virtual void startQueuing() = 0;
+      virtual void stopQueuing() = 0;
+      virtual void playQueue() = 0;
+      virtual void clearQueue() = 0;
+      virtual std::string getHost() = 0;
+
+      // to be overridden: though the NotificationListener storage is
+      // handled by this class, you still need to send a subscribe request
+      // to Kuzzle, using the provided arguments, using the implemented
+      // protocol
+      virtual void registerSub(
+          const std::string& channel, const std::string& roomId,
+          const std::string& filters, bool subscribetoSelf,
+          std::shared_ptr<NotificationListener> listener);
+      virtual void unregisterSub(const std::string& channel);
+      virtual void cancelSubs();
+
+      // event emitter overrides
+      virtual KuzzleEventEmitter* removeAllListeners(Event) noexcept override;
+
+      // internals -- used for bridging with golang
+      using KuzzleEventEmitter::removeListener;
+      virtual void removeListener(int, kuzzle_event_listener*);
+
+      using KuzzleEventEmitter::addListener;
+      virtual void addListener(int, kuzzle_event_listener*);
+
+      using KuzzleEventEmitter::once;
+      virtual void once(int, kuzzle_event_listener*);
+
+      virtual void registerSub(
+        const std::string& channel, const std::string& roomId,
+        const std::string& filters, bool subscribetoSelf,
+        kuzzle_notification_listener listener);
   };
 
+  protocol* new_protocol_bridge(Protocol*);
 }
 
 #endif

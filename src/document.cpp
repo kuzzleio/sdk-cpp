@@ -26,7 +26,7 @@ namespace kuzzleio {
     unregisterDocument(_document);
 
     // do not use "delete":
-    // _document is allocating in the cgo world, using calloc
+    // _document is allocated in the cgo world, using calloc
     free(_document);
   }
 
@@ -231,20 +231,31 @@ namespace kuzzleio {
     return ret;
   }
 
-
-  SearchResult* Document::search(const std::string& index, const std::string& collection, const std::string& query) {
+  std::shared_ptr<SearchResult> Document::search(
+      const std::string& index,
+      const std::string& collection,
+      const std::string& query) {
     return this->search(index, collection, query, query_options());
   }
 
-  SearchResult* Document::search(const std::string& index, const std::string& collection, const std::string& query, const query_options& options) {
-    KUZZLE_API(search_result, r, kuzzle_document_search(
-      _document,
-      const_cast<char*>(index.c_str()),
-      const_cast<char*>(collection.c_str()),
-      const_cast<char*>(query.c_str()),
-      const_cast<query_options*>(&options)))
+  std::shared_ptr<SearchResult> Document::search(
+      const std::string& index,
+      const std::string& collection,
+      const std::string& query,
+      const query_options& options) {
+    KUZZLE_API(
+        search_result,
+        r,
+        kuzzle_document_search(_document, const_cast<char*>(index.c_str()),
+                               const_cast<char*>(collection.c_str()),
+                               const_cast<char*>(query.c_str()),
+                               const_cast<query_options*>(&options)))
 
-    return new SearchResult(r);
+    if (r == nullptr) {
+      return nullptr;
+    }
+
+    return std::make_shared<SearchResult>(r);
   }
 
 
@@ -281,7 +292,6 @@ namespace kuzzleio {
 
     std::string ret = r->result;
     kuzzle_free_string_result(r);
-
     return ret;
   }
 
