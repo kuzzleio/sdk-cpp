@@ -130,9 +130,9 @@ namespace kuzzleio {
     return static_cast<Protocol*>(data)->getHost().c_str();
   }
 
-  Kuzzle::Kuzzle(Protocol* proto) : Kuzzle(proto, defaultOptions) {}
+  Kuzzle::Kuzzle(Protocol* proto) : Kuzzle(proto, Options()) {}
 
-  Kuzzle::Kuzzle(Protocol* proto, Options& options) {
+  Kuzzle::Kuzzle(Protocol* proto, const Options& options) {
     this->_kuzzle = new kuzzle();
 
     proto->_protocol = new protocol();

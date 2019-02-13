@@ -17,23 +17,19 @@
 
 #include "internal/core.hpp"
 #include <string>
-#include <unordered_map>
 
 namespace kuzzleio {
   class Options {
     private:
       options *c_options;
-      std::unordered_map<std::string, std::string> headers;
-      bool headers_changed;
-
-      void resyncHeaders();
+      size_t header_capacity;
 
     public:
       Options();
       virtual ~Options();
 
       // getters
-      options* c_opts() noexcept;
+      options* c_opts() const noexcept;
       bool autoQueue() const noexcept;
       bool autoReconnect() const noexcept;
       bool autoReplay() const noexcept;
@@ -58,12 +54,11 @@ namespace kuzzleio {
       void sslConnection(bool value) noexcept;
 
       // headers
-      void setHeader(const std::string & name, const std::string & value) noexcept;
+      void setHeader(const std::string & name,
+                     const std::string & value);
       void delHeader(const std::string & name) noexcept;
       void clearHeaders() noexcept;
   };
-
-  static Options defaultOptions;
 }
 
 #endif
