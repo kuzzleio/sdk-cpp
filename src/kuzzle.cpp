@@ -88,7 +88,7 @@ namespace kuzzleio {
     return nullptr;
   }
 
-  void bridge_cpp_register_sub(const char* channel, const char* room_id, const char* filters, bool subscribe_to_self, kuzzle_notification_listener* listener, void* data) {
+  void bridge_cpp_register_sub(const char* channel, const char* room_id, const char* filters, bool subscribe_to_self, kuzzle_notification_listener listener, void* data) {
     NotificationListener *nl = new std::function<void(kuzzleio::notification_result*)>([=](kuzzleio::notification_result* res) {
       (*listener)(res, data);
     });
@@ -130,9 +130,9 @@ namespace kuzzleio {
     return static_cast<Protocol*>(data)->getHost().c_str();
   }
 
-  Kuzzle::Kuzzle(Protocol* proto) : Kuzzle(proto, options()) {}
+  Kuzzle::Kuzzle(Protocol* proto) : Kuzzle(proto, defaultOptions) {}
 
-  Kuzzle::Kuzzle(Protocol* proto, const options& options) {
+  Kuzzle::Kuzzle(Protocol* proto, Options& options) {
     this->_kuzzle = new kuzzle();
 
     proto->_protocol = new protocol();
@@ -160,7 +160,7 @@ namespace kuzzleio {
     this->_protocol = proto->_protocol;
     this->_cpp_protocol = proto;
 
-    kuzzle_new_kuzzle(this->_kuzzle, this->_protocol, const_cast<kuzzleio::options*>(&options));
+    kuzzle_new_kuzzle(this->_kuzzle, this->_protocol, options.c_opts());
 
     this->document = new Document(_kuzzle);
     this->auth = new Auth(_kuzzle);
@@ -276,7 +276,7 @@ namespace kuzzleio {
   }
 
   KuzzleEventEmitter* Kuzzle::removeListener(Event event, EventListener* listener) {
-    kuzzle_remove_listener(_kuzzle, event, (void*)&trigger_event_listener);
+    kuzzle_remove_listener(_kuzzle, event, trigger_event_listener);
     _listener_instances[event] = nullptr;
 
     return this;
@@ -290,6 +290,7 @@ namespace kuzzleio {
 
   KuzzleEventEmitter* Kuzzle::once(Event event, EventListener* listener) {
     kuzzle_once(_kuzzle, event, &trigger_event_listener, this);
+    return this;
   }
 
   int Kuzzle::listenerCount(Event event) {

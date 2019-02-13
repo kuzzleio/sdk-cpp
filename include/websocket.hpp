@@ -3,6 +3,7 @@
 
 #include <map>
 #include <list>
+#include "internal/options.hpp"
 #include "internal/core.hpp"
 #include "protocol.hpp"
 
@@ -16,7 +17,7 @@ namespace kuzzleio {
     public:
     web_socket* _web_socket;
     WebSocket(const std::string& host);
-    WebSocket(const std::string& host, const options& query_options);
+    WebSocket(const std::string& host, Options& options);
 
     std::list<EventListener*> getListeners(int) noexcept;
     std::list<EventListener*> getOnceListeners(int) noexcept;

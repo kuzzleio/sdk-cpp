@@ -26,7 +26,7 @@ using std::string;
 struct KuzzleCtx {
   Kuzzle* kuzzle = nullptr;
   Protocol* protocol = nullptr;
-  options kuzzle_options;
+  Options kuzzle_options;
 
   string user_id;
   string index;

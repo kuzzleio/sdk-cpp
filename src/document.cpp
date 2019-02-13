@@ -19,7 +19,7 @@
 namespace kuzzleio {
   Document::Document(kuzzle* kuzzle) {
     _document = kuzzle_get_document_controller(kuzzle);
-    kuzzle_new_document(_document, kuzzle);
+    kuzzle_new_document(_document);
   }
 
   Document::~Document() {
