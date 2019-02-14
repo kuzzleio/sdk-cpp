@@ -12,7 +12,7 @@ namespace kuzzleio {
 
     public:
       WebSocket(const std::string& host);
-      WebSocket(const std::string& host, Options& options);
+      WebSocket(const std::string& host, const Options& options);
       virtual ~WebSocket();
 
       virtual KuzzleEventEmitter* addListener(
