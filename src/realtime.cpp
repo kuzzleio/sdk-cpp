@@ -41,11 +41,18 @@ namespace kuzzleio {
         static_cast<Realtime*>(realtime_controller)->getListener(res->room_id);
 
       if (listener) {
-        (*listener)(res);
-      }
+        std::shared_ptr<notification_result> notification(
+          res,
+          kuzzle_free_notification_result);
+        (*listener)(notification);
 
-      kuzzle_free_notification_result(res);
+        // break the control flow to defer the notification deallocation to
+        // the smart pointer we just created
+        return;
+      }
     }
+
+    kuzzle_free_notification_result(res);
   }
 
 

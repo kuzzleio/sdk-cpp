@@ -43,7 +43,6 @@ namespace {
     BOOST_CHECK(ctx->notif_result != nullptr);
     ctx->kuzzle->realtime->unsubscribe(ctx->room_id);
 
-    kuzzle_free_notification_result(ctx->notif_result);
     ctx->notif_result = nullptr;
   }
 
