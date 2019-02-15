@@ -50,6 +50,14 @@
    fun:fmt.*
 }
 {
+   golang free mismatch
+   Memcheck:Free
+   fun:free
+   fun:runtime.asmcgocall
+   obj:*
+   obj:*
+}
+{
    internal
    Memcheck:Addr1
    fun:internal/*

@@ -3,12 +3,14 @@
 
 #include <map>
 #include <functional>
+#include <memory>
 
 #include "exceptions.hpp"
 #include "core.hpp"
 
 namespace kuzzleio {
-  typedef std::function<void(notification_result*)> NotificationListener;
+  typedef std::function<void(std::shared_ptr<notification_result>)>
+    NotificationListener;
 
   class Kuzzle;
 
@@ -29,11 +31,16 @@ namespace kuzzleio {
       void publish(const std::string& index, const std::string& collection,
           const std::string& message, const query_options& options);
 
-      std::string subscribe(const std::string& index, const std::string& collection, const std::string& filters, NotificationListener* listener);
-      std::string subscribe(const std::string& index, const std::string& collection, const std::string& filters, NotificationListener* listener, const room_options& options);
+      std::string subscribe(const std::string& index,
+          const std::string& collection, const std::string& filters,
+          NotificationListener* listener);
+      std::string subscribe(const std::string& index,
+          const std::string& collection, const std::string& filters,
+          NotificationListener* listener, const room_options& options);
 
       void unsubscribe(const std::string& room_id);
-      void unsubscribe(const std::string& room_id, const query_options& options);
+      void unsubscribe(const std::string& room_id,
+          const query_options& options);
 
       // Internal usage only
       NotificationListener* getListener(const std::string& room_id);

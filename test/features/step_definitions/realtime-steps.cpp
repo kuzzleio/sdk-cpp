@@ -2,8 +2,6 @@
 
 #include <signal.h>
 
-CustomNotificationListener* CustomNotificationListener::_singleton;
-
 // Anonymous namespace to handle a linker error
 // see https://stackoverflow.com/questions/14320148/linker-error-on-cucumber-cpp-when-dealing-with-multiple-feature-files
 namespace {
@@ -45,7 +43,6 @@ namespace {
     BOOST_CHECK(ctx->notif_result != nullptr);
     ctx->kuzzle->realtime->unsubscribe(ctx->room_id);
 
-    delete ctx->notif_result;
     ctx->notif_result = nullptr;
   }
 

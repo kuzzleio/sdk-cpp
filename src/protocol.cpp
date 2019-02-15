@@ -211,8 +211,8 @@ namespace kuzzleio {
     // do not create a new shared pointer on a already existing listener
     if (chan.find(listener) == chan.end()) {
       auto nl = std::make_shared<NotificationListener>(
-          [listener, this](notification_result* notification) {
-        (*listener)(notification, this);
+          [listener, this](std::shared_ptr<notification_result> notification) {
+        (*listener)(notification.get(), this);
       });
 
       chan[listener] = nl;
@@ -268,9 +268,15 @@ namespace kuzzleio {
     auto l = this->notificationListeners.find(payload->room_id);
 
     if (l != this->notificationListeners.end()) {
+      std::shared_ptr<notification_result> notification(
+        payload,
+        kuzzle_free_notification_result);
+
       for (auto sub : l->second) {
-        (*sub)(payload);
+        (*sub)(notification);
       }
+    } else {
+      kuzzle_free_notification_result(payload);
     }
   }
 }
