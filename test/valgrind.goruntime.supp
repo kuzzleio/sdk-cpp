@@ -35,6 +35,11 @@
 }
 {
    encoding
+   Memcheck:Addr2
+   fun:encoding/*
+}
+{
+   encoding
    Memcheck:Addr8
    ...
    fun:encoding/*
@@ -43,6 +48,14 @@
    fmt
    Memcheck:Addr8
    fun:fmt.*
+}
+{
+   golang free mismatch
+   Memcheck:Free
+   fun:free
+   fun:runtime.asmcgocall
+   obj:*
+   obj:*
 }
 {
    internal

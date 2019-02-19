@@ -15,10 +15,6 @@
 #include "internal/core.hpp"
 
 namespace kuzzleio {
-  s_options::s_options() {
-    kuzzle_set_default_options(this);
-  }
-
   s_room_options::s_room_options() {
     kuzzle_set_default_room_options(this);
   }

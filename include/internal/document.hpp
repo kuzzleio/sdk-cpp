@@ -15,6 +15,7 @@
 #ifndef _DOCUMENT_HPP_
 #define _DOCUMENT_HPP_
 
+#include <memory>
 #include "exceptions.hpp"
 #include "search_result.hpp"
 #include "core.hpp"
@@ -61,8 +62,8 @@ namespace kuzzleio {
             bool validate(const std::string& index, const std::string& collection, const std::string& document);
             bool validate(const std::string& index, const std::string& collection, const std::string& document, const query_options& options);
 
-            SearchResult* search(const std::string& index, const std::string& collection, const std::string& query);
-            SearchResult* search(const std::string& index, const std::string& collection, const std::string& query, const query_options& options);
+            std::shared_ptr<SearchResult> search(const std::string& index, const std::string& collection, const std::string& query);
+            std::shared_ptr<SearchResult> search(const std::string& index, const std::string& collection, const std::string& query, const query_options& options);
 
             std::string mCreate(const std::string& index, const std::string& collection, const std::string& documents);
             std::string mCreate(const std::string& index, const std::string& collection, const std::string& documents, const query_options& options);

@@ -38,10 +38,10 @@ AR ?= ar
 
 CXXFLAGS = -g -fPIC -std=c++11 -MMD \
 	-I.$(PATHSEP)include \
-	-I.$(PATHSEP)sdk-c$(PATHSEP)build$(PATHSEP)kuzzle-c-sdk$(PATHSEP)include \
-	-L.$(PATHSEP)sdk-c$(PATHSEP)build$(PATHSEP)kuzzle-c-sdk$(PATHSEP)lib
+	-I.$(PATHSEP)sdk-c$(PATHSEP)build$(PATHSEP)kuzzle-c-sdk$(PATHSEP)include
 
-LDFLAGS = -lkuzzlesdk
+LDFLAGS = -L.$(PATHSEP)sdk-c$(PATHSEP)build$(PATHSEP)kuzzle-c-sdk$(PATHSEP)lib \
+	-lkuzzlesdk
 
 SOURCES = $(wildcard src$(PATHSEP)*.cpp)
 
@@ -54,7 +54,7 @@ all: $(BUILD_DIR)/cpp
 
 $(BUILD_DIR)/%.o: %.cpp
 	mkdir -p $(@D)
-	$(CXX) -fPIC -c $< -o $@ $(CXXFLAGS) $(LDFLAGS)
+	$(CXX) -fPIC -c $< -o $@ $(CXXFLAGS)
 
 $(BUILD_DIR):
 ifeq ($(OS),Windows_NT)
