@@ -74,7 +74,7 @@ namespace kuzzleio {
       const std::string& payload) noexcept {
     auto lset = this->onceListeners.find(e);
 
-    if (lset != this->listeners.end()) {
+    if (lset != this->onceListeners.end()) {
       for(auto l : lset->second) {
         (*l)(payload);
       }
