@@ -24,23 +24,16 @@ namespace kuzzleio {
             search_result* _sr;
 
         public:
-            char const* aggregations() const;
-            char const* hits() const;
-            char const* scroll_id() const;
-            unsigned total() const;
-            unsigned fetched() const;
+            const std::string& aggregations() const;
+            const std::string& hits() const;
+            const std::string& scroll_id() const;
+            size_t total() const;
+            size_t fetched() const;
 
             SearchResult(search_result* sr);
             virtual ~SearchResult();
             virtual std::shared_ptr<SearchResult> next();
     };
-
-    class SpecificationSearchResult : public SearchResult {
-        public:
-            SpecificationSearchResult(const search_result* sr);
-            virtual ~SpecificationSearchResult();
-    };
-
 }
 
 #endif

@@ -25,23 +25,23 @@ namespace kuzzleio {
     kuzzle_free_search_result(_sr);
   }
 
-  char const* SearchResult::aggregations() const {
+  const std::string& SearchResult::aggregations() const {
     return _sr->aggregations;
   }
 
-  char const* SearchResult::hits() const {
+  const std::string& SearchResult::hits() const {
     return _sr->hits;
   }
 
-  char const* SearchResult::scroll_id() const {
+  const std::string& SearchResult::scroll_id() const {
     return _sr->scroll_id;
   }
 
-  unsigned SearchResult::fetched() const {
+  size_t SearchResult::fetched() const {
     return _sr->fetched;
   }
 
-  unsigned SearchResult::total() const {
+  size_t SearchResult::total() const {
     return _sr->total;
   }
 
