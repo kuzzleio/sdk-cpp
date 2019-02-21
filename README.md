@@ -11,7 +11,7 @@ You can access the Kuzzle repository on [Github](https://github.com/kuzzleio/kuz
 
 # SDK Documentation
 
-The complete SDK documentation is available [here](http://docs.kuzzle.io/sdk-reference/)
+The complete SDK documentation is available [here](https://docs-v2.kuzzle.io/sdk-reference/cpp/1/getting-started/)
 
 # Protocol used
 
@@ -30,15 +30,7 @@ make
 
 # Installation
 
-You can find prebuilt SDK's for each version and architecture:
-
-arm64: https://dl.kuzzle.io/sdk/c/master/kuzzlesdk-cpp-aarch64-1.0.0.tar.gz
-
-arm32: https://dl.kuzzle.io/sdk/c/master/kuzzlesdk-cpp-armhf-1.0.0.tar.gz
-
-amd64: https://dl.kuzzle.io/sdk/c/master/kuzzlesdk-cpp-amd64-1.0.0.tar.gz
-
-x86:  https://dl.kuzzle.io/sdk/c/master/kuzzlesdk-cpp-x86-1.0.0.tar.gz
+You can find prebuilt SDK's for each version and architecture on our [download](https://dl.kuzzle.io/sdk/cpp/) page.
 
 # Tests
 
