@@ -34,13 +34,6 @@ namespace kuzzleio {
             virtual ~SearchResult();
             virtual std::shared_ptr<SearchResult> next();
     };
-
-    class SpecificationSearchResult : public SearchResult {
-        public:
-            SpecificationSearchResult(const search_result* sr);
-            virtual ~SpecificationSearchResult();
-    };
-
 }
 
 #endif
