@@ -151,7 +151,7 @@ namespace kuzzleio {
 
     if (bl == this->bridgeListeners.end()) {
       auto bridge = std::make_shared<EventListener>(
-          [&, this](const std::string& payload) {
+          [=](const std::string& payload) {
         if (payload != "null") {
           (*listener)(event, const_cast<char*>(payload.c_str()), this);
         } else {
@@ -170,7 +170,7 @@ namespace kuzzleio {
     // do not add a "once" listener if a permanent one is already registered
     if (bl == bridgeListeners.end()) {
       auto bridge = std::make_shared<EventListener>(
-          [&, this](const std::string& payload) {
+          [=](const std::string& payload) {
         this->bridgeListeners.erase(listener);
 
         if (payload != "null") {
