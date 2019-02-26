@@ -40,10 +40,6 @@ namespace kuzzleio {
           const std::string& requestId) = 0;
       virtual void close() = 0;
       virtual int getState() =0 ;
-      virtual void startQueuing() = 0;
-      virtual void stopQueuing() = 0;
-      virtual void playQueue() = 0;
-      virtual void clearQueue() = 0;
       virtual std::string getHost() = 0;
 
       // to be overridden: though the NotificationListener storage is

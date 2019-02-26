@@ -36,17 +36,10 @@ namespace kuzzleio {
           std::shared_ptr<NotificationListener>) override;
       virtual void unregisterSub(const std::string&) override;
       virtual void cancelSubs() override;
-      virtual void startQueuing() override;
-      virtual void stopQueuing() override;
-      virtual void playQueue() override;
-      virtual void clearQueue() override;
       virtual std::string getHost() override;
 
       // Getters
-      bool isAutoReconnect();
-      bool isAutoResubscribe();
       unsigned int getPort();
-      unsigned long long getReconnectionDelay();
       bool isSslConnection();
   };
 
