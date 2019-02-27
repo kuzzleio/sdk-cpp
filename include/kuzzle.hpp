@@ -21,6 +21,7 @@
 #include <map>
 #include <functional>
 
+#include "internal/options.hpp"
 #include "internal/exceptions.hpp"
 #include "internal/core.hpp"
 #include "internal/event_emitter.hpp"
@@ -81,12 +82,10 @@ namespace kuzzleio {
 
   class Kuzzle : public KuzzleEventEmitter {
     private:
-      std::map<int, EventListener*>  _listener_instances;
-      Protocol *_cpp_protocol;
-
-    public:
       kuzzle *_kuzzle;
       protocol *_protocol;
+
+    public:
       Auth *auth;
       Index *index;
       Server *server;
@@ -94,14 +93,22 @@ namespace kuzzleio {
       Document *document;
       Realtime *realtime;
 
-      Kuzzle(Protocol* protocol, options *options=nullptr);
+      Kuzzle(Protocol* protocol);
+      Kuzzle(Protocol* protocol, const Options& options);
       virtual ~Kuzzle();
 
       void connect();
 
       std::string getJwt() noexcept;
       void disconnect() noexcept;
+<<<<<<< HEAD
       KuzzleResponse query(kuzzle_request* query, query_options* options=nullptr);
+=======
+      kuzzle_response* query(const kuzzle_request& request);
+      kuzzle_response* query(
+          const kuzzle_request& request,
+          const query_options& options);
+>>>>>>> origin/1-dev
       Kuzzle* playQueue() noexcept;
       Kuzzle* setAutoReplay(bool autoReplay) noexcept;
       Kuzzle* startQueuing() noexcept;
@@ -110,15 +117,20 @@ namespace kuzzleio {
       std::string getVolatile() noexcept;
       Kuzzle* setVolatile(const std::string& volatiles) noexcept;
       std::map<int, EventListener*> getListeners() noexcept;
-      void emitEvent(Event event, const std::string& body) noexcept;
       Protocol* getProtocol() noexcept;
 
-      virtual KuzzleEventEmitter* addListener(Event event, EventListener* listener) override;
-      virtual KuzzleEventEmitter* removeListener(Event event, EventListener* listener) override;
-      virtual KuzzleEventEmitter* removeAllListeners(Event event) override;
-      virtual KuzzleEventEmitter* once(Event event, EventListener* listener) override;
-      virtual int listenerCount(Event event) override;
-
+      // event emitter overrides
+      virtual void emitEvent(Event, const std::string&) noexcept override;
+      virtual KuzzleEventEmitter* addListener(
+          Event,
+          SharedEventListener) noexcept override;
+      virtual KuzzleEventEmitter* removeListener(
+          Event,
+          SharedEventListener) noexcept override;
+      virtual KuzzleEventEmitter* removeAllListeners(Event) noexcept override;
+      virtual KuzzleEventEmitter* once(
+          Event,
+          SharedEventListener) noexcept override;
   };
 }
 

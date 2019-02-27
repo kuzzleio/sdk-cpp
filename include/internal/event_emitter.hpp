@@ -16,18 +16,44 @@
 #define _EVENT_EMITTER_HPP_
 
 #include <functional>
+<<<<<<< HEAD
 #include "kuzzle.hpp"
+=======
+#include <memory>
+#include <unordered_map>
+#include <set>
+#include "internal/core.hpp"
+>>>>>>> origin/1-dev
 
 namespace kuzzleio {
-  typedef const std::function<void(const std::string)> EventListener;
+  typedef std::function<void(const std::string&)> EventListener;
+  typedef std::shared_ptr<EventListener> SharedEventListener;
+
+  // standard bridge triggering a KuzzleEventEmitter event
+  void _c_emit_event(int, char*, void*);
 
   class KuzzleEventEmitter {
+    private:
+      virtual void emitEventOnce(Event, const std::string& payload) noexcept;
+
+    protected:
+      std::unordered_map<Event, std::set<SharedEventListener>> listeners;
+      std::unordered_map<Event, std::set<SharedEventListener>> onceListeners;
+
     public:
-      virtual KuzzleEventEmitter* addListener(Event e, EventListener* listener) = 0;
-      virtual KuzzleEventEmitter* removeListener(Event e, EventListener* listener) = 0;
-      virtual KuzzleEventEmitter* removeAllListeners(Event e) = 0;
-      virtual KuzzleEventEmitter* once(Event e, EventListener* listener) = 0;
-      virtual int listenerCount(Event e) = 0;
+      KuzzleEventEmitter() = default;
+      virtual ~KuzzleEventEmitter() = default;
+
+      virtual void emitEvent(Event, const std::string& payload) noexcept;
+      virtual KuzzleEventEmitter* addListener(
+          Event,
+          SharedEventListener) noexcept;
+      virtual KuzzleEventEmitter* removeListener(
+          Event,
+          SharedEventListener) noexcept;
+      virtual KuzzleEventEmitter* removeAllListeners(Event) noexcept;
+      virtual KuzzleEventEmitter* once(Event, SharedEventListener) noexcept;
+      virtual int listenerCount(Event) noexcept;
   };
 }
 

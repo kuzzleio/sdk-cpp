@@ -2,8 +2,6 @@
 
 #include <signal.h>
 
-CustomNotificationListener* CustomNotificationListener::_singleton;
-
 // Anonymous namespace to handle a linker error
 // see https://stackoverflow.com/questions/14320148/linker-error-on-cucumber-cpp-when-dealing-with-multiple-feature-files
 namespace {
@@ -14,10 +12,12 @@ namespace {
     ScenarioScope<KuzzleCtx> ctx;
 
     try {
-      CustomNotificationListener *l = CustomNotificationListener::getSingleton();
+      CustomNotificationListener *l =
+          CustomNotificationListener::getSingleton();
+      ctx->notif_result = nullptr;
       ctx->room_id = ctx->kuzzle->realtime->subscribe(ctx->index, collection_id, "{}", &l->listener);
     } catch (KuzzleException e) {
-      BOOST_FAIL(e.getMessage());
+      BOOST_FAIL(e.what());
     }
   }
 
@@ -30,9 +30,9 @@ namespace {
     options.refresh = const_cast<char*>("wait_for");
 
     try {
-      ctx->kuzzle->document->create(ctx->index, ctx->collection, "", "{\"foo\":\"bar\"}", &options);
+      ctx->kuzzle->document->create(ctx->index, ctx->collection, "", R"({"foo":"bar"})", options);
     } catch (KuzzleException e) {
-      BOOST_FAIL(e.getMessage());
+      BOOST_FAIL(e.what());
     }
   }
 
@@ -43,7 +43,6 @@ namespace {
     BOOST_CHECK(ctx->notif_result != nullptr);
     ctx->kuzzle->realtime->unsubscribe(ctx->room_id);
 
-    delete ctx->notif_result;
     ctx->notif_result = nullptr;
   }
 
@@ -55,9 +54,10 @@ namespace {
 
     try {
       CustomNotificationListener *l = CustomNotificationListener::getSingleton();
-      ctx->kuzzle->realtime->subscribe(ctx->index, collection_id, filter, &l->listener);
+      ctx->kuzzle->realtime->subscribe(ctx->index, collection_id, filter,
+                                       &l->listener);
     } catch (KuzzleException e) {
-      BOOST_FAIL(e.getMessage());
+      BOOST_FAIL(e.what());
     }
   }
 
@@ -72,9 +72,9 @@ namespace {
     options.refresh = const_cast<char*>("wait_for");
 
     try {
-      ctx->kuzzle->document->update(ctx->index, ctx->collection, document_id, "{\""+key+"\":\""+value+"\"}", &options);
+      ctx->kuzzle->document->update(ctx->index, ctx->collection, document_id, "{\""+key+"\":\""+value+"\"}", options);
     } catch (KuzzleException e) {
-      BOOST_FAIL(e.getMessage());
+      BOOST_FAIL(e.what());
     }
   }
 
@@ -87,7 +87,7 @@ namespace {
       ctx->kuzzle->document->delete_(ctx->index, ctx->collection, document_id);
       ctx->success = 1;
     } catch (KuzzleException e) {
-      BOOST_FAIL(e.getMessage());
+      BOOST_FAIL(e.what());
     }
   }
 
@@ -97,7 +97,7 @@ namespace {
     try {
       ctx->kuzzle->realtime->publish(ctx->index, ctx->collection, "{}");
     } catch (KuzzleException e) {
-      BOOST_FAIL(e.getMessage());
+      BOOST_FAIL(e.what());
     }
   }
 
@@ -108,7 +108,7 @@ namespace {
       ctx->kuzzle->realtime->unsubscribe(ctx->room_id);
       ctx->notif_result = NULL;
     } catch (KuzzleException e) {
-      BOOST_FAIL(e.getMessage());
+      BOOST_FAIL(e.what());
     }
   }
 

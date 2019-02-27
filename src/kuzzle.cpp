@@ -20,7 +20,9 @@
 #include "internal/event_emitter.hpp"
 
 namespace kuzzleio {
+  Kuzzle::Kuzzle(Protocol* proto) : Kuzzle(proto, Options()) {}
 
+<<<<<<< HEAD
   // Bridges for protocol
   void bridge_cpp_add_listener(int event, kuzzle_event_listener* listener, void* protocol_instance) {
     EventListener *l = new std::function<void(const std::string)>([=](const std::string& res) {
@@ -176,34 +178,16 @@ namespace kuzzleio {
   }
 
   Kuzzle::Kuzzle(Protocol* proto, options *opts) {
+=======
+  Kuzzle::Kuzzle(Protocol* proto, const Options& options) {
+>>>>>>> origin/1-dev
     this->_kuzzle = new kuzzle();
+    this->_protocol = new_protocol_bridge(proto);
 
-    proto->_protocol = new protocol();
-    proto->_protocol->instance = proto;
-
-    proto->_protocol->add_listener = bridge_cpp_add_listener;
-    proto->_protocol->once = bridge_cpp_once;
-    proto->_protocol->remove_listener = bridge_cpp_remove_listener;
-    proto->_protocol->emit_event = bridge_cpp_emit_event;
-    proto->_protocol->connect = bridge_cpp_connect;
-    proto->_protocol->send = bridge_cpp_send;
-    proto->_protocol->get_state = bridge_cpp_get_state;
-    proto->_protocol->listener_count = bridge_cpp_listener_count;
-    proto->_protocol->close = bridge_cpp_close;
-    proto->_protocol->register_sub = bridge_cpp_register_sub;
-    proto->_protocol->unregister_sub = bridge_cpp_unregister_sub;
-    proto->_protocol->cancel_subs = bridge_cpp_cancel_subs;
-    proto->_protocol->start_queuing = bridge_cpp_start_queuing;
-    proto->_protocol->stop_queuing = bridge_cpp_stop_queuing;
-    proto->_protocol->play_queue = bridge_cpp_play_queue;
-    proto->_protocol->clear_queue = bridge_cpp_clear_queue;
-    proto->_protocol->remove_all_listeners = bridge_cpp_remove_all_listeners;
-    proto->_protocol->get_host = bridge_cpp_get_host;
-
-    this->_protocol = proto->_protocol;
-    this->_cpp_protocol = proto;
-
-    kuzzle_new_kuzzle(this->_kuzzle, this->_protocol, opts);
+    kuzzle_new_kuzzle(
+      this->_kuzzle,
+      this->_protocol,
+      options.c_opts());
 
     this->document = new Document(_kuzzle);
     this->auth = new Auth(_kuzzle);
@@ -215,19 +199,22 @@ namespace kuzzleio {
 
   Kuzzle::~Kuzzle() {
     unregisterKuzzle(this->_kuzzle);
-    unregisterProtocol(this->_protocol);
-    delete(this->_kuzzle);
-    delete(this->document);
-    delete(this->auth);
-    delete(this->index);
-    delete(this->server);
-    delete(this->collection);
-    delete(this->realtime);
+    delete this->_kuzzle;
+
+    delete this->_protocol;
+
+    delete this->document;
+    delete this->auth;
+    delete this->index;
+    delete this->server;
+    delete this->collection;
+    delete this->realtime;
   }
 
   void Kuzzle::connect() {
     char * err = kuzzle_connect(_kuzzle);
-    if (err != NULL) {
+
+    if (err != nullptr) {
       const std::string cppError = err;
       free(err);
       throw InternalException(cppError);
@@ -238,12 +225,27 @@ namespace kuzzleio {
     kuzzle_disconnect(_kuzzle);
   }
 
+<<<<<<< HEAD
   KuzzleResponse Kuzzle::query(kuzzle_request* query, query_options* options) {
     KUZZLE_API(kuzzle_response, r, kuzzle_query(_kuzzle, query, options))
 
     KuzzleResponse res(r);
     kuzzle_free_kuzzle_response(r);
     return res;
+=======
+  kuzzle_response* Kuzzle::query(const kuzzle_request& request) {
+    return this->query(request, query_options());
+  }
+
+  kuzzle_response* Kuzzle::query(
+      const kuzzle_request& request,
+      const query_options& options) {
+    KUZZLE_API(kuzzle_response, r, kuzzle_query(
+        _kuzzle,
+        const_cast<kuzzle_request*>(&request),
+        const_cast<query_options*>(&options)))
+    return r;
+>>>>>>> origin/1-dev
   }
 
   Kuzzle* Kuzzle::playQueue() noexcept {
@@ -251,8 +253,8 @@ namespace kuzzleio {
     return this;
   }
 
-  Kuzzle* Kuzzle::setAutoReplay(bool autoReplay) noexcept {
-    kuzzle_set_auto_replay(_kuzzle, autoReplay);
+  Kuzzle* Kuzzle::setAutoReplay(bool auto_replay) noexcept {
+    kuzzle_set_auto_replay(_kuzzle, auto_replay);
     return this;
   }
 
@@ -271,8 +273,8 @@ namespace kuzzleio {
     return this;
   }
 
-  Kuzzle* Kuzzle::setVolatile(const std::string& volatiles) noexcept {
-    kuzzle_set_volatile(_kuzzle, const_cast<char*>(volatiles.c_str()));
+  Kuzzle* Kuzzle::setVolatile(const std::string& volatile_data) noexcept {
+    kuzzle_set_volatile(_kuzzle, const_cast<char*>(volatile_data.c_str()));
     return this;
   }
 
@@ -285,52 +287,53 @@ namespace kuzzleio {
   }
 
   Protocol* Kuzzle::getProtocol() noexcept {
-    return _cpp_protocol;
-  }
-
-  void trigger_event_listener(int event, char* res, void* data) {
-    EventListener* listener = static_cast<Kuzzle*>(data)->getListeners()[event];
-    if (listener) {
-      (*listener)(res);
-    }
-  }
-
-  std::map<int, EventListener*> Kuzzle::getListeners() noexcept {
-    return _listener_instances;
+    return static_cast<Protocol*>(this->_protocol->instance);
   }
 
   void Kuzzle::emitEvent(Event event, const std::string& body) noexcept {
     kuzzle_emit_event(_kuzzle, event, const_cast<char*>(body.c_str()));
+    KuzzleEventEmitter::emitEvent(event, body);
   }
 
-  KuzzleEventEmitter* Kuzzle::addListener(Event event, EventListener* listener) {
-    kuzzle_add_listener(_kuzzle, event, trigger_event_listener, this);
-    _listener_instances[event] = listener;
+  KuzzleEventEmitter* Kuzzle::addListener(Event event,
+    SharedEventListener listener) noexcept {
+
+    kuzzle_add_listener(_kuzzle, event, _c_emit_event, this);
+
+    return KuzzleEventEmitter::addListener(event, listener);
+  }
+
+  KuzzleEventEmitter* Kuzzle::removeListener(
+      Event event,
+      SharedEventListener listener) noexcept {
+    KuzzleEventEmitter::removeListener(event, listener);
+
+    // if no listener remains, we need to unregister it from the go kuzzle
+    // layers
+    if (this->listeners.find(event) == this->listeners.end()) {
+      kuzzle_remove_listener(_kuzzle, event, _c_emit_event);
+    }
 
     return this;
   }
 
-  KuzzleEventEmitter* Kuzzle::removeListener(Event event, EventListener* listener) {
-    kuzzle_remove_listener(_kuzzle, event, (void*)&trigger_event_listener);
-    _listener_instances[event] = nullptr;
-
-    return this;
-  }
-
-  KuzzleEventEmitter* Kuzzle::removeAllListeners(Event event) {
+  KuzzleEventEmitter* Kuzzle::removeAllListeners(Event event) noexcept {
     kuzzle_remove_all_listeners(_kuzzle, event);
 
-    return this;
+    return KuzzleEventEmitter::removeAllListeners(event);
   }
 
+<<<<<<< HEAD
   KuzzleEventEmitter* Kuzzle::once(Event event, EventListener* listener) {
     kuzzle_once(_kuzzle, event, &trigger_event_listener, this);
 
     return this;
+=======
+  KuzzleEventEmitter* Kuzzle::once(
+      Event event,
+      SharedEventListener listener) noexcept {
+    kuzzle_once(_kuzzle, event, &_c_emit_event, this);
+    return KuzzleEventEmitter::once(event, listener);
+>>>>>>> origin/1-dev
   }
-
-  int Kuzzle::listenerCount(Event event) {
-    return kuzzle_listener_count(_kuzzle, event);
-  }
-
 }

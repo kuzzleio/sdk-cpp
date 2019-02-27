@@ -9,11 +9,17 @@ You can use this Docker image to build the SDK:
 docker run --rm -it --network ci_default --link kuzzle -v "$(pwd)":/mnt kuzzleio/sdk-cross:gcc make clean all
 ```
 
+### Build with MSVC
+
+MSVC does not support linking with DLLs, you must use the workaround described here: https://stackoverflow.com/questions/9946322/how-to-generate-an-import-library-lib-file-from-a-dll
+
+In addition, you must also use the `-buildmode=c-shared` compilation option for the SDK to work properly.
+
 ## Compile with the SDK
 
 Use this commande to compile a cpp source file with the builded SDK:
 ```
-g++ -std=c++11 source.cpp -Isdk-c/include -Isdk-c/build/ -Iinclude -L./build/ -lkuzzlesdk -lpthread
+g++ -std=c++11 source.cpp -Isdk-c/build/kuzzle-c-sdk/include -Iinclude -L./build/ -lkuzzlesdk -lpthread
 ```
 
 Then run the compiled program with: `LD_LIBRARY_PATH=./build ./a.out`

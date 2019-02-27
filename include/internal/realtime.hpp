@@ -3,13 +3,19 @@
 
 #include <map>
 #include <functional>
+#include <memory>
 
 #include "exceptions.hpp"
 #include "core.hpp"
 #include "internal/notification_result.hpp"
 
 namespace kuzzleio {
+<<<<<<< HEAD
   typedef std::function<void(kuzzleio::NotificationResult*)> NotificationListener;
+=======
+  typedef std::function<void(std::shared_ptr<notification_result>)>
+    NotificationListener;
+>>>>>>> origin/1-dev
 
   class Kuzzle;
 
@@ -21,12 +27,28 @@ namespace kuzzleio {
     public:
       Realtime(kuzzle* kuzzle);
       virtual ~Realtime();
-      int count(const std::string& roomId, query_options *options=nullptr);
-      void publish(const std::string& index, const std::string& collection, const std::string& body, query_options *options=nullptr);
-      std::string subscribe(const std::string& index, const std::string& collection, const std::string& body, NotificationListener* cb, room_options* options=nullptr);
-      void unsubscribe(const std::string& roomId, query_options *options=nullptr);
 
-      NotificationListener* getListener(const std::string& roomId);
+      int count(const std::string& room_id);
+      int count(const std::string& room_id, const query_options& options);
+
+      void publish(const std::string& index, const std::string& collection,
+          const std::string& message);
+      void publish(const std::string& index, const std::string& collection,
+          const std::string& message, const query_options& options);
+
+      std::string subscribe(const std::string& index,
+          const std::string& collection, const std::string& filters,
+          NotificationListener* listener);
+      std::string subscribe(const std::string& index,
+          const std::string& collection, const std::string& filters,
+          NotificationListener* listener, const room_options& options);
+
+      void unsubscribe(const std::string& room_id);
+      void unsubscribe(const std::string& room_id,
+          const query_options& options);
+
+      // Internal usage only
+      NotificationListener* getListener(const std::string& room_id);
   };
 }
 

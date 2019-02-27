@@ -1,4 +1,16 @@
 {
+   channels?
+   Memcheck:Leak
+   match-leak-kinds: possible
+   fun:*alloc
+   fun:allocate_dtv
+   fun:_dl_allocate_tls
+   fun:allocate_stack
+   fun:pthread_create*
+   fun:_cgo_try_pthread_create
+   ...
+}
+{
    Cgo wrapper
    Memcheck:Addr8
    ...
@@ -23,6 +35,77 @@
    fun:runtime.cgocallback_gofunc
    fun:runtime.cgocallback
    fun:*kuzzle_connect
+}
+{
+   cgo malloc/calloc sanitizer
+   Memcheck:Leak
+   match-leak-kinds: indirect
+   fun:?alloc
+   fun:_cgo_*_Cfunc_*alloc
+   fun:runtime.asmcgocall
+   ...
+   obj:*
+}
+{
+   cgo malloc/calloc sanitizer
+   Memcheck:Leak
+   match-leak-kinds: possible
+   fun:?alloc
+   fun:_cgo_*_Cfunc_*alloc
+   fun:runtime.asmcgocall
+   ...
+   obj:*
+}
+{
+   cgo malloc/calloc sanitizer
+   Memcheck:Leak
+   match-leak-kinds: definite
+   fun:?alloc
+   fun:_cgo_*_Cfunc_*alloc
+   fun:runtime.asmcgocall
+   ...
+   obj:*
+}
+{
+   cgo malloc/calloc sanitizer
+   Memcheck:Leak
+   match-leak-kinds: reachable
+   fun:?alloc
+   fun:_cgo_*_Cfunc_*alloc
+   fun:runtime.asmcgocall
+   ...
+   obj:*
+}
+{
+   cgo getaddrinfo wrapper
+   Memcheck:Leak
+   match-leak-kinds: definite
+   fun:malloc
+   fun:__libc_alloc_buffer_allocate
+   fun:alloc_buffer_allocate
+   fun:__resolv_conf_allocate
+   fun:__resolv_conf_load
+   fun:__resolv_conf_get_current
+   fun:__res_vinit
+   fun:maybe_init
+   fun:context_get
+   fun:__resolv_context_get
+   fun:gaih_inet.constprop.7
+   fun:getaddrinfo
+   fun:_cgo_*_C2func_getaddrinfo
+   fun:runtime.asmcgocall
+   obj:*
+}
+{
+   getaddrinfo wrapper
+   Memcheck:Addr4
+   ...
+   fun:getaddrinfo
+   fun:_cgo_*_getaddrinfo
+   fun:runtime.asmcgocall
+   ...
+   obj:*
+   ...
 }
 {
    main.bridge_notification
@@ -60,6 +143,11 @@
    fun:main.*kuzzle_connect*
 }
 {
+   main.kuzzle_realtime_subscribe
+   Memcheck:Addr4
+   fun:main.kuzzle_realtime_subscribe
+}
+{
    main.kuzzle_set_default_query_options
    Memcheck:Addr1
    fun:main.kuzzle_set_default_query_options
@@ -68,6 +156,11 @@
    main.kuzzle_set_default_query_options
    Memcheck:Addr8
    fun:main.kuzzle_set_default_query_options
+}
+{
+   main.kuzzle_websocket_register_sub.func1
+   Memcheck:Addr1
+   fun:main.kuzzle_websocket_register_sub.func1
 }
 {
    main.*kuzzle_websocket_*

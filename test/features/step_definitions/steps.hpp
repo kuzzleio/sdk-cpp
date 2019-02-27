@@ -26,14 +26,14 @@ using std::string;
 struct KuzzleCtx {
   Kuzzle* kuzzle = nullptr;
   Protocol* protocol = nullptr;
-  options kuzzle_options;
+  Options kuzzle_options;
 
   string user_id;
   string index;
   string collection;
   string jwt;
   string document_id;
-  SearchResult *documents;
+  std::shared_ptr<SearchResult> search_result;
   std::vector<std::shared_ptr<UserRight>> user_rights;
 
   string room_id;
@@ -50,25 +50,35 @@ struct KuzzleCtx {
   int partial_exception = -1;
   std::vector<string> string_array;
 
+<<<<<<< HEAD
   NotificationResult *notif_result = nullptr;
+=======
+  std::shared_ptr<notification_result> notif_result = nullptr;
+>>>>>>> origin/1-dev
 };
 
 class CustomNotificationListener {
   private:
     CustomNotificationListener() {
+<<<<<<< HEAD
       listener = [](const kuzzleio::NotificationResult* res) {
         ScenarioScope<KuzzleCtx> ctx;
         ctx->notif_result = const_cast<NotificationResult*>(res);
+=======
+      listener = [](std::shared_ptr<kuzzleio::notification_result> res) {
+        ScenarioScope<KuzzleCtx> ctx;
+        std::cout << "received a notification: " << res->result->content << std::endl;
+        ctx->notif_result = res;
+>>>>>>> origin/1-dev
       };
     };
-    static CustomNotificationListener* _singleton;
   public:
     NotificationListener listener;
     static CustomNotificationListener* getSingleton() {
-      if (!_singleton) {
-        _singleton = new CustomNotificationListener();
-      }
-      return _singleton;
+      static CustomNotificationListener* instance =
+        new CustomNotificationListener();
+
+      return instance;
     }
 };
 

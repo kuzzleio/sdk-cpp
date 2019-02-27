@@ -12,26 +12,46 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
+#include <cassert>
 #include "internal/search_result.hpp"
 #include "internal/core.hpp"
 
 namespace kuzzleio {
-    SearchResult::SearchResult(search_result* sr) {
-        _sr = sr;
+  SearchResult::SearchResult(search_result* sr) : _sr(sr) {
+    assert(_sr != nullptr);
+  }
 
-        aggregations = std::string(_sr->aggregations);
-        hits = std::string(_sr->hits);
-        total = _sr->total;
-        fetched = _sr->fetched;
-        scroll_id = std::string(_sr->scroll_id);
+  SearchResult::~SearchResult() {
+    kuzzle_free_search_result(_sr);
+  }
+
+  char const* SearchResult::aggregations() const {
+    return _sr->aggregations;
+  }
+
+  char const* SearchResult::hits() const {
+    return _sr->hits;
+  }
+
+  char const* SearchResult::scroll_id() const {
+    return _sr->scroll_id;
+  }
+
+  unsigned SearchResult::fetched() const {
+    return _sr->fetched;
+  }
+
+  unsigned SearchResult::total() const {
+    return _sr->total;
+  }
+
+  std::shared_ptr<SearchResult> SearchResult::next() {
+    search_result *sr = kuzzle_document_search_next(_sr);
+
+    if (sr == nullptr) {
+      return nullptr;
     }
 
-    SearchResult::~SearchResult() {
-        kuzzle_free_search_result(_sr);
-    }
-
-    SearchResult* SearchResult::next() {
-        search_result *sr = kuzzle_document_search_next(_sr);
-        return new SearchResult(sr);
-    }
+    return std::make_shared<SearchResult>(sr);
+  }
 }
