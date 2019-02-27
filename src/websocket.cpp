@@ -32,16 +32,8 @@ namespace kuzzleio {
       // it anyway
     }
 
-<<<<<<< HEAD
-  void trigger_websocket_notification_listener(notification_result* result, void* data) {
-    NotificationListener* listener = static_cast<WebSocket*>(data)->getNotificationListener(result->room_id);
-    if (listener) {
-      (*listener)(new NotificationResult(result));
-    }
-=======
     unregisterWebSocket(this->_web_socket);
     delete this->_web_socket;
->>>>>>> origin/1-dev
   }
 
   KuzzleEventEmitter* WebSocket::addListener(

@@ -16,14 +16,10 @@
 #define _EVENT_EMITTER_HPP_
 
 #include <functional>
-<<<<<<< HEAD
-#include "kuzzle.hpp"
-=======
 #include <memory>
 #include <unordered_map>
 #include <set>
 #include "internal/core.hpp"
->>>>>>> origin/1-dev
 
 namespace kuzzleio {
   typedef std::function<void(const std::string&)> EventListener;

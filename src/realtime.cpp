@@ -75,18 +75,11 @@ namespace kuzzleio {
   }
 
 
-<<<<<<< HEAD
-      if (listener) {
-        (*listener)(new NotificationResult(res));
-      }
-    }
-=======
   void Realtime::publish(
       const std::string& index,
       const std::string& collection,
       const std::string& message) {
     this->publish(index, collection, message, query_options());
->>>>>>> origin/1-dev
   }
 
   void Realtime::publish(
