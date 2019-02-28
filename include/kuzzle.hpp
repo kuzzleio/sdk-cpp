@@ -111,7 +111,6 @@ namespace kuzzleio {
       Protocol* getProtocol() noexcept;
 
       // event emitter overrides
-      virtual void emitEvent(Event, const std::string&) noexcept override;
       virtual KuzzleEventEmitter* addListener(
           Event,
           SharedEventListener) noexcept override;

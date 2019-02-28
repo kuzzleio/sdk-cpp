@@ -123,11 +123,6 @@ namespace kuzzleio {
     return static_cast<Protocol*>(this->_protocol->instance);
   }
 
-  void Kuzzle::emitEvent(Event event, const std::string& body) noexcept {
-    kuzzle_emit_event(_kuzzle, event, const_cast<char*>(body.c_str()));
-    KuzzleEventEmitter::emitEvent(event, body);
-  }
-
   KuzzleEventEmitter* Kuzzle::addListener(Event event,
     SharedEventListener listener) noexcept {
 
