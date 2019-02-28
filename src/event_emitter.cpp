@@ -2,9 +2,11 @@
 
 namespace kuzzleio {
   void _c_emit_event(int event, char* payload, void* ptr) {
+    std::string p = const_cast<const char*>(payload);
+
     static_cast<KuzzleEventEmitter*>(ptr)->emitEvent(
       static_cast<Event>(event),
-      payload);
+      p);
   }
 
   KuzzleEventEmitter* KuzzleEventEmitter::addListener(
