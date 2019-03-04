@@ -30,8 +30,8 @@ namespace kuzzleio {
       free(_auth);
   }
 
-  token_validity* Auth::checkToken(const std::string& token) {
-    return kuzzle_check_token(_auth, const_cast<char*>(token.c_str()));
+  std::shared_ptr<TokenValidity> Auth::checkToken(const std::string& token) {
+    return std::make_shared<TokenValidity>(new TokenValidity(kuzzle_check_token(_auth, const_cast<char*>(token.c_str()))));
   }
 
   std::string Auth::createMyCredentials(const std::string& strategy, const std::string& credentials) {

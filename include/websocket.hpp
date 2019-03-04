@@ -23,7 +23,7 @@ namespace kuzzleio {
       virtual KuzzleEventEmitter* once(
           Event, SharedEventListener) noexcept override;
 
-      virtual void notify(notification_result* payload) noexcept override;
+      virtual void notify(NotificationResult* payload) noexcept override;
 
       virtual void connect() override;
       virtual kuzzle_response* send(const std::string&, query_options *,

@@ -24,6 +24,7 @@
 
 namespace kuzzleio {
   class Kuzzle;
+  class TokenValidity;
 
   class Auth {
     private:
@@ -34,7 +35,7 @@ namespace kuzzleio {
       Auth(kuzzle *kuzzle);
       virtual ~Auth();
 
-      token_validity* checkToken(const std::string& token);
+      std::shared_ptr<TokenValidity> checkToken(const std::string& token);
 
       std::string createMyCredentials(const std::string& strategy, const std::string& credentials);
       std::string createMyCredentials(const std::string& strategy, const std::string& credentials, const query_options& options);

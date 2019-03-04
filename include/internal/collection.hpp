@@ -26,6 +26,7 @@ namespace kuzzleio {
     class Kuzzle;
     class SpecificationSearchResult;
     class SearchResult;
+    class ValidationResponse;
 
     class Collection {
         private:
@@ -67,8 +68,8 @@ namespace kuzzleio {
             SearchResult* searchSpecifications(const std::string& query);
             SearchResult* searchSpecifications(const std::string& query, const query_options& options);
 
-            validation_response* validateSpecifications(const std::string& index, const std::string& collection, const std::string& specifications);
-            validation_response* validateSpecifications(const std::string& index, const std::string& collection, const std::string& specifications, const query_options& options);
+            std::shared_ptr<ValidationResponse> validateSpecifications(const std::string& index, const std::string& collection, const std::string& specifications);
+            std::shared_ptr<ValidationResponse> validateSpecifications(const std::string& index, const std::string& collection, const std::string& specifications, const query_options& options);
     };
 }
 

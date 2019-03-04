@@ -264,19 +264,19 @@ namespace kuzzleio {
     return KuzzleEventEmitter::removeAllListeners(event);
   }
 
-  void Protocol::notify(notification_result* payload) noexcept {
+  void Protocol::notify(NotificationResult* payload) noexcept {
     auto l = this->notificationListeners.find(payload->room_id);
 
     if (l != this->notificationListeners.end()) {
       std::shared_ptr<notification_result> notification(
-        payload,
+        (notification_result*)payload,
         kuzzle_free_notification_result);
 
       for (auto sub : l->second) {
         (*sub)(notification);
       }
     } else {
-      kuzzle_free_notification_result(payload);
+      kuzzle_free_notification_result((notification_result*)payload);
     }
   }
 }

@@ -41,6 +41,10 @@
 #include "internal/meta.hpp"
 #include "internal/notification_content.hpp"
 #include "internal/notification_result.hpp"
+#include "internal/subscribe_result.hpp"
+#include "internal/token_validity.hpp"
+#include "internal/validation_response.hpp"
+#include "internal/kuzzle_request.hpp"
 
 /*
  * Macro used by controller actions.

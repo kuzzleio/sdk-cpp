@@ -3,7 +3,7 @@
 namespace kuzzleio {
   // go websocket listener bridges
   void bridge_notify(notification_result* payload, void* _ws) {
-    static_cast<WebSocket*>(_ws)->notify(payload);
+    static_cast<WebSocket*>(_ws)->notify(new NotificationResult(payload));
   }
 
   // WebSocket class implementation
@@ -112,7 +112,8 @@ namespace kuzzleio {
 
   // this ones is only used to change the "notify" method visibility
   // from protected to public
-  void WebSocket::notify(notification_result* payload) noexcept {
+  void WebSocket::notify(NotificationResult* payload) noexcept {
+
     Protocol::notify(payload);
   }
 

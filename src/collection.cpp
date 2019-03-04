@@ -188,11 +188,11 @@ namespace kuzzleio {
   }
 
 
-  validation_response* Collection::validateSpecifications(const std::string& index, const std::string& collection, const std::string& specifications) {
+  std::shared_ptr<ValidationResponse> Collection::validateSpecifications(const std::string& index, const std::string& collection, const std::string& specifications) {
     return this->validateSpecifications(index, collection, specifications, query_options());
   }
 
-  validation_response* Collection::validateSpecifications(const std::string& index, const std::string& collection, const std::string& specifications, const query_options& options) {
+  std::shared_ptr<ValidationResponse> Collection::validateSpecifications(const std::string& index, const std::string& collection, const std::string& specifications, const query_options& options) {
     KUZZLE_API(validation_response, r, kuzzle_collection_validate_specifications(
       _collection,
       const_cast<char*>(index.c_str()),
@@ -200,7 +200,7 @@ namespace kuzzleio {
       const_cast<char*>(specifications.c_str()),
       const_cast<query_options*>(&options)))
 
-    return r;
+    return std::make_shared<ValidationResponse>(new ValidationResponse(r));
   }
 
 

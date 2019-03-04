@@ -28,7 +28,7 @@ namespace kuzzleio {
           std::set<std::shared_ptr<NotificationListener>>
       > notificationListeners;
 
-      virtual void notify(notification_result* payload) noexcept;
+      virtual void notify(NotificationResult* payload) noexcept;
 
     public:
       virtual ~Protocol() = default;
