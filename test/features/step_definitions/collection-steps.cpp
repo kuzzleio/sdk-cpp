@@ -166,7 +166,7 @@ namespace {
 
     string specifications = "{\"strict\":true}";
 
-    kuzzleio::validation_response *validationResponse = ctx->kuzzle->collection->validateSpecifications(ctx->index, ctx->collection, specifications);
+    kuzzleio::ValidationResponse *validationResponse = new ValidationResponse(ctx->kuzzle->collection->validateSpecifications(ctx->index, ctx->collection, specifications));
     ctx->success = validationResponse->valid;
   }
 

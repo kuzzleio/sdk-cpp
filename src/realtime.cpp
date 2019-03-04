@@ -35,14 +35,14 @@ namespace kuzzleio {
   }
 
   // Internal use only
-  void call_subscribe_cb(notification_result* res, void* realtime_controller) {
+  void call_subscribe_cb(NotificationResult* res, void* realtime_controller) {
     if (realtime_controller) {
       NotificationListener* listener =
         static_cast<Realtime*>(realtime_controller)->getListener(res->room_id);
 
       if (listener) {
         std::shared_ptr<notification_result> notification(
-          res,
+          (notification_result*)res,
           kuzzle_free_notification_result);
         (*listener)(notification);
 
@@ -52,7 +52,7 @@ namespace kuzzleio {
       }
     }
 
-    kuzzle_free_notification_result(res);
+    kuzzle_free_notification_result((notification_result*)res);
   }
 
 
@@ -120,7 +120,7 @@ namespace kuzzleio {
       kuzzle_realtime_subscribe(_realtime, const_cast<char*>(index.c_str()),
                                 const_cast<char*>(collection.c_str()),
                                 const_cast<char*>(filters.c_str()),
-                                call_subscribe_cb, this,
+                                (kuzzle_notification_listener)call_subscribe_cb, this,
                                 const_cast<room_options*>(&options)))
 
     std::string room_id = r->room;

@@ -38,14 +38,14 @@ namespace {
   THEN("^the JWT is valid$")
   {
     ScenarioScope<KuzzleCtx> ctx;
-    token_validity* v = ctx->kuzzle->auth->checkToken(ctx->jwt);
+    std::shared_ptr<TokenValidity> v = ctx->kuzzle->auth->checkToken(ctx->jwt);
     BOOST_CHECK(v->valid);
   }
 
   THEN("^the JWT is invalid$")
   {
     ScenarioScope<KuzzleCtx> ctx;
-    token_validity*          v = ctx->kuzzle->auth->checkToken(ctx->jwt);
+    std::shared_ptr<TokenValidity> v = ctx->kuzzle->auth->checkToken(ctx->jwt);
     BOOST_CHECK(!v->valid);
   }
   WHEN("^I logout$") {

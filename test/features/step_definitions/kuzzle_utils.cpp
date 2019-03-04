@@ -70,7 +70,7 @@ bool kuzzle_user_exists(Kuzzle *kuzzle, const string &user_id)
   bool user_exists = false;
   try
   {
-    kuzzle_request req = {0};
+    KuzzleRequest req = {0};
     req.controller = "security";
     req.action = "getUser";
     req.id = user_id.c_str();
@@ -93,7 +93,7 @@ void kuzzle_user_delete(Kuzzle *kuzzle, const string &user_id)
   K_LOG_D("Deleting user with ID: '%s'", user_id.c_str());
   try
   {
-    kuzzle_request req = {0};
+    KuzzleRequest req = {0};
     req.controller = "security";
     req.action = "deleteUser";
     req.id = user_id.c_str();
@@ -116,7 +116,7 @@ void kuzzle_credentials_delete(Kuzzle *kuzzle, const string &strategy,
 {
   try
   {
-    kuzzle_request req = {0};
+    KuzzleRequest req = {0};
     req.controller = "security";
     req.action = "deleteCredentials";
     req.strategy = "local";
@@ -139,7 +139,7 @@ void kuzzle_user_create(Kuzzle *kuzzle, const string &user_id,
                         const string &username, const string &password)
 {
 
-  kuzzle_request req = {0};
+  KuzzleRequest req = {0};
   req.controller = "security";
   req.action = "createUser";
   req.strategy = "local";
