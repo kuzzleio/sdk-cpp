@@ -116,11 +116,9 @@ namespace kuzzleio {
       Kuzzle* flushQueue() noexcept;
       std::string getVolatile() noexcept;
       Kuzzle* setVolatile(const std::string& volatiles) noexcept;
-      std::map<int, EventListener*> getListeners() noexcept;
       Protocol* getProtocol() noexcept;
 
       // event emitter overrides
-      virtual void emitEvent(Event, const std::string&) noexcept override;
       virtual KuzzleEventEmitter* addListener(
           Event,
           SharedEventListener) noexcept override;
