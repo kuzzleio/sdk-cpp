@@ -19,7 +19,7 @@ namespace kuzzleio {
   // bridge functions
   static void bridge_cpp_remove_listener(
       int event,
-      kuzzle_event_listener* listener,
+      kuzzle_event_listener listener,
       void* _p) {
 
     static_cast<Protocol*>(_p)->removeListener(event, listener);
@@ -27,12 +27,12 @@ namespace kuzzleio {
 
   void bridge_cpp_add_listener(
       int event,
-      kuzzle_event_listener* listener,
+      kuzzle_event_listener listener,
       void* _p) {
     static_cast<Protocol*>(_p)->addListener(event, listener);
   }
 
-  void bridge_cpp_once(int event, kuzzle_event_listener* listener, void* _p) {
+  void bridge_cpp_once(int event, kuzzle_event_listener listener, void* _p) {
     static_cast<Protocol*>(_p)->addListener(event, listener);
   }
 
@@ -126,7 +126,7 @@ namespace kuzzleio {
   }
 
   // Protocol class implementation
-  void Protocol::addListener(int event, kuzzle_event_listener *listener) {
+  void Protocol::addListener(int event, kuzzle_event_listener listener) {
     auto bl = this->bridgeListeners.find(listener);
 
     if (bl == this->bridgeListeners.end()) {
@@ -144,7 +144,7 @@ namespace kuzzleio {
     }
   }
 
-  void Protocol::once(int event, kuzzle_event_listener *listener) {
+  void Protocol::once(int event, kuzzle_event_listener listener) {
     auto bl = bridgeListeners.find(listener);
 
     // do not add a "once" listener if a permanent one is already registered
@@ -165,7 +165,7 @@ namespace kuzzleio {
     }
   }
 
-  void Protocol::removeListener(int event, kuzzle_event_listener *listener) {
+  void Protocol::removeListener(int event, kuzzle_event_listener listener) {
     auto l = this->bridgeListeners.find(listener);
 
     if (l != this->bridgeListeners.end()) {
@@ -232,7 +232,7 @@ namespace kuzzleio {
       for (auto elistener : elisteners->second) {
         auto bridge = std::find_if(
             this->bridgeListeners.begin(), this->bridgeListeners.end(),
-            [=](std::pair<kuzzle_event_listener*, SharedEventListener> vt)
+            [=](std::pair<kuzzle_event_listener, SharedEventListener> vt)
             { return vt.second == elistener; });
 
         if (bridge != bridgeListeners.end()) {

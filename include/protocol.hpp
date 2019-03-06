@@ -2,7 +2,7 @@
 #define KUZZLE_PROTOCOL_HPP
 
 #include <string>
-#include <unordered_map>
+#include <map>
 #include <memory>
 #include "kuzzle.hpp"
 #include "internal/protocol.h"
@@ -11,19 +11,19 @@
 namespace kuzzleio {
   class Protocol : public KuzzleEventEmitter {
     private:
-      std::unordered_map<
-          kuzzle_event_listener*, SharedEventListener> bridgeListeners;
+      std::map<
+          kuzzle_event_listener, SharedEventListener> bridgeListeners;
 
-      std::unordered_map<
+      std::map<
           std::string,
-          std::unordered_map<
+          std::map<
             kuzzle_notification_listener,
             std::shared_ptr<NotificationListener>
           >
       > bridgeSubs;
 
     protected:
-      std::unordered_map<
+      std::map<
           std::string,
           std::set<std::shared_ptr<NotificationListener>>
       > notificationListeners;
@@ -58,13 +58,13 @@ namespace kuzzleio {
 
       // internals -- used for bridging with golang
       using KuzzleEventEmitter::removeListener;
-      virtual void removeListener(int, kuzzle_event_listener*);
+      virtual void removeListener(int, kuzzle_event_listener);
 
       using KuzzleEventEmitter::addListener;
-      virtual void addListener(int, kuzzle_event_listener*);
+      virtual void addListener(int, kuzzle_event_listener);
 
       using KuzzleEventEmitter::once;
-      virtual void once(int, kuzzle_event_listener*);
+      virtual void once(int, kuzzle_event_listener);
 
       virtual void registerSub(
         const std::string& channel, const std::string& roomId,

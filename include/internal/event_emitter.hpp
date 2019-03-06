@@ -17,8 +17,9 @@
 
 #include <functional>
 #include <memory>
-#include <unordered_map>
+#include <map>
 #include <set>
+#include <string>
 #include "internal/core.hpp"
 
 namespace kuzzleio {
@@ -33,8 +34,8 @@ namespace kuzzleio {
       virtual void emitEventOnce(Event, const std::string& payload) noexcept;
 
     protected:
-      std::unordered_map<Event, std::set<SharedEventListener>> listeners;
-      std::unordered_map<Event, std::set<SharedEventListener>> onceListeners;
+      std::map<Event, std::set<SharedEventListener>> listeners;
+      std::map<Event, std::set<SharedEventListener>> onceListeners;
 
     public:
       KuzzleEventEmitter() = default;
