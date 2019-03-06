@@ -16,7 +16,8 @@
 #include "protocol.hpp"
 
 namespace kuzzleio {
-  // bridge functions
+
+   // bridge functions
   static void bridge_cpp_remove_listener(
       int event,
       kuzzle_event_listener listener,
@@ -210,7 +211,7 @@ namespace kuzzleio {
     auto chan = this->bridgeSubs[channel];
     // do not create a new shared pointer on a already existing listener
     if (chan.find(listener) == chan.end()) {
-      auto nl = std::make_shared<NotificationListener>(
+      auto nl = std::make_shared<ProtocolListener>(
           [listener, this](std::shared_ptr<notification_result> notification) {
         (*listener)(notification.get(), this);
       });
@@ -225,7 +226,7 @@ namespace kuzzleio {
       const std::string& roomId,
       const std::string& filters,
       bool subscribetoSelf,
-      std::shared_ptr<NotificationListener> listener) {
+      std::shared_ptr<ProtocolListener> listener) {
     this->notificationListeners[channel].insert(listener);
   }
 
@@ -264,19 +265,19 @@ namespace kuzzleio {
     return KuzzleEventEmitter::removeAllListeners(event);
   }
 
-  void Protocol::notify(NotificationResult* payload) noexcept {
+  void Protocol::notify(notification_result* payload) noexcept {
     auto l = this->notificationListeners.find(payload->room_id);
 
     if (l != this->notificationListeners.end()) {
       std::shared_ptr<notification_result> notification(
-        (notification_result*)payload,
+        payload,
         kuzzle_free_notification_result);
 
       for (auto sub : l->second) {
         (*sub)(notification);
       }
     } else {
-      kuzzle_free_notification_result((notification_result*)payload);
+      kuzzle_free_notification_result(payload);
     }
   }
 }

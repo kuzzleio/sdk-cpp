@@ -40,7 +40,17 @@ namespace kuzzleio {
         index(r->index),
         collection(r->collection),
         value(r->value)
-        {};
+        {}
+
+      const std::string &getController() const;
+
+      const std::string &getAction() const;
+
+      const std::string &getIndex() const;
+
+      const std::string &getCollection() const;
+
+      const std::string &getValue() const;;
   };
 }
 

@@ -105,9 +105,9 @@ namespace kuzzleio {
 
       std::string getJwt() noexcept;
       void disconnect() noexcept;
-      KuzzleResponse query(const kuzzle_request& request);
+      KuzzleResponse query(const KuzzleRequest& request);
       KuzzleResponse query(
-          const kuzzle_request& request,
+          const KuzzleRequest& request,
           const query_options& options);
       Kuzzle* playQueue() noexcept;
       Kuzzle* setAutoReplay(bool autoReplay) noexcept;
@@ -117,6 +117,7 @@ namespace kuzzleio {
       std::string getVolatile() noexcept;
       Kuzzle* setVolatile(const std::string& volatiles) noexcept;
       Protocol* getProtocol() noexcept;
+
 
       // event emitter overrides
       virtual KuzzleEventEmitter* addListener(
@@ -130,6 +131,7 @@ namespace kuzzleio {
           Event,
           SharedEventListener) noexcept override;
   };
+    char* const* vector_to_c(const std::vector<std::string> &vec) noexcept;
 }
 
 #endif

@@ -16,6 +16,7 @@
 #include "internal/realtime.hpp"
 
 namespace kuzzleio {
+
   Realtime::Realtime(kuzzle *kuzzle) {
     _realtime = kuzzle_get_realtime_controller(kuzzle);
     kuzzle_new_realtime(_realtime, kuzzle);
@@ -35,24 +36,15 @@ namespace kuzzleio {
   }
 
   // Internal use only
-  void call_subscribe_cb(NotificationResult* res, void* realtime_controller) {
+  void call_subscribe_cb(notification_result* res, void* realtime_controller) {
+    NotificationResult r(res);
     if (realtime_controller) {
       NotificationListener* listener =
         static_cast<Realtime*>(realtime_controller)->getListener(res->room_id);
-
       if (listener) {
-        std::shared_ptr<notification_result> notification(
-          (notification_result*)res,
-          kuzzle_free_notification_result);
-        (*listener)(notification);
-
-        // break the control flow to defer the notification deallocation to
-        // the smart pointer we just created
-        return;
+        (*listener)(r);
       }
     }
-
-    kuzzle_free_notification_result((notification_result*)res);
   }
 
 
@@ -120,7 +112,7 @@ namespace kuzzleio {
       kuzzle_realtime_subscribe(_realtime, const_cast<char*>(index.c_str()),
                                 const_cast<char*>(collection.c_str()),
                                 const_cast<char*>(filters.c_str()),
-                                (kuzzle_notification_listener)call_subscribe_cb, this,
+                                call_subscribe_cb, this,
                                 const_cast<room_options*>(&options)))
 
     std::string room_id = r->room;

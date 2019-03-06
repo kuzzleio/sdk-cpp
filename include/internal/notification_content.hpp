@@ -24,7 +24,15 @@ namespace kuzzleio {
         meta(c->meta),
         content(c->content),
         count(c->count)
-        {};
+        {}
+
+      const std::string &getId() const;
+
+      const Meta *getMeta() const;
+
+      const std::string &getContent() const;
+
+      const int getCount() const;;
   };
 }
 

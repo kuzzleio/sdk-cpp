@@ -9,6 +9,9 @@
 #include "internal/event_emitter.hpp"
 
 namespace kuzzleio {
+  typedef std::function<void(std::shared_ptr<notification_result>)>
+    ProtocolListener;
+    
   class Protocol : public KuzzleEventEmitter {
     private:
       std::map<
@@ -18,20 +21,22 @@ namespace kuzzleio {
           std::string,
           std::map<
             kuzzle_notification_listener,
-            std::shared_ptr<NotificationListener>
+            std::shared_ptr<ProtocolListener>
           >
       > bridgeSubs;
 
     protected:
       std::map<
           std::string,
-          std::set<std::shared_ptr<NotificationListener>>
+          std::set<std::shared_ptr<ProtocolListener>>
       > notificationListeners;
 
-      virtual void notify(NotificationResult* payload) noexcept;
+      
 
     public:
       virtual ~Protocol() = default;
+
+      virtual void notify(notification_result *payload) noexcept;
 
       // to be implemented
       virtual void connect() = 0;
@@ -53,7 +58,7 @@ namespace kuzzleio {
       virtual void registerSub(
           const std::string& channel, const std::string& roomId,
           const std::string& filters, bool subscribetoSelf,
-          std::shared_ptr<NotificationListener> listener);
+          std::shared_ptr<ProtocolListener> listener);
       virtual void unregisterSub(const std::string& channel);
       virtual void cancelSubs();
 

@@ -70,11 +70,13 @@ bool kuzzle_user_exists(Kuzzle *kuzzle, const string &user_id)
   bool user_exists = false;
   try
   {
-    KuzzleRequest req = {0};
+    kuzzle_request req = {0};
     req.controller = "security";
     req.action = "getUser";
     req.id = user_id.c_str();
-    kuzzle->query(req);
+    KuzzleRequest n(&req);
+
+    kuzzle->query(n);
     user_exists = true;
   }
   catch (kuzzleio::NotFoundException e)
@@ -93,7 +95,7 @@ void kuzzle_user_delete(Kuzzle *kuzzle, const string &user_id)
   K_LOG_D("Deleting user with ID: '%s'", user_id.c_str());
   try
   {
-    KuzzleRequest req = {0};
+    kuzzle_request req = {0};
     req.controller = "security";
     req.action = "deleteUser";
     req.id = user_id.c_str();
@@ -101,7 +103,7 @@ void kuzzle_user_delete(Kuzzle *kuzzle, const string &user_id)
     query_options options;
     options.refresh = const_cast<char*>("wait_for");
     options.volatiles = const_cast<char*>("{}");
-    kuzzle->query(req, options); // TODO: test if we can delete with options
+    kuzzle->query(KuzzleRequest(&req), options);  // TODO: test if we can delete with options
 
     K_LOG_D("Deleted user \"%s\"", user_id.c_str());
   }
@@ -116,13 +118,14 @@ void kuzzle_credentials_delete(Kuzzle *kuzzle, const string &strategy,
 {
   try
   {
-    KuzzleRequest req = {0};
+    kuzzle_request req = {0};
     req.controller = "security";
     req.action = "deleteCredentials";
     req.strategy = "local";
     req.id = user_id.c_str();
 
-    kuzzle->query(req);
+    kuzzle->query(KuzzleRequest(&req));
+    //kuzzle->query(req);
 
     K_LOG_D("Deleted '%s' credentials for userId '%s'", strategy.c_str(),
             user_id.c_str());
@@ -139,7 +142,7 @@ void kuzzle_user_create(Kuzzle *kuzzle, const string &user_id,
                         const string &username, const string &password)
 {
 
-  KuzzleRequest req = {0};
+  kuzzle_request req = {0};
   req.controller = "security";
   req.action = "createUser";
   req.strategy = "local";
@@ -162,7 +165,7 @@ void kuzzle_user_create(Kuzzle *kuzzle, const string &user_id,
   K_LOG_D("Req body: %s", req.body);
   try
   {
-    KuzzleResponse resp = kuzzle->query(req);
+    KuzzleResponse resp = kuzzle->query(&req);
     K_LOG_D("createUser ended with status: %d", resp.status);
   }
   catch (KuzzleException e)

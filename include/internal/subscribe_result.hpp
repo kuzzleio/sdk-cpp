@@ -27,7 +27,17 @@ namespace kuzzleio {
         status(u->status),
         error(u->error),
         stack(u->stack)
-        {};
+        {}
+
+      const std::string &getRoom() const;
+
+      const std::string &getChannel() const;
+
+      const int getStatus() const;
+
+      const std::string &getError() const;
+
+      const std::string &getStack() const;;
   };
 }
 

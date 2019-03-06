@@ -23,7 +23,7 @@ namespace kuzzleio {
       virtual KuzzleEventEmitter* once(
           Event, SharedEventListener) noexcept override;
 
-      virtual void notify(NotificationResult* payload) noexcept override;
+      //virtual void notify(NotificationResult* payload) noexcept override;
 
       virtual void connect() override;
       virtual kuzzle_response* send(const std::string&, query_options *,
@@ -33,7 +33,7 @@ namespace kuzzleio {
       virtual void registerSub(
           const std::string& channel, const std::string& room_id,
           const std::string& filters, bool subscribe_to_self,
-          std::shared_ptr<NotificationListener>) override;
+          std::shared_ptr<ProtocolListener>) override;
       virtual void unregisterSub(const std::string&) override;
       virtual void cancelSubs() override;
       virtual void startQueuing() override;

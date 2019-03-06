@@ -28,7 +28,19 @@ namespace kuzzleio {
         updater(m->updater),
         active(m->active),
         deleted_at(m->deleted_at)
-        {};
+        {}
+
+      const std::string &getAuthor() const;
+
+      const uint64_t getCreated_at() const;
+
+      const uint64_t getUpdated_at() const;
+
+      const std::string &getUpdater() const;
+
+      const bool getActive() const;
+
+      const uint64_t getDeleted_at() const;;
   };
 }
 

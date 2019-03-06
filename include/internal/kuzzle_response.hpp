@@ -48,7 +48,31 @@ namespace kuzzleio {
         status(u->status),
         error(u->error),
         stack(u->stack)
-        {};
+        {}
+
+      const std::string &getRequest_id() const;
+
+      const std::string &getResult() const;
+
+      const std::string &getVolatiles() const;
+
+      const std::string &getIndex() const;
+
+      const std::string &getCollection() const;
+
+      const std::string &getController() const;
+
+      const std::string &getAction() const;
+
+      const std::string &getRoom_id() const;
+
+      const std::string &getChannel() const;
+
+      const int getStatus() const;
+
+      const std::string &getError() const;
+
+      const std::string &getStack() const;;
   };
 }
 

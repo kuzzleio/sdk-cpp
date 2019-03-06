@@ -10,7 +10,7 @@
 #include "internal/notification_result.hpp"
 
 namespace kuzzleio {
-  typedef std::function<void(std::shared_ptr<notification_result>)>
+  typedef std::function<void(const NotificationResult&)>
     NotificationListener;
 
   class Kuzzle;

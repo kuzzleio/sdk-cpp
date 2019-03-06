@@ -30,7 +30,19 @@ namespace kuzzleio {
         status(u->status),
         error(u->error),
         stack(u->stack)
-        {};
+        {}
+
+      const bool getValid() const;
+
+      const std::string &getState() const;
+
+      const unsigned long long int getExpires_at() const;
+
+      const int getStatus() const;
+
+      const std::string &getError() const;
+
+      const std::string &getStack() const;;
   };
 }
 
