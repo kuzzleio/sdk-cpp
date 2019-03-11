@@ -20,13 +20,14 @@
 
 namespace kuzzleio {
   class UserRight {
-    public:
+    private:
       const std::string controller;
       const std::string action;
       const std::string index;
       const std::string collection;
       const std::string value;
 
+  public:
       UserRight(const user_right* r) :
         controller(r->controller),
         action(r->action),
@@ -34,12 +35,12 @@ namespace kuzzleio {
         collection(r->collection),
         value(r->value)
         {};
-      UserRight(UserRight* r) :
-        controller(r->controller),
-        action(r->action),
-        index(r->index),
-        collection(r->collection),
-        value(r->value)
+      UserRight(const UserRight& r) :
+        controller(r.controller),
+        action(r.action),
+        index(r.index),
+        collection(r.collection),
+        value(r.value)
         {}
 
       const std::string &getController() const;

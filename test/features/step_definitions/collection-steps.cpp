@@ -166,8 +166,8 @@ namespace {
 
     string specifications = "{\"strict\":true}";
 
-    kuzzleio::ValidationResponse *validationResponse = new ValidationResponse(ctx->kuzzle->collection->validateSpecifications(ctx->index, ctx->collection, specifications));
-    ctx->success = validationResponse->valid;
+    kuzzleio::ValidationResponse validationResponse = ValidationResponse(ctx->kuzzle->collection->validateSpecifications(ctx->index, ctx->collection, specifications));
+    ctx->success = validationResponse.getValid();
   }
 
   THEN("^they should be validated$")

@@ -68,8 +68,8 @@ namespace kuzzleio {
             SearchResult* searchSpecifications(const std::string& query);
             SearchResult* searchSpecifications(const std::string& query, const QueryOptions& options);
 
-            std::shared_ptr<ValidationResponse> validateSpecifications(const std::string& index, const std::string& collection, const std::string& specifications);
-            std::shared_ptr<ValidationResponse> validateSpecifications(const std::string& index, const std::string& collection, const std::string& specifications, const QueryOptions& options);
+            ValidationResponse& validateSpecifications(const std::string& index, const std::string& collection, const std::string& specifications);
+            ValidationResponse& validateSpecifications(const std::string& index, const std::string& collection, const std::string& specifications, const QueryOptions& options);
     };
 }
 

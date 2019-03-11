@@ -10,7 +10,7 @@ namespace kuzzleio {
     public:
       const bool valid;
       const std::string state;
-      const unsigned long long expires_at;
+      const unsigned long long expiresAt;
       const int status;
       const std::string error;
       const std::string stack;
@@ -18,25 +18,25 @@ namespace kuzzleio {
       TokenValidity(const token_validity* u) :
         valid(u->valid),
         state(u->state),
-        expires_at(u->expires_at),
+        expiresAt(u->expires_at),
         status(u->status),
         error(u->error ? u->error : ""),
         stack(u->stack ? u->stack : "")
         {};
-      TokenValidity(TokenValidity* u) :
-        valid(u->valid),
-        state(u->state),
-        expires_at(u->expires_at),
-        status(u->status),
-        error(u->error),
-        stack(u->stack)
+      TokenValidity(const TokenValidity& u) :
+        valid(u.valid),
+        state(u.state),
+        expiresAt(u.expiresAt),
+        status(u.status),
+        error(u.error),
+        stack(u.stack)
         {}
 
       const bool getValid() const;
 
       const std::string &getState() const;
 
-      const unsigned long long int getExpires_at() const;
+      const unsigned long long int getExpiresAt() const;
 
       const int getStatus() const;
 

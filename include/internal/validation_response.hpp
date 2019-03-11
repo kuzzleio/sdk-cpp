@@ -23,22 +23,14 @@ namespace kuzzleio {
         error(u->error ? u->error : ""),
         stack(u->stack ? u->stack : "")
         {};
-      ValidationResponse(ValidationResponse* u) :
-        valid(u->valid),
-        details(u->details),
-        description(u->description),
-        status(u->status),
-        error(u->error),
-        stack(u->stack)
+      ValidationResponse(const ValidationResponse& u) :
+        valid(u.valid),
+        details(u.details),
+        description(u.description),
+        status(u.status),
+        error(u.error),
+        stack(u.stack)
         {};
-      ValidationResponse(std::shared_ptr<ValidationResponse> u) :
-        valid(u->valid),
-        details(u->details),
-        description(u->description),
-        status(u->status),
-        error(u->error),
-        stack(u->stack)
-        {}
 
       const bool getValid() const;
 
