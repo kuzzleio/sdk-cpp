@@ -5,7 +5,6 @@
 #include <map>
 #include <memory>
 #include "kuzzle.hpp"
-#include "internal/protocol.h"
 #include "internal/event_emitter.hpp"
 
 namespace kuzzleio {

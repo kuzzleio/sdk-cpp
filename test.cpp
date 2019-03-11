@@ -58,8 +58,8 @@ int main() {
 
 
     k->realtime->publish("index", "collection", "{}");
-  } catch (std::exception e) {
-    std::cout << e.what() << std::endl;
+  } catch (std::exception &e) {
+    std::cout << "fail:" << e.what() << std::endl;
   }
   sleep(2);
 
