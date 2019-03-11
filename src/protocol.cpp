@@ -96,22 +96,6 @@ namespace kuzzleio {
     static_cast<Protocol*>(_p)->cancelSubs();
   }
 
-  void bridge_cpp_start_queuing(void* _p) {
-    static_cast<Protocol*>(_p)->startQueuing();
-  }
-
-  void bridge_cpp_stop_queuing(void* _p) {
-    static_cast<Protocol*>(_p)->stopQueuing();
-  }
-
-  void bridge_cpp_play_queue(void* _p) {
-    static_cast<Protocol*>(_p)->playQueue();
-  }
-
-  void bridge_cpp_clear_queue(void* _p) {
-    static_cast<Protocol*>(_p)->clearQueue();
-  }
-
   void bridge_cpp_remove_all_listeners(int event, void* _p) {
     static_cast<Protocol*>(_p)->removeAllListeners(static_cast<Event>(event));
   }
@@ -136,10 +120,6 @@ namespace kuzzleio {
     p->register_sub = bridge_cpp_register_sub;
     p->unregister_sub = bridge_cpp_unregister_sub;
     p->cancel_subs = bridge_cpp_cancel_subs;
-    p->start_queuing = bridge_cpp_start_queuing;
-    p->stop_queuing = bridge_cpp_stop_queuing;
-    p->play_queue = bridge_cpp_play_queue;
-    p->clear_queue = bridge_cpp_clear_queue;
     p->remove_all_listeners = bridge_cpp_remove_all_listeners;
     p->get_host = bridge_cpp_get_host;
 

@@ -147,29 +147,6 @@ namespace kuzzleio {
     Protocol::cancelSubs();
   }
 
-  void WebSocket::startQueuing() {
-    kuzzle_websocket_start_queuing(this->_web_socket);
-  }
-
-  void WebSocket::stopQueuing() {
-    kuzzle_websocket_stop_queuing(this->_web_socket);
-  }
-  void WebSocket::playQueue() {
-    kuzzle_websocket_play_queue(this->_web_socket);
-  }
-
-  void WebSocket::clearQueue() {
-    kuzzle_websocket_clear_queue(this->_web_socket);
-  }
-
-  bool WebSocket::isAutoReconnect() {
-    return kuzzle_websocket_is_auto_reconnect(this->_web_socket);
-  }
-
-  bool WebSocket::isAutoResubscribe() {
-    return kuzzle_websocket_is_auto_resubscribe(this->_web_socket);
-  }
-
   std::string WebSocket::getHost() {
     char *host = kuzzle_websocket_get_host(this->_web_socket);
     std::string str_host(host);
@@ -180,10 +157,6 @@ namespace kuzzleio {
 
   unsigned int WebSocket::getPort() {
     return kuzzle_websocket_get_port(this->_web_socket);
-  }
-
-  unsigned long long WebSocket::getReconnectionDelay() {
-    return kuzzle_websocket_get_reconnection_delay(this->_web_socket);
   }
 
   bool WebSocket::isSslConnection() {
