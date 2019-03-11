@@ -5,42 +5,42 @@
 
 namespace kuzzleio {
   class Meta {
-     public:
+     private:
       const std::string author;
-      const uint64_t created_at;
-      const uint64_t updated_at;
+      const uint64_t createdAt;
+      const uint64_t updatedAt;
       const std::string updater;
       const bool active;
-      const uint64_t deleted_at;
-
+      const uint64_t deletedAt;
+     public:
       Meta(const meta* m) :
         author(m->author),
-        created_at(m->created_at),
-        updated_at(m->updated_at),
+        createdAt(m->created_at),
+        updatedAt(m->updated_at),
         updater(m->updater),
         active(m->active),
-        deleted_at(m->deleted_at)
+        deletedAt(m->deleted_at)
         {};
-      Meta(Meta* m) :
-        author(m->author),
-        created_at(m->created_at),
-        updated_at(m->updated_at),
-        updater(m->updater),
-        active(m->active),
-        deleted_at(m->deleted_at)
+      Meta(const Meta& m) :
+        author(m.author),
+        createdAt(m.createdAt),
+        updatedAt(m.updatedAt),
+        updater(m.updater),
+        active(m.active),
+        deletedAt(m.deletedAt)
         {}
 
       const std::string &getAuthor() const;
 
-      const uint64_t getCreated_at() const;
+      const uint64_t getCreatedAt() const;
 
-      const uint64_t getUpdated_at() const;
+      const uint64_t getUpdatedAt() const;
 
       const std::string &getUpdater() const;
 
       const bool getActive() const;
 
-      const uint64_t getDeleted_at() const;;
+      const uint64_t getDeletedAt() const;;
   };
 }
 

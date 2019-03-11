@@ -30,38 +30,38 @@ namespace kuzzleio {
   }
 
   void Index::create(const std::string& index) {
-    this->create(index, query_options());
+    this->create(index, QueryOptions());
   }
 
-  void Index::create(const std::string& index, const query_options& options) {
+  void Index::create(const std::string& index, const QueryOptions& options) {
     KUZZLE_API(error_result, r, kuzzle_index_create(
       _index,
       const_cast<char*>(index.c_str()),
-      const_cast<query_options*>(&options)))
+      const_cast<query_options*>(options.getQueryOptsC())))
 
     kuzzle_free_error_result(r);
   }
 
 
   void Index::delete_(const std::string& index) {
-    this->delete_(index, query_options());
+    this->delete_(index, QueryOptions());
   }
 
-  void Index::delete_(const std::string& index, const query_options& options) {
+  void Index::delete_(const std::string& index, const QueryOptions& options) {
     KUZZLE_API(error_result, r, kuzzle_index_delete(
       _index,
       const_cast<char*>(index.c_str()),
-      const_cast<query_options*>(&options)))
+      const_cast<query_options*>(options.getQueryOptsC())))
 
     kuzzle_free_error_result(r);
   }
 
 
   std::vector<std::string> Index::mDelete(const std::vector<std::string>& indexes) {
-    return this->mDelete(indexes, query_options());
+    return this->mDelete(indexes, QueryOptions());
   }
 
-  std::vector<std::string> Index::mDelete(const std::vector<std::string>& indexes, const query_options& options) {
+  std::vector<std::string> Index::mDelete(const std::vector<std::string>& indexes, const QueryOptions& options) {
     char **indexes_array = new char *[indexes.size()];
 
     for (size_t i = 0; i < indexes.size(); i++) {
@@ -71,7 +71,7 @@ namespace kuzzleio {
     KUZZLE_API(
       string_array_result,
       r,
-      kuzzle_index_mdelete(_index, indexes_array, indexes.size(), const_cast<query_options*>(&options)),
+      kuzzle_index_mdelete(_index, indexes_array, indexes.size(), const_cast<query_options*>(options.getQueryOptsC())),
       delete[] indexes_array
     )
 
@@ -83,14 +83,14 @@ namespace kuzzleio {
 
 
   bool Index::exists(const std::string& index) {
-    return this->exists(index, query_options());
+    return this->exists(index, QueryOptions());
   }
 
-  bool Index::exists(const std::string& index, const query_options& options) {
+  bool Index::exists(const std::string& index, const QueryOptions& options) {
     KUZZLE_API(bool_result, r, kuzzle_index_exists(
       _index,
       const_cast<char*>(index.c_str()),
-      const_cast<query_options*>(&options)))
+      const_cast<query_options*>(options.getQueryOptsC())))
 
     bool ret = r->result;
     kuzzle_free_bool_result(r);
@@ -100,56 +100,56 @@ namespace kuzzleio {
 
 
   void Index::refresh(const std::string& index) {
-    this->refresh(index, query_options());
+    this->refresh(index, QueryOptions());
   }
 
-  void Index::refresh(const std::string& index, const query_options& options) {
+  void Index::refresh(const std::string& index, const QueryOptions& options) {
     KUZZLE_API(error_result, r, kuzzle_index_refresh(
       _index,
       const_cast<char*>(index.c_str()),
-      const_cast<query_options*>(&options)))
+      const_cast<query_options*>(options.getQueryOptsC())))
 
     kuzzle_free_error_result(r);
   }
 
 
   void Index::refreshInternal() {
-    this->refreshInternal(query_options());
+    this->refreshInternal(QueryOptions());
   }
 
-  void Index::refreshInternal(const query_options& options) {
+  void Index::refreshInternal(const QueryOptions& options) {
     KUZZLE_API(error_result, r, kuzzle_index_refresh_internal(
       _index,
-      const_cast<query_options*>(&options)))
+      const_cast<query_options*>(options.getQueryOptsC())))
 
     kuzzle_free_error_result(r);
   }
 
 
   void Index::setAutoRefresh(const std::string& index, bool auto_refresh) {
-    this->setAutoRefresh(index, auto_refresh, query_options());
+    this->setAutoRefresh(index, auto_refresh, QueryOptions());
   }
 
-  void Index::setAutoRefresh(const std::string& index, bool auto_refresh, const query_options& options) {
+  void Index::setAutoRefresh(const std::string& index, bool auto_refresh, const QueryOptions& options) {
     KUZZLE_API(error_result, r, kuzzle_index_set_auto_refresh(
       _index,
       const_cast<char*>(index.c_str()),
       auto_refresh,
-      const_cast<query_options*>(&options)))
+      const_cast<query_options*>(options.getQueryOptsC())))
 
     kuzzle_free_error_result(r);
   }
 
 
   bool Index::getAutoRefresh(const std::string& index) {
-    return this->getAutoRefresh(index, query_options());
+    return this->getAutoRefresh(index, QueryOptions());
   }
 
-  bool Index::getAutoRefresh(const std::string& index, const query_options& options) {
+  bool Index::getAutoRefresh(const std::string& index, const QueryOptions& options) {
     KUZZLE_API(bool_result, r, kuzzle_index_get_auto_refresh(
       _index,
       const_cast<char*>(index.c_str()),
-      const_cast<query_options*>(&options)))
+      const_cast<query_options*>(options.getQueryOptsC())))
 
     bool ret = r->result;
     kuzzle_free_bool_result(r);
@@ -159,13 +159,13 @@ namespace kuzzleio {
 
 
   std::vector<std::string> Index::list() {
-    return this->list(query_options());
+    return this->list(QueryOptions());
   }
 
-  std::vector<std::string> Index::list(const query_options& options) {
+  std::vector<std::string> Index::list(const QueryOptions& options) {
     KUZZLE_API(string_array_result, r, kuzzle_index_list(
       _index,
-      const_cast<query_options*>(&options)))
+      const_cast<query_options*>(options.getQueryOptsC())))
 
     std::vector<std::string> v = std::vector<std::string>(r->result, r->result + r->result_length);
     kuzzle_free_string_array_result(r);

@@ -45,6 +45,7 @@
 #include "internal/token_validity.hpp"
 #include "internal/validation_response.hpp"
 #include "internal/kuzzle_request.hpp"
+#include "internal/query_options.hpp"
 
 /*
  * Macro used by controller actions.
@@ -108,7 +109,7 @@ namespace kuzzleio {
       KuzzleResponse query(const KuzzleRequest& request);
       KuzzleResponse query(
           const KuzzleRequest& request,
-          const query_options& options);
+          const QueryOptions& options);
       Kuzzle* playQueue() noexcept;
       Kuzzle* setAutoReplay(bool autoReplay) noexcept;
       Kuzzle* startQueuing() noexcept;

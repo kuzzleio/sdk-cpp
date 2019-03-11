@@ -35,27 +35,28 @@ namespace kuzzleio {
       Auth(kuzzle *kuzzle);
       virtual ~Auth();
 
-      std::shared_ptr<TokenValidity> checkToken(const std::string& token);
+      const TokenValidity checkToken(const std::string& token) const;
+      //std::shared_ptr<TokenValidity> checkToken(const std::string& token);
 
       std::string createMyCredentials(const std::string& strategy, const std::string& credentials);
-      std::string createMyCredentials(const std::string& strategy, const std::string& credentials, const query_options& options);
+      std::string createMyCredentials(const std::string& strategy, const std::string& credentials, const QueryOptions& options);
 
       bool credentialsExist(const std::string& strategy);
-      bool credentialsExist(const std::string& strategy, const query_options& options);
+      bool credentialsExist(const std::string& strategy, const QueryOptions& options);
 
       void deleteMyCredentials(const std::string& strategy);
-      void deleteMyCredentials(const std::string& strategy, const query_options& options);
+      void deleteMyCredentials(const std::string& strategy, const QueryOptions& options);
 
       User getCurrentUser();
 
       std::string getMyCredentials(const std::string& strategy);
-      std::string getMyCredentials(const std::string& strategy, const query_options& options);
+      std::string getMyCredentials(const std::string& strategy, const QueryOptions& options);
 
       std::vector<std::shared_ptr<UserRight>> getMyRights();
-      std::vector<std::shared_ptr<UserRight>> getMyRights(const query_options& options);
+      std::vector<std::shared_ptr<UserRight>> getMyRights(const QueryOptions& options);
 
       std::vector<std::string> getStrategies();
-      std::vector<std::string> getStrategies(const query_options& options);
+      std::vector<std::string> getStrategies(const QueryOptions& options);
 
       std::string login(const std::string& strategy, const std::string& credentials);
       std::string login(const std::string& strategy, const std::string& credentials, int expiresIn);
@@ -65,13 +66,13 @@ namespace kuzzleio {
       void setJwt(const std::string& jwt) noexcept;
 
       std::string updateMyCredentials(const std::string& strategy, const std::string& credentials);
-      std::string updateMyCredentials(const std::string& strategy, const std::string& credentials, const query_options& options);
+      std::string updateMyCredentials(const std::string& strategy, const std::string& credentials, const QueryOptions& options);
 
       User updateSelf(const std::string& content);
-      User updateSelf(const std::string& content, const query_options& options);
+      User updateSelf(const std::string& content, const QueryOptions& options);
 
       bool validateMyCredentials(const std::string& strategy, const std::string& credentials);
-      bool validateMyCredentials(const std::string& strategy, const std::string& credentials, const query_options& options);
+      bool validateMyCredentials(const std::string& strategy, const std::string& credentials, const QueryOptions& options);
   };
 }
 

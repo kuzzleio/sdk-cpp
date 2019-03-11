@@ -40,7 +40,7 @@ namespace kuzzleio {
       // to be implemented
       virtual void connect() = 0;
       virtual kuzzle_response* send(
-          const std::string& query, query_options * options,
+          const std::string& query, QueryOptions * options,
           const std::string& requestId) = 0;
       virtual void close() = 0;
       virtual int getState() =0 ;

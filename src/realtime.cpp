@@ -49,16 +49,16 @@ namespace kuzzleio {
 
 
   int Realtime::count(const std::string& room_id) {
-    return this->count(room_id, query_options());
+    return this->count(room_id, QueryOptions());
   }
 
   int Realtime::count(
       const std::string& room_id,
-      const query_options& options) {
+      const QueryOptions& options) {
     KUZZLE_API(int_result, r, kuzzle_realtime_count(
       _realtime,
       const_cast<char*>(room_id.c_str()),
-      const_cast<query_options*>(&options)))
+      const_cast<query_options*>(options.getQueryOptsC())))
 
     int ret = r->result;
     kuzzle_free_int_result(r);
@@ -71,14 +71,14 @@ namespace kuzzleio {
       const std::string& index,
       const std::string& collection,
       const std::string& message) {
-    this->publish(index, collection, message, query_options());
+    this->publish(index, collection, message, QueryOptions());
   }
 
   void Realtime::publish(
       const std::string& index,
       const std::string& collection,
       const std::string& body,
-      const query_options &options) {
+      const QueryOptions &options) {
     KUZZLE_API(
       error_result,
       r,
@@ -87,7 +87,7 @@ namespace kuzzleio {
         const_cast<char*>(index.c_str()),
         const_cast<char*>(collection.c_str()),
         const_cast<char*>(body.c_str()),
-        const_cast<query_options*>(&options)))
+        const_cast<query_options*>(options.getQueryOptsC())))
 
     kuzzle_free_error_result(r);
   }
@@ -123,17 +123,17 @@ namespace kuzzleio {
   }
 
   void Realtime::unsubscribe(const std::string& room_id) {
-    return this->unsubscribe(room_id, query_options());
+    return this->unsubscribe(room_id, QueryOptions());
   }
 
   void Realtime::unsubscribe(
       const std::string& room_id,
-      const query_options& options) {
+      const QueryOptions& options) {
     KUZZLE_API(
       error_result,
       r,
       kuzzle_realtime_unsubscribe(_realtime, const_cast<char*>(room_id.c_str()),
-                                  const_cast<query_options*>(&options)))
+                                  const_cast<query_options*>(options.getQueryOptsC())))
 
     _listener_instances[room_id] = nullptr;
     kuzzle_free_error_result(r);

@@ -19,7 +19,8 @@
 #include "core.hpp"
 
 namespace kuzzleio {
-  class Server {
+    class QueryOptions;
+    class Server {
     private:
       server *_server;
 
@@ -28,25 +29,25 @@ namespace kuzzleio {
       virtual ~Server();
 
       bool adminExists();
-      bool adminExists(const query_options& options);
+      bool adminExists(const QueryOptions& options);
 
       std::string getAllStats();
-      std::string getAllStats(const query_options& options);
+      std::string getAllStats(const QueryOptions& options);
 
       std::string getStats(time_t start, time_t end);
-      std::string getStats(time_t start, time_t end, const query_options& options);
+      std::string getStats(time_t start, time_t end, const QueryOptions& options);
 
       std::string getLastStats();
-      std::string getLastStats(const query_options& options);
+      std::string getLastStats(const QueryOptions& options);
 
       std::string getConfig();
-      std::string getConfig(const query_options& options);
+      std::string getConfig(const QueryOptions& options);
 
       std::string info();
-      std::string info(const query_options& options);
+      std::string info(const QueryOptions& options);
 
       long long now();
-      long long now(const query_options& options);
+      long long now(const QueryOptions& options);
   };
 }
 

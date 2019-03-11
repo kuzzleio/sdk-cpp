@@ -3,8 +3,8 @@
 
 namespace kuzzleio {
 
-    const std::string &kuzzleio::KuzzleResponse::getRequest_id() const {
-        return request_id;
+    const std::string &kuzzleio::KuzzleResponse::getRequestId() const {
+        return requestId;
     }
 
     const std::string &kuzzleio::KuzzleResponse::getResult() const {
@@ -31,8 +31,8 @@ namespace kuzzleio {
         return action;
     }
 
-    const std::string &kuzzleio::KuzzleResponse::getRoom_id() const {
-        return room_id;
+    const std::string &kuzzleio::KuzzleResponse::getRoomId() const {
+        return roomId;
     }
 
     const std::string &kuzzleio::KuzzleResponse::getChannel() const {

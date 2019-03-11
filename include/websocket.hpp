@@ -26,7 +26,7 @@ namespace kuzzleio {
       //virtual void notify(NotificationResult* payload) noexcept override;
 
       virtual void connect() override;
-      virtual kuzzle_response* send(const std::string&, query_options *,
+      virtual kuzzle_response* send(const std::string&, QueryOptions *,
           const std::string&) override;
       virtual void close() override;
       virtual int getState() override;

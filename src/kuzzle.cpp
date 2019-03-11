@@ -68,7 +68,7 @@ namespace kuzzleio {
   }
 
   KuzzleResponse Kuzzle::query(const KuzzleRequest& request) {
-    return this->query(request, query_options());
+    return this->query(request, QueryOptions());
   }
 
   char* const* vector_to_c(const std::vector<std::string> &vec) noexcept {
@@ -83,14 +83,14 @@ namespace kuzzleio {
 
   KuzzleResponse Kuzzle::query(
       const KuzzleRequest& request,
-      const query_options& options) {
+      const QueryOptions& options) {
     
     kuzzle_request *req = request.toC();
     KUZZLE_API(kuzzle_response, r, kuzzle_query(
         _kuzzle,
         req,
-        const_cast<query_options*>(&options)))
-    return new KuzzleResponse(r);
+        const_cast<query_options*>(options.getQueryOptsC())))
+    return KuzzleResponse(r);
   }
 
   Kuzzle* Kuzzle::playQueue() noexcept {

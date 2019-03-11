@@ -7,12 +7,12 @@ namespace kuzzleio {
         return author;
     }
 
-    const uint64_t kuzzleio::Meta::getCreated_at() const {
-        return created_at;
+    const uint64_t kuzzleio::Meta::getCreatedAt() const {
+        return createdAt;
     }
 
-    const uint64_t kuzzleio::Meta::getUpdated_at() const {
-        return updated_at;
+    const uint64_t kuzzleio::Meta::getUpdatedAt() const {
+        return updatedAt;
     }
 
     const std::string &kuzzleio::Meta::getUpdater() const {
@@ -23,7 +23,7 @@ namespace kuzzleio {
         return active;
     }
 
-    const uint64_t kuzzleio::Meta::getDeleted_at() const {
-        return deleted_at;
+    const uint64_t kuzzleio::Meta::getDeletedAt() const {
+        return deletedAt;
     }
 }

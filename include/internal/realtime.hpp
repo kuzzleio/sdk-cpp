@@ -14,7 +14,7 @@ namespace kuzzleio {
     NotificationListener;
 
   class Kuzzle;
-
+  class QueryOptions;
   class Realtime {
     private:
       realtime *_realtime;
@@ -25,12 +25,12 @@ namespace kuzzleio {
       virtual ~Realtime();
 
       int count(const std::string& room_id);
-      int count(const std::string& room_id, const query_options& options);
+      int count(const std::string& room_id, const QueryOptions& options);
 
       void publish(const std::string& index, const std::string& collection,
           const std::string& message);
       void publish(const std::string& index, const std::string& collection,
-          const std::string& message, const query_options& options);
+          const std::string& message, const QueryOptions& options);
 
       std::string subscribe(const std::string& index,
           const std::string& collection, const std::string& filters,
@@ -41,7 +41,7 @@ namespace kuzzleio {
 
       void unsubscribe(const std::string& room_id);
       void unsubscribe(const std::string& room_id,
-          const query_options& options);
+          const QueryOptions& options);
 
       // Internal usage only
       NotificationListener* getListener(const std::string& room_id);

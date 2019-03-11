@@ -103,7 +103,7 @@ void kuzzle_user_delete(Kuzzle *kuzzle, const string &user_id)
     query_options options;
     options.refresh = const_cast<char*>("wait_for");
     options.volatiles = const_cast<char*>("{}");
-    kuzzle->query(KuzzleRequest(&req), options);  // TODO: test if we can delete with options
+    kuzzle->query(KuzzleRequest(&req), QueryOptions(&options));  // TODO: test if we can delete with options
 
     K_LOG_D("Deleted user \"%s\"", user_id.c_str());
   }
@@ -166,7 +166,7 @@ void kuzzle_user_create(Kuzzle *kuzzle, const string &user_id,
   try
   {
     KuzzleResponse resp = kuzzle->query(&req);
-    K_LOG_D("createUser ended with status: %d", resp.status);
+    K_LOG_D("createUser ended with status: %d", resp.getStatus());
   }
   catch (KuzzleException e)
   {

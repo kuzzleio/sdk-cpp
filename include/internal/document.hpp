@@ -31,57 +31,57 @@ namespace kuzzleio {
             virtual ~Document();
 
             int count(const std::string& index, const std::string& collection);
-            int count(const std::string& index, const std::string& collection, const query_options& options);
+            int count(const std::string& index, const std::string& collection, const QueryOptions& options);
             int count(const std::string& index, const std::string& collection, const std::string& query);
-            int count(const std::string& index, const std::string& collection, const std::string& query, const query_options& options);
+            int count(const std::string& index, const std::string& collection, const std::string& query, const QueryOptions& options);
 
             bool exists(const std::string& index, const std::string& collection, const std::string& id);
-            bool exists(const std::string& index, const std::string& collection, const std::string& id, const query_options& options);
+            bool exists(const std::string& index, const std::string& collection, const std::string& id, const QueryOptions& options);
 
             std::string create(const std::string& index, const std::string& collection, const std::string& id, const std::string& document);
-            std::string create(const std::string& index, const std::string& collection, const std::string& id, const std::string& document, const query_options& options);
+            std::string create(const std::string& index, const std::string& collection, const std::string& id, const std::string& document, const QueryOptions& options);
 
             std::string createOrReplace(const std::string& index, const std::string& collection, const std::string& id, const std::string& document);
-            std::string createOrReplace(const std::string& index, const std::string& collection, const std::string& id, const std::string& document, const query_options& options);
+            std::string createOrReplace(const std::string& index, const std::string& collection, const std::string& id, const std::string& document, const QueryOptions& options);
 
             std::string delete_(const std::string& index, const std::string& collection, const std::string& id);
-            std::string delete_(const std::string& index, const std::string& collection, const std::string& id, const query_options& options);
+            std::string delete_(const std::string& index, const std::string& collection, const std::string& id, const QueryOptions& options);
 
             std::vector<std::string> deleteByQuery(const std::string& index, const std::string& collection, const std::string& query);
-            std::vector<std::string> deleteByQuery(const std::string& index, const std::string& collection, const std::string& query, const query_options& options);
+            std::vector<std::string> deleteByQuery(const std::string& index, const std::string& collection, const std::string& query, const QueryOptions& options);
 
             std::string get(const std::string& index, const std::string& collection, const std::string& id);
-            std::string get(const std::string& index, const std::string& collection, const std::string& id, const query_options& options);
+            std::string get(const std::string& index, const std::string& collection, const std::string& id, const QueryOptions& options);
 
             std::string replace(const std::string& index, const std::string& collection, const std::string& id, const std::string& document);
-            std::string replace(const std::string& index, const std::string& collection, const std::string& id, const std::string& document, const query_options& options);
+            std::string replace(const std::string& index, const std::string& collection, const std::string& id, const std::string& document, const QueryOptions& options);
 
             std::string update(const std::string& index, const std::string& collection, const std::string& id, const std::string& document);
-            std::string update(const std::string& index, const std::string& collection, const std::string& id, const std::string& document, const query_options& options);
+            std::string update(const std::string& index, const std::string& collection, const std::string& id, const std::string& document, const QueryOptions& options);
 
             bool validate(const std::string& index, const std::string& collection, const std::string& document);
-            bool validate(const std::string& index, const std::string& collection, const std::string& document, const query_options& options);
+            bool validate(const std::string& index, const std::string& collection, const std::string& document, const QueryOptions& options);
 
             std::shared_ptr<SearchResult> search(const std::string& index, const std::string& collection, const std::string& query);
-            std::shared_ptr<SearchResult> search(const std::string& index, const std::string& collection, const std::string& query, const query_options& options);
+            std::shared_ptr<SearchResult> search(const std::string& index, const std::string& collection, const std::string& query, const QueryOptions& options);
 
             std::string mCreate(const std::string& index, const std::string& collection, const std::string& documents);
-            std::string mCreate(const std::string& index, const std::string& collection, const std::string& documents, const query_options& options);
+            std::string mCreate(const std::string& index, const std::string& collection, const std::string& documents, const QueryOptions& options);
 
             std::string mCreateOrReplace(const std::string& index, const std::string& collection, const std::string& documents);
-            std::string mCreateOrReplace(const std::string& index, const std::string& collection, const std::string& documents, const query_options& options);
+            std::string mCreateOrReplace(const std::string& index, const std::string& collection, const std::string& documents, const QueryOptions& options);
 
             std::vector<std::string> mDelete(const std::string& index, const std::string& collection, const std::vector<std::string>& ids);
-            std::vector<std::string> mDelete(const std::string& index, const std::string& collection, const std::vector<std::string>& ids, const query_options& options);
+            std::vector<std::string> mDelete(const std::string& index, const std::string& collection, const std::vector<std::string>& ids, const QueryOptions& options);
 
             std::string mGet(const std::string& index, const std::string& collection, const std::vector<std::string>& ids);
-            std::string mGet(const std::string& index, const std::string& collection, const std::vector<std::string>& ids, const query_options& options);
+            std::string mGet(const std::string& index, const std::string& collection, const std::vector<std::string>& ids, const QueryOptions& options);
 
             std::string mReplace(const std::string& index, const std::string& collection, const std::string& documents);
-            std::string mReplace(const std::string& index, const std::string& collection, const std::string& documents, const query_options& options);
+            std::string mReplace(const std::string& index, const std::string& collection, const std::string& documents, const QueryOptions& options);
 
             std::string mUpdate(const std::string& index, const std::string& collection, const std::string& documents);
-            std::string mUpdate(const std::string& index, const std::string& collection, const std::string& documents, const query_options& options);
+            std::string mUpdate(const std::string& index, const std::string& collection, const std::string& documents, const QueryOptions& options);
     };
 }
 

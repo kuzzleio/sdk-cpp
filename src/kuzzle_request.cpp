@@ -3,12 +3,12 @@
 
 namespace kuzzleio {
 
-    const std::string &KuzzleRequest::getRequest_id() const {
-        return request_id;
+    const std::string &KuzzleRequest::getRequestId() const {
+        return requestId;
     }
 
-    void KuzzleRequest::setRequest_id(const std::string &request_id) {
-        KuzzleRequest::request_id = request_id;
+    void KuzzleRequest::setRequestId(const std::string &request_id) {
+        KuzzleRequest::requestId = request_id;
     }
 
     const std::string &KuzzleRequest::getController() const {
@@ -83,12 +83,12 @@ namespace kuzzleio {
         KuzzleRequest::scroll = scroll;
     }
 
-    const std::string &KuzzleRequest::getScroll_id() const {
-        return scroll_id;
+    const std::string &KuzzleRequest::getScrollId() const {
+        return scrollId;
     }
 
-    void KuzzleRequest::setScroll_id(const std::string &scroll_id) {
-        KuzzleRequest::scroll_id = scroll_id;
+    void KuzzleRequest::setScrollId(const std::string &scrollId) {
+        KuzzleRequest::scrollId = scrollId;
     }
 
     const std::string &KuzzleRequest::getStrategy() const {
@@ -99,12 +99,12 @@ namespace kuzzleio {
         KuzzleRequest::strategy = strategy;
     }
 
-    unsigned long long int KuzzleRequest::getExpires_in() const {
-        return expires_in;
+    unsigned long long int KuzzleRequest::getExpiresIn() const {
+        return expiresIn;
     }
 
-    void KuzzleRequest::setExpires_in(unsigned long long int expires_in) {
-        KuzzleRequest::expires_in = expires_in;
+    void KuzzleRequest::setExpiresIn(unsigned long long int expiresIn) {
+        KuzzleRequest::expiresIn = expiresIn;
     }
 
     const std::string &KuzzleRequest::getVolatiles() const {
@@ -355,12 +355,12 @@ namespace kuzzleio {
         KuzzleRequest::reset = reset;
     }
 
-    bool KuzzleRequest::isInclude_trash() const {
-        return include_trash;
+    bool KuzzleRequest::isIncludeTrash() const {
+        return includeTrash;
     }
 
-    void KuzzleRequest::setInclude_trash(bool include_trash) {
-        KuzzleRequest::include_trash = include_trash;
+    void KuzzleRequest::setIncludeTrash(bool includeTrash) {
+        KuzzleRequest::includeTrash = includeTrash;
     }
 
     kuzzle_request *KuzzleRequest::toC() const {
@@ -374,9 +374,9 @@ namespace kuzzleio {
         req->from = this->from;
         req->size = this->size;
         req->scroll = this->scroll.c_str();
-        req->scroll_id = this->scroll_id.c_str();
+        req->scroll_id = this->scrollId.c_str();
         req->strategy = this->strategy.c_str();
-        req->expires_in = this->expires_in;
+        req->expires_in = this->expiresIn;
         req->volatiles = this->volatiles.c_str();
         req->scope = this->scope.c_str();
         req->state = this->state.c_str();
@@ -408,7 +408,7 @@ namespace kuzzleio {
         req->count = this->count;
         req->match = this->match.c_str();
         req->reset = this->reset;
-        req->include_trash = this->include_trash;
+        req->include_trash = this->includeTrash;
 
         return req;
     }

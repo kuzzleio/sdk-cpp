@@ -6,8 +6,8 @@
 
 namespace kuzzleio {
   class NotificationResult {
-     public:
-      const std::string request_id;
+    private:
+      const std::string requestId;
       const NotificationContent result;
       const std::string volatiles;
       const std::string index;
@@ -18,15 +18,16 @@ namespace kuzzleio {
       const std::string scope;
       const std::string state;
       const std::string user;
-      const std::string n_type;
-      const std::string room_id;
+      const std::string nType;
+      const std::string roomId;
       const uint64_t timestamp;
       const int status;
       const std::string error;
       const std::string stack;
 
+    public:
       NotificationResult(const notification_result* r) :
-        request_id(r->request_id),
+        requestId(r->request_id),
         result(NotificationContent(r->result)),
         volatiles(r->volatiles),
         index(r->index),
@@ -37,36 +38,16 @@ namespace kuzzleio {
         scope(r->scope),
         state(r->state),
         user(r->user),
-        n_type(r->n_type),
-        room_id(r->room_id),
+        nType(r->n_type),
+        roomId(r->room_id),
         timestamp(r->timestamp),
         status(r->status),
         error(r->error ? r->error : ""),
         stack(r->stack ? r->stack : "")
         {}
 
-      NotificationResult(NotificationResult* r) :
-        request_id(r->request_id),
-        result(NotificationContent(r->result)),
-        volatiles(r->volatiles),
-        index(r->index),
-        collection(r->collection),
-        controller(r->controller),
-        action(r->action),
-        protocol(r->protocol),
-        scope(r->scope),
-        state(r->state),
-        user(r->user),
-        n_type(r->n_type),
-        room_id(r->room_id),
-        timestamp(r->timestamp),
-        status(r->status),
-        error(r->error),
-        stack(r->stack)
-        {}
-
       NotificationResult(const NotificationResult& r) :
-        request_id(r.request_id),
+        requestId(r.requestId),
         result(NotificationContent(r.result)),
         volatiles(r.volatiles),
         index(r.index),
@@ -77,15 +58,15 @@ namespace kuzzleio {
         scope(r.scope),
         state(r.state),
         user(r.user),
-        n_type(r.n_type),
-        room_id(r.room_id),
+        nType(r.nType),
+        roomId(r.roomId),
         timestamp(r.timestamp),
         status(r.status),
         error(r.error),
         stack(r.stack)
         {}
 
-      const std::string &getRequest_id() const;
+      const std::string &getRequestId() const;
 
       const NotificationContent &getResult() const;
 
@@ -107,9 +88,9 @@ namespace kuzzleio {
 
       const std::string &getUser() const;
 
-      const std::string &getN_type() const;
+      const std::string &getNType() const;
 
-      const std::string &getRoom_id() const;
+      const std::string &getRoomId() const;
 
       const uint64_t getTimestamp() const;
 
@@ -118,8 +99,6 @@ namespace kuzzleio {
       const std::string &getError() const;
 
       const std::string &getStack() const;
-
-      //virtual inline ~NotificationResult() {kuzzle_free_notification_result()}
   };
 }
 

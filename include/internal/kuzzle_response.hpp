@@ -7,50 +7,51 @@
 
 namespace kuzzleio {
   class KuzzleResponse {
-    public:
-      const std::string request_id;
+    private:
+      const std::string requestId;
       const std::string result;
       const std::string volatiles;
       const std::string index;
       const std::string collection;
       const std::string controller;
       const std::string action;
-      const std::string room_id;
+      const std::string roomId;
       const std::string channel;
       const int status;
       const std::string error;
       const std::string stack;
 
+    public:
       KuzzleResponse(const kuzzle_response* u) :
-        request_id(u->request_id),
+        requestId(u->request_id),
         result(u->result),
         volatiles(u->volatiles),
         index(u->index),
         collection(u->collection),
         controller(u->controller),
         action(u->action),
-        room_id(u->room_id),
+        roomId(u->room_id),
         channel(u->channel),
         status(u->status),
         error(u->error ? u->error : ""),
         stack(u->stack ? u->stack : "")
         {};
-      KuzzleResponse(KuzzleResponse* u) :
-        request_id(u->request_id),
-        result(u->result),
-        volatiles(u->volatiles),
-        index(u->index),
-        collection(u->collection),
-        controller(u->controller),
-        action(u->action),
-        room_id(u->room_id),
-        channel(u->channel),
-        status(u->status),
-        error(u->error),
-        stack(u->stack)
+      KuzzleResponse(const KuzzleResponse& u) :
+        requestId(u.requestId),
+        result(u.result),
+        volatiles(u.volatiles),
+        index(u.index),
+        collection(u.collection),
+        controller(u.controller),
+        action(u.action),
+        roomId(u.roomId),
+        channel(u.channel),
+        status(u.status),
+        error(u.error),
+        stack(u.stack)
         {}
 
-      const std::string &getRequest_id() const;
+      const std::string &getRequestId() const;
 
       const std::string &getResult() const;
 
@@ -64,7 +65,7 @@ namespace kuzzleio {
 
       const std::string &getAction() const;
 
-      const std::string &getRoom_id() const;
+      const std::string &getRoomId() const;
 
       const std::string &getChannel() const;
 

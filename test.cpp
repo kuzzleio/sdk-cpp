@@ -18,33 +18,33 @@ int main() {
   };
 
   kuzzleio::KuzzleRequest request;
-  request.controller = "document";
-  request.action = "create";
-  request.index = "my-index";
-  request.collection = "my-collection";
+  request.setController("document");
+  request.setAction("create");
+  request.setIndex("my-index");
+  request.setCollection("my-collection");
   //request.id = "my-custom-document-id";
-  request.body = R"(
+  request.setBody(R"(
     {"trip_distance": 4.23, "passenger_count": 2}
-    )";
+    )");
 
-  kuzzleio::query_options options;
-  options.refresh = const_cast<char*>("wait_for");
+  kuzzleio::QueryOptions options;
+  options.setRefresh("wait_for");
 
   try {
     k->connect();
     KuzzleResponse response = k->query(request, options);
-    std::cout << response.request_id << std::endl;
-    std::cout << response.result << std::endl;
-    std::cout << response.volatiles << std::endl;
-    std::cout << response.index << std::endl;
-    std::cout << response.collection << std::endl;
-    std::cout << response.controller << std::endl;
-    std::cout << response.action << std::endl;
-    std::cout << response.room_id << std::endl;
-    std::cout << response.channel << std::endl;
-    std::cout << response.status << std::endl;
-    std::cout << response.error << std::endl;
-    std::cout << response.stack << std::endl;
+    std::cout << response.getRequestId() << std::endl;
+    std::cout << response.getResult() << std::endl;
+    std::cout << response.getVolatiles() << std::endl;
+    std::cout << response.getIndex() << std::endl;
+    std::cout << response.getCollection() << std::endl;
+    std::cout << response.getController() << std::endl;
+    std::cout << response.getAction() << std::endl;
+    std::cout << response.getRoomId() << std::endl;
+    std::cout << response.getChannel() << std::endl;
+    std::cout << response.getStatus() << std::endl;
+    std::cout << response.getError() << std::endl;
+    std::cout << response.getStack() << std::endl;
   
     ws->emitEvent(kuzzleio::Event::KUZZLE_EVENT_CONNECTED, "");
     

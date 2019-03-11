@@ -81,7 +81,7 @@ namespace {
     query_options options;
     options.refresh = const_cast<char*>("wait_for");
 
-    ctx->kuzzle->document->create(ctx->index, ctx->collection, document_id, "{\"a\":\"document\"}", options);
+    ctx->kuzzle->document->create(ctx->index, ctx->collection, document_id, "{\"a\":\"document\"}", QueryOptions(&options));
   }
 
   WHEN("^I truncate the collection \'([^\"]*)\'$")
@@ -93,7 +93,7 @@ namespace {
     query_options options;
     options.refresh = const_cast<char*>("wait_for");
 
-    ctx->kuzzle->collection->truncate(ctx->index, collection_id, options);
+    ctx->kuzzle->collection->truncate(ctx->index, collection_id, QueryOptions(&options));
   }
 
   THEN("^the collection \'([^\"]*)\' should be empty$")

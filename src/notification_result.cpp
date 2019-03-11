@@ -1,8 +1,8 @@
 #include "kuzzle.hpp"
 #include "internal/notification_result.hpp"
 
-const std::string &kuzzleio::NotificationResult::getRequest_id() const {
-    return request_id;
+const std::string &kuzzleio::NotificationResult::getRequestId() const {
+    return requestId;
 }
 
 const kuzzleio::NotificationContent &kuzzleio::NotificationResult::getResult() const {
@@ -45,12 +45,12 @@ const std::string &kuzzleio::NotificationResult::getUser() const {
     return user;
 }
 
-const std::string &kuzzleio::NotificationResult::getN_type() const {
-    return n_type;
+const std::string &kuzzleio::NotificationResult::getNType() const {
+    return nType;
 }
 
-const std::string &kuzzleio::NotificationResult::getRoom_id() const {
-    return room_id;
+const std::string &kuzzleio::NotificationResult::getRoomId() const {
+    return roomId;
 }
 
 const uint64_t kuzzleio::NotificationResult::getTimestamp() const {

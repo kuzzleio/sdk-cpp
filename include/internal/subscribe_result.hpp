@@ -7,13 +7,14 @@
 
 namespace kuzzleio {
   class SubscribeResult {
-    public:
+    private:
       const std::string room;
       const std::string channel;
       const int status;
       const std::string error;
       const std::string stack;
 
+    public:
       SubscribeResult(const subscribe_result* u) :
         room(u->room),
         channel(u->channel),
@@ -21,12 +22,12 @@ namespace kuzzleio {
         error(u->error ? u->error : ""),
         stack(u->stack ? u->stack : "")
         {};
-      SubscribeResult(SubscribeResult* u) :
-        room(u->room),
-        channel(u->channel),
-        status(u->status),
-        error(u->error),
-        stack(u->stack)
+      SubscribeResult(const SubscribeResult& u) :
+        room(u.room),
+        channel(u.channel),
+        status(u.status),
+        error(u.error),
+        stack(u.stack)
         {}
 
       const std::string &getRoom() const;

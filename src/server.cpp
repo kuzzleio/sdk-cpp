@@ -30,11 +30,11 @@ namespace kuzzleio {
   }
 
   bool Server::adminExists() {
-    return this->adminExists(query_options());
+    return this->adminExists(QueryOptions());
   }
 
-  bool Server::adminExists(const query_options& options) {
-    KUZZLE_API(bool_result, r, kuzzle_admin_exists(_server, const_cast<query_options*>(&options)))
+  bool Server::adminExists(const QueryOptions& options) {
+    KUZZLE_API(bool_result, r, kuzzle_admin_exists(_server, const_cast<query_options*>(options.getQueryOptsC())))
 
     bool ret = r->result;
     kuzzle_free_bool_result(r);
@@ -44,11 +44,11 @@ namespace kuzzleio {
 
 
   std::string Server::getAllStats() {
-    return this->getAllStats(query_options());
+    return this->getAllStats(QueryOptions());
   }
 
-  std::string Server::getAllStats(const query_options& options) {
-    KUZZLE_API(string_result, r, kuzzle_get_all_stats(_server, const_cast<query_options*>(&options)))
+  std::string Server::getAllStats(const QueryOptions& options) {
+    KUZZLE_API(string_result, r, kuzzle_get_all_stats(_server, const_cast<query_options*>(options.getQueryOptsC())))
 
     std::string ret = r->result;
     kuzzle_free_string_result(r);
@@ -58,11 +58,11 @@ namespace kuzzleio {
 
 
   std::string Server::getStats(time_t start, time_t end) {
-    return this->getStats(start, end, query_options());
+    return this->getStats(start, end, QueryOptions());
   }
 
-  std::string Server::getStats(time_t start, time_t end, const query_options& options) {
-    KUZZLE_API(string_result, r, kuzzle_get_stats(_server, start, end, const_cast<query_options*>(&options)))
+  std::string Server::getStats(time_t start, time_t end, const QueryOptions& options) {
+    KUZZLE_API(string_result, r, kuzzle_get_stats(_server, start, end, const_cast<query_options*>(options.getQueryOptsC())))
 
     std::string ret = r->result;
     kuzzle_free_string_result(r);
@@ -72,11 +72,11 @@ namespace kuzzleio {
 
 
   std::string Server::getLastStats() {
-    return this->getLastStats(query_options());
+    return this->getLastStats(QueryOptions());
   }
 
-  std::string Server::getLastStats(const query_options& options) {
-    KUZZLE_API(string_result, r, kuzzle_get_last_stats(_server, const_cast<query_options*>(&options)))
+  std::string Server::getLastStats(const QueryOptions& options) {
+    KUZZLE_API(string_result, r, kuzzle_get_last_stats(_server, const_cast<query_options*>(options.getQueryOptsC())))
 
     std::string ret = r->result;
     kuzzle_free_string_result(r);
@@ -86,11 +86,11 @@ namespace kuzzleio {
 
 
   std::string Server::getConfig() {
-    return this->getConfig(query_options());
+    return this->getConfig(QueryOptions());
   }
 
-  std::string Server::getConfig(const query_options& options) {
-    KUZZLE_API(string_result, r, kuzzle_get_config(_server, const_cast<query_options*>(&options)))
+  std::string Server::getConfig(const QueryOptions& options) {
+    KUZZLE_API(string_result, r, kuzzle_get_config(_server, const_cast<query_options*>(options.getQueryOptsC())))
 
     std::string ret = r->result;
     kuzzle_free_string_result(r);
@@ -100,11 +100,11 @@ namespace kuzzleio {
 
 
   std::string Server::info() {
-    return this->info(query_options());
+    return this->info(QueryOptions());
   }
 
-  std::string Server::info(const query_options& options) {
-    KUZZLE_API(string_result, r, kuzzle_info(_server, const_cast<query_options*>(&options)))
+  std::string Server::info(const QueryOptions& options) {
+    KUZZLE_API(string_result, r, kuzzle_info(_server, const_cast<query_options*>(options.getQueryOptsC())))
 
     std::string ret = r->result;
     kuzzle_free_string_result(r);
@@ -114,12 +114,12 @@ namespace kuzzleio {
 
 
   long long Server::now() {
-    return this->now(query_options());
+    return this->now(QueryOptions());
   }
 
   // java wrapper for this method is in typemap.i
-  long long Server::now(const query_options& options) {
-    KUZZLE_API(date_result, r, kuzzle_now(_server, const_cast<query_options*>(&options)))
+  long long Server::now(const QueryOptions& options) {
+    KUZZLE_API(date_result, r, kuzzle_now(_server, const_cast<query_options*>(options.getQueryOptsC())))
 
     long long ret = r->result;
     kuzzle_free_date_result(r);
