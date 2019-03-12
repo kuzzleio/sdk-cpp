@@ -3,51 +3,51 @@
 
 namespace kuzzleio {
 
-    const std::string &kuzzleio::KuzzleResponse::getRequestId() const {
-        return requestId;
+    const std::string & KuzzleResponse::requestId() const {
+        return _requestId;
     }
 
-    const std::string &kuzzleio::KuzzleResponse::getResult() const {
-        return result;
+    const std::string & KuzzleResponse::result() const {
+        return _result;
     }
 
-    const std::string &kuzzleio::KuzzleResponse::getVolatiles() const {
-        return volatiles;
+    const std::string & KuzzleResponse::volatiles() const {
+        return _volatiles;
     }
 
-    const std::string &kuzzleio::KuzzleResponse::getIndex() const {
-        return index;
+    const std::string & KuzzleResponse::index() const {
+        return _index;
     }
 
-    const std::string &kuzzleio::KuzzleResponse::getCollection() const {
-        return collection;
+    const std::string & KuzzleResponse::collection() const {
+        return _collection;
     }
 
-    const std::string &kuzzleio::KuzzleResponse::getController() const {
-        return controller;
+    const std::string & KuzzleResponse::controller() const {
+        return _controller;
     }
 
-    const std::string &kuzzleio::KuzzleResponse::getAction() const {
-        return action;
+    const std::string & KuzzleResponse::action() const {
+        return _action;
     }
 
-    const std::string &kuzzleio::KuzzleResponse::getRoomId() const {
-        return roomId;
+    const std::string & KuzzleResponse::roomId() const {
+        return _roomId;
     }
 
-    const std::string &kuzzleio::KuzzleResponse::getChannel() const {
-        return channel;
+    const std::string & KuzzleResponse::channel() const {
+        return _channel;
     }
 
-    const int kuzzleio::KuzzleResponse::getStatus() const {
-        return status;
+    const int  KuzzleResponse::status() const {
+        return _status;
     }
 
-    const std::string &kuzzleio::KuzzleResponse::getError() const {
-        return error;
+    const std::string & KuzzleResponse::error() const {
+        return _error;
     }
 
-    const std::string &kuzzleio::KuzzleResponse::getStack() const {
-        return stack;
+    const std::string & KuzzleResponse::stack() const {
+        return _stack;
     }
 }

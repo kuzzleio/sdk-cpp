@@ -166,7 +166,7 @@ void kuzzle_user_create(Kuzzle *kuzzle, const string &user_id,
   try
   {
     KuzzleResponse resp = kuzzle->query(&req);
-    K_LOG_D("createUser ended with status: %d", resp.getStatus());
+    K_LOG_D("createUser ended with status: %d", resp.status());
   }
   catch (KuzzleException e)
   {

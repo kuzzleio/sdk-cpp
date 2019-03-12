@@ -8,97 +8,97 @@ namespace kuzzleio {
 
     class QueryOptions {
         private:
-            const query_options* queryOptsC = new query_options();
-            bool queuable;
-            bool withdist;
-            bool withcoord;
-            long from;
-            long size;
-            std::string scroll;
-            std::string scrollId;
-            std::string refresh;
-            std::string ifExist;
-            int retryOnConflict;
-            std::string volatiles;
+            const query_options* _queryOptsC = new query_options();
+            bool _queuable;
+            bool _withdist;
+            bool _withcoord;
+            long _from;
+            long _size;
+            std::string _scroll;
+            std::string _scrollId;
+            std::string _refresh;
+            std::string _ifExist;
+            int _retryOnConflict;
+            std::string _volatiles;
 
         public:
             QueryOptions(const query_options* u) :
-                queryOptsC(u),
-                queuable(u->queuable),
-                withdist(u->withdist),
-                withcoord(u->withcoord),
-                from(u->from),
-                size(u->size),
-                scroll(u->scroll),
-                scrollId(u->scroll_id),
-                refresh(u->refresh),
-                ifExist(u->if_exist),
-                retryOnConflict(u->retry_on_conflict),
-                volatiles(u->volatiles)
+                _queryOptsC(u),
+                _queuable(u->queuable),
+                _withdist(u->withdist),
+                _withcoord(u->withcoord),
+                _from(u->from),
+                _size(u->size),
+                _scroll(u->scroll),
+                _scrollId(u->scroll_id),
+                _refresh(u->refresh),
+                _ifExist(u->if_exist),
+                _retryOnConflict(u->retry_on_conflict),
+                _volatiles(u->volatiles)
                 {};
 
             QueryOptions(const QueryOptions& u) :
-                queryOptsC(u.queryOptsC),
-                queuable(u.queuable),
-                withdist(u.withdist),
-                withcoord(u.withcoord),
-                from(u.from),
-                size(u.size),
-                scroll(u.scroll),
-                scrollId(u.scrollId),
-                refresh(u.refresh),
-                ifExist(u.ifExist),
-                retryOnConflict(u.retryOnConflict),
-                volatiles(u.volatiles)
+                _queryOptsC(u._queryOptsC),
+                _queuable(u._queuable),
+                _withdist(u._withdist),
+                _withcoord(u._withcoord),
+                _from(u._from),
+                _size(u._size),
+                _scroll(u._scroll),
+                _scrollId(u._scrollId),
+                _refresh(u._refresh),
+                _ifExist(u._ifExist),
+                _retryOnConflict(u._retryOnConflict),
+                _volatiles(u._volatiles)
                 {};
 
             QueryOptions() {};
 
-            const query_options *getQueryOptsC() const;
+            const query_options *queryOptsC() const;
 
-            bool isQueuable() const;
+            bool queuable() const;
 
-            bool isWithdist() const;
+            bool withdist() const;
 
-            bool isWithcoord() const;
+            bool withcoord() const;
 
-            long getFrom() const;
+            long from() const;
 
-            long getSize() const;
+            long size() const;
 
-            const std::string &getScroll() const;
+            const std::string &scroll() const;
 
-            const std::string &getScrollId() const;
+            const std::string &scrollId() const;
 
-            const std::string &getRefresh() const;
+            const std::string &refresh() const;
 
-            const std::string &getIfExist() const;
+            const std::string &ifExist() const;
 
-            int getRetryOnConflict() const;
+            int retryOnConflict() const;
 
-            const std::string &getVolatiles() const;
+            const std::string &volatiles() const;
 
-            void setQueuable(bool queuable);
+            void queuable(bool queuable);
 
-            void setWithdist(bool withdist);
+            void withdist(bool withdist);
 
-            void setWithcoord(bool withcoord);
+            void withcoord(bool withcoord);
 
-            void setFrom(long from);
+            void from(long from);
 
-            void setSize(long size);
+            void size(long size);
 
-            void setScroll(const std::string &scroll);
+            void scroll(const std::string &scroll);
 
-            void setScrollId(const std::string &scrollId);
+            void scrollId(const std::string &scrollId);
 
-            void setRefresh(const std::string &refresh);
+            void refresh(const std::string &refresh);
 
-            void setIfExist(const std::string &ifExist);
+            void ifExist(const std::string &ifExist);
 
-            void setRetryOnConflict(int retryOnConflict);
+            void retryOnConflict(int retryOnConflict);
 
-            void setVolatiles(const std::string &volatiles);
+            void volatiles(const std::string &volatiles);
     };
 }
 

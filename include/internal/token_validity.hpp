@@ -8,41 +8,41 @@
 namespace kuzzleio {
   class TokenValidity {
     public:
-      const bool valid;
-      const std::string state;
-      const unsigned long long expiresAt;
-      const int status;
-      const std::string error;
-      const std::string stack;
+      const bool _valid;
+      const std::string _state;
+      const unsigned long long _expiresAt;
+      const int _status;
+      const std::string _error;
+      const std::string _stack;
 
       TokenValidity(const token_validity* u) :
-        valid(u->valid),
-        state(u->state),
-        expiresAt(u->expires_at),
-        status(u->status),
-        error(u->error ? u->error : ""),
-        stack(u->stack ? u->stack : "")
+        _valid(u->valid),
+        _state(u->state),
+        _expiresAt(u->expires_at),
+        _status(u->status),
+        _error(u->error ? u->error : ""),
+        _stack(u->stack ? u->stack : "")
         {};
       TokenValidity(const TokenValidity& u) :
-        valid(u.valid),
-        state(u.state),
-        expiresAt(u.expiresAt),
-        status(u.status),
-        error(u.error),
-        stack(u.stack)
+        _valid(u._valid),
+        _state(u._state),
+        _expiresAt(u._expiresAt),
+        _status(u._status),
+        _error(u._error),
+        _stack(u._stack)
         {}
 
-      const bool getValid() const;
+      const bool valid() const;
 
-      const std::string &getState() const;
+      const std::string &state() const;
 
-      const unsigned long long int getExpiresAt() const;
+      const unsigned long long int expiresAt() const;
 
-      const int getStatus() const;
+      const int status() const;
 
-      const std::string &getError() const;
+      const std::string &error() const;
 
-      const std::string &getStack() const;;
+      const std::string &stack() const;;
   };
 }
 

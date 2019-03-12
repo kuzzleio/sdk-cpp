@@ -48,7 +48,7 @@ namespace kuzzleio {
       const_cast<char*>(index.c_str()),
       const_cast<char*>(collection.c_str()),
       const_cast<char*>(query.c_str()),
-      const_cast<query_options*>(options.getQueryOptsC())))
+      const_cast<query_options*>(options.queryOptsC())))
 
     int ret = r->result;
     kuzzle_free_int_result(r);
@@ -67,7 +67,7 @@ namespace kuzzleio {
       const_cast<char*>(index.c_str()),
       const_cast<char*>(collection.c_str()),
       const_cast<char*>(id.c_str()),
-      const_cast<query_options*>(options.getQueryOptsC())))
+      const_cast<query_options*>(options.queryOptsC())))
 
     bool ret = r->result;
     kuzzle_free_bool_result(r);
@@ -87,7 +87,7 @@ namespace kuzzleio {
       const_cast<char*>(collection.c_str()),
       const_cast<char*>(id.c_str()),
       const_cast<char*>(document.c_str()),
-      const_cast<query_options*>(options.getQueryOptsC())))
+      const_cast<query_options*>(options.queryOptsC())))
 
     std::string ret = r->result;
     kuzzle_free_string_result(r);
@@ -107,7 +107,7 @@ namespace kuzzleio {
       const_cast<char*>(collection.c_str()),
       const_cast<char*>(id.c_str()),
       const_cast<char*>(document.c_str()),
-      const_cast<query_options*>(options.getQueryOptsC())))
+      const_cast<query_options*>(options.queryOptsC())))
 
     std::string ret = r->result;
     kuzzle_free_string_result(r);
@@ -126,7 +126,7 @@ namespace kuzzleio {
       const_cast<char*>(index.c_str()),
       const_cast<char*>(collection.c_str()),
       const_cast<char*>(id.c_str()),
-      const_cast<query_options*>(options.getQueryOptsC())))
+      const_cast<query_options*>(options.queryOptsC())))
 
     std::string ret = r->result;
     kuzzle_free_string_result(r);
@@ -145,7 +145,7 @@ namespace kuzzleio {
       const_cast<char*>(index.c_str()),
       const_cast<char*>(collection.c_str()),
       const_cast<char*>(query.c_str()),
-      const_cast<query_options*>(options.getQueryOptsC())))
+      const_cast<query_options*>(options.queryOptsC())))
 
     std::vector<std::string> v = std::vector<std::string>(r->result, r->result + r->result_length);
     kuzzle_free_string_array_result(r);
@@ -164,7 +164,7 @@ namespace kuzzleio {
       const_cast<char*>(index.c_str()),
       const_cast<char*>(collection.c_str()),
       const_cast<char*>(id.c_str()),
-      const_cast<query_options*>(options.getQueryOptsC())))
+      const_cast<query_options*>(options.queryOptsC())))
 
     std::string ret = r->result;
     kuzzle_free_string_result(r);
@@ -184,7 +184,7 @@ namespace kuzzleio {
       const_cast<char*>(collection.c_str()),
       const_cast<char*>(id.c_str()),
       const_cast<char*>(document.c_str()),
-      const_cast<query_options*>(options.getQueryOptsC())))
+      const_cast<query_options*>(options.queryOptsC())))
 
     std::string ret = r->result;
     kuzzle_free_string_result(r);
@@ -204,7 +204,7 @@ namespace kuzzleio {
       const_cast<char*>(collection.c_str()),
       const_cast<char*>(id.c_str()),
       const_cast<char*>(document.c_str()),
-      const_cast<query_options*>(options.getQueryOptsC())))
+      const_cast<query_options*>(options.queryOptsC())))
 
     std::string ret = r->result;
     kuzzle_free_string_result(r);
@@ -223,7 +223,7 @@ namespace kuzzleio {
       const_cast<char*>(index.c_str()),
       const_cast<char*>(collection.c_str()),
       const_cast<char*>(document.c_str()),
-      const_cast<query_options*>(options.getQueryOptsC())))
+      const_cast<query_options*>(options.queryOptsC())))
 
     bool ret = r->result;
     kuzzle_free_bool_result(r);
@@ -249,7 +249,7 @@ namespace kuzzleio {
         kuzzle_document_search(_document, const_cast<char*>(index.c_str()),
                                const_cast<char*>(collection.c_str()),
                                const_cast<char*>(query.c_str()),
-                               const_cast<query_options*>(options.getQueryOptsC())))
+                               const_cast<query_options*>(options.queryOptsC())))
 
     if (r == nullptr) {
       return nullptr;
@@ -269,7 +269,7 @@ namespace kuzzleio {
       const_cast<char*>(index.c_str()),
       const_cast<char*>(collection.c_str()),
       const_cast<char*>(documents.c_str()),
-      const_cast<query_options*>(options.getQueryOptsC())))
+      const_cast<query_options*>(options.queryOptsC())))
 
     std::string ret = r->result;
     kuzzle_free_string_result(r);
@@ -288,7 +288,7 @@ namespace kuzzleio {
       const_cast<char*>(index.c_str()),
       const_cast<char*>(collection.c_str()),
       const_cast<char*>(documents.c_str()),
-      const_cast<query_options*>(options.getQueryOptsC())))
+      const_cast<query_options*>(options.queryOptsC())))
 
     std::string ret = r->result;
     kuzzle_free_string_result(r);
@@ -315,7 +315,7 @@ namespace kuzzleio {
         const_cast<char*>(collection.c_str()),
         ids_array,
         ids.size(),
-        const_cast<query_options*>(options.getQueryOptsC())),
+        const_cast<query_options*>(options.queryOptsC())),
       delete[] ids_array)
 
     std::vector<std::string> v = std::vector<std::string>(r->result, r->result + r->result_length);
@@ -345,7 +345,7 @@ namespace kuzzleio {
         const_cast<char*>(collection.c_str()),
         ids_array,
         ids.size(),
-        const_cast<query_options*>(options.getQueryOptsC())),
+        const_cast<query_options*>(options.queryOptsC())),
       delete[] ids_array)
 
     std::string ret = r->result;
@@ -365,7 +365,7 @@ namespace kuzzleio {
       const_cast<char*>(index.c_str()),
       const_cast<char*>(collection.c_str()),
       const_cast<char*>(documents.c_str()),
-      const_cast<query_options*>(options.getQueryOptsC())))
+      const_cast<query_options*>(options.queryOptsC())))
 
     std::string ret = r->result;
     kuzzle_free_string_result(r);
@@ -384,7 +384,7 @@ namespace kuzzleio {
       const_cast<char*>(index.c_str()),
       const_cast<char*>(collection.c_str()),
       const_cast<char*>(documents.c_str()),
-      const_cast<query_options*>(options.getQueryOptsC())))
+      const_cast<query_options*>(options.queryOptsC())))
 
     std::string ret = r->result;
     kuzzle_free_string_result(r);

@@ -34,7 +34,7 @@ namespace kuzzleio {
   }
 
   bool Server::adminExists(const QueryOptions& options) {
-    KUZZLE_API(bool_result, r, kuzzle_admin_exists(_server, const_cast<query_options*>(options.getQueryOptsC())))
+    KUZZLE_API(bool_result, r, kuzzle_admin_exists(_server, const_cast<query_options*>(options.queryOptsC())))
 
     bool ret = r->result;
     kuzzle_free_bool_result(r);
@@ -48,7 +48,7 @@ namespace kuzzleio {
   }
 
   std::string Server::getAllStats(const QueryOptions& options) {
-    KUZZLE_API(string_result, r, kuzzle_get_all_stats(_server, const_cast<query_options*>(options.getQueryOptsC())))
+    KUZZLE_API(string_result, r, kuzzle_get_all_stats(_server, const_cast<query_options*>(options.queryOptsC())))
 
     std::string ret = r->result;
     kuzzle_free_string_result(r);
@@ -62,7 +62,7 @@ namespace kuzzleio {
   }
 
   std::string Server::getStats(time_t start, time_t end, const QueryOptions& options) {
-    KUZZLE_API(string_result, r, kuzzle_get_stats(_server, start, end, const_cast<query_options*>(options.getQueryOptsC())))
+    KUZZLE_API(string_result, r, kuzzle_get_stats(_server, start, end, const_cast<query_options*>(options.queryOptsC())))
 
     std::string ret = r->result;
     kuzzle_free_string_result(r);
@@ -76,7 +76,7 @@ namespace kuzzleio {
   }
 
   std::string Server::getLastStats(const QueryOptions& options) {
-    KUZZLE_API(string_result, r, kuzzle_get_last_stats(_server, const_cast<query_options*>(options.getQueryOptsC())))
+    KUZZLE_API(string_result, r, kuzzle_get_last_stats(_server, const_cast<query_options*>(options.queryOptsC())))
 
     std::string ret = r->result;
     kuzzle_free_string_result(r);
@@ -90,7 +90,7 @@ namespace kuzzleio {
   }
 
   std::string Server::getConfig(const QueryOptions& options) {
-    KUZZLE_API(string_result, r, kuzzle_get_config(_server, const_cast<query_options*>(options.getQueryOptsC())))
+    KUZZLE_API(string_result, r, kuzzle_get_config(_server, const_cast<query_options*>(options.queryOptsC())))
 
     std::string ret = r->result;
     kuzzle_free_string_result(r);
@@ -104,7 +104,7 @@ namespace kuzzleio {
   }
 
   std::string Server::info(const QueryOptions& options) {
-    KUZZLE_API(string_result, r, kuzzle_info(_server, const_cast<query_options*>(options.getQueryOptsC())))
+    KUZZLE_API(string_result, r, kuzzle_info(_server, const_cast<query_options*>(options.queryOptsC())))
 
     std::string ret = r->result;
     kuzzle_free_string_result(r);
@@ -119,7 +119,7 @@ namespace kuzzleio {
 
   // java wrapper for this method is in typemap.i
   long long Server::now(const QueryOptions& options) {
-    KUZZLE_API(date_result, r, kuzzle_now(_server, const_cast<query_options*>(options.getQueryOptsC())))
+    KUZZLE_API(date_result, r, kuzzle_now(_server, const_cast<query_options*>(options.queryOptsC())))
 
     long long ret = r->result;
     kuzzle_free_date_result(r);

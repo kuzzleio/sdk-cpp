@@ -7,42 +7,43 @@
 
 namespace kuzzleio {
   class ValidationResponse {
-    public:
-      const bool valid;
-      const std::vector<std::string> details;
-      const std::string description;
-      const int status;
-      const std::string error;
-      const std::string stack;
+    private:
+      const bool _valid;
+      const std::vector<std::string> _details;
+      const std::string _description;
+      const int _status;
+      const std::string _error;
+      const std::string _stack;
 
+    public:
       ValidationResponse(const validation_response* u) :
-        valid(u->valid),
-        details(std::vector<std::string>(u->details, u->details + u->details_length)),
-        description(u->description),
-        status(u->status),
-        error(u->error ? u->error : ""),
-        stack(u->stack ? u->stack : "")
+        _valid(u->valid),
+        _details(std::vector<std::string>(u->details, u->details + u->details_length)),
+        _description(u->description),
+        _status(u->status),
+        _error(u->error ? u->error : ""),
+        _stack(u->stack ? u->stack : "")
         {};
       ValidationResponse(const ValidationResponse& u) :
-        valid(u.valid),
-        details(u.details),
-        description(u.description),
-        status(u.status),
-        error(u.error),
-        stack(u.stack)
+        _valid(u._valid),
+        _details(u._details),
+        _description(u._description),
+        _status(u._status),
+        _error(u._error),
+        _stack(u._stack)
         {};
 
-      const bool getValid() const;
+      const bool valid() const;
 
-      const std::vector<std::string> &getDetails() const;
+      const std::vector<std::string> &details() const;
 
-      const std::string &getDescription() const;
+      const std::string &description() const;
 
-      const int getStatus() const;
+      const int status() const;
 
-      const std::string &getError() const;
+      const std::string &error() const;
 
-      const std::string &getStack() const;;
+      const std::string &stack() const;;
   };
 }
 

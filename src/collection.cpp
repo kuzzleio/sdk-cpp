@@ -47,7 +47,7 @@ namespace kuzzleio {
       const_cast<char*>(index.c_str()),
       const_cast<char*>(collection.c_str()),
       const_cast<char*>(mapping.c_str()),
-      const_cast<query_options*>(options.getQueryOptsC())))
+      const_cast<query_options*>(options.queryOptsC())))
 
     kuzzle_free_error_result(r);
   }
@@ -62,7 +62,7 @@ namespace kuzzleio {
       _collection,
       const_cast<char*>(index.c_str()),
       const_cast<char*>(collection.c_str()),
-      const_cast<query_options*>(options.getQueryOptsC())))
+      const_cast<query_options*>(options.queryOptsC())))
 
     bool ret = r->result;
     kuzzle_free_bool_result(r);
@@ -79,7 +79,7 @@ namespace kuzzleio {
     KUZZLE_API(string_result, r, kuzzle_collection_list(
       _collection,
       const_cast<char*>(index.c_str()),
-      const_cast<query_options*>(options.getQueryOptsC())))
+      const_cast<query_options*>(options.queryOptsC())))
 
     std::string ret = r->result;
     kuzzle_free_string_result(r);
@@ -97,7 +97,7 @@ namespace kuzzleio {
       _collection,
       const_cast<char*>(index.c_str()),
       const_cast<char*>(collection.c_str()),
-      const_cast<query_options*>(options.getQueryOptsC())))
+      const_cast<query_options*>(options.queryOptsC())))
 
     kuzzle_free_error_result(r);
   }
@@ -112,7 +112,7 @@ namespace kuzzleio {
       _collection,
       const_cast<char*>(index.c_str()),
       const_cast<char*>(collection.c_str()),
-      const_cast<query_options*>(options.getQueryOptsC())))
+      const_cast<query_options*>(options.queryOptsC())))
 
     std::string ret = r->result;
     kuzzle_free_string_result(r);
@@ -131,7 +131,7 @@ namespace kuzzleio {
       const_cast<char*>(index.c_str()),
       const_cast<char*>(collection.c_str()),
       const_cast<char*>(mapping.c_str()),
-      const_cast<query_options*>(options.getQueryOptsC())))
+      const_cast<query_options*>(options.queryOptsC())))
 
     kuzzle_free_error_result(r);
   }
@@ -146,7 +146,7 @@ namespace kuzzleio {
       _collection,
       const_cast<char*>(index.c_str()),
       const_cast<char*>(collection.c_str()),
-      const_cast<query_options*>(options.getQueryOptsC())))
+      const_cast<query_options*>(options.queryOptsC())))
 
     std::string ret = r->result;
     kuzzle_free_string_result(r);
@@ -163,7 +163,7 @@ namespace kuzzleio {
     KUZZLE_API(search_result, r, kuzzle_collection_search_specifications(
       _collection,
       const_cast<char*>(query.c_str()),
-      const_cast<query_options*>(options.getQueryOptsC())))
+      const_cast<query_options*>(options.queryOptsC())))
 
     return new SearchResult(r);
   }
@@ -179,7 +179,7 @@ namespace kuzzleio {
       const_cast<char*>(index.c_str()),
       const_cast<char*>(collection.c_str()),
       const_cast<char*>(specifications.c_str()),
-      const_cast<query_options*>(options.getQueryOptsC())))
+      const_cast<query_options*>(options.queryOptsC())))
 
     std::string ret = r->result;
     kuzzle_free_string_result(r);
@@ -198,7 +198,7 @@ namespace kuzzleio {
       const_cast<char*>(index.c_str()),
       const_cast<char*>(collection.c_str()),
       const_cast<char*>(specifications.c_str()),
-      const_cast<query_options*>(options.getQueryOptsC())))
+      const_cast<query_options*>(options.queryOptsC())))
 
       ValidationResponse* t = new ValidationResponse(r);
       //kuzzle_free_kuzzle_response(r);
@@ -215,7 +215,7 @@ namespace kuzzleio {
       _collection,
       const_cast<char*>(index.c_str()),
       const_cast<char*>(collection.c_str()),
-      const_cast<query_options*>(options.getQueryOptsC())))
+      const_cast<query_options*>(options.queryOptsC())))
 
     kuzzle_free_error_result(r);
   }

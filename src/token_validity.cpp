@@ -3,27 +3,27 @@
 
 namespace kuzzleio {
 
-    const bool TokenValidity::getValid() const {
-        return valid;
+    const bool TokenValidity::valid() const {
+        return _valid;
     }
 
-    const std::string& TokenValidity::getState() const {
-        return state;
+    const std::string& TokenValidity::state() const {
+        return _state;
     }
 
-    const unsigned long long int TokenValidity::getExpiresAt() const {
-        return expiresAt;
+    const unsigned long long int TokenValidity::expiresAt() const {
+        return _expiresAt;
     }
 
-    const int TokenValidity::getStatus() const {
-        return status;
+    const int TokenValidity::status() const {
+        return _status;
     }
 
-    const std::string& TokenValidity::getError() const {
-        return error;
+    const std::string& TokenValidity::error() const {
+        return _error;
     }
 
-    const std::string& TokenValidity::getStack() const {
-        return stack;
+    const std::string& TokenValidity::stack() const {
+        return _stack;
     }
 }

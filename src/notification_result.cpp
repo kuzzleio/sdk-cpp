@@ -1,70 +1,73 @@
 #include "kuzzle.hpp"
 #include "internal/notification_result.hpp"
 
-const std::string &kuzzleio::NotificationResult::getRequestId() const {
-    return requestId;
-}
+namespace kuzzleio {
 
-const kuzzleio::NotificationContent &kuzzleio::NotificationResult::getResult() const {
-    return result;
-}
+    const std::string & NotificationResult::requestId() const {
+        return _requestId;
+    }
 
-const std::string &kuzzleio::NotificationResult::getVolatiles() const {
-    return volatiles;
-}
+    const NotificationContent & NotificationResult::result() const {
+        return _result;
+    }
 
-const std::string &kuzzleio::NotificationResult::getIndex() const {
-    return index;
-}
+    const std::string & NotificationResult::volatiles() const {
+        return _volatiles;
+    }
 
-const std::string &kuzzleio::NotificationResult::getCollection() const {
-    return collection;
-}
+    const std::string & NotificationResult::index() const {
+        return _index;
+    }
 
-const std::string &kuzzleio::NotificationResult::getController() const {
-    return controller;
-}
+    const std::string & NotificationResult::collection() const {
+        return _collection;
+    }
 
-const std::string &kuzzleio::NotificationResult::getAction() const {
-    return action;
-}
+    const std::string & NotificationResult::controller() const {
+        return _controller;
+    }
 
-const std::string &kuzzleio::NotificationResult::getProtocol() const {
-    return protocol;
-}
+    const std::string & NotificationResult::action() const {
+        return _action;
+    }
 
-const std::string &kuzzleio::NotificationResult::getScope() const {
-    return scope;
-}
+    const std::string & NotificationResult::protocol() const {
+        return _protocol;
+    }
 
-const std::string &kuzzleio::NotificationResult::getState() const {
-    return state;
-}
+    const std::string & NotificationResult::scope() const {
+        return _scope;
+    }
 
-const std::string &kuzzleio::NotificationResult::getUser() const {
-    return user;
-}
+    const std::string & NotificationResult::state() const {
+        return _state;
+    }
 
-const std::string &kuzzleio::NotificationResult::getNType() const {
-    return nType;
-}
+    const std::string & NotificationResult::user() const {
+        return _user;
+    }
 
-const std::string &kuzzleio::NotificationResult::getRoomId() const {
-    return roomId;
-}
+    const std::string & NotificationResult::nType() const {
+        return _nType;
+    }
 
-const uint64_t kuzzleio::NotificationResult::getTimestamp() const {
-    return timestamp;
-}
+    const std::string & NotificationResult::roomId() const {
+        return _roomId;
+    }
 
-const int kuzzleio::NotificationResult::getStatus() const {
-    return status;
-}
+    const uint64_t NotificationResult::timestamp() const {
+        return _timestamp;
+    }
 
-const std::string &kuzzleio::NotificationResult::getError() const {
-    return error;
-}
+    const int NotificationResult::status() const {
+        return _status;
+    }
 
-const std::string &kuzzleio::NotificationResult::getStack() const {
-    return stack;
+    const std::string & NotificationResult::error() const {
+        return _error;
+    }
+
+    const std::string & NotificationResult::stack() const {
+        return _stack;
+    }
 }

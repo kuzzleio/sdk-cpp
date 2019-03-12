@@ -8,72 +8,72 @@
 namespace kuzzleio {
   class KuzzleResponse {
     private:
-      const std::string requestId;
-      const std::string result;
-      const std::string volatiles;
-      const std::string index;
-      const std::string collection;
-      const std::string controller;
-      const std::string action;
-      const std::string roomId;
-      const std::string channel;
-      const int status;
-      const std::string error;
-      const std::string stack;
+      const std::string _requestId;
+      const std::string _result;
+      const std::string _volatiles;
+      const std::string _index;
+      const std::string _collection;
+      const std::string _controller;
+      const std::string _action;
+      const std::string _roomId;
+      const std::string _channel;
+      const int _status;
+      const std::string _error;
+      const std::string _stack;
 
     public:
       KuzzleResponse(const kuzzle_response* u) :
-        requestId(u->request_id),
-        result(u->result),
-        volatiles(u->volatiles),
-        index(u->index),
-        collection(u->collection),
-        controller(u->controller),
-        action(u->action),
-        roomId(u->room_id),
-        channel(u->channel),
-        status(u->status),
-        error(u->error ? u->error : ""),
-        stack(u->stack ? u->stack : "")
+        _requestId(u->request_id),
+        _result(u->result),
+        _volatiles(u->volatiles),
+        _index(u->index),
+        _collection(u->collection),
+        _controller(u->controller),
+        _action(u->action),
+        _roomId(u->room_id),
+        _channel(u->channel),
+        _status(u->status),
+        _error(u->error ? u->error : ""),
+        _stack(u->stack ? u->stack : "")
         {};
       KuzzleResponse(const KuzzleResponse& u) :
-        requestId(u.requestId),
-        result(u.result),
-        volatiles(u.volatiles),
-        index(u.index),
-        collection(u.collection),
-        controller(u.controller),
-        action(u.action),
-        roomId(u.roomId),
-        channel(u.channel),
-        status(u.status),
-        error(u.error),
-        stack(u.stack)
+        _requestId(u._requestId),
+        _result(u._result),
+        _volatiles(u._volatiles),
+        _index(u._index),
+        _collection(u._collection),
+        _controller(u._controller),
+        _action(u._action),
+        _roomId(u._roomId),
+        _channel(u._channel),
+        _status(u._status),
+        _error(u._error),
+        _stack(u._stack)
         {}
 
-      const std::string &getRequestId() const;
+      const std::string &requestId() const;
 
-      const std::string &getResult() const;
+      const std::string &result() const;
 
-      const std::string &getVolatiles() const;
+      const std::string &volatiles() const;
 
-      const std::string &getIndex() const;
+      const std::string &index() const;
 
-      const std::string &getCollection() const;
+      const std::string &collection() const;
 
-      const std::string &getController() const;
+      const std::string &controller() const;
 
-      const std::string &getAction() const;
+      const std::string &action() const;
 
-      const std::string &getRoomId() const;
+      const std::string &roomId() const;
 
-      const std::string &getChannel() const;
+      const std::string &channel() const;
 
-      const int getStatus() const;
+      const int status() const;
 
-      const std::string &getError() const;
+      const std::string &error() const;
 
-      const std::string &getStack() const;;
+      const std::string &stack() const;;
   };
 }
 

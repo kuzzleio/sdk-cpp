@@ -3,28 +3,28 @@
 
 namespace kuzzleio {
 
-    const bool ValidationResponse::getValid() const {
-        return valid;
+    const bool ValidationResponse::valid() const {
+        return _valid;
     }
 
-    const std::vector<std::string>& ValidationResponse::getDetails() const {
-        return details;
+    const std::vector<std::string>& ValidationResponse::details() const {
+        return _details;
     }
 
-    const std::string& ValidationResponse::getDescription() const {
-        return description;
+    const std::string& ValidationResponse::description() const {
+        return _description;
     }
 
-    const int ValidationResponse::getStatus() const {
-        return status;
+    const int ValidationResponse::status() const {
+        return _status;
     }
 
-    const std::string& ValidationResponse::getError() const {
-        return error;
+    const std::string& ValidationResponse::error() const {
+        return _error;
     }
 
-    const std::string& ValidationResponse::getStack() const {
-        return stack;
+    const std::string& ValidationResponse::stack() const {
+        return _stack;
     }
 
 }

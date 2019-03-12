@@ -2,414 +2,415 @@
 #include "internal/kuzzle_request.hpp"
 
 namespace kuzzleio {
-
-    const std::string &KuzzleRequest::getRequestId() const {
-        return requestId;
+    const std::string &KuzzleRequest::requestId() const {
+            return _requestId;
     }
 
-    void KuzzleRequest::setRequestId(const std::string &request_id) {
-        KuzzleRequest::requestId = request_id;
+    void KuzzleRequest::requestId(const std::string &requestId) {
+            KuzzleRequest::_requestId = requestId;
     }
 
-    const std::string &KuzzleRequest::getController() const {
-        return controller;
+    const std::string &KuzzleRequest::controller() const {
+            return _controller;
     }
 
-    void KuzzleRequest::setController(const std::string &controller) {
-        KuzzleRequest::controller = controller;
+    void KuzzleRequest::controller(const std::string &controller) {
+            KuzzleRequest::_controller = controller;
     }
 
-    const std::string &KuzzleRequest::getAction() const {
-        return action;
+    const std::string &KuzzleRequest::action() const {
+            return _action;
     }
 
-    void KuzzleRequest::setAction(const std::string &action) {
-        KuzzleRequest::action = action;
+    void KuzzleRequest::action(const std::string &action) {
+            KuzzleRequest::_action = action;
     }
 
-    const std::string &KuzzleRequest::getIndex() const {
-        return index;
+    const std::string &KuzzleRequest::index() const {
+            return _index;
     }
 
-    void KuzzleRequest::setIndex(const std::string &index) {
-        KuzzleRequest::index = index;
+    void KuzzleRequest::index(const std::string &index) {
+            KuzzleRequest::_index = index;
     }
 
-    const std::string &KuzzleRequest::getCollection() const {
-        return collection;
+    const std::string &KuzzleRequest::collection() const {
+            return _collection;
     }
 
-    void KuzzleRequest::setCollection(const std::string &collection) {
-        KuzzleRequest::collection = collection;
+    void KuzzleRequest::collection(const std::string &collection) {
+            KuzzleRequest::_collection = collection;
     }
 
-    const std::string &KuzzleRequest::getBody() const {
-        return body;
+    const std::string &KuzzleRequest::body() const {
+            return _body;
     }
 
-    void KuzzleRequest::setBody(const std::string &body) {
-        KuzzleRequest::body = body;
+    void KuzzleRequest::body(const std::string &body) {
+            KuzzleRequest::_body = body;
     }
 
-    const std::string &KuzzleRequest::getId() const {
-        return id;
+    const std::string &KuzzleRequest::id() const {
+            return _id;
     }
 
-    void KuzzleRequest::setId(const std::string &id) {
-        KuzzleRequest::id = id;
+    void KuzzleRequest::id(const std::string &id) {
+            KuzzleRequest::_id = id;
     }
 
-    long KuzzleRequest::getFrom() const {
-        return from;
+    long KuzzleRequest::from() const {
+            return _from;
     }
 
-    void KuzzleRequest::setFrom(long from) {
-        KuzzleRequest::from = from;
+    void KuzzleRequest::from(long from) {
+            KuzzleRequest::_from = from;
     }
 
-    long KuzzleRequest::getSize() const {
-        return size;
+    long KuzzleRequest::size() const {
+            return _size;
     }
 
-    void KuzzleRequest::setSize(long size) {
-        KuzzleRequest::size = size;
+    void KuzzleRequest::size(long size) {
+            KuzzleRequest::_size = size;
     }
 
-    const std::string &KuzzleRequest::getScroll() const {
-        return scroll;
+    const std::string &KuzzleRequest::scroll() const {
+            return _scroll;
     }
 
-    void KuzzleRequest::setScroll(const std::string &scroll) {
-        KuzzleRequest::scroll = scroll;
+    void KuzzleRequest::scroll(const std::string &scroll) {
+            KuzzleRequest::_scroll = scroll;
     }
 
-    const std::string &KuzzleRequest::getScrollId() const {
-        return scrollId;
+    const std::string &KuzzleRequest::scrollId() const {
+            return _scrollId;
     }
 
-    void KuzzleRequest::setScrollId(const std::string &scrollId) {
-        KuzzleRequest::scrollId = scrollId;
+    void KuzzleRequest::scrollId(const std::string &scrollId) {
+            KuzzleRequest::_scrollId = scrollId;
     }
 
-    const std::string &KuzzleRequest::getStrategy() const {
-        return strategy;
+    const std::string &KuzzleRequest::strategy() const {
+            return _strategy;
     }
 
-    void KuzzleRequest::setStrategy(const std::string &strategy) {
-        KuzzleRequest::strategy = strategy;
+    void KuzzleRequest::strategy(const std::string &strategy) {
+            KuzzleRequest::_strategy = strategy;
     }
 
-    unsigned long long int KuzzleRequest::getExpiresIn() const {
-        return expiresIn;
+    unsigned long long int KuzzleRequest::expiresIn() const {
+            return _expiresIn;
     }
 
-    void KuzzleRequest::setExpiresIn(unsigned long long int expiresIn) {
-        KuzzleRequest::expiresIn = expiresIn;
+    void KuzzleRequest::expiresIn(unsigned long long int expiresIn) {
+            KuzzleRequest::_expiresIn = expiresIn;
     }
 
-    const std::string &KuzzleRequest::getVolatiles() const {
-        return volatiles;
+    const std::string &KuzzleRequest::volatiles() const {
+            return _volatiles;
     }
 
-    void KuzzleRequest::setVolatiles(const std::string &volatiles) {
-        KuzzleRequest::volatiles = volatiles;
+    void KuzzleRequest::volatiles(const std::string &volatiles) {
+            KuzzleRequest::_volatiles = volatiles;
     }
 
-    const std::string &KuzzleRequest::getScope() const {
-        return scope;
+    const std::string &KuzzleRequest::scope() const {
+            return _scope;
     }
 
-    void KuzzleRequest::setScope(const std::string &scope) {
-        KuzzleRequest::scope = scope;
+    void KuzzleRequest::scope(const std::string &scope) {
+            KuzzleRequest::_scope = scope;
     }
 
-    const std::string &KuzzleRequest::getState() const {
-        return state;
+    const std::string &KuzzleRequest::state() const {
+            return _state;
     }
 
-    void KuzzleRequest::setState(const std::string &state) {
-        KuzzleRequest::state = state;
+    void KuzzleRequest::state(const std::string &state) {
+            KuzzleRequest::_state = state;
     }
 
-    const std::string &KuzzleRequest::getUsers() const {
-        return users;
+    const std::string &KuzzleRequest::users() const {
+            return _users;
     }
 
-    void KuzzleRequest::setUsers(const std::string &users) {
-        KuzzleRequest::users = users;
+    void KuzzleRequest::users(const std::string &users) {
+            KuzzleRequest::_users = users;
     }
 
-    long KuzzleRequest::getStart() const {
-        return start;
+    long KuzzleRequest::start() const {
+            return _start;
     }
 
-    void KuzzleRequest::setStart(long start) {
-        KuzzleRequest::start = start;
+    void KuzzleRequest::start(long start) {
+            KuzzleRequest::_start = start;
     }
 
-    long KuzzleRequest::getStop() const {
-        return stop;
+    long KuzzleRequest::stop() const {
+            return _stop;
     }
 
-    void KuzzleRequest::setStop(long stop) {
-        KuzzleRequest::stop = stop;
+    void KuzzleRequest::stop(long stop) {
+            KuzzleRequest::_stop = stop;
     }
 
-    long KuzzleRequest::getEnd() const {
-        return end;
+    long KuzzleRequest::end() const {
+            return _end;
     }
 
-    void KuzzleRequest::setEnd(long end) {
-        KuzzleRequest::end = end;
+    void KuzzleRequest::end(long end) {
+            KuzzleRequest::_end = end;
     }
 
-    unsigned char KuzzleRequest::getBit() const {
-        return bit;
+    unsigned char KuzzleRequest::bit() const {
+            return _bit;
     }
 
-    void KuzzleRequest::setBit(unsigned char bit) {
-        KuzzleRequest::bit = bit;
+    void KuzzleRequest::bit(unsigned char bit) {
+            KuzzleRequest::_bit = bit;
     }
 
-    const std::string &KuzzleRequest::getMember() const {
-        return member;
+    const std::string &KuzzleRequest::member() const {
+            return _member;
     }
 
-    void KuzzleRequest::setMember(const std::string &member) {
-        KuzzleRequest::member = member;
+    void KuzzleRequest::member(const std::string &member) {
+            KuzzleRequest::_member = member;
     }
 
-    const std::string &KuzzleRequest::getMember1() const {
-        return member1;
+    const std::string &KuzzleRequest::member1() const {
+            return _member1;
     }
 
-    void KuzzleRequest::setMember1(const std::string &member1) {
-        KuzzleRequest::member1 = member1;
+    void KuzzleRequest::member1(const std::string &member1) {
+            KuzzleRequest::_member1 = member1;
     }
 
-    const std::string &KuzzleRequest::getMember2() const {
-        return member2;
+    const std::string &KuzzleRequest::member2() const {
+            return _member2;
     }
 
-    void KuzzleRequest::setMember2(const std::string &member2) {
-        KuzzleRequest::member2 = member2;
+    void KuzzleRequest::member2(const std::string &member2) {
+            KuzzleRequest::_member2 = member2;
     }
 
-    const std::vector<std::string> &KuzzleRequest::getMembers() const {
-        return members;
+    const std::vector<std::string> &KuzzleRequest::members() const {
+            return _members;
     }
 
-    void KuzzleRequest::setMembers(const std::vector<std::string> &members) {
-        KuzzleRequest::members = members;
+    void KuzzleRequest::members(const std::vector<std::string> &members) {
+            KuzzleRequest::_members = members;
     }
 
-    double KuzzleRequest::getLon() const {
-        return lon;
+    double KuzzleRequest::lon() const {
+            return _lon;
     }
 
-    void KuzzleRequest::setLon(double lon) {
-        KuzzleRequest::lon = lon;
+    void KuzzleRequest::lon(double lon) {
+            KuzzleRequest::_lon = lon;
     }
 
-    double KuzzleRequest::getLat() const {
-        return lat;
+    double KuzzleRequest::lat() const {
+            return _lat;
     }
 
-    void KuzzleRequest::setLat(double lat) {
-        KuzzleRequest::lat = lat;
+    void KuzzleRequest::lat(double lat) {
+            KuzzleRequest::_lat = lat;
     }
 
-    double KuzzleRequest::getDistance() const {
-        return distance;
+    double KuzzleRequest::distance() const {
+            return _distance;
     }
 
-    void KuzzleRequest::setDistance(double distance) {
-        KuzzleRequest::distance = distance;
+    void KuzzleRequest::distance(double distance) {
+            KuzzleRequest::_distance = distance;
     }
 
-    const std::string &KuzzleRequest::getUnit() const {
-        return unit;
+    const std::string &KuzzleRequest::unit() const {
+            return _unit;
     }
 
-    void KuzzleRequest::setUnit(const std::string &unit) {
-        KuzzleRequest::unit = unit;
+    void KuzzleRequest::unit(const std::string &unit) {
+            KuzzleRequest::_unit = unit;
     }
 
-    const std::vector<std::string> &KuzzleRequest::getOptions() const {
-        return options;
+    const std::vector<std::string> &KuzzleRequest::options() const {
+            return _options;
     }
 
-    void KuzzleRequest::setOptions(const std::vector<std::string> &options) {
-        KuzzleRequest::options = options;
+    void KuzzleRequest::options(const std::vector<std::string> &options) {
+            KuzzleRequest::_options = options;
     }
 
-    const std::vector<std::string> &KuzzleRequest::getKeys() const {
-        return keys;
+    const std::vector<std::string> &KuzzleRequest::keys() const {
+            return _keys;
     }
 
-    void KuzzleRequest::setKeys(const std::vector<std::string> &keys) {
-        KuzzleRequest::keys = keys;
+    void KuzzleRequest::keys(const std::vector<std::string> &keys) {
+            KuzzleRequest::_keys = keys;
     }
 
-    long KuzzleRequest::getCursor() const {
-        return cursor;
+    long KuzzleRequest::cursor() const {
+            return _cursor;
     }
 
-    void KuzzleRequest::setCursor(long cursor) {
-        KuzzleRequest::cursor = cursor;
+    void KuzzleRequest::cursor(long cursor) {
+            KuzzleRequest::_cursor = cursor;
     }
 
-    long KuzzleRequest::getOffset() const {
-        return offset;
+    long KuzzleRequest::offset() const {
+            return _offset;
     }
 
-    void KuzzleRequest::setOffset(long offset) {
-        KuzzleRequest::offset = offset;
+    void KuzzleRequest::offset(long offset) {
+            KuzzleRequest::_offset = offset;
     }
 
-    const std::string &KuzzleRequest::getField() const {
-        return field;
+    const std::string &KuzzleRequest::field() const {
+            return _field;
     }
 
-    void KuzzleRequest::setField(const std::string &field) {
-        KuzzleRequest::field = field;
+    void KuzzleRequest::field(const std::string &field) {
+            KuzzleRequest::_field = field;
     }
 
-    const std::vector<std::string> &KuzzleRequest::getFields() const {
-        return fields;
+    const std::vector<std::string> &KuzzleRequest::fields() const {
+            return _fields;
     }
 
-    void KuzzleRequest::setFields(const std::vector<std::string> &fields) {
-        KuzzleRequest::fields = fields;
+    void KuzzleRequest::fields(const std::vector<std::string> &fields) {
+            KuzzleRequest::_fields = fields;
     }
 
-    const std::string &KuzzleRequest::getSubcommand() const {
-        return subcommand;
+    const std::string &KuzzleRequest::subcommand() const {
+            return _subcommand;
     }
 
-    void KuzzleRequest::setSubcommand(const std::string &subcommand) {
-        KuzzleRequest::subcommand = subcommand;
+    void KuzzleRequest::subcommand(const std::string &subcommand) {
+            KuzzleRequest::_subcommand = subcommand;
     }
 
-    const std::string &KuzzleRequest::getPattern() const {
-        return pattern;
+    const std::string &KuzzleRequest::pattern() const {
+            return _pattern;
     }
 
-    void KuzzleRequest::setPattern(const std::string &pattern) {
-        KuzzleRequest::pattern = pattern;
+    void KuzzleRequest::pattern(const std::string &pattern) {
+            KuzzleRequest::_pattern = pattern;
     }
 
-    long KuzzleRequest::getIdx() const {
-        return idx;
+    long KuzzleRequest::idx() const {
+            return _idx;
     }
 
-    void KuzzleRequest::setIdx(long idx) {
-        KuzzleRequest::idx = idx;
+    void KuzzleRequest::idx(long idx) {
+            KuzzleRequest::_idx = idx;
     }
 
-    const std::string &KuzzleRequest::getMin() const {
-        return min;
+    const std::string &KuzzleRequest::min() const {
+            return _min;
     }
 
-    void KuzzleRequest::setMin(const std::string &min) {
-        KuzzleRequest::min = min;
+    void KuzzleRequest::min(const std::string &min) {
+            KuzzleRequest::_min = min;
     }
 
-    const std::string &KuzzleRequest::getMax() const {
-        return max;
+    const std::string &KuzzleRequest::max() const {
+            return _max;
     }
 
-    void KuzzleRequest::setMax(const std::string &max) {
-        KuzzleRequest::max = max;
+    void KuzzleRequest::max(const std::string &max) {
+            KuzzleRequest::_max = max;
     }
 
-    const std::string &KuzzleRequest::getLimit() const {
-        return limit;
+    const std::string &KuzzleRequest::limit() const {
+            return _limit;
     }
 
-    void KuzzleRequest::setLimit(const std::string &limit) {
-        KuzzleRequest::limit = limit;
+    void KuzzleRequest::limit(const std::string &limit) {
+            KuzzleRequest::_limit = limit;
     }
 
-    unsigned long KuzzleRequest::getCount() const {
-        return count;
+    unsigned long KuzzleRequest::count() const {
+            return _count;
     }
 
-    void KuzzleRequest::setCount(unsigned long count) {
-        KuzzleRequest::count = count;
+    void KuzzleRequest::count(unsigned long count) {
+            KuzzleRequest::_count = count;
     }
 
-    const std::string &KuzzleRequest::getMatch() const {
-        return match;
+    const std::string &KuzzleRequest::match() const {
+            return _match;
     }
 
-    void KuzzleRequest::setMatch(const std::string &match) {
-        KuzzleRequest::match = match;
+    void KuzzleRequest::match(const std::string &match) {
+            KuzzleRequest::_match = match;
     }
 
-    bool KuzzleRequest::isReset() const {
-        return reset;
+    bool KuzzleRequest::reset() const {
+            return _reset;
     }
 
-    void KuzzleRequest::setReset(bool reset) {
-        KuzzleRequest::reset = reset;
+    void KuzzleRequest::reset(bool reset) {
+            KuzzleRequest::_reset = reset;
     }
 
-    bool KuzzleRequest::isIncludeTrash() const {
-        return includeTrash;
+    bool KuzzleRequest::includeTrash() const {
+            return _includeTrash;
     }
 
-    void KuzzleRequest::setIncludeTrash(bool includeTrash) {
-        KuzzleRequest::includeTrash = includeTrash;
+    void KuzzleRequest::includeTrash(bool includeTrash) {
+            KuzzleRequest::_includeTrash = includeTrash;
     }
 
     kuzzle_request *KuzzleRequest::toC() const {
         kuzzle_request *req = new kuzzle_request();
-        req->controller = this->controller.c_str();
-        req->action = this->action.c_str();
-        req->index = this->index.c_str();
-        req->collection = this->collection.c_str();
-        req->body = this->body.c_str();
-        req->id = this->id.c_str();
-        req->from = this->from;
-        req->size = this->size;
-        req->scroll = this->scroll.c_str();
-        req->scroll_id = this->scrollId.c_str();
-        req->strategy = this->strategy.c_str();
-        req->expires_in = this->expiresIn;
-        req->volatiles = this->volatiles.c_str();
-        req->scope = this->scope.c_str();
-        req->state = this->state.c_str();
-        req->users = this->users.c_str();
-        req->start = this->start;
-        req->stop = this->stop;
-        req->end = this->end;
-        req->bit = this->bit;
-        req->member = this->member.c_str();
-        req->member1 = this->member1.c_str();
-        req->member2 = this->member2.c_str();
-        req->members = vector_to_c(this->members);
-        req->lon = this->lon;
-        req->lat = this->lat;
-        req->distance = this->distance;
-        req->unit = this->unit.c_str();
-        req->options = vector_to_c(this->options);
-        req->keys = vector_to_c(this->keys);
-        req->cursor = this->cursor;
-        req->offset = this->offset;
-        req->field = this->field.c_str();
-        req->fields = vector_to_c(this->fields);
-        req->subcommand = this->subcommand.c_str();
-        req->pattern = this->pattern.c_str();
-        req->idx = this->idx;
-        req->min = this->min.c_str();
-        req->max = this->max.c_str();
-        req->limit = this->limit.c_str();
-        req->count = this->count;
-        req->match = this->match.c_str();
-        req->reset = this->reset;
-        req->include_trash = this->includeTrash;
+        req->controller = this->_controller.c_str();
+        req->action = this->_action.c_str();
+        req->index = this->_index.c_str();
+        req->collection = this->_collection.c_str();
+        req->body = this->_body.c_str();
+        req->id = this->_id.c_str();
+        req->from = this->_from;
+        req->size = this->_size;
+        req->scroll = this->_scroll.c_str();
+        req->scroll_id = this->_scrollId.c_str();
+        req->strategy = this->_strategy.c_str();
+        req->expires_in = this->_expiresIn;
+        req->volatiles = this->_volatiles.c_str();
+        req->scope = this->_scope.c_str();
+        req->state = this->_state.c_str();
+        req->users = this->_users.c_str();
+        req->start = this->_start;
+        req->stop = this->_stop;
+        req->end = this->_end;
+        req->bit = this->_bit;
+        req->member = this->_member.c_str();
+        req->member1 = this->_member1.c_str();
+        req->member2 = this->_member2.c_str();
+        req->members = vector_to_c(this->_members);
+        req->lon = this->_lon;
+        req->lat = this->_lat;
+        req->distance = this->_distance;
+        req->unit = this->_unit.c_str();
+        req->options = vector_to_c(this->_options);
+        req->keys = vector_to_c(this->_keys);
+        req->cursor = this->_cursor;
+        req->offset = this->_offset;
+        req->field = this->_field.c_str();
+        req->fields = vector_to_c(this->_fields);
+        req->subcommand = this->_subcommand.c_str();
+        req->pattern = this->_pattern.c_str();
+        req->idx = this->_idx;
+        req->min = this->_min.c_str();
+        req->max = this->_max.c_str();
+        req->limit = this->_limit.c_str();
+        req->count = this->_count;
+        req->match = this->_match.c_str();
+        req->reset = this->_reset;
+        req->include_trash = this->_includeTrash;
 
         return req;
     }
+
+
 }

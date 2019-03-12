@@ -89,7 +89,7 @@ namespace kuzzleio {
     KUZZLE_API(kuzzle_response, r, kuzzle_query(
         _kuzzle,
         req,
-        const_cast<query_options*>(options.getQueryOptsC())))
+        const_cast<query_options*>(options.queryOptsC())))
     return KuzzleResponse(r);
   }
 

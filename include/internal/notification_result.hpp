@@ -7,98 +7,98 @@
 namespace kuzzleio {
   class NotificationResult {
     private:
-      const std::string requestId;
-      const NotificationContent result;
-      const std::string volatiles;
-      const std::string index;
-      const std::string collection;
-      const std::string controller;
-      const std::string action;
-      const std::string protocol;
-      const std::string scope;
-      const std::string state;
-      const std::string user;
-      const std::string nType;
-      const std::string roomId;
-      const uint64_t timestamp;
-      const int status;
-      const std::string error;
-      const std::string stack;
+      const std::string _requestId;
+      const NotificationContent _result;
+      const std::string _volatiles;
+      const std::string _index;
+      const std::string _collection;
+      const std::string _controller;
+      const std::string _action;
+      const std::string _protocol;
+      const std::string _scope;
+      const std::string _state;
+      const std::string _user;
+      const std::string _nType;
+      const std::string _roomId;
+      const uint64_t _timestamp;
+      const int _status;
+      const std::string _error;
+      const std::string _stack;
 
     public:
       NotificationResult(const notification_result* r) :
-        requestId(r->request_id),
-        result(NotificationContent(r->result)),
-        volatiles(r->volatiles),
-        index(r->index),
-        collection(r->collection),
-        controller(r->controller),
-        action(r->action),
-        protocol(r->protocol),
-        scope(r->scope),
-        state(r->state),
-        user(r->user),
-        nType(r->n_type),
-        roomId(r->room_id),
-        timestamp(r->timestamp),
-        status(r->status),
-        error(r->error ? r->error : ""),
-        stack(r->stack ? r->stack : "")
+        _requestId(r->request_id),
+        _result(NotificationContent(r->result)),
+        _volatiles(r->volatiles),
+        _index(r->index),
+        _collection(r->collection),
+        _controller(r->controller),
+        _action(r->action),
+        _protocol(r->protocol),
+        _scope(r->scope),
+        _state(r->state),
+        _user(r->user),
+        _nType(r->n_type),
+        _roomId(r->room_id),
+        _timestamp(r->timestamp),
+        _status(r->status),
+        _error(r->error ? r->error : ""),
+        _stack(r->stack ? r->stack : "")
         {}
 
       NotificationResult(const NotificationResult& r) :
-        requestId(r.requestId),
-        result(NotificationContent(r.result)),
-        volatiles(r.volatiles),
-        index(r.index),
-        collection(r.collection),
-        controller(r.controller),
-        action(r.action),
-        protocol(r.protocol),
-        scope(r.scope),
-        state(r.state),
-        user(r.user),
-        nType(r.nType),
-        roomId(r.roomId),
-        timestamp(r.timestamp),
-        status(r.status),
-        error(r.error),
-        stack(r.stack)
+        _requestId(r._requestId),
+        _result(NotificationContent(r._result)),
+        _volatiles(r._volatiles),
+        _index(r._index),
+        _collection(r._collection),
+        _controller(r._controller),
+        _action(r._action),
+        _protocol(r._protocol),
+        _scope(r._scope),
+        _state(r._state),
+        _user(r._user),
+        _nType(r._nType),
+        _roomId(r._roomId),
+        _timestamp(r._timestamp),
+        _status(r._status),
+        _error(r._error),
+        _stack(r._stack)
         {}
 
-      const std::string &getRequestId() const;
+      const std::string &requestId() const;
 
-      const NotificationContent &getResult() const;
+      const NotificationContent &result() const;
 
-      const std::string &getVolatiles() const;
+      const std::string &volatiles() const;
 
-      const std::string &getIndex() const;
+      const std::string &index() const;
 
-      const std::string &getCollection() const;
+      const std::string &collection() const;
 
-      const std::string &getController() const;
+      const std::string &controller() const;
 
-      const std::string &getAction() const;
+      const std::string &action() const;
 
-      const std::string &getProtocol() const;
+      const std::string &protocol() const;
 
-      const std::string &getScope() const;
+      const std::string &scope() const;
 
-      const std::string &getState() const;
+      const std::string &state() const;
 
-      const std::string &getUser() const;
+      const std::string &user() const;
 
-      const std::string &getNType() const;
+      const std::string &nType() const;
 
-      const std::string &getRoomId() const;
+      const std::string &roomId() const;
 
-      const uint64_t getTimestamp() const;
+      const uint64_t timestamp() const;
 
-      const int getStatus() const;
+      const int status() const;
 
-      const std::string &getError() const;
+      const std::string &error() const;
 
-      const std::string &getStack() const;
+      const std::string &stack() const;
   };
 }
 

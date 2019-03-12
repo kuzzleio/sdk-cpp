@@ -1,18 +1,21 @@
 #include "kuzzle.hpp"
 #include "internal/notification_content.hpp"
 
-const std::string &kuzzleio::NotificationContent::getId() const {
-    return id;
-}
+namespace kuzzleio {
 
-const kuzzleio::Meta *kuzzleio::NotificationContent::getMeta() const {
-    return meta;
-}
+    const std::string &NotificationContent::id() const {
+        return _id;
+    }
 
-const std::string &kuzzleio::NotificationContent::getContent() const {
-    return content;
-}
+    const Meta *NotificationContent::meta() const {
+        return _meta;
+    }
 
-const int kuzzleio::NotificationContent::getCount() const {
-    return count;
+    const std::string &NotificationContent::content() const {
+        return _content;
+    }
+
+    const int NotificationContent::count() const {
+        return _count;
+    }
 }

@@ -39,7 +39,7 @@ namespace kuzzleio {
   }
 
   std::string Auth::createMyCredentials(const std::string& strategy, const std::string& credentials, const QueryOptions& options) {
-    KUZZLE_API(string_result, r, kuzzle_create_my_credentials(_auth, const_cast<char*>(strategy.c_str()), const_cast<char*>(credentials.c_str()), const_cast<query_options*>(options.getQueryOptsC())))
+    KUZZLE_API(string_result, r, kuzzle_create_my_credentials(_auth, const_cast<char*>(strategy.c_str()), const_cast<char*>(credentials.c_str()), const_cast<query_options*>(options.queryOptsC())))
 
     std::string ret = r->result;
 
@@ -52,7 +52,7 @@ namespace kuzzleio {
   }
 
   bool Auth::credentialsExist(const std::string& strategy, const QueryOptions& options) {
-    KUZZLE_API(bool_result, r, kuzzle_credentials_exist(_auth, const_cast<char*>(strategy.c_str()), const_cast<query_options*>(options.getQueryOptsC())))
+    KUZZLE_API(bool_result, r, kuzzle_credentials_exist(_auth, const_cast<char*>(strategy.c_str()), const_cast<query_options*>(options.queryOptsC())))
 
     bool ret = r->result;
     kuzzle_free_bool_result(r);
@@ -64,7 +64,7 @@ namespace kuzzleio {
   }
 
   void Auth::deleteMyCredentials(const std::string& strategy, const QueryOptions& options) {
-    KUZZLE_API(error_result, r, kuzzle_delete_my_credentials(_auth, const_cast<char*>(strategy.c_str()), const_cast<query_options*>(options.getQueryOptsC())))
+    KUZZLE_API(error_result, r, kuzzle_delete_my_credentials(_auth, const_cast<char*>(strategy.c_str()), const_cast<query_options*>(options.queryOptsC())))
     kuzzle_free_error_result(r);
   }
 
@@ -82,7 +82,7 @@ namespace kuzzleio {
   }
 
   std::string Auth::getMyCredentials(const std::string& strategy, const QueryOptions& options) {
-    KUZZLE_API(string_result, r, kuzzle_get_my_credentials(_auth, const_cast<char*>(strategy.c_str()), const_cast<query_options*>(options.getQueryOptsC())))
+    KUZZLE_API(string_result, r, kuzzle_get_my_credentials(_auth, const_cast<char*>(strategy.c_str()), const_cast<query_options*>(options.queryOptsC())))
 
     std::string ret = r->result;
     kuzzle_free_string_result(r);
@@ -94,7 +94,7 @@ namespace kuzzleio {
   }
 
   std::vector<std::shared_ptr<UserRight>> Auth::getMyRights(const QueryOptions& options) {
-    KUZZLE_API(user_rights_result, r, kuzzle_get_my_rights(_auth, const_cast<query_options*>(options.getQueryOptsC())))
+    KUZZLE_API(user_rights_result, r, kuzzle_get_my_rights(_auth, const_cast<query_options*>(options.queryOptsC())))
 
     std::vector<std::shared_ptr<UserRight>> user_rights;
     user_rights.reserve(r->rights_length);
@@ -113,7 +113,7 @@ namespace kuzzleio {
   }
 
   std::vector<std::string> Auth::getStrategies(const QueryOptions& options) {
-    KUZZLE_API(string_array_result, r, kuzzle_get_strategies(_auth, const_cast<query_options*>(options.getQueryOptsC())))
+    KUZZLE_API(string_array_result, r, kuzzle_get_strategies(_auth, const_cast<query_options*>(options.queryOptsC())))
 
     std::vector<std::string> strategies = std::vector<std::string>(r->result, r->result + r->result_length);
 
@@ -153,7 +153,7 @@ namespace kuzzleio {
   }
 
   std::string Auth::updateMyCredentials(const std::string& strategy, const std::string& credentials, const QueryOptions& options) {
-    KUZZLE_API(string_result, r, kuzzle_update_my_credentials(_auth, const_cast<char*>(strategy.c_str()), const_cast<char*>(credentials.c_str()), const_cast<query_options*>(options.getQueryOptsC())))
+    KUZZLE_API(string_result, r, kuzzle_update_my_credentials(_auth, const_cast<char*>(strategy.c_str()), const_cast<char*>(credentials.c_str()), const_cast<query_options*>(options.queryOptsC())))
 
     std::string ret = r->result;
     kuzzle_free_string_result(r);
@@ -165,7 +165,7 @@ namespace kuzzleio {
   }
 
   User Auth::updateSelf(const std::string& content, const QueryOptions& options) {
-    KUZZLE_API(user_result, r, kuzzle_update_self(_auth, const_cast<char*>(content.c_str()), const_cast<query_options*>(options.getQueryOptsC())))
+    KUZZLE_API(user_result, r, kuzzle_update_self(_auth, const_cast<char*>(content.c_str()), const_cast<query_options*>(options.queryOptsC())))
 
     User ret = r->result;
     kuzzle_free_user_result(r);
@@ -178,7 +178,7 @@ namespace kuzzleio {
   }
 
   bool Auth::validateMyCredentials(const std::string& strategy, const std::string& credentials, const QueryOptions& options) {
-    KUZZLE_API(bool_result, r, kuzzle_validate_my_credentials(_auth, const_cast<char*>(strategy.c_str()), const_cast<char*>(credentials.c_str()), const_cast<query_options*>(options.getQueryOptsC())))
+    KUZZLE_API(bool_result, r, kuzzle_validate_my_credentials(_auth, const_cast<char*>(strategy.c_str()), const_cast<char*>(credentials.c_str()), const_cast<query_options*>(options.queryOptsC())))
 
     bool ret = r->result;
     kuzzle_free_bool_result(r);

@@ -3,27 +3,27 @@
 
 namespace kuzzleio {
 
-    const std::string &kuzzleio::Meta::getAuthor() const {
-        return author;
+    const std::string & Meta::author() const {
+        return _author;
     }
 
-    const uint64_t kuzzleio::Meta::getCreatedAt() const {
-        return createdAt;
+    const uint64_t Meta::createdAt() const {
+        return _createdAt;
     }
 
-    const uint64_t kuzzleio::Meta::getUpdatedAt() const {
-        return updatedAt;
+    const uint64_t Meta::updatedAt() const {
+        return _updatedAt;
     }
 
-    const std::string &kuzzleio::Meta::getUpdater() const {
-        return updater;
+    const std::string & Meta::updater() const {
+        return _updater;
     }
 
-    const bool kuzzleio::Meta::getActive() const {
-        return active;
+    const bool Meta::active() const {
+        return _active;
     }
 
-    const uint64_t kuzzleio::Meta::getDeletedAt() const {
-        return deletedAt;
+    const uint64_t Meta::deletedAt() const {
+        return _deletedAt;
     }
 }
