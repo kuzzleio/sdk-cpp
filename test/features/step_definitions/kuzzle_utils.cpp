@@ -63,7 +63,6 @@ bool kuzzle_user_exists(kuzzleio::Kuzzle *kuzzle, const std::string &user_id) {
   }
   catch (kuzzleio::KuzzleException e) {
     K_LOG_W(e.what());
-    throw e;
   }
   return user_exists;
 }
@@ -87,7 +86,6 @@ void kuzzle_user_delete(kuzzleio::Kuzzle *kuzzle, const std::string &user_id)
   }
   catch (kuzzleio::KuzzleException e) {
     K_LOG_E("Failed to delete user \"%s\"", user_id.c_str());
-    throw e;
   }
 }
 
@@ -111,7 +109,6 @@ void kuzzle_credentials_delete(
     K_LOG_E("Failed to delete '%s' credentials for userId '%s'",
             strategy.c_str(), user_id.c_str());
     K_LOG_E(e.what());
-    throw e;
   }
 }
 
