@@ -8,7 +8,7 @@ namespace kuzzleio {
 
     class QueryOptions {
         private:
-            const query_options* _queryOptsC = new query_options();
+            const query_options* _queryOptsC = nullptr;
             bool _queuable;
             bool _withdist;
             bool _withcoord;
@@ -22,37 +22,42 @@ namespace kuzzleio {
             std::string _volatiles;
 
         public:
-            QueryOptions(const query_options* u) :
-                _queryOptsC(u),
-                _queuable(u->queuable),
-                _withdist(u->withdist),
-                _withcoord(u->withcoord),
-                _from(u->from),
-                _size(u->size),
-                _scroll(u->scroll),
-                _scrollId(u->scroll_id),
-                _refresh(u->refresh),
-                _ifExist(u->if_exist),
-                _retryOnConflict(u->retry_on_conflict),
-                _volatiles(u->volatiles)
+
+            QueryOptions(const query_options* src) :
+                _queryOptsC(cpyStruct(src)),
+                _queuable(src->queuable),
+                _withdist(src->withdist),
+                _withcoord(src->withcoord),
+                _from(src->from),
+                _size(src->size),
+                _scroll(src->scroll),
+                _scrollId(src->scroll_id),
+                _refresh(src->refresh),
+                _ifExist(src->if_exist),
+                _retryOnConflict(src->retry_on_conflict),
+                _volatiles(src->volatiles)
                 {};
 
-            QueryOptions(const QueryOptions& u) :
-                _queryOptsC(u._queryOptsC),
-                _queuable(u._queuable),
-                _withdist(u._withdist),
-                _withcoord(u._withcoord),
-                _from(u._from),
-                _size(u._size),
-                _scroll(u._scroll),
-                _scrollId(u._scrollId),
-                _refresh(u._refresh),
-                _ifExist(u._ifExist),
-                _retryOnConflict(u._retryOnConflict),
-                _volatiles(u._volatiles)
+            QueryOptions(const QueryOptions& src) :
+                _queryOptsC(cpyStruct(src._queryOptsC)),
+                _queuable(src._queuable),
+                _withdist(src._withdist),
+                _withcoord(src._withcoord),
+                _from(src._from),
+                _size(src._size),
+                _scroll(src._scroll),
+                _scrollId(src._scrollId),
+                _refresh(src._refresh),
+                _ifExist(src._ifExist),
+                _retryOnConflict(src._retryOnConflict),
+                _volatiles(src._volatiles)
                 {};
 
             QueryOptions() {};
+
+            const query_options* cpyStruct(const query_options* src);
+
+            virtual inline ~QueryOptions() { if (_queryOptsC != nullptr) delete(_queryOptsC); };
 
             const query_options *queryOptsC() const;
 

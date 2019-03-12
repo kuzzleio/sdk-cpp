@@ -188,11 +188,11 @@ namespace kuzzleio {
   }
 
 
-  ValidationResponse& Collection::validateSpecifications(const std::string& index, const std::string& collection, const std::string& specifications) {
+  ValidationResponse Collection::validateSpecifications(const std::string& index, const std::string& collection, const std::string& specifications) {
     return this->validateSpecifications(index, collection, specifications, QueryOptions());
   }
 
-  ValidationResponse& Collection::validateSpecifications(const std::string& index, const std::string& collection, const std::string& specifications, const QueryOptions& options) {
+  ValidationResponse Collection::validateSpecifications(const std::string& index, const std::string& collection, const std::string& specifications, const QueryOptions& options) {
     KUZZLE_API(validation_response, r, kuzzle_collection_validate_specifications(
       _collection,
       const_cast<char*>(index.c_str()),
@@ -200,9 +200,9 @@ namespace kuzzleio {
       const_cast<char*>(specifications.c_str()),
       const_cast<query_options*>(options.queryOptsC())))
 
-      ValidationResponse* t = new ValidationResponse(r);
-      //kuzzle_free_kuzzle_response(r);
-    return *t;
+      ValidationResponse rCpp(r);
+      kuzzle_free_validation_response(r);
+    return rCpp;
   }
 
 

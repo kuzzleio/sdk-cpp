@@ -13,21 +13,21 @@ namespace kuzzleio {
       const bool _active;
       const uint64_t _deletedAt;
      public:
-      Meta(const meta* m) :
-        _author(m->author),
-        _createdAt(m->created_at),
-        _updatedAt(m->updated_at),
-        _updater(m->updater),
-        _active(m->active),
-        _deletedAt(m->deleted_at)
+      Meta(const meta* src) :
+        _author(src->author),
+        _createdAt(src->created_at),
+        _updatedAt(src->updated_at),
+        _updater(src->updater),
+        _active(src->active),
+        _deletedAt(src->deleted_at)
         {};
-      Meta(const Meta& m) :
-        _author(m._author),
-        _createdAt(m._createdAt),
-        _updatedAt(m._updatedAt),
-        _updater(m._updater),
-        _active(m._active),
-        _deletedAt(m._deletedAt)
+      Meta(const Meta& src) :
+        _author(src._author),
+        _createdAt(src._createdAt),
+        _updatedAt(src._updatedAt),
+        _updater(src._updater),
+        _active(src._active),
+        _deletedAt(src._deletedAt)
         {}
 
       const std::string &author() const;

@@ -14,19 +14,21 @@ namespace kuzzleio {
       const int _count;
 
     public:
-      NotificationContent(const notification_content* c) :
-        _id(c->id),
-        _meta(c->m ? new Meta(c->m) : nullptr),
-        _content(c->content),
-        _count(c->count)
+      NotificationContent(const notification_content* src) :
+        _id(src->id),
+        _meta(src->m ? new Meta(src->m) : nullptr),
+        _content(src->content),
+        _count(src->count)
         {};
-      NotificationContent(const NotificationContent& c) :
-        _id(c._id),
-        _meta(c._meta),
-        _content(c._content),
-        _count(c._count)
-        {}
+      NotificationContent(const NotificationContent& src) :
+        _id(src._id),
+        _meta(src._meta),
+        _content(src._content),
+        _count(src._count)
+        {};
 
+      virtual inline ~NotificationContent() { if (_meta != nullptr)delete(_meta); };
+      
       const std::string &id() const;
 
       const Meta *meta() const;

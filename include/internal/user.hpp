@@ -11,27 +11,26 @@ namespace kuzzleio {
       std::string _id;
       std::string _content;
       std::vector<std::string> _profile_ids;
+
     public:
       User() = default;
-      User(const kuzzle_user* u) :
-        _id(u->id),
-        _content(u->content),
-        _profile_ids(std::vector<std::string>(u->profile_ids, u->profile_ids + u->profile_ids_length))
+
+      User(const kuzzle_user* src) :
+        _id(src->id),
+        _content(src->content),
+        _profile_ids(std::vector<std::string>(src->profile_ids, src->profile_ids + src->profile_ids_length))
         {};
-      User(User* u) :
-        _id(u->_id),
-        _content(u->_content),
-        _profile_ids(u->_profile_ids)
+
+      User(const User& src) :
+        _id(src._id),
+        _content(src._content),
+        _profile_ids(src._profile_ids)
         {};
-      User(const User& u) :
-        _id(u._id),
-        _content(u._content),
-        _profile_ids(u._profile_ids)
-        {};
-      const User& operator=(const User& u) {
-          _id = u.id();
-          _content = u.content();
-          _profile_ids = u.profile_ids();
+
+      const User& operator=(const User& src) {
+          _id = src.id();
+          _content = src.content();
+          _profile_ids = src.profile_ids();
           return *this;
         };
 

@@ -15,20 +15,20 @@ namespace kuzzleio {
       const std::string _stack;
 
     public:
-      SubscribeResult(const subscribe_result* u) :
-        _room(u->room),
-        _channel(u->channel),
-        _status(u->status),
-        _error(u->error ? u->error : ""),
-        _stack(u->stack ? u->stack : "")
+      SubscribeResult(const subscribe_result* src) :
+        _room(src->room),
+        _channel(src->channel),
+        _status(src->status),
+        _error(src->error ? src->error : ""),
+        _stack(src->stack ? src->stack : "")
         {};
-      SubscribeResult(const SubscribeResult& u) :
-        _room(u._room),
-        _channel(u._channel),
-        _status(u._status),
-        _error(u._error),
-        _stack(u._stack)
-        {}
+      SubscribeResult(const SubscribeResult& src) :
+        _room(src._room),
+        _channel(src._channel),
+        _status(src._status),
+        _error(src._error),
+        _stack(src._stack)
+        {};
 
       const std::string &room() const;
 

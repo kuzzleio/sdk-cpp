@@ -15,22 +15,22 @@ namespace kuzzleio {
       const std::string _error;
       const std::string _stack;
 
-      TokenValidity(const token_validity* u) :
-        _valid(u->valid),
-        _state(u->state),
-        _expiresAt(u->expires_at),
-        _status(u->status),
-        _error(u->error ? u->error : ""),
-        _stack(u->stack ? u->stack : "")
+      TokenValidity(const token_validity* src) :
+        _valid(src->valid),
+        _state(src->state),
+        _expiresAt(src->expires_at),
+        _status(src->status),
+        _error(src->error ? src->error : ""),
+        _stack(src->stack ? src->stack : "")
         {};
-      TokenValidity(const TokenValidity& u) :
-        _valid(u._valid),
-        _state(u._state),
-        _expiresAt(u._expiresAt),
-        _status(u._status),
-        _error(u._error),
-        _stack(u._stack)
-        {}
+      TokenValidity(const TokenValidity& src) :
+        _valid(src._valid),
+        _state(src._state),
+        _expiresAt(src._expiresAt),
+        _status(src._status),
+        _error(src._error),
+        _stack(src._stack)
+        {};
 
       const bool valid() const;
 

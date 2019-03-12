@@ -16,21 +16,21 @@ namespace kuzzleio {
       const std::string _stack;
 
     public:
-      ValidationResponse(const validation_response* u) :
-        _valid(u->valid),
-        _details(std::vector<std::string>(u->details, u->details + u->details_length)),
-        _description(u->description),
-        _status(u->status),
-        _error(u->error ? u->error : ""),
-        _stack(u->stack ? u->stack : "")
+      ValidationResponse(const validation_response* src) :
+        _valid(src->valid),
+        _details(std::vector<std::string>(src->details, src->details + src->details_length)),
+        _description(src->description),
+        _status(src->status),
+        _error(src->error ? src->error : ""),
+        _stack(src->stack ? src->stack : "")
         {};
-      ValidationResponse(const ValidationResponse& u) :
-        _valid(u._valid),
-        _details(u._details),
-        _description(u._description),
-        _status(u._status),
-        _error(u._error),
-        _stack(u._stack)
+      ValidationResponse(const ValidationResponse& src) :
+        _valid(src._valid),
+        _details(src._details),
+        _description(src._description),
+        _status(src._status),
+        _error(src._error),
+        _stack(src._stack)
         {};
 
       const bool valid() const;

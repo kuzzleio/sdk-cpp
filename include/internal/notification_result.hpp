@@ -26,44 +26,44 @@ namespace kuzzleio {
       const std::string _stack;
 
     public:
-      NotificationResult(const notification_result* r) :
-        _requestId(r->request_id),
-        _result(NotificationContent(r->result)),
-        _volatiles(r->volatiles),
-        _index(r->index),
-        _collection(r->collection),
-        _controller(r->controller),
-        _action(r->action),
-        _protocol(r->protocol),
-        _scope(r->scope),
-        _state(r->state),
-        _user(r->user),
-        _nType(r->n_type),
-        _roomId(r->room_id),
-        _timestamp(r->timestamp),
-        _status(r->status),
-        _error(r->error ? r->error : ""),
-        _stack(r->stack ? r->stack : "")
+      NotificationResult(const notification_result* src) :
+        _requestId(src->request_id),
+        _result(NotificationContent(src->result)),
+        _volatiles(src->volatiles),
+        _index(src->index),
+        _collection(src->collection),
+        _controller(src->controller),
+        _action(src->action),
+        _protocol(src->protocol),
+        _scope(src->scope),
+        _state(src->state),
+        _user(src->user),
+        _nType(src->n_type),
+        _roomId(src->room_id),
+        _timestamp(src->timestamp),
+        _status(src->status),
+        _error(src->error ? src->error : ""),
+        _stack(src->stack ? src->stack : "")
         {}
 
-      NotificationResult(const NotificationResult& r) :
-        _requestId(r._requestId),
-        _result(NotificationContent(r._result)),
-        _volatiles(r._volatiles),
-        _index(r._index),
-        _collection(r._collection),
-        _controller(r._controller),
-        _action(r._action),
-        _protocol(r._protocol),
-        _scope(r._scope),
-        _state(r._state),
-        _user(r._user),
-        _nType(r._nType),
-        _roomId(r._roomId),
-        _timestamp(r._timestamp),
-        _status(r._status),
-        _error(r._error),
-        _stack(r._stack)
+      NotificationResult(const NotificationResult& src) :
+        _requestId(src._requestId),
+        _result(NotificationContent(src._result)),
+        _volatiles(src._volatiles),
+        _index(src._index),
+        _collection(src._collection),
+        _controller(src._controller),
+        _action(src._action),
+        _protocol(src._protocol),
+        _scope(src._scope),
+        _state(src._state),
+        _user(src._user),
+        _nType(src._nType),
+        _roomId(src._roomId),
+        _timestamp(src._timestamp),
+        _status(src._status),
+        _error(src._error),
+        _stack(src._stack)
         {}
 
       const std::string &requestId() const;

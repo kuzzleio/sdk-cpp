@@ -28,20 +28,20 @@ namespace kuzzleio {
       const std::string _value;
 
     public:
-      UserRight(const user_right* r) :
-        _controller(r->controller),
-        _action(r->action),
-        _index(r->index),
-        _collection(r->collection),
-        _value(r->value)
+      UserRight(const user_right* src) :
+        _controller(src->controller),
+        _action(src->action),
+        _index(src->index),
+        _collection(src->collection),
+        _value(src->value)
         {};
-      UserRight(const UserRight& r) :
-        _controller(r._controller),
-        _action(r._action),
-        _index(r._index),
-        _collection(r._collection),
-        _value(r._value)
-        {}
+      UserRight(const UserRight& src) :
+        _controller(src._controller),
+        _action(src._action),
+        _index(src._index),
+        _collection(src._collection),
+        _value(src._value)
+        {};
 
       const std::string &controller() const;
 

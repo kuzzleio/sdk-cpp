@@ -22,33 +22,33 @@ namespace kuzzleio {
       const std::string _stack;
 
     public:
-      KuzzleResponse(const kuzzle_response* u) :
-        _requestId(u->request_id),
-        _result(u->result),
-        _volatiles(u->volatiles),
-        _index(u->index),
-        _collection(u->collection),
-        _controller(u->controller),
-        _action(u->action),
-        _roomId(u->room_id),
-        _channel(u->channel),
-        _status(u->status),
-        _error(u->error ? u->error : ""),
-        _stack(u->stack ? u->stack : "")
+      KuzzleResponse(const kuzzle_response* src) :
+        _requestId(src->request_id),
+        _result(src->result),
+        _volatiles(src->volatiles),
+        _index(src->index),
+        _collection(src->collection),
+        _controller(src->controller),
+        _action(src->action),
+        _roomId(src->room_id),
+        _channel(src->channel),
+        _status(src->status),
+        _error(src->error ? src->error : ""),
+        _stack(src->stack ? src->stack : "")
         {};
-      KuzzleResponse(const KuzzleResponse& u) :
-        _requestId(u._requestId),
-        _result(u._result),
-        _volatiles(u._volatiles),
-        _index(u._index),
-        _collection(u._collection),
-        _controller(u._controller),
-        _action(u._action),
-        _roomId(u._roomId),
-        _channel(u._channel),
-        _status(u._status),
-        _error(u._error),
-        _stack(u._stack)
+      KuzzleResponse(const KuzzleResponse& src) :
+        _requestId(src._requestId),
+        _result(src._result),
+        _volatiles(src._volatiles),
+        _index(src._index),
+        _collection(src._collection),
+        _controller(src._controller),
+        _action(src._action),
+        _roomId(src._roomId),
+        _channel(src._channel),
+        _status(src._status),
+        _error(src._error),
+        _stack(src._stack)
         {}
 
       const std::string &requestId() const;

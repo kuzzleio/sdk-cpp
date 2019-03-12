@@ -92,4 +92,22 @@ namespace kuzzleio {
     void QueryOptions::volatiles(const std::string &volatiles) {
         QueryOptions::_volatiles = volatiles;
     }
+
+    const query_options* QueryOptions::cpyStruct(const query_options* src) {
+        
+        query_options* dest = new query_options();
+        dest->queuable = src->queuable;
+        dest->withdist = src->withdist;
+        dest->withcoord = src->withcoord;
+        dest->from = src->from;
+        dest->size = src->size;
+        dest->scroll = src->scroll;
+        dest->scroll_id = src->scroll_id;
+        dest->refresh = src->refresh;
+        dest->if_exist = src->if_exist;
+        dest->retry_on_conflict = src->retry_on_conflict;
+        dest->volatiles = src->volatiles;
+
+        return dest;
+    }
 }

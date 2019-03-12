@@ -90,7 +90,10 @@ namespace kuzzleio {
         _kuzzle,
         req,
         const_cast<query_options*>(options.queryOptsC())))
-    return KuzzleResponse(r);
+
+    KuzzleResponse t(r);
+    kuzzle_free_kuzzle_response(r);
+    return t;
   }
 
   Kuzzle* Kuzzle::playQueue() noexcept {
