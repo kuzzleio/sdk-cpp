@@ -58,7 +58,6 @@ class CustomNotificationListener {
     CustomNotificationListener() {
       listener = [](std::shared_ptr<kuzzleio::notification_result> res) {
         ScenarioScope<KuzzleCtx> ctx;
-        std::cout << "received a notification: " << res->result->content << std::endl;
         ctx->notif_result = res;
       };
     };
