@@ -31,7 +31,6 @@ namespace kuzzleio {
             unsigned fetched() const;
 
             SearchResult(search_result* sr);
-            SearchResult(const SearchResult& sr) : _sr(sr._sr) {};
             virtual ~SearchResult();
             virtual const SearchResult next();
     };

@@ -71,7 +71,7 @@ namespace kuzzleio {
     return this->query(request, QueryOptions());
   }
 
-  char* const* vector_to_c(const std::vector<std::string> &vec) noexcept {
+  char* const* vectorToC(const std::vector<std::string> &vec) noexcept {
     char** cc = new char*[vec.size()];
     for(unsigned int i = 0; i < vec.size(); ++i)
     {
@@ -79,6 +79,17 @@ namespace kuzzleio {
       strcpy(cc[i], vec[i].c_str());
     }
     return cc;
+  }
+
+    const char* stringToC(const std::string& src) {
+      char *dest = (char*)malloc(sizeof(char) * src.length() + 1);
+      int i = 0;
+      for (char c : src) {
+        dest[i] = c;
+        i += 1;
+      }
+      dest[i] = '\0';
+      return dest;
   }
 
   KuzzleResponse Kuzzle::query(

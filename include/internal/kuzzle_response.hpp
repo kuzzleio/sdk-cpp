@@ -51,6 +51,8 @@ namespace kuzzleio {
         _stack(src._stack)
         {};
 
+      kuzzle_response *toC() const;
+
       const std::string &requestId() const;
 
       const std::string &result() const;
