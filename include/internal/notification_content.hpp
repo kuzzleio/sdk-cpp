@@ -9,7 +9,7 @@ namespace kuzzleio {
   class NotificationContent {
     private:
       const std::string _id;
-      const Meta* _meta;
+      const Meta* _meta = nullptr;
       const std::string _content;
       const int _count;
 
@@ -27,7 +27,7 @@ namespace kuzzleio {
         _count(src._count)
         {};
 
-      virtual inline ~NotificationContent() { if (_meta != nullptr)delete(_meta); };
+      virtual inline ~NotificationContent() { if (_meta != nullptr) delete(_meta); };
       
       const std::string &id() const;
 

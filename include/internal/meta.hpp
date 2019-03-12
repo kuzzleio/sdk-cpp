@@ -12,6 +12,7 @@ namespace kuzzleio {
       const std::string _updater;
       const bool _active;
       const uint64_t _deletedAt;
+
      public:
       Meta(const meta* src) :
         _author(src->author),
@@ -28,7 +29,7 @@ namespace kuzzleio {
         _updater(src._updater),
         _active(src._active),
         _deletedAt(src._deletedAt)
-        {}
+        {};
 
       const std::string &author() const;
 

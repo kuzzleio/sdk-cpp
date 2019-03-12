@@ -140,7 +140,7 @@ namespace {
     ScenarioScope<KuzzleCtx> ctx;
 
     try {
-      ctx->search_result = ctx->kuzzle->document->search(ctx->index, ctx->collection, "{\"query\": {\"bool\": {\"should\":[{\"match\":{\"_id\": \"" + document_id + "\"}}]}}}");
+      ctx->search_result = new SearchResult(ctx->kuzzle->document->search(ctx->index, ctx->collection, "{\"query\": {\"bool\": {\"should\":[{\"match\":{\"_id\": \"" + document_id + "\"}}]}}}"));
       ctx->success = 1;
     } catch (KuzzleException e) {
       BOOST_FAIL(e.what());
@@ -160,7 +160,7 @@ namespace {
       options.from = from;
       options.size = size;
 
-      ctx->search_result = ctx->kuzzle->document->search(ctx->index, ctx->collection, query, QueryOptions(&options));
+      ctx->search_result = new SearchResult(ctx->kuzzle->document->search(ctx->index, ctx->collection, query, QueryOptions(&options)));
     } catch (KuzzleException e) {
       BOOST_FAIL(e.what());
     }
@@ -171,7 +171,7 @@ namespace {
     ScenarioScope<KuzzleCtx> ctx;
 
     try {
-      ctx->search_result = ctx->search_result->next();
+      ctx->search_result = new SearchResult(ctx->search_result->next());
     } catch (KuzzleException e) {
       BOOST_FAIL(e.what());
     }

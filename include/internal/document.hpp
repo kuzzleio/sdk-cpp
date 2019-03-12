@@ -62,8 +62,8 @@ namespace kuzzleio {
             bool validate(const std::string& index, const std::string& collection, const std::string& document);
             bool validate(const std::string& index, const std::string& collection, const std::string& document, const QueryOptions& options);
 
-            std::shared_ptr<SearchResult> search(const std::string& index, const std::string& collection, const std::string& query);
-            std::shared_ptr<SearchResult> search(const std::string& index, const std::string& collection, const std::string& query, const QueryOptions& options);
+            SearchResult search(const std::string& index, const std::string& collection, const std::string& query);
+            SearchResult search(const std::string& index, const std::string& collection, const std::string& query, const QueryOptions& options);
 
             std::string mCreate(const std::string& index, const std::string& collection, const std::string& documents);
             std::string mCreate(const std::string& index, const std::string& collection, const std::string& documents, const QueryOptions& options);

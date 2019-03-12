@@ -53,7 +53,14 @@ namespace kuzzleio {
                 _volatiles(src._volatiles)
                 {};
 
-            QueryOptions() {};
+            QueryOptions() :
+            _queuable(false),
+            _withdist(false),
+            _withcoord(false),
+            _from(0),
+            _size(0),
+            _retryOnConflict(0)
+            {};
 
             const query_options* cpyStruct(const query_options* src);
 

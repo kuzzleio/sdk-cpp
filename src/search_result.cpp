@@ -22,7 +22,8 @@ namespace kuzzleio {
   }
 
   SearchResult::~SearchResult() {
-    kuzzle_free_search_result(_sr);
+    if (_sr != nullptr)
+      kuzzle_free_search_result(_sr);
   }
 
   char const* SearchResult::aggregations() const {
@@ -45,13 +46,10 @@ namespace kuzzleio {
     return _sr->total;
   }
 
-  std::shared_ptr<SearchResult> SearchResult::next() {
+  const SearchResult SearchResult::next() {
     search_result *sr = kuzzle_document_search_next(_sr);
 
-    if (sr == nullptr) {
-      return nullptr;
-    }
-
-    return std::make_shared<SearchResult>(sr);
+    SearchResult srCpp(sr);
+    return srCpp;
   }
 }

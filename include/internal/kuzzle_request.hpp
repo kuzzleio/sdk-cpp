@@ -55,6 +55,24 @@ namespace kuzzleio {
       bool _includeTrash;
 
   public:
+      KuzzleRequest() :
+        _from(0),
+        _size(0),
+        _expiresIn(0),
+        _start(0),
+        _stop(0),
+        _end(0),
+        _bit(0),
+        _lon(0),
+        _lat(0),
+        _distance(0),
+        _cursor(0),
+        _offset(0),
+        _idx(0),
+        _count(0),
+        _reset(false),
+        _includeTrash(false)
+        {};
       KuzzleRequest(const kuzzle_request* src) :
         _requestId(src->request_id),
         _controller(src->controller),
@@ -104,8 +122,6 @@ namespace kuzzleio {
         {};
 
       KuzzleRequest(const KuzzleRequest& src) : KuzzleRequest(src.toC()) {};
-
-      KuzzleRequest() {}
 
       const std::string &requestId() const;
 

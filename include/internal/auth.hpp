@@ -36,7 +36,6 @@ namespace kuzzleio {
       virtual ~Auth();
 
       const TokenValidity checkToken(const std::string& token) const;
-      //std::shared_ptr<TokenValidity> checkToken(const std::string& token);
 
       std::string createMyCredentials(const std::string& strategy, const std::string& credentials);
       std::string createMyCredentials(const std::string& strategy, const std::string& credentials, const QueryOptions& options);

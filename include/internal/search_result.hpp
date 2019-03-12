@@ -21,7 +21,7 @@
 namespace kuzzleio {
     class SearchResult {
         protected:
-            search_result* _sr;
+            search_result* _sr = nullptr;
 
         public:
             char const* aggregations() const;
@@ -31,8 +31,9 @@ namespace kuzzleio {
             unsigned fetched() const;
 
             SearchResult(search_result* sr);
+            SearchResult(const SearchResult& sr) : _sr(sr._sr) {};
             virtual ~SearchResult();
-            virtual std::shared_ptr<SearchResult> next();
+            virtual const SearchResult next();
     };
 }
 

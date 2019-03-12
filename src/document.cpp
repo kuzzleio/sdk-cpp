@@ -231,14 +231,16 @@ namespace kuzzleio {
     return ret;
   }
 
-  std::shared_ptr<SearchResult> Document::search(
+  SearchResult Document::search(
       const std::string& index,
       const std::string& collection,
       const std::string& query) {
-    return this->search(index, collection, query, QueryOptions());
+
+    SearchResult sr = SearchResult(this->search(index, collection, query, QueryOptions()));
+    return sr;
   }
 
-  std::shared_ptr<SearchResult> Document::search(
+  SearchResult Document::search(
       const std::string& index,
       const std::string& collection,
       const std::string& query,
@@ -251,11 +253,8 @@ namespace kuzzleio {
                                const_cast<char*>(query.c_str()),
                                const_cast<query_options*>(options.queryOptsC())))
 
-    if (r == nullptr) {
-      return nullptr;
-    }
-
-    return std::make_shared<SearchResult>(r);
+    SearchResult sr(r);
+    return sr;
   }
 
 

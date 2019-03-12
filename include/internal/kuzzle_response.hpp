@@ -49,7 +49,7 @@ namespace kuzzleio {
         _status(src._status),
         _error(src._error),
         _stack(src._stack)
-        {}
+        {};
 
       const std::string &requestId() const;
 
