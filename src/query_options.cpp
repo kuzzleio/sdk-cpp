@@ -1,6 +1,27 @@
 #include "internal/query_options.hpp"
 
 namespace kuzzleio {
+
+    QueryOptions::QueryOptions(const QueryOptions &src) {
+        _qo = new query_options();
+        _qo->queuable = src.queuable();
+        _qo->withdist = src.withdist();
+        _qo->withcoord = src.withcoord();
+        _qo->from = src.from();
+        _qo->size = src.size();
+        _qo->scroll = new char[strlen(src.scroll()) + 1];
+        _qo->scroll = strcpy(const_cast<char*>(_qo->scroll), src.scroll());
+        _qo->scroll_id = new char[strlen(src.scrollId()) + 1];
+        _qo->scroll_id = strcpy(const_cast<char*>(_qo->scroll_id), src.scrollId());
+        _qo->refresh = new char[strlen(src.refresh()) + 1];
+        _qo->refresh = strcpy(const_cast<char*>(_qo->refresh), src.refresh());
+        _qo->if_exist = new char[strlen(src.ifExist()) + 1];
+        _qo->if_exist = strcpy(const_cast<char*>(_qo->if_exist), src.ifExist());
+        _qo->volatiles = new char[strlen(src.volatiles()) + 1];
+        _qo->volatiles = strcpy(const_cast<char*>(_qo->volatiles), src.volatiles());
+        _qo->retry_on_conflict = src.retryOnConflict();
+    }
+
     query_options *QueryOptions::qo() const {
         return _qo;
     }
@@ -69,28 +90,28 @@ namespace kuzzleio {
         QueryOptions::_qo->size = size;
     }
 
-    void QueryOptions::scroll(const std::string &scroll) {
-        QueryOptions::_qo->scroll = stringToC(scroll);
+    void QueryOptions::scroll(const char* scroll) {
+        QueryOptions::_qo->scroll = scroll;
     }
 
-    void QueryOptions::scrollId(const std::string &scrollId) {
-        QueryOptions::_qo->scroll_id = stringToC(scrollId);
+    void QueryOptions::scrollId(const char* scrollId) {
+        QueryOptions::_qo->scroll_id = scrollId;
     }
 
-    void QueryOptions::refresh(const std::string &refresh) {
-        QueryOptions::_qo->refresh = stringToC(refresh);
+    void QueryOptions::refresh(const char* refresh) {
+        QueryOptions::_qo->refresh = refresh;
     }
 
-    void QueryOptions::ifExist(const std::string &ifExist) {
-        QueryOptions::_qo->if_exist = stringToC(ifExist);
+    void QueryOptions::ifExist(const char* ifExist) {
+        QueryOptions::_qo->if_exist = ifExist;
     }
 
     void QueryOptions::retryOnConflict(int retryOnConflict) {
         QueryOptions::_qo->retry_on_conflict = retryOnConflict;
     }
 
-    void QueryOptions::volatiles(const std::string &volatiles) {
-        QueryOptions::_qo->volatiles = stringToC(volatiles);
+    void QueryOptions::volatiles(const char* volatiles) {
+        QueryOptions::_qo->volatiles = volatiles;
     }
 
 }

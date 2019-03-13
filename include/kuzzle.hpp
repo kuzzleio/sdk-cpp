@@ -132,8 +132,6 @@ namespace kuzzleio {
           Event,
           SharedEventListener) noexcept override;
   };
-    char* const* vectorToC(const std::vector<std::string> &vec) noexcept;
-    const char* stringToC(const std::string& src);
 }
 
 #endif

@@ -8,6 +8,11 @@
 namespace kuzzleio {
   class KuzzleRequest {
     private:
+
+      char* const* vectorToC(const std::vector<std::string> &vec) noexcept;
+
+      const char* stringToC(const std::string& src);
+
       kuzzle_request* _kr = nullptr;
       std::string _requestId;
       std::string _controller;
@@ -124,7 +129,7 @@ namespace kuzzleio {
 
       KuzzleRequest(KuzzleRequest& src) : KuzzleRequest(src.toC()) {};
 
-      virtual inline ~KuzzleRequest() { if (_kr != nullptr) kuzzle_free_kuzzle_request(_kr); };
+      virtual inline ~KuzzleRequest() { /*if (_kr != nullptr) kuzzle_free_kuzzle_request(_kr); */};
 
       const std::string &requestId() const;
 

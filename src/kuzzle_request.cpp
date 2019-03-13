@@ -362,51 +362,76 @@ namespace kuzzleio {
             KuzzleRequest::_includeTrash = includeTrash;
     }
 
+    char* const* KuzzleRequest::vectorToC(const std::vector<std::string> &vec) noexcept {
+        if (!vec.size())
+            return NULL;
+        char** cc = new char*[vec.size()];
+        for(unsigned int i = 0; i < vec.size(); ++i)
+        {
+            cc[i] = new char[vec[i].size() + 1];
+            strcpy(cc[i], vec[i].c_str());
+        }
+        return cc;
+    }
+
+    const char* stringToC(const std::string& src) {
+        if (!src.size())
+            return NULL;
+        char *dest = new char[src.size() + 1];
+        unsigned int i = 0;
+        for (char c : src) {
+            dest[i] = c;
+            i += 1;
+        }
+        dest[i] = '\0';
+        return dest;
+    }
+
     kuzzle_request *KuzzleRequest::toC() {
 
         kuzzle_request *req = new kuzzle_request();
-        req->controller = stringToC(this->_controller);
-        req->action = stringToC(this->_action);
-        req->index = stringToC(this->_index);
-        req->collection = stringToC(this->_collection);
-        req->body = stringToC(this->_body);
-        req->id = stringToC(this->_id);
+        req->controller = this->_controller.c_str();
+        req->action = this->_action.c_str();
+        req->index = this->_index.c_str();
+        req->collection = this->_collection.c_str();
+        req->body = this->_body.c_str();
+        req->id = this->_id.c_str();
         req->from = this->_from;
         req->size = this->_size;
-        req->scroll = stringToC(this->_scroll);
-        req->scroll_id = stringToC(this->_scrollId);
-        req->strategy = stringToC(this->_strategy);
+        req->scroll = this->_scroll.c_str();
+        req->scroll_id = this->_scrollId.c_str();
+        req->strategy = this->_strategy.c_str();
         req->expires_in = this->_expiresIn;
-        req->volatiles = stringToC(this->_volatiles);
-        req->scope = stringToC(this->_scope);
-        req->state = stringToC(this->_state);
-        req->users = stringToC(this->_users);
+        req->volatiles = this->_volatiles.c_str();
+        req->scope = this->_scope.c_str();
+        req->state = this->_state.c_str();
+        req->users = this->_users.c_str();
         req->start = this->_start;
         req->stop = this->_stop;
         req->end = this->_end;
         req->bit = this->_bit;
-        req->member = stringToC(this->_member);
-        req->member1 = stringToC(this->_member1);
-        req->member2 = stringToC(this->_member2);
+        req->member = this->_member.c_str();
+        req->member1 = this->_member1.c_str();
+        req->member2 = this->_member2.c_str();
         req->members = vectorToC(this->_members);
         req->lon = this->_lon;
         req->lat = this->_lat;
         req->distance = this->_distance;
-        req->unit = stringToC(this->_unit);
+        req->unit = this->_unit.c_str();
         req->options = vectorToC(this->_options);
         req->keys = vectorToC(this->_keys);
         req->cursor = this->_cursor;
         req->offset = this->_offset;
-        req->field = stringToC(this->_field);
+        req->field = this->_field.c_str();
         req->fields = vectorToC(this->_fields);
-        req->subcommand = stringToC(this->_subcommand);
-        req->pattern = stringToC(this->_pattern);
+        req->subcommand = this->_subcommand.c_str();
+        req->pattern = this->_pattern.c_str();
         req->idx = this->_idx;
-        req->min = stringToC(this->_min);
-        req->max = stringToC(this->_max);
-        req->limit = stringToC(this->_limit);
+        req->min = this->_min.c_str();
+        req->max = this->_max.c_str();
+        req->limit = this->_limit.c_str();
         req->count = this->_count;
-        req->match = stringToC(this->_match);
+        req->match = this->_match.c_str();
         req->reset = this->_reset;
         req->include_trash = this->_includeTrash;
 

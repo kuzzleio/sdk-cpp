@@ -10,22 +10,19 @@ namespace kuzzleio {
     class QueryOptions {
         private:
             query_options* _qo = nullptr;
-
         public:
 
             QueryOptions(query_options* src) :
                 _qo(src)
                 {};
 
-            QueryOptions(const QueryOptions& src) :
-                _qo(src._qo)
-                {};
+            QueryOptions(const QueryOptions& src);
 
             QueryOptions() :
                 _qo(new query_options())
                 {};
-
-            virtual inline ~QueryOptions() { if (_qo != nullptr) kuzzle_free_query_options(_qo); };
+                                                        //invalid pointer ???
+            virtual inline ~QueryOptions() { /*if (_qo != nullptr) kuzzle_free_query_options(_qo); */};
 
             query_options *qo() const;
 
@@ -61,17 +58,17 @@ namespace kuzzleio {
 
             void size(long size);
 
-            void scroll(const std::string &scroll);
+            void scroll(const char* scroll);
 
-            void scrollId(const std::string &scrollId);
+            void scrollId(const char* scrollId);
 
-            void refresh(const std::string &refresh);
+            void refresh(const char* refresh);
 
-            void ifExist(const std::string &ifExist);
+            void ifExist(const char* ifExist);
 
             void retryOnConflict(int retryOnConflict);
 
-            void volatiles(const std::string &volatiles);
+            void volatiles(const char* volatiles);
     };
 }
 
