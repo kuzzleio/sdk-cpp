@@ -162,4 +162,8 @@ namespace kuzzleio {
   bool WebSocket::isSslConnection() {
     return kuzzle_websocket_is_ssl_connection(this->_web_socket);
   }
+
+  bool WebSocket::isReady() {
+    return getState() == KUZZLE_STATE_CONNECTED;
+  }
 }
