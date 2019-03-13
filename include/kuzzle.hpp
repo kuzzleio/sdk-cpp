@@ -95,7 +95,7 @@ namespace kuzzleio {
 
       void connect();
 
-      std::string jwt() noexcept;
+      const std::string& jwt() const noexcept;
       void disconnect() noexcept;
       kuzzle_response* query(const kuzzle_request& request);
       kuzzle_response* query(
@@ -106,17 +106,17 @@ namespace kuzzleio {
       Kuzzle* startQueuing() noexcept;
       Kuzzle* stopQueuing() noexcept;
       Kuzzle* flushQueue() noexcept;
-      bool autoQueue() noexcept;
-      bool autoReconnect() noexcept;
-      bool autoResubscribe() noexcept;
-      bool autoReplay() noexcept;
-      int queueMaxSize() noexcept;
-      int queueTTL() noexcept;
-      int replayInterval() noexcept;
-      int reconnectionDelay() noexcept;
-      std::string volatiles() noexcept;
+      bool autoQueue() const noexcept;
+      bool autoReconnect() const noexcept;
+      bool autoResubscribe() const noexcept;
+      bool autoReplay() const noexcept;
+      int queueMaxSize() const noexcept;
+      int queueTTL() const noexcept;
+      int replayInterval() const noexcept;
+      int reconnectionDelay() const noexcept;
+      const std::string& volatiles() const noexcept;
       Kuzzle* volatiles(const std::string& volatiles) noexcept;
-      Protocol* getProtocol() noexcept;
+      Protocol* getProtocol() const noexcept;
 
       // event emitter overrides
       virtual KuzzleEventEmitter* addListener(
