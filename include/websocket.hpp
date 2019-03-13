@@ -37,6 +37,7 @@ namespace kuzzleio {
       virtual void unregisterSub(const std::string&) override;
       virtual void cancelSubs() override;
       virtual std::string getHost() override;
+      virtual bool isReady() override;
 
       // Getters
       unsigned int getPort();
