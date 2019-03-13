@@ -106,6 +106,14 @@ namespace kuzzleio {
       Kuzzle* startQueuing() noexcept;
       Kuzzle* stopQueuing() noexcept;
       Kuzzle* flushQueue() noexcept;
+      bool isAutoQueue() noexcept;
+      bool isAutoReconnect() noexcept;
+      bool isAutoResubscribe() noexcept;
+      bool isAutoReplay() noexcept;
+      int getQueueMaxSize() noexcept;
+      int getQueueTTL() noexcept;
+      int getReplayInterval() noexcept;
+      int getReconnectionDelay() noexcept;
       std::string getVolatile() noexcept;
       Kuzzle* setVolatile(const std::string& volatiles) noexcept;
       Protocol* getProtocol() noexcept;

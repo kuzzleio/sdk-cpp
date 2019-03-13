@@ -123,6 +123,38 @@ namespace kuzzleio {
     return static_cast<Protocol*>(this->_protocol->instance);
   }
 
+  bool Kuzzle::isAutoQueue() noexcept {
+    return kuzzle_get_auto_queue(_kuzzle);
+  }
+
+  bool Kuzzle::isAutoReconnect() noexcept {
+    return kuzzle_get_auto_reconnect(_kuzzle);
+  }
+
+  bool Kuzzle::isAutoResubscribe() noexcept {
+    return kuzzle_get_auto_resubscribe(_kuzzle);
+  }
+
+  bool Kuzzle::isAutoReplay() noexcept {
+    return kuzzle_get_auto_replay(_kuzzle);
+  }
+
+  int Kuzzle::getQueueMaxSize() noexcept {
+    return kuzzle_get_queue_max_size(_kuzzle);
+  }
+
+  int Kuzzle::getQueueTTL() noexcept {
+    return kuzzle_get_queue_ttl(_kuzzle);
+  }
+
+  int Kuzzle::getReplayInterval() noexcept {
+    return kuzzle_get_replay_interval(_kuzzle);
+  }
+
+  int Kuzzle::getReconnectionDelay() noexcept {
+    return kuzzle_get_reconnection_delay(_kuzzle);
+  }
+
   KuzzleEventEmitter* Kuzzle::addListener(Event event,
     SharedEventListener listener) noexcept {
 
