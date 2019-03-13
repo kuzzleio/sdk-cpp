@@ -39,8 +39,9 @@ namespace kuzzleio {
           const std::string& query, query_options * options,
           const std::string& requestId) = 0;
       virtual void close() = 0;
-      virtual int getState() =0 ;
+      virtual int getState() =0;
       virtual std::string getHost() = 0;
+      virtual bool isReady() =0;
 
       // to be overridden: though the NotificationListener storage is
       // handled by this class, you still need to send a subscribe request
