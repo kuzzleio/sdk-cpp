@@ -3,19 +3,20 @@
 
 namespace kuzzleio {
 
-    const std::string &NotificationContent::id() const {
-        return _id;
+    const char* NotificationContent::id() const {
+        return _nc->id;
     }
 
-    const Meta *NotificationContent::meta() const {
-        return _meta;
+    const Meta NotificationContent::meta() const {
+
+        return _nc->m ? Meta(_nc->m) : nullptr;
     }
 
-    const std::string &NotificationContent::content() const {
-        return _content;
+    const char* NotificationContent::content() const {
+        return _nc->content;
     }
 
     const int NotificationContent::count() const {
-        return _count;
+        return _nc->count;
     }
 }

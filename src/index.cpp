@@ -37,7 +37,7 @@ namespace kuzzleio {
     KUZZLE_API(error_result, r, kuzzle_index_create(
       _index,
       const_cast<char*>(index.c_str()),
-      const_cast<query_options*>(options.queryOptsC())))
+      const_cast<query_options*>(options.qo())))
 
     kuzzle_free_error_result(r);
   }
@@ -51,7 +51,7 @@ namespace kuzzleio {
     KUZZLE_API(error_result, r, kuzzle_index_delete(
       _index,
       const_cast<char*>(index.c_str()),
-      const_cast<query_options*>(options.queryOptsC())))
+      const_cast<query_options*>(options.qo())))
 
     kuzzle_free_error_result(r);
   }
@@ -71,7 +71,7 @@ namespace kuzzleio {
     KUZZLE_API(
       string_array_result,
       r,
-      kuzzle_index_mdelete(_index, indexes_array, indexes.size(), const_cast<query_options*>(options.queryOptsC())),
+      kuzzle_index_mdelete(_index, indexes_array, indexes.size(), const_cast<query_options*>(options.qo())),
       delete[] indexes_array
     )
 
@@ -90,7 +90,7 @@ namespace kuzzleio {
     KUZZLE_API(bool_result, r, kuzzle_index_exists(
       _index,
       const_cast<char*>(index.c_str()),
-      const_cast<query_options*>(options.queryOptsC())))
+      const_cast<query_options*>(options.qo())))
 
     bool ret = r->result;
     kuzzle_free_bool_result(r);
@@ -107,7 +107,7 @@ namespace kuzzleio {
     KUZZLE_API(error_result, r, kuzzle_index_refresh(
       _index,
       const_cast<char*>(index.c_str()),
-      const_cast<query_options*>(options.queryOptsC())))
+      const_cast<query_options*>(options.qo())))
 
     kuzzle_free_error_result(r);
   }
@@ -120,7 +120,7 @@ namespace kuzzleio {
   void Index::refreshInternal(const QueryOptions& options) {
     KUZZLE_API(error_result, r, kuzzle_index_refresh_internal(
       _index,
-      const_cast<query_options*>(options.queryOptsC())))
+      const_cast<query_options*>(options.qo())))
 
     kuzzle_free_error_result(r);
   }
@@ -135,7 +135,7 @@ namespace kuzzleio {
       _index,
       const_cast<char*>(index.c_str()),
       auto_refresh,
-      const_cast<query_options*>(options.queryOptsC())))
+      const_cast<query_options*>(options.qo())))
 
     kuzzle_free_error_result(r);
   }
@@ -149,7 +149,7 @@ namespace kuzzleio {
     KUZZLE_API(bool_result, r, kuzzle_index_get_auto_refresh(
       _index,
       const_cast<char*>(index.c_str()),
-      const_cast<query_options*>(options.queryOptsC())))
+      const_cast<query_options*>(options.qo())))
 
     bool ret = r->result;
     kuzzle_free_bool_result(r);
@@ -165,7 +165,7 @@ namespace kuzzleio {
   std::vector<std::string> Index::list(const QueryOptions& options) {
     KUZZLE_API(string_array_result, r, kuzzle_index_list(
       _index,
-      const_cast<query_options*>(options.queryOptsC())))
+      const_cast<query_options*>(options.qo())))
 
     std::vector<std::string> v = std::vector<std::string>(r->result, r->result + r->result_length);
     kuzzle_free_string_array_result(r);

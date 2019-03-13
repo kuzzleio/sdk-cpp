@@ -3,71 +3,71 @@
 
 namespace kuzzleio {
 
-    const std::string & NotificationResult::requestId() const {
-        return _requestId;
+    const char* NotificationResult::requestId() const {
+        return _nr->request_id;
     }
 
-    const NotificationContent & NotificationResult::result() const {
-        return _result;
+    const NotificationContent NotificationResult::result() const {
+        return _nr->result ? NotificationContent(_nr->result) : nullptr;
     }
 
-    const std::string & NotificationResult::volatiles() const {
-        return _volatiles;
+    const char* NotificationResult::volatiles() const {
+        return _nr->volatiles;
     }
 
-    const std::string & NotificationResult::index() const {
-        return _index;
+    const char* NotificationResult::index() const {
+        return _nr->index;
     }
 
-    const std::string & NotificationResult::collection() const {
-        return _collection;
+    const char* NotificationResult::collection() const {
+        return _nr->collection;
     }
 
-    const std::string & NotificationResult::controller() const {
-        return _controller;
+    const char* NotificationResult::controller() const {
+        return _nr->controller;
     }
 
-    const std::string & NotificationResult::action() const {
-        return _action;
+    const char* NotificationResult::action() const {
+        return _nr->action;
     }
 
-    const std::string & NotificationResult::protocol() const {
-        return _protocol;
+    const char* NotificationResult::protocol() const {
+        return _nr->protocol;
     }
 
-    const std::string & NotificationResult::scope() const {
-        return _scope;
+    const char* NotificationResult::scope() const {
+        return _nr->scope;
     }
 
-    const std::string & NotificationResult::state() const {
-        return _state;
+    const char* NotificationResult::state() const {
+        return _nr->state;
     }
 
-    const std::string & NotificationResult::user() const {
-        return _user;
+    const char* NotificationResult::user() const {
+        return _nr->user;
     }
 
-    const std::string & NotificationResult::nType() const {
-        return _nType;
+    const char* NotificationResult::nType() const {
+        return _nr->n_type;
     }
 
-    const std::string & NotificationResult::roomId() const {
-        return _roomId;
+    const char* NotificationResult::roomId() const {
+        return _nr->room_id;
     }
 
     const uint64_t NotificationResult::timestamp() const {
-        return _timestamp;
+        return _nr->timestamp;
     }
 
     const int NotificationResult::status() const {
-        return _status;
+        return _nr->status;
     }
 
-    const std::string & NotificationResult::error() const {
-        return _error;
+    const char* NotificationResult::error() const {
+        return _nr->error;
     }
 
-    const std::string & NotificationResult::stack() const {
-        return _stack;
+    const char* NotificationResult::stack() const {
+        return _nr->stack;
     }
 }

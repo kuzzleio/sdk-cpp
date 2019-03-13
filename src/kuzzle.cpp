@@ -81,30 +81,31 @@ namespace kuzzleio {
     return cc;
   }
 
-    const char* stringToC(const std::string& src) {
-      char *dest = (char*)malloc(sizeof(char) * src.length() + 1);
-      int i = 0;
-      for (char c : src) {
+  const char* stringToC(const std::string& src) {
+    if (!src.size())
+        return NULL;
+    char *dest = new char[src.size() + 1];
+    int i = 0;
+    for (char c : src) {
         dest[i] = c;
         i += 1;
-      }
-      dest[i] = '\0';
-      return dest;
+    }
+    dest[i] = '\0';
+    return dest;
   }
 
   KuzzleResponse Kuzzle::query(
       const KuzzleRequest& request,
       const QueryOptions& options) {
     
-    kuzzle_request *req = request.toC();
+    kuzzle_request *req = const_cast<KuzzleRequest&>(request).toC();
     KUZZLE_API(kuzzle_response, r, kuzzle_query(
         _kuzzle,
         req,
-        const_cast<query_options*>(options.queryOptsC())))
+        const_cast<query_options*>(options.qo())))
 
-    KuzzleResponse t(r);
-    kuzzle_free_kuzzle_response(r);
-    return t;
+    KuzzleResponse kr(r);
+    return kr;
   }
 
   Kuzzle* Kuzzle::playQueue() noexcept {

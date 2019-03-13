@@ -8,32 +8,23 @@
 namespace kuzzleio {
   class NotificationContent {
     private:
-      const std::string _id;
-      const Meta* _meta = nullptr;
-      const std::string _content;
-      const int _count;
+      notification_content* _nc = nullptr;
 
     public:
-      NotificationContent(const notification_content* src) :
-        _id(src->id),
-        _meta(src->m ? new Meta(src->m) : nullptr),
-        _content(src->content),
-        _count(src->count)
+      NotificationContent(notification_content* src) :
+        _nc(src)
         {};
       NotificationContent(const NotificationContent& src) :
-        _id(src._id),
-        _meta(src._meta),
-        _content(src._content),
-        _count(src._count)
+        _nc(src._nc)
         {};
 
-      virtual inline ~NotificationContent() { if (_meta != nullptr) delete(_meta); };
+      virtual inline ~NotificationContent() { if (_nc != nullptr) kuzzle_free_notification_content(_nc); };
       
-      const std::string &id() const;
+      const char* id() const;
 
-      const Meta *meta() const;
+      const Meta meta() const;
 
-      const std::string &content() const;
+      const char* content() const;
 
       const int count() const;;
   };

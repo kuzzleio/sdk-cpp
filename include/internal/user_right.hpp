@@ -21,37 +21,41 @@
 namespace kuzzleio {
   class UserRight {
     private:
-      const std::string _controller;
-      const std::string _action;
-      const std::string _index;
-      const std::string _collection;
-      const std::string _value;
+      user_right* _ur = nullptr;
+//      const std::string _controller;
+//      const std::string _action;
+//      const std::string _index;
+//      const std::string _collection;
+//      const std::string _value;
 
     public:
-      UserRight(const user_right* src) :
-        _controller(src->controller),
-        _action(src->action),
-        _index(src->index),
-        _collection(src->collection),
-        _value(src->value)
+      UserRight(user_right* src) :
+      _ur(src)
+//        _controller(src->controller),
+//        _action(src->action),
+//        _index(src->index),
+//        _collection(src->collection),
+//        _value(src->value)
         {};
       UserRight(const UserRight& src) :
-        _controller(src._controller),
-        _action(src._action),
-        _index(src._index),
-        _collection(src._collection),
-        _value(src._value)
+      _ur(src._ur)
+//        _controller(src._controller),
+//        _action(src._action),
+//        _index(src._index),
+//        _collection(src._collection),
+//        _value(src._value)
         {};
 
-      const std::string &controller() const;
+      virtual inline ~UserRight() { if (_ur != nullptr) kuzzle_free_user_right(_ur); };
+      const char* controller() const;
 
-      const std::string &action() const;
+      const char* action() const;
 
-      const std::string &index() const;
+      const char* index() const;
 
-      const std::string &collection() const;
+      const char* collection() const;
 
-      const std::string &value() const;;
+      const char* value() const;;
   };
 }
 

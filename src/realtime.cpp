@@ -58,7 +58,7 @@ namespace kuzzleio {
     KUZZLE_API(int_result, r, kuzzle_realtime_count(
       _realtime,
       const_cast<char*>(room_id.c_str()),
-      const_cast<query_options*>(options.queryOptsC())))
+      const_cast<query_options*>(options.qo())))
 
     int ret = r->result;
     kuzzle_free_int_result(r);
@@ -87,7 +87,7 @@ namespace kuzzleio {
         const_cast<char*>(index.c_str()),
         const_cast<char*>(collection.c_str()),
         const_cast<char*>(body.c_str()),
-        const_cast<query_options*>(options.queryOptsC())))
+        const_cast<query_options*>(options.qo())))
 
     kuzzle_free_error_result(r);
   }
@@ -133,7 +133,7 @@ namespace kuzzleio {
       error_result,
       r,
       kuzzle_realtime_unsubscribe(_realtime, const_cast<char*>(room_id.c_str()),
-                                  const_cast<query_options*>(options.queryOptsC())))
+                                  const_cast<query_options*>(options.qo())))
 
     _listener_instances[room_id] = nullptr;
     kuzzle_free_error_result(r);

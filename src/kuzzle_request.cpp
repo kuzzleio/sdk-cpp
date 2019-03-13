@@ -362,7 +362,8 @@ namespace kuzzleio {
             KuzzleRequest::_includeTrash = includeTrash;
     }
 
-    kuzzle_request *KuzzleRequest::toC() const {
+    kuzzle_request *KuzzleRequest::toC() {
+
         kuzzle_request *req = new kuzzle_request();
         req->controller = stringToC(this->_controller);
         req->action = stringToC(this->_action);
@@ -409,8 +410,9 @@ namespace kuzzleio {
         req->reset = this->_reset;
         req->include_trash = this->_includeTrash;
 
+        if (_kr != nullptr)
+            kuzzle_free_kuzzle_request(_kr);
+        _kr = req;
         return req;
     }
-
-
 }

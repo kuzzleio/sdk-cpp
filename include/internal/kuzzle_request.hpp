@@ -8,6 +8,7 @@
 namespace kuzzleio {
   class KuzzleRequest {
     private:
+      kuzzle_request* _kr = nullptr;
       std::string _requestId;
       std::string _controller;
       std::string _action;
@@ -121,7 +122,9 @@ namespace kuzzleio {
         _includeTrash(src->include_trash)
         {};
 
-      KuzzleRequest(const KuzzleRequest& src) : KuzzleRequest(src.toC()) {};
+      KuzzleRequest(KuzzleRequest& src) : KuzzleRequest(src.toC()) {};
+
+      virtual inline ~KuzzleRequest() { if (_kr != nullptr) kuzzle_free_kuzzle_request(_kr); };
 
       const std::string &requestId() const;
 
@@ -303,7 +306,7 @@ namespace kuzzleio {
 
       void includeTrash(bool includeTrash);
 
-      kuzzle_request* toC() const;
+      kuzzle_request* toC();
   };
 }
 

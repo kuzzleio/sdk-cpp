@@ -3,23 +3,23 @@
 
 namespace kuzzleio {
 
-    const std::string& UserRight::controller() const {
-        return _controller;
+    const char* UserRight::controller() const {
+        return _ur->controller;
     }
 
-    const std::string& UserRight::action() const {
-        return _action;
+    const char* UserRight::action() const {
+        return _ur->action;
     }
 
-    const std::string& UserRight::index() const {
-        return _index;
+    const char* UserRight::index() const {
+        return _ur->index;
     }
 
-    const std::string& UserRight::collection() const {
-        return _collection;
+    const char* UserRight::collection() const {
+        return _ur->collection;
     }
 
-    const std::string& UserRight::value() const {
-        return _value;
+    const char* UserRight::value() const {
+        return _ur->value;
     }
 }

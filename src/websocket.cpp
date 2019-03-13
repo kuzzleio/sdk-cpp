@@ -92,7 +92,7 @@ namespace kuzzleio {
       QueryOptions *options,
       const std::string& request_id) {
     return kuzzle_websocket_send(this->_web_socket,
-                                 const_cast<char*>(query.c_str()), const_cast<query_options*>(options->queryOptsC()),
+                                 const_cast<char*>(query.c_str()), const_cast<query_options*>(options->qo()),
                                  const_cast<char*>(request_id.c_str()));
   }
 

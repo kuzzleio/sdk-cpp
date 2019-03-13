@@ -1,113 +1,96 @@
 #include "internal/query_options.hpp"
 
 namespace kuzzleio {
-    const query_options *QueryOptions::queryOptsC() const {
-        return _queryOptsC;
+    query_options *QueryOptions::qo() const {
+        return _qo;
     }
 
     bool QueryOptions::queuable() const {
-        return _queuable;
+        return _qo->queuable;
     }
 
     bool QueryOptions::withdist() const {
-        return _withdist;
+        return _qo->withdist;
     }
 
     bool QueryOptions::withcoord() const {
-        return _withcoord;
+        return _qo->withcoord;
     }
 
     long QueryOptions::from() const {
-        return _from;
+        return _qo->from;
     }
 
     long QueryOptions::size() const {
-        return _size;
+        return _qo->size;
     }
 
-    const std::string &QueryOptions::scroll() const {
-        return _scroll;
+    const char* QueryOptions::scroll() const {
+        return _qo->scroll;
     }
 
-    const std::string &QueryOptions::scrollId() const {
-        return _scrollId;
+    const char* QueryOptions::scrollId() const {
+        return _qo->scroll_id;
     }
 
-    const std::string &QueryOptions::refresh() const {
-        return _refresh;
+    const char* QueryOptions::refresh() const {
+        return _qo->refresh;
     }
 
-    const std::string &QueryOptions::ifExist() const {
-        return _ifExist;
+    const char* QueryOptions::ifExist() const {
+        return _qo->if_exist;
     }
 
     int QueryOptions::retryOnConflict() const {
-        return _retryOnConflict;
+        return _qo->retry_on_conflict;
     }
 
-    const std::string &QueryOptions::volatiles() const {
-        return _volatiles;
+    const char* QueryOptions::volatiles() const {
+        return _qo->volatiles;
     }
 
     void QueryOptions::queuable(bool queuable) {
-        QueryOptions::_queuable = queuable;
+        QueryOptions::_qo->queuable = queuable;
     }
 
     void QueryOptions::withdist(bool withdist) {
-        QueryOptions::_withdist = withdist;
+        QueryOptions::_qo->withdist = withdist;
     }
 
     void QueryOptions::withcoord(bool withcoord) {
-        QueryOptions::_withcoord = withcoord;
+        QueryOptions::_qo->withcoord = withcoord;
     }
 
     void QueryOptions::from(long from) {
-        QueryOptions::_from = from;
+        QueryOptions::_qo->from = from;
     }
 
     void QueryOptions::size(long size) {
-        QueryOptions::_size = size;
+        QueryOptions::_qo->size = size;
     }
 
     void QueryOptions::scroll(const std::string &scroll) {
-        QueryOptions::_scroll = scroll;
+        QueryOptions::_qo->scroll = stringToC(scroll);
     }
 
     void QueryOptions::scrollId(const std::string &scrollId) {
-        QueryOptions::_scrollId = scrollId;
+        QueryOptions::_qo->scroll_id = stringToC(scrollId);
     }
 
     void QueryOptions::refresh(const std::string &refresh) {
-        QueryOptions::_refresh = refresh;
+        QueryOptions::_qo->refresh = stringToC(refresh);
     }
 
     void QueryOptions::ifExist(const std::string &ifExist) {
-        QueryOptions::_ifExist = ifExist;
+        QueryOptions::_qo->if_exist = stringToC(ifExist);
     }
 
     void QueryOptions::retryOnConflict(int retryOnConflict) {
-        QueryOptions::_retryOnConflict = retryOnConflict;
+        QueryOptions::_qo->retry_on_conflict = retryOnConflict;
     }
 
     void QueryOptions::volatiles(const std::string &volatiles) {
-        QueryOptions::_volatiles = volatiles;
+        QueryOptions::_qo->volatiles = stringToC(volatiles);
     }
 
-    const query_options* QueryOptions::cpyStruct(const query_options* src) {
-        
-        query_options* dest = new query_options();
-        dest->queuable = src->queuable;
-        dest->withdist = src->withdist;
-        dest->withcoord = src->withcoord;
-        dest->from = src->from;
-        dest->size = src->size;
-        dest->scroll = src->scroll;
-        dest->scroll_id = src->scroll_id;
-        dest->refresh = src->refresh;
-        dest->if_exist = src->if_exist;
-        dest->retry_on_conflict = src->retry_on_conflict;
-        dest->volatiles = src->volatiles;
-
-        return dest;
-    }
 }

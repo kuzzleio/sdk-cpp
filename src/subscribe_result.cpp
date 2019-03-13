@@ -3,23 +3,23 @@
 
 namespace kuzzleio {
 
-    const std::string &SubscribeResult::room() const {
-        return _room;
+    const char* SubscribeResult::room() const {
+        return _sr->room;
     }
 
-    const std::string &SubscribeResult::channel() const {
-        return _channel;
+    const char* SubscribeResult::channel() const {
+        return _sr->channel;
     }
 
     const int SubscribeResult::status() const {
-        return _status;
+        return _sr->status;
     }
 
-    const std::string &SubscribeResult::error() const {
-        return _error;
+    const char* SubscribeResult::error() const {
+        return _sr->error;
     }
 
-    const std::string &SubscribeResult::stack() const {
-        return _stack;
+    const char* SubscribeResult::stack() const {
+        return _sr->stack;
     }
 }

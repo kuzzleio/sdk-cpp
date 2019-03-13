@@ -8,37 +8,27 @@
 namespace kuzzleio {
   class SubscribeResult {
     private:
-      const std::string _room;
-      const std::string _channel;
-      const int _status;
-      const std::string _error;
-      const std::string _stack;
+      subscribe_result* _sr = nullptr;
 
     public:
-      SubscribeResult(const subscribe_result* src) :
-        _room(src->room),
-        _channel(src->channel),
-        _status(src->status),
-        _error(src->error ? src->error : ""),
-        _stack(src->stack ? src->stack : "")
+      SubscribeResult(subscribe_result* src) :
+        _sr(src)
         {};
       SubscribeResult(const SubscribeResult& src) :
-        _room(src._room),
-        _channel(src._channel),
-        _status(src._status),
-        _error(src._error),
-        _stack(src._stack)
+        _sr(src._sr)
         {};
 
-      const std::string &room() const;
+      virtual inline ~SubscribeResult() { if (_sr != nullptr) kuzzle_free_subscribe_result(_sr); };
 
-      const std::string &channel() const;
+      const char* room() const;
+
+      const char* channel() const;
 
       const int status() const;
 
-      const std::string &error() const;
+      const char* error() const;
 
-      const std::string &stack() const;;
+      const char* stack() const;;
   };
 }
 

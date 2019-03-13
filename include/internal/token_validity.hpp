@@ -15,7 +15,7 @@ namespace kuzzleio {
       const std::string _error;
       const std::string _stack;
 
-      TokenValidity(const token_validity* src) :
+      TokenValidity(token_validity* src) :
         _valid(src->valid),
         _state(src->state),
         _expiresAt(src->expires_at),
