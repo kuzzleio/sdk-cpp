@@ -86,7 +86,7 @@ namespace kuzzleio {
     return this;
   }
 
-  Kuzzle* Kuzzle::setAutoReplay(bool auto_replay) noexcept {
+  Kuzzle* Kuzzle::autoReplay(bool auto_replay) noexcept {
     kuzzle_set_auto_replay(_kuzzle, auto_replay);
     return this;
   }
@@ -106,12 +106,12 @@ namespace kuzzleio {
     return this;
   }
 
-  Kuzzle* Kuzzle::setVolatile(const std::string& volatile_data) noexcept {
+  Kuzzle* Kuzzle::volatiles(const std::string& volatile_data) noexcept {
     kuzzle_set_volatile(_kuzzle, const_cast<char*>(volatile_data.c_str()));
     return this;
   }
 
-  std::string Kuzzle::getVolatile() noexcept {
+  std::string Kuzzle::volatiles() noexcept {
     return std::string(kuzzle_get_volatile(_kuzzle));
   }
 
@@ -123,35 +123,35 @@ namespace kuzzleio {
     return static_cast<Protocol*>(this->_protocol->instance);
   }
 
-  bool Kuzzle::isAutoQueue() noexcept {
+  bool Kuzzle::autoQueue() noexcept {
     return kuzzle_get_auto_queue(_kuzzle);
   }
 
-  bool Kuzzle::isAutoReconnect() noexcept {
+  bool Kuzzle::autoReconnect() noexcept {
     return kuzzle_get_auto_reconnect(_kuzzle);
   }
 
-  bool Kuzzle::isAutoResubscribe() noexcept {
+  bool Kuzzle::autoResubscribe() noexcept {
     return kuzzle_get_auto_resubscribe(_kuzzle);
   }
 
-  bool Kuzzle::isAutoReplay() noexcept {
+  bool Kuzzle::autoReplay() noexcept {
     return kuzzle_get_auto_replay(_kuzzle);
   }
 
-  int Kuzzle::getQueueMaxSize() noexcept {
+  int Kuzzle::queueMaxSize() noexcept {
     return kuzzle_get_queue_max_size(_kuzzle);
   }
 
-  int Kuzzle::getQueueTTL() noexcept {
+  int Kuzzle::queueTTL() noexcept {
     return kuzzle_get_queue_ttl(_kuzzle);
   }
 
-  int Kuzzle::getReplayInterval() noexcept {
+  int Kuzzle::replayInterval() noexcept {
     return kuzzle_get_replay_interval(_kuzzle);
   }
 
-  int Kuzzle::getReconnectionDelay() noexcept {
+  int Kuzzle::reconnectionDelay() noexcept {
     return kuzzle_get_reconnection_delay(_kuzzle);
   }
 

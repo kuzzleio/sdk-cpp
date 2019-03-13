@@ -102,20 +102,20 @@ namespace kuzzleio {
           const kuzzle_request& request,
           const query_options& options);
       Kuzzle* playQueue() noexcept;
-      Kuzzle* setAutoReplay(bool autoReplay) noexcept;
+      Kuzzle* autoReplay(bool autoReplay) noexcept;
       Kuzzle* startQueuing() noexcept;
       Kuzzle* stopQueuing() noexcept;
       Kuzzle* flushQueue() noexcept;
-      bool isAutoQueue() noexcept;
-      bool isAutoReconnect() noexcept;
-      bool isAutoResubscribe() noexcept;
-      bool isAutoReplay() noexcept;
-      int getQueueMaxSize() noexcept;
-      int getQueueTTL() noexcept;
-      int getReplayInterval() noexcept;
-      int getReconnectionDelay() noexcept;
-      std::string getVolatile() noexcept;
-      Kuzzle* setVolatile(const std::string& volatiles) noexcept;
+      bool autoQueue() noexcept;
+      bool autoReconnect() noexcept;
+      bool autoResubscribe() noexcept;
+      bool autoReplay() noexcept;
+      int queueMaxSize() noexcept;
+      int queueTTL() noexcept;
+      int replayInterval() noexcept;
+      int reconnectionDelay() noexcept;
+      std::string volatiles() noexcept;
+      Kuzzle* volatiles(const std::string& volatiles) noexcept;
       Protocol* getProtocol() noexcept;
 
       // event emitter overrides
