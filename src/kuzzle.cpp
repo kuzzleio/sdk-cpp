@@ -115,7 +115,7 @@ namespace kuzzleio {
     return std::string(kuzzle_get_volatile(_kuzzle));
   }
 
-  std::string Kuzzle::getJwt() noexcept {
+  std::string Kuzzle::jwt() noexcept {
     return std::string(kuzzle_get_jwt(_kuzzle));
   }
 

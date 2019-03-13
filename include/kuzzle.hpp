@@ -95,7 +95,7 @@ namespace kuzzleio {
 
       void connect();
 
-      std::string getJwt() noexcept;
+      std::string jwt() noexcept;
       void disconnect() noexcept;
       kuzzle_response* query(const kuzzle_request& request);
       kuzzle_response* query(
