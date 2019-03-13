@@ -103,6 +103,10 @@ namespace kuzzleio {
     return static_cast<Protocol*>(_p)->getHost().c_str();
   }
 
+  bool bridge_cpp_is_ready(void *_p) {
+    return static_cast<Protocol*>(_p)->isReady();
+  }
+
   protocol* new_protocol_bridge(Protocol * cppProtocol) {
     protocol *p = new protocol();
 
@@ -121,6 +125,7 @@ namespace kuzzleio {
     p->cancel_subs = bridge_cpp_cancel_subs;
     p->remove_all_listeners = bridge_cpp_remove_all_listeners;
     p->get_host = bridge_cpp_get_host;
+    p->is_ready = bridge_cpp_is_ready;
 
     return p;
   }
