@@ -38,6 +38,7 @@
 #include "internal/user_right.hpp"
 #include "internal/user.hpp"
 
+namespace kuzzleio {
 /*
  * Macro used by controller actions.
  * This standardizes and DRYifies the following process, making sure
@@ -67,7 +68,6 @@
     throwKuzzleException(status, err); \
   }
 
-namespace kuzzleio {
   class Collection;
   class Document;
   class Auth;
