@@ -47,6 +47,7 @@
 #include "internal/kuzzle_request.hpp"
 #include "internal/query_options.hpp"
 
+namespace kuzzleio {
 /*
  * Macro used by controller actions.
  * This standardizes and DRYifies the following process, making sure
@@ -76,7 +77,6 @@
     throwKuzzleException(status, err); \
   }
 
-namespace kuzzleio {
   class Collection;
   class Document;
   class Auth;
@@ -104,20 +104,28 @@ namespace kuzzleio {
 
       void connect();
 
-      std::string getJwt() noexcept;
+      const std::string& jwt() const noexcept;
       void disconnect() noexcept;
       KuzzleResponse query(const KuzzleRequest& request);
       KuzzleResponse query(
           const KuzzleRequest& request,
           const QueryOptions& options);
       Kuzzle* playQueue() noexcept;
-      Kuzzle* setAutoReplay(bool autoReplay) noexcept;
+      Kuzzle* autoReplay(bool autoReplay) noexcept;
       Kuzzle* startQueuing() noexcept;
       Kuzzle* stopQueuing() noexcept;
       Kuzzle* flushQueue() noexcept;
-      std::string getVolatile() noexcept;
-      Kuzzle* setVolatile(const std::string& volatiles) noexcept;
-      Protocol* getProtocol() noexcept;
+      bool autoQueue() const noexcept;
+      bool autoReconnect() const noexcept;
+      bool autoResubscribe() const noexcept;
+      bool autoReplay() const noexcept;
+      int queueMaxSize() const noexcept;
+      int queueTTL() const noexcept;
+      int replayInterval() const noexcept;
+      int reconnectionDelay() const noexcept;
+      const std::string& volatiles() const noexcept;
+      Kuzzle* volatiles(const std::string& volatiles) noexcept;
+      Protocol* getProtocol() const noexcept;
 
 
       // event emitter overrides

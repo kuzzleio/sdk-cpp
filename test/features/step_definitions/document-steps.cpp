@@ -9,12 +9,12 @@ namespace {
     ScenarioScope<KuzzleCtx> ctx;
 
     try {
-      query_options options;
+      kuzzleio::query_options options;
       options.refresh = const_cast<char*>("wait_for");
 
       ctx->kuzzle->document->create(ctx->index, ctx->collection, document_id, "{\"a\":\"document\"}", QueryOptions(&options));
       ctx->success = 1;
-    } catch (KuzzleException e) {
+    } catch (kuzzleio::KuzzleException e) {
       ctx->success = 0;
       ctx->error_message = e.what();
     }
@@ -43,7 +43,7 @@ namespace {
     ScenarioScope<KuzzleCtx> ctx;
 
     try {
-      query_options options;
+      kuzzleio::query_options options;
       options.refresh = const_cast<char*>("wait_for");
 
       ctx->kuzzle->document->delete_(ctx->index, ctx->collection, document_id, QueryOptions(&options));
@@ -59,13 +59,13 @@ namespace {
     ScenarioScope<KuzzleCtx> ctx;
 
     try {
-      query_options options;
+      kuzzleio::query_options options;
       options.refresh = const_cast<char*>("wait_for");
 
       ctx->kuzzle->document->createOrReplace(ctx->index, ctx->collection, document_id, "{\"a\":\"replaced document\"}", QueryOptions(&options));
       ctx->document_id = document_id;
       ctx->success = 1;
-    } catch (KuzzleException e) {
+    } catch (kuzzleio::KuzzleException e) {
       BOOST_FAIL(e.what());
     }
   }
@@ -74,7 +74,8 @@ namespace {
   {
     ScenarioScope<KuzzleCtx> ctx;
 
-    string document = ctx->kuzzle->document->get(ctx->index, ctx->collection, ctx->document_id);
+    std::string document = ctx->kuzzle->document->get(
+        ctx->index, ctx->collection, ctx->document_id);
 
     BOOST_CHECK(ctx->success == 1);
     BOOST_CHECK(document.find("replaced document") != std::string::npos);
@@ -87,13 +88,13 @@ namespace {
     ScenarioScope<KuzzleCtx> ctx;
 
     try {
-      query_options options;
+      kuzzleio::query_options options;
       options.refresh = const_cast<char*>("wait_for");
 
       ctx->kuzzle->document->replace(ctx->index, ctx->collection, document_id, "{\"a\":\"replaced document\"}", QueryOptions(&options));
       ctx->document_id = document_id;
       ctx->success = 1;
-    } catch (KuzzleException e) {
+    } catch (kuzzleio::KuzzleException e) {
       BOOST_FAIL(e.what());
     }
   }
@@ -112,13 +113,13 @@ namespace {
     ScenarioScope<KuzzleCtx> ctx;
 
     try {
-      query_options options;
+      kuzzleio::query_options options;
       options.refresh = const_cast<char*>("wait_for");
 
       ctx->kuzzle->document->update(ctx->index, ctx->collection, document_id, "{\"a\":\"updated document\"}", QueryOptions(&options));
       ctx->document_id = document_id;
       ctx->success = 1;
-    } catch (KuzzleException e) {
+    } catch (kuzzleio::KuzzleException e) {
       BOOST_FAIL(e.what());
     }
   }
@@ -127,7 +128,8 @@ namespace {
   {
     ScenarioScope<KuzzleCtx> ctx;
 
-    string document = ctx->kuzzle->document->get(ctx->index, ctx->collection, ctx->document_id);
+    std::string document = ctx->kuzzle->document->get(
+        ctx->index, ctx->collection, ctx->document_id);
 
     BOOST_CHECK(ctx->success == 1);
     BOOST_CHECK(document.find("updated document") != std::string::npos);
@@ -138,11 +140,13 @@ namespace {
     REGEX_PARAM(std::string, document_id);
 
     ScenarioScope<KuzzleCtx> ctx;
+    std::string squery = R"%({"query":{"bool":{"should":[{"match":{"_id": ")%"
+        + document_id + R"%("}}]}}})%";
 
     try {
       ctx->search_result = new SearchResult(ctx->kuzzle->document->search(ctx->index, ctx->collection, "{\"query\": {\"bool\": {\"should\":[{\"match\":{\"_id\": \"" + document_id + "\"}}]}}}"));
       ctx->success = 1;
-    } catch (KuzzleException e) {
+    } catch (kuzzleio::KuzzleException e) {
       BOOST_FAIL(e.what());
     }
   }
@@ -196,8 +200,9 @@ namespace {
     ScenarioScope<KuzzleCtx> ctx;
 
     try {
-      ctx->hits = ctx->kuzzle->document->count(ctx->index, ctx->collection, "{}");
-    } catch (KuzzleException e) {
+      ctx->hits = ctx->kuzzle->document->count(
+          ctx->index, ctx->collection, "{}");
+    } catch (kuzzleio::KuzzleException e) {
       BOOST_FAIL(e.what());
     }
   }
@@ -210,20 +215,20 @@ namespace {
     ScenarioScope<KuzzleCtx> ctx;
 
     try {
-      query_options options;
+      kuzzleio::query_options options;
       options.refresh = const_cast<char*>("wait_for");
 
-      std::vector<string> document_ids;
+      std::vector<std::string> document_ids;
       document_ids.push_back(document1_id);
       document_ids.push_back(document2_id);
 
       ctx->kuzzle->document->mDelete(ctx->index, ctx->collection, document_ids, QueryOptions(&options));
       ctx->success = 1;
       ctx->partial_exception = 0;
-    } catch (PartialException e) {
+    } catch (kuzzleio::PartialException e) {
       ctx->partial_exception = 1;
       ctx->success = 0;
-    } catch (KuzzleException e) {
+    } catch (kuzzleio::KuzzleException e) {
       BOOST_FAIL(e.what());
     }
   }
@@ -235,8 +240,10 @@ namespace {
     ScenarioScope<KuzzleCtx> ctx;
 
     try {
-      BOOST_CHECK(ctx->kuzzle->document->count(ctx->index, ctx->collection, "{}") == documents_count);
-    } catch (KuzzleException e) {
+      unsigned int res = ctx->kuzzle->document->count(
+          ctx->index, ctx->collection, "{}");
+      BOOST_CHECK(res == documents_count);
+    } catch (kuzzleio::KuzzleException e) {
       BOOST_FAIL(e.what());
     }
   }
@@ -249,17 +256,17 @@ namespace {
     ScenarioScope<KuzzleCtx> ctx;
 
     try {
-      query_options options;
+      kuzzleio::query_options options;
       options.refresh = const_cast<char*>("wait_for");
 
       string documents = "[{\"_id\":\"" + document1_id + "\", \"body\":{}}, {\"_id\":\"" + document2_id + "\", \"body\":{}}]";
       ctx->kuzzle->document->mCreate(ctx->index, ctx->collection, documents, QueryOptions(&options));
       ctx->success = 1;
       ctx->partial_exception = 0;
-    } catch (PartialException e) {
+    } catch (kuzzleio::PartialException e) {
       ctx->partial_exception = 1;
       ctx->success = 0;
-    } catch (KuzzleException e) {
+    } catch (kuzzleio::KuzzleException e) {
       BOOST_FAIL(e.what());
     }
   }
@@ -272,17 +279,17 @@ namespace {
     ScenarioScope<KuzzleCtx> ctx;
 
     try {
-      query_options options;
+      kuzzleio::query_options options;
       options.refresh = const_cast<char*>("wait_for");
 
       string documents = "[{\"_id\":\"" + document1_id + "\", \"body\":{\"a\":\"replaced document\"}}, {\"_id\":\"" + document2_id + "\", \"body\":{\"a\":\"replaced document\"}}]";
       ctx->kuzzle->document->mReplace(ctx->index, ctx->collection, documents, QueryOptions(&options));
       ctx->success = 1;
       ctx->partial_exception = 0;
-    } catch (PartialException e) {
+    } catch (kuzzleio::PartialException e) {
       ctx->partial_exception = 1;
       ctx->success = 0;
-    } catch (KuzzleException e) {
+    } catch (kuzzleio::KuzzleException e) {
       BOOST_FAIL(e.what());
     }
   }
@@ -293,7 +300,8 @@ namespace {
 
     ScenarioScope<KuzzleCtx> ctx;
 
-    string document = ctx->kuzzle->document->get(ctx->index, ctx->collection, document_id);
+    std::string document = ctx->kuzzle->document->get(
+        ctx->index, ctx->collection, document_id);
 
     BOOST_CHECK(document.find("replaced document") != std::string::npos);
   }
@@ -306,17 +314,17 @@ namespace {
     ScenarioScope<KuzzleCtx> ctx;
 
     try {
-      query_options options;
+      kuzzleio::query_options options;
       options.refresh = const_cast<char*>("wait_for");
 
       string documents = "[{\"_id\":\"" + document1_id + "\", \"body\":{\"a\":\"replaced document\"}}, {\"_id\":\"" + document2_id + "\", \"body\":{\"a\":\"replaced document\"}}]";
       ctx->kuzzle->document->mUpdate(ctx->index, ctx->collection, documents, QueryOptions(&options));
       ctx->success = 1;
       ctx->partial_exception = 0;
-    } catch (PartialException e) {
+    } catch (kuzzleio::PartialException e) {
       ctx->partial_exception = 1;
       ctx->success = 0;
-    } catch (KuzzleException e) {
+    } catch (kuzzleio::KuzzleException e) {
       BOOST_FAIL(e.what());
     }
   }
@@ -327,7 +335,8 @@ namespace {
 
     ScenarioScope<KuzzleCtx> ctx;
 
-    string document = ctx->kuzzle->document->get(ctx->index, ctx->collection, document_id);
+    std::string document = ctx->kuzzle->document->get(
+        ctx->index, ctx->collection, document_id);
 
     BOOST_CHECK(document.find("replaced document") != std::string::npos);
   }
@@ -340,17 +349,17 @@ namespace {
     ScenarioScope<KuzzleCtx> ctx;
 
     try {
-      query_options options;
+      kuzzleio::query_options options;
       options.refresh = const_cast<char*>("wait_for");
 
       string documents = "[{\"_id\":\"" + document1_id + "\", \"body\":{\"a\":\"replaced document\"}}, {\"_id\":\"" + document2_id + "\", \"body\":{\"a\":\"replaced document\"}}]";
       ctx->kuzzle->document->mCreateOrReplace(ctx->index, ctx->collection, documents, QueryOptions(&options));
       ctx->success = 1;
       ctx->partial_exception = 0;
-    } catch (PartialException e) {
+    } catch (kuzzleio::PartialException e) {
       ctx->partial_exception = 1;
       ctx->success = 0;
-    } catch (KuzzleException e) {
+    } catch (kuzzleio::KuzzleException e) {
       BOOST_FAIL(e.what());
     }
   }
@@ -361,7 +370,8 @@ namespace {
 
     ScenarioScope<KuzzleCtx> ctx;
 
-    string document = ctx->kuzzle->document->get(ctx->index, ctx->collection, document_id);
+    std::string document = ctx->kuzzle->document->get(
+        ctx->index, ctx->collection, document_id);
 
     BOOST_CHECK(document.find("replaced document") != std::string::npos);
   }
@@ -372,7 +382,8 @@ namespace {
 
     ScenarioScope<KuzzleCtx> ctx;
 
-    ctx->success = ctx->kuzzle->document->exists(ctx->index, ctx->collection, document_id) ? 1 : 0;
+    ctx->success = ctx->kuzzle->document->exists(
+        ctx->index, ctx->collection, document_id) ? 1 : 0;
   }
 
   THEN("^the document should (not )?exist(s)?$")
@@ -395,13 +406,14 @@ namespace {
     ScenarioScope<KuzzleCtx> ctx;
 
     try {
-      std::vector<string> document_ids;
+      std::vector<std::string> document_ids;
       document_ids.push_back(document1_id);
       document_ids.push_back(document2_id);
 
-      ctx->content = ctx->kuzzle->document->mGet(ctx->index, ctx->collection, document_ids);
+      ctx->content = ctx->kuzzle->document->mGet(
+          ctx->index, ctx->collection, document_ids);
       ctx->success = 1;
-    } catch (KuzzleException e) {
+    } catch (kuzzleio::KuzzleException e) {
       ctx->success = 0;
     }
   }
