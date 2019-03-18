@@ -108,7 +108,6 @@ namespace {
         ctx->index,
         collection_id,
         "{}"));
-
     BOOST_CHECK(result.total() == 0);
   }
 

@@ -12,13 +12,7 @@ namespace {
       kuzzleio::query_options options;
       options.refresh = const_cast<char*>("wait_for");
 
-<<<<<<< HEAD
       ctx->kuzzle->document->create(ctx->index, ctx->collection, document_id, "{\"a\":\"document\"}", QueryOptions(&options));
-=======
-      ctx->kuzzle->document->create(
-          ctx->index, ctx->collection, document_id, R"%({"a":"document"})%",
-          options);
->>>>>>> 1-dev
       ctx->success = 1;
     } catch (kuzzleio::KuzzleException e) {
       ctx->success = 0;
@@ -51,15 +45,8 @@ namespace {
     try {
       kuzzleio::query_options options;
       options.refresh = const_cast<char*>("wait_for");
-
-<<<<<<< HEAD
       ctx->kuzzle->document->delete_(ctx->index, ctx->collection, document_id, QueryOptions(&options));
     } catch (KuzzleException e) {
-=======
-      ctx->kuzzle->document->delete_(
-          ctx->index, ctx->collection, document_id, options);
-    } catch (kuzzleio::KuzzleException e) {
->>>>>>> 1-dev
       ctx->error_message = e.what();
       ctx->success = 0;
     }
@@ -74,13 +61,7 @@ namespace {
       kuzzleio::query_options options;
       options.refresh = const_cast<char*>("wait_for");
 
-<<<<<<< HEAD
       ctx->kuzzle->document->createOrReplace(ctx->index, ctx->collection, document_id, "{\"a\":\"replaced document\"}", QueryOptions(&options));
-=======
-      ctx->kuzzle->document->createOrReplace(
-          ctx->index, ctx->collection, document_id,
-          R"%({"a":"replaced document"})%", options);
->>>>>>> 1-dev
       ctx->document_id = document_id;
       ctx->success = 1;
     } catch (kuzzleio::KuzzleException e) {
@@ -109,13 +90,7 @@ namespace {
       kuzzleio::query_options options;
       options.refresh = const_cast<char*>("wait_for");
 
-<<<<<<< HEAD
       ctx->kuzzle->document->replace(ctx->index, ctx->collection, document_id, "{\"a\":\"replaced document\"}", QueryOptions(&options));
-=======
-      ctx->kuzzle->document->replace(
-          ctx->index, ctx->collection, document_id,
-          R"%({"a":"replaced document"})%", options);
->>>>>>> 1-dev
       ctx->document_id = document_id;
       ctx->success = 1;
     } catch (kuzzleio::KuzzleException e) {
@@ -140,13 +115,7 @@ namespace {
       kuzzleio::query_options options;
       options.refresh = const_cast<char*>("wait_for");
 
-<<<<<<< HEAD
       ctx->kuzzle->document->update(ctx->index, ctx->collection, document_id, "{\"a\":\"updated document\"}", QueryOptions(&options));
-=======
-      ctx->kuzzle->document->update(
-          ctx->index, ctx->collection, document_id,
-          R"%({"a":"updated document"})%", options);
->>>>>>> 1-dev
       ctx->document_id = document_id;
       ctx->success = 1;
     } catch (kuzzleio::KuzzleException e) {
