@@ -2,196 +2,305 @@
 #include "internal/kuzzle_request.hpp"
 
 namespace kuzzleio {
-    const std::string &KuzzleRequest::requestId() const {
-            return _requestId;
+
+    KuzzleRequest::KuzzleRequest() {
+        _kr = new kuzzle_request();
+        _kr->from = 0;
+        _kr->size = 0;
+        _kr->expires_in = 0;
+        _kr->start = 0;
+        _kr->stop = 0;
+        _kr->end = 0;
+        _kr->bit = 0;
+        _kr->lon = 0;
+        _kr->lat = 0;
+        _kr->distance = 0;
+        _kr->cursor = 0;
+        _kr->offset = 0;
+        _kr->idx = 0;
+        _kr->count = 0;
+        _kr->reset = false;
+        _kr->include_trash = false;
     }
 
-    void KuzzleRequest::requestId(const std::string &requestId) {
-            KuzzleRequest::_requestId = requestId;
+    KuzzleRequest::KuzzleRequest(const kuzzle_request* src) {
+        _kr = new kuzzle_request();
+        _kr->request_id = strdup(src->request_id);
+        _kr->controller = strdup(src->controller);
+        _kr->action = strdup(src->action);
+        _kr->index = strdup(src->index);
+        _kr->collection = strdup(src->collection);
+        _kr->body = strdup(src->body);
+        _kr->id = strdup(src->id);
+        _kr->from = src->from;
+        _kr->size = src->size;
+        _kr->scroll = strdup(src->scroll);
+        _kr->scroll_id = strdup(src->scroll_id);
+        _kr->strategy = strdup(src->strategy);
+        _kr->expires_in = src->expires_in;
+        _kr->volatiles = strdup(src->volatiles);
+        _kr->scope = strdup(src->scope);
+        _kr->state = strdup(src->state);
+        _kr->users = strdup(src->users);
+        _kr->start = src->start;
+        _kr->stop = src->stop;
+        _kr->end = src->end;
+        _kr->bit = src->bit;
+        _kr->member = strdup(src->member);
+        _kr->member1 = strdup(src->member1);
+        _kr->member2 = strdup(src->member2);
+
+        //vector or const char* const* ???
+        _kr->members = strtabdup(src->members, src->members_length);
+        _members = std::vector<std::string>(src->members, src->members + src->members_length);
+
+        _kr->members_length = src->members_length;
+        _kr->lon = src->lon;
+        _kr->lat = src->lat;
+        _kr->distance = src->distance;
+        _kr->unit = strdup(src->unit);
+
+        //vector or const char* const* ???
+        _kr->options = strtabdup(src->options, src->options_length);
+        _options = std::vector<std::string>(src->options, src->options + src->options_length);
+
+        _kr->options_length = src->options_length;
+
+        //vector or const char* const* ???
+        _kr->keys = strtabdup(src->keys, src->keys_length);
+        _keys = std::vector<std::string>(src->keys, src->keys + src->keys_length);
+
+        _kr->keys_length = src->keys_length;
+        _kr->cursor = src->cursor;
+        _kr->offset = src->offset;
+        _kr->field = strdup(src->field);
+
+        //vector or const char* const* ???
+        _kr->fields = strtabdup(src->fields, src->fields_length);
+        _fields = std::vector<std::string>(src->fields, src->fields + src->fields_length);
+        
+        _kr->fields_length = src->fields_length;
+        _kr->subcommand = strdup(src->subcommand);
+        _kr->pattern = strdup(src->pattern);
+        _kr->idx = src->idx;
+        _kr->min = strdup(src->min);
+        _kr->max = strdup(src->max);
+        _kr->limit = strdup(src->limit);
+        _kr->count = src->count;
+        _kr->match = strdup(src->match);
+        _kr->reset = src->reset;
+        _kr->include_trash = src->include_trash;
     }
 
-    const std::string &KuzzleRequest::controller() const {
-            return _controller;
+    char* KuzzleRequest::strdup(const char* s) {
+        if (s == NULL)
+            return NULL;
+        size_t len = 0;
+        for (; s[len]; len++);
+        char *dest = new char[len + 1];
+        strcpy(dest, s);
+        return dest;
     }
 
-    void KuzzleRequest::controller(const std::string &controller) {
-            KuzzleRequest::_controller = controller;
+    const char* const* KuzzleRequest::strtabdup(const char* const* s, size_t len) {
+     char **dest = new char*[len + 1];
+     unsigned int it = 0;
+     for (; it < len; ++it)
+         dest[it] = strdup(s[it]);
+     dest[it] = NULL;
+     return dest;
     }
 
-    const std::string &KuzzleRequest::action() const {
-            return _action;
+    const char* KuzzleRequest::requestId() const {
+            return _kr->request_id;
     }
 
-    void KuzzleRequest::action(const std::string &action) {
-            KuzzleRequest::_action = action;
+    void KuzzleRequest::requestId(const char* requestId) {
+            KuzzleRequest::_kr->request_id = strdup(requestId);
     }
 
-    const std::string &KuzzleRequest::index() const {
-            return _index;
+    const char* KuzzleRequest::controller() const {
+            return _kr->controller;
     }
 
-    void KuzzleRequest::index(const std::string &index) {
-            KuzzleRequest::_index = index;
+    void KuzzleRequest::controller(const char* controller) {
+            KuzzleRequest::_kr->controller = strdup(controller);
     }
 
-    const std::string &KuzzleRequest::collection() const {
-            return _collection;
+    const char* KuzzleRequest::action() const {
+            return _kr->action;
     }
 
-    void KuzzleRequest::collection(const std::string &collection) {
-            KuzzleRequest::_collection = collection;
+    void KuzzleRequest::action(const char* action) {
+            KuzzleRequest::_kr->action = strdup(action);
     }
 
-    const std::string &KuzzleRequest::body() const {
-            return _body;
+    const char* KuzzleRequest::index() const {
+            return _kr->index;
     }
 
-    void KuzzleRequest::body(const std::string &body) {
-            KuzzleRequest::_body = body;
+    void KuzzleRequest::index(const char* index) {
+            KuzzleRequest::_kr->index = strdup(index);
     }
 
-    const std::string &KuzzleRequest::id() const {
-            return _id;
+    const char* KuzzleRequest::collection() const {
+            return _kr->collection;
     }
 
-    void KuzzleRequest::id(const std::string &id) {
-            KuzzleRequest::_id = id;
+    void KuzzleRequest::collection(const char* collection) {
+            KuzzleRequest::_kr->collection = strdup(collection);
+    }
+
+    const char* KuzzleRequest::body() const {
+            return _kr->body;
+    }
+
+    void KuzzleRequest::body(const char* body) {
+            KuzzleRequest::_kr->body = strdup(body);
+    }
+
+    const char* KuzzleRequest::id() const {
+            return _kr->id;
+    }
+
+    void KuzzleRequest::id(const char* id) {
+            KuzzleRequest::_kr->id = strdup(id);
     }
 
     long KuzzleRequest::from() const {
-            return _from;
+            return _kr->from;
     }
 
     void KuzzleRequest::from(long from) {
-            KuzzleRequest::_from = from;
+            KuzzleRequest::_kr->from = from;
     }
 
     long KuzzleRequest::size() const {
-            return _size;
+            return _kr->size;
     }
 
     void KuzzleRequest::size(long size) {
-            KuzzleRequest::_size = size;
+            KuzzleRequest::_kr->size = size;
     }
 
-    const std::string &KuzzleRequest::scroll() const {
-            return _scroll;
+    const char* KuzzleRequest::scroll() const {
+            return _kr->scroll;
     }
 
-    void KuzzleRequest::scroll(const std::string &scroll) {
-            KuzzleRequest::_scroll = scroll;
+    void KuzzleRequest::scroll(const char* scroll) {
+            KuzzleRequest::_kr->scroll = strdup(scroll);
     }
 
-    const std::string &KuzzleRequest::scrollId() const {
-            return _scrollId;
+    const char* KuzzleRequest::scrollId() const {
+            return _kr->scroll_id;
     }
 
-    void KuzzleRequest::scrollId(const std::string &scrollId) {
-            KuzzleRequest::_scrollId = scrollId;
+    void KuzzleRequest::scrollId(const char* scrollId) {
+            KuzzleRequest::_kr->scroll_id = strdup(scrollId);
     }
 
-    const std::string &KuzzleRequest::strategy() const {
-            return _strategy;
+    const char* KuzzleRequest::strategy() const {
+            return _kr->strategy;
     }
 
-    void KuzzleRequest::strategy(const std::string &strategy) {
-            KuzzleRequest::_strategy = strategy;
+    void KuzzleRequest::strategy(const char* strategy) {
+            KuzzleRequest::_kr->strategy = strdup(strategy);
     }
 
     unsigned long long int KuzzleRequest::expiresIn() const {
-            return _expiresIn;
+            return _kr->expires_in;
     }
 
     void KuzzleRequest::expiresIn(unsigned long long int expiresIn) {
-            KuzzleRequest::_expiresIn = expiresIn;
+            KuzzleRequest::_kr->expires_in = expiresIn;
     }
 
-    const std::string &KuzzleRequest::volatiles() const {
-            return _volatiles;
+    const char* KuzzleRequest::volatiles() const {
+            return _kr->volatiles;
     }
 
-    void KuzzleRequest::volatiles(const std::string &volatiles) {
-            KuzzleRequest::_volatiles = volatiles;
+    void KuzzleRequest::volatiles(const char* volatiles) {
+            KuzzleRequest::_kr->volatiles = strdup(volatiles);
     }
 
-    const std::string &KuzzleRequest::scope() const {
-            return _scope;
+    const char* KuzzleRequest::scope() const {
+            return _kr->scope;
     }
 
-    void KuzzleRequest::scope(const std::string &scope) {
-            KuzzleRequest::_scope = scope;
+    void KuzzleRequest::scope(const char* scope) {
+            KuzzleRequest::_kr->scope = strdup(scope);
     }
 
-    const std::string &KuzzleRequest::state() const {
-            return _state;
+    const char* KuzzleRequest::state() const {
+            return _kr->state;
     }
 
-    void KuzzleRequest::state(const std::string &state) {
-            KuzzleRequest::_state = state;
+    void KuzzleRequest::state(const char* state) {
+            KuzzleRequest::_kr->state = strdup(state);
     }
 
-    const std::string &KuzzleRequest::users() const {
-            return _users;
+    const char* KuzzleRequest::users() const {
+            return _kr->users;
     }
 
-    void KuzzleRequest::users(const std::string &users) {
-            KuzzleRequest::_users = users;
+    void KuzzleRequest::users(const char* users) {
+            KuzzleRequest::_kr->users = strdup(users);
     }
 
     long KuzzleRequest::start() const {
-            return _start;
+            return _kr->start;
     }
 
     void KuzzleRequest::start(long start) {
-            KuzzleRequest::_start = start;
+            KuzzleRequest::_kr->start = start;
     }
 
     long KuzzleRequest::stop() const {
-            return _stop;
+            return _kr->stop;
     }
 
     void KuzzleRequest::stop(long stop) {
-            KuzzleRequest::_stop = stop;
+            KuzzleRequest::_kr->stop = stop;
     }
 
     long KuzzleRequest::end() const {
-            return _end;
+            return _kr->end;
     }
 
     void KuzzleRequest::end(long end) {
-            KuzzleRequest::_end = end;
+            KuzzleRequest::_kr->end = end;
     }
 
     unsigned char KuzzleRequest::bit() const {
-            return _bit;
+            return _kr->bit;
     }
 
     void KuzzleRequest::bit(unsigned char bit) {
-            KuzzleRequest::_bit = bit;
+            KuzzleRequest::_kr->bit = bit;
     }
 
-    const std::string &KuzzleRequest::member() const {
-            return _member;
+    const char* KuzzleRequest::member() const {
+            return _kr->member;
     }
 
-    void KuzzleRequest::member(const std::string &member) {
-            KuzzleRequest::_member = member;
+    void KuzzleRequest::member(const char* member) {
+            KuzzleRequest::_kr->member = strdup(member);
     }
 
-    const std::string &KuzzleRequest::member1() const {
-            return _member1;
+    const char* KuzzleRequest::member1() const {
+            return _kr->member1;
     }
 
-    void KuzzleRequest::member1(const std::string &member1) {
-            KuzzleRequest::_member1 = member1;
+    void KuzzleRequest::member1(const char* member1) {
+            KuzzleRequest::_kr->member1 = strdup(member1);
     }
 
-    const std::string &KuzzleRequest::member2() const {
-            return _member2;
+    const char* KuzzleRequest::member2() const {
+            return _kr->member2;
     }
 
-    void KuzzleRequest::member2(const std::string &member2) {
-            KuzzleRequest::_member2 = member2;
+    void KuzzleRequest::member2(const char* member2) {
+            KuzzleRequest::_kr->member2 = strdup(member2);
     }
 
     const std::vector<std::string> &KuzzleRequest::members() const {
@@ -199,39 +308,40 @@ namespace kuzzleio {
     }
 
     void KuzzleRequest::members(const std::vector<std::string> &members) {
+            KuzzleRequest::_kr->members = vectorToC(members);
             KuzzleRequest::_members = members;
     }
 
     double KuzzleRequest::lon() const {
-            return _lon;
+            return _kr->lon;
     }
 
     void KuzzleRequest::lon(double lon) {
-            KuzzleRequest::_lon = lon;
+            KuzzleRequest::_kr->lon = lon;
     }
 
     double KuzzleRequest::lat() const {
-            return _lat;
+            return _kr->lat;
     }
 
     void KuzzleRequest::lat(double lat) {
-            KuzzleRequest::_lat = lat;
+            KuzzleRequest::_kr->lat = lat;
     }
 
     double KuzzleRequest::distance() const {
-            return _distance;
+            return _kr->distance;
     }
 
     void KuzzleRequest::distance(double distance) {
-            KuzzleRequest::_distance = distance;
+            KuzzleRequest::_kr->distance = distance;
     }
 
-    const std::string &KuzzleRequest::unit() const {
-            return _unit;
+    const char* KuzzleRequest::unit() const {
+            return _kr->unit;
     }
 
-    void KuzzleRequest::unit(const std::string &unit) {
-            KuzzleRequest::_unit = unit;
+    void KuzzleRequest::unit(const char* unit) {
+            KuzzleRequest::_kr->unit = strdup(unit);
     }
 
     const std::vector<std::string> &KuzzleRequest::options() const {
@@ -239,6 +349,7 @@ namespace kuzzleio {
     }
 
     void KuzzleRequest::options(const std::vector<std::string> &options) {
+            KuzzleRequest::_kr->options = vectorToC(options);
             KuzzleRequest::_options = options;
     }
 
@@ -247,31 +358,32 @@ namespace kuzzleio {
     }
 
     void KuzzleRequest::keys(const std::vector<std::string> &keys) {
+            KuzzleRequest::_kr->keys = vectorToC(keys);
             KuzzleRequest::_keys = keys;
     }
 
     long KuzzleRequest::cursor() const {
-            return _cursor;
+            return _kr->cursor;
     }
 
     void KuzzleRequest::cursor(long cursor) {
-            KuzzleRequest::_cursor = cursor;
+            KuzzleRequest::_kr->cursor = cursor;
     }
 
     long KuzzleRequest::offset() const {
-            return _offset;
+            return _kr->offset;
     }
 
     void KuzzleRequest::offset(long offset) {
-            KuzzleRequest::_offset = offset;
+            KuzzleRequest::_kr->offset = offset;
     }
 
-    const std::string &KuzzleRequest::field() const {
-            return _field;
+    const char* KuzzleRequest::field() const {
+            return _kr->field;
     }
 
-    void KuzzleRequest::field(const std::string &field) {
-            KuzzleRequest::_field = field;
+    void KuzzleRequest::field(const char* field) {
+            KuzzleRequest::_kr->field = strdup(field);
     }
 
     const std::vector<std::string> &KuzzleRequest::fields() const {
@@ -279,87 +391,88 @@ namespace kuzzleio {
     }
 
     void KuzzleRequest::fields(const std::vector<std::string> &fields) {
+            KuzzleRequest::_kr->fields = vectorToC(fields);
             KuzzleRequest::_fields = fields;
     }
 
-    const std::string &KuzzleRequest::subcommand() const {
-            return _subcommand;
+    const char* KuzzleRequest::subcommand() const {
+            return _kr->subcommand;
     }
 
-    void KuzzleRequest::subcommand(const std::string &subcommand) {
-            KuzzleRequest::_subcommand = subcommand;
+    void KuzzleRequest::subcommand(const char* subcommand) {
+            KuzzleRequest::_kr->subcommand = strdup(subcommand);
     }
 
-    const std::string &KuzzleRequest::pattern() const {
-            return _pattern;
+    const char* KuzzleRequest::pattern() const {
+            return _kr->pattern;
     }
 
-    void KuzzleRequest::pattern(const std::string &pattern) {
-            KuzzleRequest::_pattern = pattern;
+    void KuzzleRequest::pattern(const char* pattern) {
+            KuzzleRequest::_kr->pattern = strdup(pattern);
     }
 
     long KuzzleRequest::idx() const {
-            return _idx;
+            return _kr->idx;
     }
 
     void KuzzleRequest::idx(long idx) {
-            KuzzleRequest::_idx = idx;
+            KuzzleRequest::_kr->idx = idx;
     }
 
-    const std::string &KuzzleRequest::min() const {
-            return _min;
+    const char* KuzzleRequest::min() const {
+            return _kr->min;
     }
 
-    void KuzzleRequest::min(const std::string &min) {
-            KuzzleRequest::_min = min;
+    void KuzzleRequest::min(const char* min) {
+            KuzzleRequest::_kr->min = strdup(min);
     }
 
-    const std::string &KuzzleRequest::max() const {
-            return _max;
+    const char* KuzzleRequest::max() const {
+            return _kr->max;
     }
 
-    void KuzzleRequest::max(const std::string &max) {
-            KuzzleRequest::_max = max;
+    void KuzzleRequest::max(const char* max) {
+            KuzzleRequest::_kr->max = strdup(max);
     }
 
-    const std::string &KuzzleRequest::limit() const {
-            return _limit;
+    const char* KuzzleRequest::limit() const {
+            return _kr->limit;
     }
 
-    void KuzzleRequest::limit(const std::string &limit) {
-            KuzzleRequest::_limit = limit;
+    void KuzzleRequest::limit(const char* limit) {
+            KuzzleRequest::_kr->limit = strdup(limit);
     }
 
     unsigned long KuzzleRequest::count() const {
-            return _count;
+            return _kr->count;
     }
 
     void KuzzleRequest::count(unsigned long count) {
-            KuzzleRequest::_count = count;
+            KuzzleRequest::_kr->count = count;
     }
 
-    const std::string &KuzzleRequest::match() const {
-            return _match;
+    const char* KuzzleRequest::match() const {
+            return _kr->match;
     }
 
-    void KuzzleRequest::match(const std::string &match) {
-            KuzzleRequest::_match = match;
+    void KuzzleRequest::match(const char* match) {
+            KuzzleRequest::_kr->match = strdup(match);
     }
 
     bool KuzzleRequest::reset() const {
-            return _reset;
+            return _kr->reset;
     }
 
     void KuzzleRequest::reset(bool reset) {
-            KuzzleRequest::_reset = reset;
+            KuzzleRequest::_kr->reset = reset;
     }
 
     bool KuzzleRequest::includeTrash() const {
-            return _includeTrash;
+            return _kr->include_trash;
     }
 
     void KuzzleRequest::includeTrash(bool includeTrash) {
-            KuzzleRequest::_includeTrash = includeTrash;
+            KuzzleRequest::_kr->include_trash = includeTrash;
     }
 
     char* const* KuzzleRequest::vectorToC(const std::vector<std::string> &vec) noexcept {
@@ -374,66 +487,57 @@ namespace kuzzleio {
         return cc;
     }
 
-    const char* stringToC(const std::string& src) {
-        if (!src.size())
-            return NULL;
-        char *dest = new char[src.size() + 1];
-        unsigned int i = 0;
-        for (char c : src) {
-            dest[i] = c;
-            i += 1;
-        }
-        dest[i] = '\0';
-        return dest;
-    }
-
     kuzzle_request *KuzzleRequest::toC() {
 
         kuzzle_request *req = new kuzzle_request();
-        req->controller = this->_controller.c_str();
-        req->action = this->_action.c_str();
-        req->index = this->_index.c_str();
-        req->collection = this->_collection.c_str();
-        req->body = this->_body.c_str();
-        req->id = this->_id.c_str();
-        req->from = this->_from;
-        req->size = this->_size;
-        req->scroll = this->_scroll.c_str();
-        req->scroll_id = this->_scrollId.c_str();
-        req->strategy = this->_strategy.c_str();
-        req->expires_in = this->_expiresIn;
-        req->volatiles = this->_volatiles.c_str();
-        req->scope = this->_scope.c_str();
-        req->state = this->_state.c_str();
-        req->users = this->_users.c_str();
-        req->start = this->_start;
-        req->stop = this->_stop;
-        req->end = this->_end;
-        req->bit = this->_bit;
-        req->member = this->_member.c_str();
-        req->member1 = this->_member1.c_str();
-        req->member2 = this->_member2.c_str();
+        req->controller = strdup(this->_kr->controller);
+        req->action = strdup(this->_kr->action);
+        req->index = strdup(this->_kr->index);
+        req->collection = strdup(this->_kr->collection);
+        req->body = strdup(this->_kr->body);
+        req->id = strdup(this->_kr->id);
+        req->from = this->_kr->from;
+        req->size = this->_kr->size;
+        req->scroll = strdup(this->_kr->scroll);
+        req->scroll_id = strdup(this->_kr->scroll_id);
+        req->strategy = strdup(this->_kr->strategy);
+        req->expires_in = this->_kr->expires_in;
+        req->volatiles = strdup(this->_kr->volatiles);
+        req->scope = strdup(this->_kr->scope);
+        req->state = strdup(this->_kr->state);
+        req->users = strdup(this->_kr->users);
+        req->start = this->_kr->start;
+        req->stop = this->_kr->stop;
+        req->end = this->_kr->end;
+        req->bit = this->_kr->bit;
+        req->member = strdup(this->_kr->member);
+        req->member1 = strdup(this->_kr->member1);
+        req->member2 = strdup(this->_kr->member2);
         req->members = vectorToC(this->_members);
-        req->lon = this->_lon;
-        req->lat = this->_lat;
-        req->distance = this->_distance;
-        req->unit = this->_unit.c_str();
+        req->members_length = this->_members.size();
+        req->lon = this->_kr->lon;
+        req->lat = this->_kr->lat;
+        req->distance = this->_kr->distance;
+        req->unit = strdup(this->_kr->unit);
+        req->options_length = this->_options.size();
+        req->keys_length = this->_keys.size();
         req->options = vectorToC(this->_options);
         req->keys = vectorToC(this->_keys);
-        req->cursor = this->_cursor;
-        req->offset = this->_offset;
-        req->field = this->_field.c_str();
+        req->cursor = this->_kr->cursor;
+        req->offset = this->_kr->offset;
+        req->field = strdup(this->_kr->field);
         req->fields = vectorToC(this->_fields);
-        req->subcommand = this->_subcommand.c_str();
-        req->pattern = this->_pattern.c_str();
-        req->idx = this->_idx;
-        req->min = this->_min.c_str();
-        req->max = this->_max.c_str();
-        req->limit = this->_limit.c_str();
-        req->count = this->_count;
-        req->match = this->_match.c_str();
-        req->reset = this->_reset;
-        req->include_trash = this->_includeTrash;
+        req->fields_length = this->_fields.size();
+        req->subcommand = strdup(this->_kr->subcommand);
+        req->pattern = strdup(this->_kr->pattern);
+        req->idx = this->_kr->idx;
+        req->min = strdup(this->_kr->min);
+        req->max = strdup(this->_kr->max);
+        req->limit = strdup(this->_kr->limit);
+        req->count = this->_kr->count;
+        req->match = strdup(this->_kr->match);
+        req->reset = this->_kr->reset;
+        req->include_trash = this->_kr->include_trash;
 
         if (_kr != nullptr)
             kuzzle_free_kuzzle_request(_kr);

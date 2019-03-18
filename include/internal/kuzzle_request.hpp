@@ -9,155 +9,53 @@ namespace kuzzleio {
   class KuzzleRequest {
     private:
 
-      char* const* vectorToC(const std::vector<std::string> &vec) noexcept;
-
-      const char* stringToC(const std::string& src);
-
       kuzzle_request* _kr = nullptr;
-      std::string _requestId;
-      std::string _controller;
-      std::string _action;
-      std::string _index;
-      std::string _collection;
-      std::string _body;
-      std::string _id;
-      long _from;
-      long _size;
-      std::string _scroll;
-      std::string _scrollId;
-      std::string _strategy;
-      unsigned long long _expiresIn;
-      std::string _volatiles;
-      std::string _scope;
-      std::string _state;
-      std::string _users;
-      long _start;
-      long _stop;
-      long _end;
-      unsigned char _bit;
-      std::string _member;
-      std::string _member1;
-      std::string _member2;
+      //vector or const char* const* ???
       std::vector<std::string> _members;
-      double _lon;
-      double _lat;
-      double _distance;
-      std::string _unit;
       std::vector<std::string> _options;
       std::vector<std::string> _keys;
-      long _cursor;
-      long _offset;
-      std::string _field;
       std::vector<std::string> _fields;
-      std::string _subcommand;
-      std::string _pattern;
-      long _idx;
-      std::string _min;
-      std::string _max;
-      std::string _limit;
-      unsigned long _count;
-      std::string _match;
-      bool _reset;
-      bool _includeTrash;
 
   public:
-      KuzzleRequest() :
-        _from(0),
-        _size(0),
-        _expiresIn(0),
-        _start(0),
-        _stop(0),
-        _end(0),
-        _bit(0),
-        _lon(0),
-        _lat(0),
-        _distance(0),
-        _cursor(0),
-        _offset(0),
-        _idx(0),
-        _count(0),
-        _reset(false),
-        _includeTrash(false)
-        {};
-      KuzzleRequest(const kuzzle_request* src) :
-        _requestId(src->request_id),
-        _controller(src->controller),
-        _action(src->action),
-        _index(src->index),
-        _collection(src->collection),
-        _body(src->body),
-        _id(src->id),
-        _from(src->from),
-        _size(src->size),
-        _scroll(src->scroll),
-        _scrollId(src->scroll_id),
-        _strategy(src->strategy),
-        _expiresIn(src->expires_in),
-        _volatiles(src->volatiles),
-        _scope(src->scope),
-        _state(src->state),
-        _users(src->users),
-        _start(src->start),
-        _stop(src->stop),
-        _end(src->end),
-        _bit(src->bit),
-        _member(src->member),
-        _member1(src->member1),
-        _member2(src->member2),
-        _members(std::vector<std::string>(src->members, src->members + src->members_length)),
-        _lon(src->lon),
-        _lat(src->lat),
-        _distance(src->distance),
-        _unit(src->unit),
-        _options(std::vector<std::string>(src->options, src->options + src->options_length)),
-        _keys(std::vector<std::string>(src->keys, src->keys + src->keys_length)),
-        _cursor(src->cursor),
-        _offset(src->offset),
-        _field(src->field),
-        _fields(std::vector<std::string>(src->fields, src->fields + src->fields_length)),
-        _subcommand(src->subcommand),
-        _pattern(src->pattern),
-        _idx(src->idx),
-        _min(src->min),
-        _max(src->max),
-        _limit(src->limit),
-        _count(src->count),
-        _match(src->match),
-        _reset(src->reset),
-        _includeTrash(src->include_trash)
-        {};
-
+      KuzzleRequest();
+      KuzzleRequest(const kuzzle_request* src);
       KuzzleRequest(KuzzleRequest& src) : KuzzleRequest(src.toC()) {};
 
-      virtual inline ~KuzzleRequest() { /*if (_kr != nullptr) kuzzle_free_kuzzle_request(_kr); */};
+      char* const* vectorToC(const std::vector<std::string> &vec) noexcept;
 
-      const std::string &requestId() const;
+      const char* const* strtabdup(const char* const* s, size_t len);
 
-      void requestId(const std::string &requestId);
+      char* strdup(const char* s);
 
-      const std::string &controller() const;
+      virtual inline ~KuzzleRequest() {};
 
-      void controller(const std::string &controller);
+      const char* requestId() const;
 
-      const std::string &action() const;
+      void requestId(const char* requestId);
 
-      void action(const std::string &action);
+      const char* controller() const;
 
-      const std::string &index() const;
+      void controller(const char* controller);
 
-      void index(const std::string &index);
+      const char* action() const;
 
-      const std::string &collection() const;
+      void action(const char* action);
 
-      void collection(const std::string &collection);
+      const char* index() const;
 
-      const std::string &body() const;
+      void index(const char* index);
 
-      void body(const std::string &body);
+      const char* collection() const;
 
-      const std::string &id() const;
+      void collection(const char* collection);
 
-      void id(const std::string &id);
+      const char* body() const;
+
+      void body(const char* body);
+
+      const char* id() const;
+
+      void id(const char* id);
 
       long from() const;
 
@@ -167,37 +65,37 @@ namespace kuzzleio {
 
       void size(long size);
 
-      const std::string &scroll() const;
+      const char* scroll() const;
 
-      void scroll(const std::string &scroll);
+      void scroll(const char* scroll);
 
-      const std::string &scrollId() const;
+      const char* scrollId() const;
 
-      void scrollId(const std::string &scrollId);
+      void scrollId(const char* scrollId);
 
-      const std::string &strategy() const;
+      const char* strategy() const;
 
-      void strategy(const std::string &strategy);
+      void strategy(const char* strategy);
 
       unsigned long long int expiresIn() const;
 
       void expiresIn(unsigned long long int expiresIn);
 
-      const std::string &volatiles() const;
+      const char* volatiles() const;
 
-      void volatiles(const std::string &volatiles);
+      void volatiles(const char* volatiles);
 
-      const std::string &scope() const;
+      const char* scope() const;
 
-      void scope(const std::string &scope);
+      void scope(const char* scope);
 
-      const std::string &state() const;
+      const char* state() const;
 
-      void state(const std::string &state);
+      void state(const char* state);
 
-      const std::string &users() const;
+      const char* users() const;
 
-      void users(const std::string &users);
+      void users(const char* users);
 
       long start() const;
 
@@ -215,17 +113,17 @@ namespace kuzzleio {
 
       void bit(unsigned char bit);
 
-      const std::string &member() const;
+      const char* member() const;
 
-      void member(const std::string &member);
+      void member(const char* member);
 
-      const std::string &member1() const;
+      const char* member1() const;
 
-      void member1(const std::string &member1);
+      void member1(const char* member1);
 
-      const std::string &member2() const;
+      const char* member2() const;
 
-      void member2(const std::string &member2);
+      void member2(const char* member2);
 
       const std::vector<std::string> &members() const;
 
@@ -243,9 +141,9 @@ namespace kuzzleio {
 
       void distance(double distance);
 
-      const std::string &unit() const;
+      const char* unit() const;
 
-      void unit(const std::string &unit);
+      void unit(const char* unit);
 
       const std::vector<std::string> &options() const;
 
@@ -263,45 +161,45 @@ namespace kuzzleio {
 
       void offset(long offset);
 
-      const std::string &field() const;
+      const char* field() const;
 
-      void field(const std::string &field);
+      void field(const char* field);
 
       const std::vector<std::string> &fields() const;
 
       void fields(const std::vector<std::string> &fields);
 
-      const std::string &subcommand() const;
+      const char* subcommand() const;
 
-      void subcommand(const std::string &subcommand);
+      void subcommand(const char* subcommand);
 
-      const std::string &pattern() const;
+      const char* pattern() const;
 
-      void pattern(const std::string &pattern);
+      void pattern(const char* pattern);
 
       long idx() const;
 
       void idx(long idx);
 
-      const std::string &min() const;
+      const char* min() const;
 
-      void min(const std::string &min);
+      void min(const char* min);
 
-      const std::string &max() const;
+      const char* max() const;
 
-      void max(const std::string &max);
+      void max(const char* max);
 
-      const std::string &limit() const;
+      const char* limit() const;
 
-      void limit(const std::string &limit);
+      void limit(const char* limit);
 
       unsigned long count() const;
 
       void count(unsigned long count);
 
-      const std::string &match() const;
+      const char* match() const;
 
-      void match(const std::string &match);
+      void match(const char* match);
 
       bool reset() const;
 

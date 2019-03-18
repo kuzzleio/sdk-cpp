@@ -21,8 +21,9 @@ namespace kuzzleio {
             QueryOptions() :
                 _qo(new query_options())
                 {};
-                                                        //invalid pointer ???
-            virtual inline ~QueryOptions() { /*if (_qo != nullptr) kuzzle_free_query_options(_qo); */};
+            virtual inline ~QueryOptions() {};
+
+            const char* cpystr(const char* s);
 
             query_options *qo() const;
 
@@ -69,6 +70,8 @@ namespace kuzzleio {
             void retryOnConflict(int retryOnConflict);
 
             void volatiles(const char* volatiles);
+
+            size_t strlen(const char* s);
     };
 }
 
