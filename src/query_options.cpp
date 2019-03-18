@@ -9,15 +9,15 @@ namespace kuzzleio {
         _qo->withcoord = src.withcoord();
         _qo->from = src.from();
         _qo->size = src.size();
-        _qo->scroll = cpystr(src.scroll());
-        _qo->scroll_id = cpystr(src.scrollId());
-        _qo->refresh = cpystr(src.refresh());
-        _qo->if_exist = cpystr(src.ifExist());
-        _qo->volatiles = cpystr(src.volatiles());
+        _qo->scroll = strdup(src.scroll());
+        _qo->scroll_id = strdup(src.scrollId());
+        _qo->refresh = strdup(src.refresh());
+        _qo->if_exist = strdup(src.ifExist());
+        _qo->volatiles = strdup(src.volatiles());
         _qo->retry_on_conflict = src.retryOnConflict();
     }
 
-    const char* QueryOptions::cpystr(const char* s) {
+    const char* QueryOptions::strdup(const char* s) {
         if (s == NULL)
             return NULL;
         size_t len = 0;
@@ -25,12 +25,6 @@ namespace kuzzleio {
         char *dest = new char[len + 1];
         dest = strcpy(dest, s);
         return dest;
-    }
-
-    size_t QueryOptions::strlen(const char* s) {
-        size_t len = 0;
-        for (; s[len]; len++);
-        return len;
     }
 
     query_options *QueryOptions::qo() const {

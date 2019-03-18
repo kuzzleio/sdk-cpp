@@ -18,7 +18,7 @@ namespace kuzzleio {
         _sr(src._sr)
         {};
 
-      virtual inline ~SubscribeResult() { if (_sr != nullptr) kuzzle_free_subscribe_result(_sr); };
+      virtual inline ~SubscribeResult() { if (_sr != nullptr) kuzzle_free_subscribe_result(_sr);};
 
       const char* room() const;
 

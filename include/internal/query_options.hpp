@@ -10,6 +10,8 @@ namespace kuzzleio {
     class QueryOptions {
         private:
             query_options* _qo = nullptr;
+            const char* strdup(const char* s);
+
         public:
 
             QueryOptions(query_options* src) :
@@ -22,8 +24,6 @@ namespace kuzzleio {
                 _qo(new query_options())
                 {};
             virtual inline ~QueryOptions() {};
-
-            const char* cpystr(const char* s);
 
             query_options *qo() const;
 
@@ -70,8 +70,6 @@ namespace kuzzleio {
             void retryOnConflict(int retryOnConflict);
 
             void volatiles(const char* volatiles);
-
-            size_t strlen(const char* s);
     };
 }
 

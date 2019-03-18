@@ -14,19 +14,15 @@ namespace kuzzleio {
       std::vector<std::string> _options;
       std::vector<std::string> _keys;
       std::vector<std::string> _fields;
+      char* const* vectorToC(const std::vector<std::string> &vec) noexcept;
+      char* strdup(const char* s);
 
   public:
       KuzzleRequest();
       KuzzleRequest(const kuzzle_request* src);
       KuzzleRequest(KuzzleRequest& src) : KuzzleRequest(src.toC()) {};
 
-      char* const* vectorToC(const std::vector<std::string> &vec) noexcept;
-
-      const char* const* strtabdup(const char* const* s, size_t len);
-
-      char* strdup(const char* s);
-
-      virtual inline ~KuzzleRequest() {};
+      virtual inline ~KuzzleRequest() { if (_kr != nullptr) kuzzle_free_kuzzle_request(_kr); };
 
       const char* requestId() const;
 
