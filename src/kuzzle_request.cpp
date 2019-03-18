@@ -49,36 +49,24 @@ namespace kuzzleio {
         _kr->member = strdup(src->member);
         _kr->member1 = strdup(src->member1);
         _kr->member2 = strdup(src->member2);
-
-        //vector or const char* const* ???
         _kr->members = strtabdup(src->members, src->members_length);
         _members = std::vector<std::string>(src->members, src->members + src->members_length);
-
         _kr->members_length = src->members_length;
         _kr->lon = src->lon;
         _kr->lat = src->lat;
         _kr->distance = src->distance;
         _kr->unit = strdup(src->unit);
-
-        //vector or const char* const* ???
         _kr->options = strtabdup(src->options, src->options_length);
         _options = std::vector<std::string>(src->options, src->options + src->options_length);
-
         _kr->options_length = src->options_length;
-
-        //vector or const char* const* ???
         _kr->keys = strtabdup(src->keys, src->keys_length);
         _keys = std::vector<std::string>(src->keys, src->keys + src->keys_length);
-
         _kr->keys_length = src->keys_length;
         _kr->cursor = src->cursor;
         _kr->offset = src->offset;
         _kr->field = strdup(src->field);
-
-        //vector or const char* const* ???
         _kr->fields = strtabdup(src->fields, src->fields_length);
         _fields = std::vector<std::string>(src->fields, src->fields + src->fields_length);
-        
         _kr->fields_length = src->fields_length;
         _kr->subcommand = strdup(src->subcommand);
         _kr->pattern = strdup(src->pattern);

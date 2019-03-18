@@ -10,7 +10,6 @@ namespace kuzzleio {
     private:
 
       kuzzle_request* _kr = nullptr;
-      //vector or const char* const* ???
       std::vector<std::string> _members;
       std::vector<std::string> _options;
       std::vector<std::string> _keys;

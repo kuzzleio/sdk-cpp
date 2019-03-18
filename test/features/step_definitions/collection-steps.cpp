@@ -174,10 +174,6 @@ namespace {
 
     std::string specifications = R"%({"strict":true})%";
 
-    kuzzleio::validation_response *validationResponse =
-        ctx->kuzzle->collection->validateSpecifications(
-            ctx->index, ctx->collection, specifications);
-
     kuzzleio::ValidationResponse validationResponse = ValidationResponse(ctx->kuzzle->collection->validateSpecifications(ctx->index, ctx->collection, specifications));
     ctx->success = validationResponse.valid();
   }

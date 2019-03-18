@@ -17,12 +17,13 @@
 #include "json_spirit/json_spirit.h"
 
 using cucumber::ScenarioScope;
+using namespace std;
+
 
 struct KuzzleCtx {
   kuzzleio::Kuzzle* kuzzle = nullptr;
   kuzzleio::Protocol* protocol = nullptr;
   kuzzleio::Options kuzzle_options;
-
 
   string user_id;
   string index;
