@@ -1,4 +1,5 @@
 #include "steps.hpp"
+#include <cmath>
 
 // Anonymous namespace to handle a linker error
 // see https://stackoverflow.com/questions/14320148/linker-error-on-cucumber-cpp-when-dealing-with-multiple-feature-files
@@ -26,13 +27,13 @@ namespace {
 
     ScenarioScope<KuzzleCtx> ctx;
 
-    string data = "{\"" + fieldname + "\":\"" + fieldvalue + "\"}";
+    std::string data = "{\"" + fieldname + "\":\"" + fieldvalue + "\"}";
 
     K_LOG_D("Updating user data with : %s", data.c_str());
 
     try {
       ctx->kuzzle->auth->updateSelf(data);
-    } catch (KuzzleException e) {
+    } catch (kuzzleio::KuzzleException e) {
       K_LOG_E(e.what());
     }
   }
@@ -50,7 +51,9 @@ namespace {
 
     json_spirit::write_formatted(userContentValue);
 
-    json_spirit::Value fieldvalue = json_spirit::find_value(userContentValue.get_obj(), fieldname);
+    json_spirit::Value fieldvalue = json_spirit::find_value(
+        userContentValue.get_obj(), fieldname);
+
     switch (fieldvalue.type()) {
       case json_spirit::str_type: {
         std::string s = fieldvalue.get_str();
@@ -59,8 +62,8 @@ namespace {
         break;
       }
       case json_spirit::bool_type: {
-        auto   b = fieldvalue.get_bool();
-        string s = b ? "true" : "false";
+        auto b = fieldvalue.get_bool();
+        std::string s = b ? "true" : "false";
         K_LOG_D("Field value: \"%s\" of type bool", b ? "true" : "false");
         BOOST_CHECK(s == expected_fieldvalue);
         break;
@@ -68,16 +71,16 @@ namespace {
       case json_spirit::int_type: {
         auto i = fieldvalue.get_int();
         K_LOG_D("Field value: %d of type int", i);
-        string s = std::to_string(i);
+        std::string s = std::to_string(i);
         BOOST_CHECK(s == expected_fieldvalue);
         break;
       }
       case json_spirit::real_type: {
-        float f = fieldvalue.get_real();
+        auto f = fieldvalue.get_real();
         K_LOG_D("Field value: %f of type real", f);
-        float e = std::stof(expected_fieldvalue);
+        double e = std::stod(expected_fieldvalue);
         K_LOG_D("Expected value: %f", e);
-        BOOST_CHECK(f == std::stof(expected_fieldvalue));
+        BOOST_CHECK(fabs(f - e) < 10e-6);
         break;
       }
         // TODO: Add obj test case...
@@ -95,7 +98,8 @@ namespace {
   THEN("^is a number$")
   {
     ScenarioScope<KuzzleCtx> ctx;
-    BOOST_CHECK(ctx->customUserDataType == json_spirit::int_type || ctx->customUserDataType == json_spirit::real_type);
+    BOOST_CHECK(ctx->customUserDataType == json_spirit::int_type
+        || ctx->customUserDataType == json_spirit::real_type);
   }
 
   THEN("^is a bool$")
@@ -115,16 +119,16 @@ namespace {
     }
 
     try {
-      ctx->protocol = new WebSocket(hostname);
-      ctx->kuzzle = new Kuzzle(ctx->protocol, ctx->kuzzle_options);
-    } catch (KuzzleException e) {
+      ctx->protocol = new kuzzleio::WebSocket(hostname);
+      ctx->kuzzle = new kuzzleio::Kuzzle(ctx->protocol, ctx->kuzzle_options);
+    } catch (kuzzleio::KuzzleException e) {
       K_LOG_E(e.what());
     }
 
     // throws if it fails to connect
     try {
       ctx->kuzzle->connect();
-    } catch(KuzzleException e) {
+    } catch(kuzzleio::KuzzleException e) {
       BOOST_FAIL(e.what());
     }
   }
@@ -138,7 +142,7 @@ namespace {
 
   THEN("^(the result contains|I shall receive) (\\d+)( hits)?$")
   {
-    REGEX_PARAM(string, unused);
+    REGEX_PARAM(std::string, unused);
     REGEX_PARAM(unsigned int, hits);
 
     ScenarioScope<KuzzleCtx> ctx;
@@ -154,8 +158,8 @@ namespace {
   }
 
   THEN("^I (should have|get) (a|no) partial error$") {
-    REGEX_PARAM(string, unused);
-    REGEX_PARAM(string, error_presence);
+    REGEX_PARAM(std::string, unused);
+    REGEX_PARAM(std::string, error_presence);
 
     ScenarioScope<KuzzleCtx> ctx;
 

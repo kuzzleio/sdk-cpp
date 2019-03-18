@@ -11,7 +11,7 @@ namespace {
 
     try {
       ctx->kuzzle->index->delete_(index_name);
-    } catch (KuzzleException e) {
+    } catch (kuzzleio::KuzzleException e) {
       K_LOG_E(e.what());
       BOOST_FAIL(e.what());
     }
@@ -27,7 +27,7 @@ namespace {
       K_LOG_D("Creating index: %s", index_name.c_str());
       try {
         ctx->kuzzle->index->create(index_name);
-      } catch (KuzzleException e) {
+      } catch (kuzzleio::KuzzleException e) {
         K_LOG_E(e.what());
         BOOST_FAIL(e.what());
       }
@@ -45,7 +45,7 @@ namespace {
     if (! ctx->kuzzle->index->exists(index_name1)) {
       try {
         ctx->kuzzle->index->create(index_name1);
-      } catch(KuzzleException e) {
+      } catch(kuzzleio::KuzzleException e) {
         K_LOG_E(e.what());
         BOOST_FAIL(e.what());
       }
@@ -56,7 +56,7 @@ namespace {
     if (! ctx->kuzzle->index->exists(index_name2)) {
       try {
         ctx->kuzzle->index->create(index_name2);
-      } catch(KuzzleException e) {
+      } catch(kuzzleio::KuzzleException e) {
         K_LOG_E(e.what());
         BOOST_FAIL(e.what());
       }
@@ -78,7 +78,7 @@ namespace {
 
     try {
       ctx->kuzzle->index->mDelete(v);
-    } catch(KuzzleException e) {
+    } catch(kuzzleio::KuzzleException e) {
       K_LOG_E(e.what());
       BOOST_FAIL(e.what());
     }
@@ -94,7 +94,7 @@ namespace {
     try {
       ctx->kuzzle->index->create(index_name);
       ctx->index = index_name;
-    } catch (KuzzleException e) {
+    } catch (kuzzleio::KuzzleException e) {
       ctx->success = false;
       K_LOG_E(e.what());
     }

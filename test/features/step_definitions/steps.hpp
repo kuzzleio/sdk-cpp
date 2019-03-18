@@ -18,15 +18,11 @@
 
 using cucumber::ScenarioScope;
 
-using namespace kuzzleio;
-using std::cout;
-using std::endl;
-using std::string;
-
 struct KuzzleCtx {
-  Kuzzle* kuzzle = nullptr;
-  Protocol* protocol = nullptr;
-  Options kuzzle_options;
+  kuzzleio::Kuzzle* kuzzle = nullptr;
+  kuzzleio::Protocol* protocol = nullptr;
+  kuzzleio::Options kuzzle_options;
+
 
   string user_id;
   string index;
@@ -36,21 +32,23 @@ struct KuzzleCtx {
   SearchResult *search_result = nullptr;
   std::vector<std::shared_ptr<UserRight>> user_rights;
 
-  string room_id;
 
-  User currentUser;
+  std::string room_id;
+
+  kuzzleio::User currentUser;
   json_spirit::Value_type customUserDataType = json_spirit::null_type;
 
   // 1 mean success, 0 failure and -1 is base state
   int success = -1;
-  string error_message;
+  std::string error_message;
   int hits = -1;
-  string content;
+  std::string content;
   // 1 mean yes, 0 no and -1 is base state
   int partial_exception = -1;
-  std::vector<string> string_array;
+  std::vector<std::string> string_array;
 
   NotificationResult *notif_result = nullptr;
+
 };
 
 class CustomNotificationListener {
@@ -63,7 +61,7 @@ class CustomNotificationListener {
       };
     };
   public:
-    NotificationListener listener;
+    kuzzleio::NotificationListener listener;
     static CustomNotificationListener* getSingleton() {
       static CustomNotificationListener* instance =
         new CustomNotificationListener();

@@ -16,10 +16,13 @@
 #define _CORE_HPP_
 #define _Bool bool
 #include <cstdio>
+#include <ctime>
 
-extern "C" {
+#include "internal/kuzzle_structs.h"
+#include "internal/protocol.h"
+
+namespace kuzzleio {
   #include "internal/kuzzle.h"
-  #include "internal/kuzzle_structs.h"
 }
 
 #endif

@@ -1,8 +1,8 @@
 #ifndef _KUZZLE_UTIL_HPP_
 #define _KUZZLE_UTIL_HPP_
 
-#include <stdarg.h>
-#include <stdio.h>
+#include <cstdarg>
+#include <cstdio>
 #define TXT_COLOR_RESET "\e[0m"
 
 #define TXT_COLOR_DEFAULT "\e[39m"
