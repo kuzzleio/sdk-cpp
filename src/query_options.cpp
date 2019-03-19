@@ -2,6 +2,21 @@
 
 namespace kuzzleio {
 
+    QueryOptions::QueryOptions(const query_options *src) {
+        _qo = new query_options();
+        _qo->queuable = src->queuable;
+        _qo->withdist = src->withdist;
+        _qo->withcoord = src->withcoord;
+        _qo->from = src->from;
+        _qo->size = src->size;
+        _qo->scroll = strdup(src->scroll);
+        _qo->scroll_id = strdup(src->scroll_id);
+        _qo->refresh = strdup(src->refresh);
+        _qo->if_exist = strdup(src->if_exist);
+        _qo->volatiles = strdup(src->volatiles);
+        _qo->retry_on_conflict = src->retry_on_conflict;
+    }
+
     QueryOptions::QueryOptions(const QueryOptions &src) {
         _qo = new query_options();
         _qo->queuable = src.queuable();
@@ -96,19 +111,19 @@ namespace kuzzleio {
     }
 
     void QueryOptions::scroll(const char* scroll) {
-        QueryOptions::_qo->scroll = scroll;
+        QueryOptions::_qo->scroll = strdup(scroll);
     }
 
     void QueryOptions::scrollId(const char* scrollId) {
-        QueryOptions::_qo->scroll_id = scrollId;
+        QueryOptions::_qo->scroll_id = strdup(scrollId);
     }
 
     void QueryOptions::refresh(const char* refresh) {
-        QueryOptions::_qo->refresh = refresh;
+        QueryOptions::_qo->refresh = strdup(refresh);
     }
 
     void QueryOptions::ifExist(const char* ifExist) {
-        QueryOptions::_qo->if_exist = ifExist;
+        QueryOptions::_qo->if_exist = strdup(ifExist);
     }
 
     void QueryOptions::retryOnConflict(int retryOnConflict) {
@@ -116,7 +131,7 @@ namespace kuzzleio {
     }
 
     void QueryOptions::volatiles(const char* volatiles) {
-        QueryOptions::_qo->volatiles = volatiles;
+        QueryOptions::_qo->volatiles = strdup(volatiles);
     }
 
 }

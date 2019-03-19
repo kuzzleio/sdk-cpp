@@ -18,7 +18,7 @@ namespace kuzzleio {
         _kr(src._kr)
         {};
 
-      virtual inline ~KuzzleResponse() { /*if (_kr != nullptr) kuzzle_free_kuzzle_response(_kr); */};
+      virtual inline ~KuzzleResponse() { if (_kr != nullptr) kuzzle_free_kuzzle_response(_kr); };
 
       const char* requestId() const;
 
