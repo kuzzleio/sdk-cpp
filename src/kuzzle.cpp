@@ -15,7 +15,6 @@
 #include <exception>
 #include <stdexcept>
 #include <cstdlib>
-#include <cstring>
 
 #include "kuzzle.hpp"
 #include "internal/event_emitter.hpp"
