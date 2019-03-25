@@ -60,7 +60,7 @@ namespace kuzzleio {
       query_options* options,
       char* request_id,
       void* _p) {
-    return static_cast<Protocol*>(_p)->send(query, new QueryOptions(options), request_id);
+    return static_cast<Protocol*>(_p)->send(query, QueryOptions(options), request_id);
   }
 
   int bridge_cpp_listener_count(int event, void* _p) {

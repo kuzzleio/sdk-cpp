@@ -1,34 +1,38 @@
+// Copyright 2015-2018 Kuzzle
+//
+// Licensed under the Apache License, Version 2.0 (the "License");
+// you may not use this file except in compliance with the License.
+// You may obtain a copy of the License at
+//
+//    http://www.apache.org/licenses/LICENSE-2.0
+//
+// Unless required by applicable law or agreed to in writing, software
+// distributed under the License is distributed on an "AS IS" BASIS,
+// WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+// See the License for the specific language governing permissions and
+// limitations under the License.
+
 #include "kuzzle.hpp"
 #include "internal/user_right.hpp"
 
 namespace kuzzleio {
 
     UserRight::UserRight(user_right *src) {
-        _ur = new user_right();
-        _ur->controller = strdup(src->controller);
-        _ur->action = strdup(src->action);
-        _ur->index = strdup(src->index);
-        _ur->collection = strdup(src->collection);
-        _ur->value = strdup(src->value);
+        _ur = (user_right*)malloc(sizeof(user_right));
+        _ur->controller = toC::dupstring(src->controller);
+        _ur->action = toC::dupstring(src->action);
+        _ur->index = toC::dupstring(src->index);
+        _ur->collection = toC::dupstring(src->collection);
+        _ur->value = toC::dupstring(src->value);
     }
 
     UserRight::UserRight(const UserRight &src) {
-        _ur = new user_right();
-        _ur->controller = strdup(src._ur->controller);
-        _ur->action = strdup(src._ur->action);
-        _ur->index = strdup(src._ur->index);
-        _ur->collection = strdup(src._ur->collection);
-        _ur->value = strdup(src._ur->value);
-    }
-
-    char* UserRight::strdup(const char* s) {
-        if (s == NULL)
-            return NULL;
-        size_t len = 0;
-        for (; s[len]; len++);
-        char *dest = new char[len + 1];
-        strcpy(dest, s);
-        return dest;
+        _ur = (user_right*)malloc(sizeof(user_right));
+        _ur->controller = toC::dupstring(src._ur->controller);
+        _ur->action = toC::dupstring(src._ur->action);
+        _ur->index = toC::dupstring(src._ur->index);
+        _ur->collection = toC::dupstring(src._ur->collection);
+        _ur->value = toC::dupstring(src._ur->value);
     }
 
     const char* UserRight::controller() const {

@@ -21,14 +21,14 @@
 namespace kuzzleio {
   class UserRight {
     private:
-      char* strdup(const char* s);
       user_right* _ur = nullptr;
 
     public:
       UserRight(user_right* src);
+
       UserRight(const UserRight& src);
 
-      virtual inline ~UserRight() { if (_ur != nullptr) kuzzle_free_user_right(_ur); };
+      virtual inline ~UserRight() { kuzzle_free_user_right(_ur); };
 
       const char* controller() const;
 

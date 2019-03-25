@@ -1,14 +1,52 @@
+// Copyright 2015-2018 Kuzzle
+//
+// Licensed under the Apache License, Version 2.0 (the "License");
+// you may not use this file except in compliance with the License.
+// You may obtain a copy of the License at
+//
+//    http://www.apache.org/licenses/LICENSE-2.0
+//
+// Unless required by applicable law or agreed to in writing, software
+// distributed under the License is distributed on an "AS IS" BASIS,
+// WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+// See the License for the specific language governing permissions and
+// limitations under the License.
+
+#include <internal/utils.hpp>
 #include "kuzzle.hpp"
 #include "internal/notification_result.hpp"
 
 namespace kuzzleio {
 
+    NotificationResult::NotificationResult(notification_result *src) {
+        _nr = (notification_result*)malloc(sizeof(notification_result));
+        _nr->request_id = toC::dupstring(src->request_id);
+        _nr->result = NULL;
+        _result = src->result ? new NotificationContent(src->result) : nullptr;
+        _nr->volatiles = toC::dupstring(src->volatiles);
+        _nr->index = toC::dupstring(src->index);
+        _nr->collection = toC::dupstring(src->collection);
+        _nr->controller = toC::dupstring(src->controller);
+        _nr->action = toC::dupstring(src->action);
+        _nr->protocol = toC::dupstring(src->protocol);
+        _nr->scope = toC::dupstring(src->scope);
+        _nr->state = toC::dupstring(src->state);
+        _nr->user = toC::dupstring(src->user);
+        _nr->n_type = toC::dupstring(src->n_type);
+        _nr->room_id = toC::dupstring(src->room_id);
+        _nr->timestamp = src->timestamp;
+        _nr->status = src->status;
+        _nr->error = toC::dupstring(src->error);
+        _nr->stack = toC::dupstring(src->stack);
+    }
+
+
     const char* NotificationResult::requestId() const {
         return _nr->request_id;
     }
 
-    const NotificationContent NotificationResult::result() const {
-        return _nr->result ? NotificationContent(_nr->result) : nullptr;
+    NotificationContent* NotificationResult::result() const {
+        return _result ? _result : nullptr;
     }
 
     const char* NotificationResult::volatiles() const {

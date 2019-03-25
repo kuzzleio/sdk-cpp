@@ -200,7 +200,7 @@ namespace kuzzleio {
       const_cast<char*>(specifications.c_str()),
       const_cast<query_options*>(options.qo())))
 
-      ValidationResponse rCpp(r);
+    ValidationResponse rCpp(r);
     return rCpp;
   }
 

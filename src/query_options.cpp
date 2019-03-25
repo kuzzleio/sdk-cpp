@@ -1,45 +1,36 @@
 #include "internal/query_options.hpp"
+#include "internal/utils.hpp"
 
 namespace kuzzleio {
 
     QueryOptions::QueryOptions(const query_options *src) {
-        _qo = new query_options();
+        _qo = (query_options*)malloc(sizeof(query_options));
         _qo->queuable = src->queuable;
         _qo->withdist = src->withdist;
         _qo->withcoord = src->withcoord;
         _qo->from = src->from;
         _qo->size = src->size;
-        _qo->scroll = strdup(src->scroll);
-        _qo->scroll_id = strdup(src->scroll_id);
-        _qo->refresh = strdup(src->refresh);
-        _qo->if_exist = strdup(src->if_exist);
-        _qo->volatiles = strdup(src->volatiles);
+        _qo->scroll = toC::dupstring(src->scroll);
+        _qo->scroll_id = toC::dupstring(src->scroll_id);
+        _qo->refresh = toC::dupstring(src->refresh);
+        _qo->if_exist = toC::dupstring(src->if_exist);
+        _qo->volatiles = toC::dupstring(src->volatiles);
         _qo->retry_on_conflict = src->retry_on_conflict;
     }
 
     QueryOptions::QueryOptions(const QueryOptions &src) {
-        _qo = new query_options();
+        _qo = (query_options*)malloc(sizeof(query_options));
         _qo->queuable = src.queuable();
         _qo->withdist = src.withdist();
         _qo->withcoord = src.withcoord();
         _qo->from = src.from();
         _qo->size = src.size();
-        _qo->scroll = strdup(src.scroll());
-        _qo->scroll_id = strdup(src.scrollId());
-        _qo->refresh = strdup(src.refresh());
-        _qo->if_exist = strdup(src.ifExist());
-        _qo->volatiles = strdup(src.volatiles());
+        _qo->scroll = toC::dupstring(src.scroll());
+        _qo->scroll_id = toC::dupstring(src.scrollId());
+        _qo->refresh = toC::dupstring(src.refresh());
+        _qo->if_exist = toC::dupstring(src.ifExist());
+        _qo->volatiles = toC::dupstring(src.volatiles());
         _qo->retry_on_conflict = src.retryOnConflict();
-    }
-
-    const char* QueryOptions::strdup(const char* s) {
-        if (s == NULL)
-            return NULL;
-        size_t len = 0;
-        for (; s[len]; len++);
-        char *dest = new char[len + 1];
-        dest = strcpy(dest, s);
-        return dest;
     }
 
     query_options *QueryOptions::qo() const {
@@ -111,19 +102,19 @@ namespace kuzzleio {
     }
 
     void QueryOptions::scroll(const char* scroll) {
-        QueryOptions::_qo->scroll = strdup(scroll);
+        QueryOptions::_qo->scroll = toC::dupstring(scroll);
     }
 
     void QueryOptions::scrollId(const char* scrollId) {
-        QueryOptions::_qo->scroll_id = strdup(scrollId);
+        QueryOptions::_qo->scroll_id = toC::dupstring(scrollId);
     }
 
     void QueryOptions::refresh(const char* refresh) {
-        QueryOptions::_qo->refresh = strdup(refresh);
+        QueryOptions::_qo->refresh = toC::dupstring(refresh);
     }
 
     void QueryOptions::ifExist(const char* ifExist) {
-        QueryOptions::_qo->if_exist = strdup(ifExist);
+        QueryOptions::_qo->if_exist = toC::dupstring(ifExist);
     }
 
     void QueryOptions::retryOnConflict(int retryOnConflict) {
@@ -131,7 +122,7 @@ namespace kuzzleio {
     }
 
     void QueryOptions::volatiles(const char* volatiles) {
-        QueryOptions::_qo->volatiles = strdup(volatiles);
+        QueryOptions::_qo->volatiles = toC::dupstring(volatiles);
     }
 
 }

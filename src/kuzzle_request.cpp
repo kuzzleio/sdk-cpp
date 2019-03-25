@@ -1,10 +1,25 @@
+// Copyright 2015-2018 Kuzzle
+//
+// Licensed under the Apache License, Version 2.0 (the "License");
+// you may not use this file except in compliance with the License.
+// You may obtain a copy of the License at
+//
+//    http://www.apache.org/licenses/LICENSE-2.0
+//
+// Unless required by applicable law or agreed to in writing, software
+// distributed under the License is distributed on an "AS IS" BASIS,
+// WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+// See the License for the specific language governing permissions and
+// limitations under the License.
+
 #include "kuzzle.hpp"
 #include "internal/kuzzle_request.hpp"
+#include "internal/utils.hpp"
 
 namespace kuzzleio {
 
     KuzzleRequest::KuzzleRequest() {
-        _kr = new kuzzle_request();
+        _kr = (kuzzle_request*)malloc(sizeof(kuzzle_request));
         _kr->from = 0;
         _kr->size = 0;
         _kr->expires_in = 0;
@@ -24,78 +39,73 @@ namespace kuzzleio {
     }
 
     KuzzleRequest::KuzzleRequest(const kuzzle_request* src) {
-        _kr = new kuzzle_request();
-        _kr->request_id = strdup(src->request_id);
-        _kr->controller = strdup(src->controller);
-        _kr->action = strdup(src->action);
-        _kr->index = strdup(src->index);
-        _kr->collection = strdup(src->collection);
-        _kr->body = strdup(src->body);
-        _kr->id = strdup(src->id);
+        _kr = (kuzzle_request*)malloc(sizeof(kuzzle_request));
+        _kr->request_id = toC::dupstring(src->request_id);
+        _kr->controller = toC::dupstring(src->controller);
+        _kr->action = toC::dupstring(src->action);
+        _kr->index = toC::dupstring(src->index);
+        _kr->collection = toC::dupstring(src->collection);
+        _kr->body = toC::dupstring(src->body);
+        _kr->id = toC::dupstring(src->id);
         _kr->from = src->from;
         _kr->size = src->size;
-        _kr->scroll = strdup(src->scroll);
-        _kr->scroll_id = strdup(src->scroll_id);
-        _kr->strategy = strdup(src->strategy);
+        _kr->scroll = toC::dupstring(src->scroll);
+        _kr->scroll_id = toC::dupstring(src->scroll_id);
+        _kr->strategy = toC::dupstring(src->strategy);
         _kr->expires_in = src->expires_in;
-        _kr->volatiles = strdup(src->volatiles);
-        _kr->scope = strdup(src->scope);
-        _kr->state = strdup(src->state);
-        _kr->users = strdup(src->users);
+        _kr->volatiles = toC::dupstring(src->volatiles);
+        _kr->scope = toC::dupstring(src->scope);
+        _kr->state = toC::dupstring(src->state);
+        _kr->users = toC::dupstring(src->users);
         _kr->start = src->start;
         _kr->stop = src->stop;
         _kr->end = src->end;
         _kr->bit = src->bit;
-        _kr->member = strdup(src->member);
-        _kr->member1 = strdup(src->member1);
-        _kr->member2 = strdup(src->member2);
+        _kr->member = toC::dupstring(src->member);
+        _kr->member1 = toC::dupstring(src->member1);
+        _kr->member2 = toC::dupstring(src->member2);
         _kr->members = NULL;
-        _members = std::vector<std::string>(src->members, src->members + src->members_length);
+        if (src->members != NULL)
+            _members = std::vector<std::string>(src->members, src->members + src->members_length);
         _kr->members_length = src->members_length;
         _kr->lon = src->lon;
         _kr->lat = src->lat;
         _kr->distance = src->distance;
-        _kr->unit = strdup(src->unit);
+        _kr->unit = toC::dupstring(src->unit);
         _kr->options = NULL;
-        _options = std::vector<std::string>(src->options, src->options + src->options_length);
+        if (src->options != NULL)
+            _options = std::vector<std::string>(src->options, src->options + src->options_length);
         _kr->options_length = src->options_length;
         _kr->keys = NULL;
-        _keys = std::vector<std::string>(src->keys, src->keys + src->keys_length);
+        if (src->keys != NULL)
+            _keys = std::vector<std::string>(src->keys, src->keys + src->keys_length);
         _kr->keys_length = src->keys_length;
         _kr->cursor = src->cursor;
         _kr->offset = src->offset;
-        _kr->field = strdup(src->field);
+        _kr->field = toC::dupstring(src->field);
         _kr->fields = NULL;
-        _fields = std::vector<std::string>(src->fields, src->fields + src->fields_length);
+        if (src->fields != NULL)
+            _fields = std::vector<std::string>(src->fields, src->fields + src->fields_length);
         _kr->fields_length = src->fields_length;
-        _kr->subcommand = strdup(src->subcommand);
-        _kr->pattern = strdup(src->pattern);
+        _kr->subcommand = toC::dupstring(src->subcommand);
+        _kr->pattern = toC::dupstring(src->pattern);
         _kr->idx = src->idx;
-        _kr->min = strdup(src->min);
-        _kr->max = strdup(src->max);
-        _kr->limit = strdup(src->limit);
+        _kr->min = toC::dupstring(src->min);
+        _kr->max = toC::dupstring(src->max);
+        _kr->limit = toC::dupstring(src->limit);
         _kr->count = src->count;
-        _kr->match = strdup(src->match);
+        _kr->match = toC::dupstring(src->match);
         _kr->reset = src->reset;
         _kr->include_trash = src->include_trash;
     }
 
-    char* KuzzleRequest::strdup(const char* s) {
-        if (s == NULL)
-            return NULL;
-        size_t len = 0;
-        for (; s[len]; len++);
-        char *dest = new char[len + 1];
-        strcpy(dest, s);
-        return dest;
-    }
 
     const char* KuzzleRequest::requestId() const {
             return _kr->request_id;
     }
 
     void KuzzleRequest::requestId(const char* requestId) {
-            KuzzleRequest::_kr->request_id = strdup(requestId);
+            KuzzleRequest::_kr->request_id = toC::dupstring(requestId);
     }
 
     const char* KuzzleRequest::controller() const {
@@ -103,7 +113,7 @@ namespace kuzzleio {
     }
 
     void KuzzleRequest::controller(const char* controller) {
-            KuzzleRequest::_kr->controller = strdup(controller);
+            KuzzleRequest::_kr->controller = toC::dupstring(controller);
     }
 
     const char* KuzzleRequest::action() const {
@@ -111,7 +121,7 @@ namespace kuzzleio {
     }
 
     void KuzzleRequest::action(const char* action) {
-            KuzzleRequest::_kr->action = strdup(action);
+            KuzzleRequest::_kr->action = toC::dupstring(action);
     }
 
     const char* KuzzleRequest::index() const {
@@ -119,7 +129,7 @@ namespace kuzzleio {
     }
 
     void KuzzleRequest::index(const char* index) {
-            KuzzleRequest::_kr->index = strdup(index);
+            KuzzleRequest::_kr->index = toC::dupstring(index);
     }
 
     const char* KuzzleRequest::collection() const {
@@ -127,7 +137,7 @@ namespace kuzzleio {
     }
 
     void KuzzleRequest::collection(const char* collection) {
-            KuzzleRequest::_kr->collection = strdup(collection);
+            KuzzleRequest::_kr->collection = toC::dupstring(collection);
     }
 
     const char* KuzzleRequest::body() const {
@@ -135,7 +145,7 @@ namespace kuzzleio {
     }
 
     void KuzzleRequest::body(const char* body) {
-            KuzzleRequest::_kr->body = strdup(body);
+            KuzzleRequest::_kr->body = toC::dupstring(body);
     }
 
     const char* KuzzleRequest::id() const {
@@ -143,7 +153,7 @@ namespace kuzzleio {
     }
 
     void KuzzleRequest::id(const char* id) {
-            KuzzleRequest::_kr->id = strdup(id);
+            KuzzleRequest::_kr->id = toC::dupstring(id);
     }
 
     long KuzzleRequest::from() const {
@@ -167,7 +177,7 @@ namespace kuzzleio {
     }
 
     void KuzzleRequest::scroll(const char* scroll) {
-            KuzzleRequest::_kr->scroll = strdup(scroll);
+            KuzzleRequest::_kr->scroll = toC::dupstring(scroll);
     }
 
     const char* KuzzleRequest::scrollId() const {
@@ -175,7 +185,7 @@ namespace kuzzleio {
     }
 
     void KuzzleRequest::scrollId(const char* scrollId) {
-            KuzzleRequest::_kr->scroll_id = strdup(scrollId);
+            KuzzleRequest::_kr->scroll_id = toC::dupstring(scrollId);
     }
 
     const char* KuzzleRequest::strategy() const {
@@ -183,7 +193,7 @@ namespace kuzzleio {
     }
 
     void KuzzleRequest::strategy(const char* strategy) {
-            KuzzleRequest::_kr->strategy = strdup(strategy);
+            KuzzleRequest::_kr->strategy = toC::dupstring(strategy);
     }
 
     unsigned long long int KuzzleRequest::expiresIn() const {
@@ -199,7 +209,7 @@ namespace kuzzleio {
     }
 
     void KuzzleRequest::volatiles(const char* volatiles) {
-            KuzzleRequest::_kr->volatiles = strdup(volatiles);
+            KuzzleRequest::_kr->volatiles = toC::dupstring(volatiles);
     }
 
     const char* KuzzleRequest::scope() const {
@@ -207,7 +217,7 @@ namespace kuzzleio {
     }
 
     void KuzzleRequest::scope(const char* scope) {
-            KuzzleRequest::_kr->scope = strdup(scope);
+            KuzzleRequest::_kr->scope = toC::dupstring(scope);
     }
 
     const char* KuzzleRequest::state() const {
@@ -215,7 +225,7 @@ namespace kuzzleio {
     }
 
     void KuzzleRequest::state(const char* state) {
-            KuzzleRequest::_kr->state = strdup(state);
+            KuzzleRequest::_kr->state = toC::dupstring(state);
     }
 
     const char* KuzzleRequest::users() const {
@@ -223,7 +233,7 @@ namespace kuzzleio {
     }
 
     void KuzzleRequest::users(const char* users) {
-            KuzzleRequest::_kr->users = strdup(users);
+            KuzzleRequest::_kr->users = toC::dupstring(users);
     }
 
     long KuzzleRequest::start() const {
@@ -263,7 +273,7 @@ namespace kuzzleio {
     }
 
     void KuzzleRequest::member(const char* member) {
-            KuzzleRequest::_kr->member = strdup(member);
+            KuzzleRequest::_kr->member = toC::dupstring(member);
     }
 
     const char* KuzzleRequest::member1() const {
@@ -271,7 +281,7 @@ namespace kuzzleio {
     }
 
     void KuzzleRequest::member1(const char* member1) {
-            KuzzleRequest::_kr->member1 = strdup(member1);
+            KuzzleRequest::_kr->member1 = toC::dupstring(member1);
     }
 
     const char* KuzzleRequest::member2() const {
@@ -279,7 +289,7 @@ namespace kuzzleio {
     }
 
     void KuzzleRequest::member2(const char* member2) {
-            KuzzleRequest::_kr->member2 = strdup(member2);
+            KuzzleRequest::_kr->member2 = toC::dupstring(member2);
     }
 
     const std::vector<std::string> &KuzzleRequest::members() const {
@@ -287,7 +297,6 @@ namespace kuzzleio {
     }
 
     void KuzzleRequest::members(const std::vector<std::string> &members) {
-            KuzzleRequest::_kr->members = vectorToC(members);
             KuzzleRequest::_members = members;
     }
 
@@ -320,7 +329,7 @@ namespace kuzzleio {
     }
 
     void KuzzleRequest::unit(const char* unit) {
-            KuzzleRequest::_kr->unit = strdup(unit);
+            KuzzleRequest::_kr->unit = toC::dupstring(unit);
     }
 
     const std::vector<std::string> &KuzzleRequest::options() const {
@@ -328,7 +337,6 @@ namespace kuzzleio {
     }
 
     void KuzzleRequest::options(const std::vector<std::string> &options) {
-            KuzzleRequest::_kr->options = vectorToC(options);
             KuzzleRequest::_options = options;
     }
 
@@ -337,7 +345,6 @@ namespace kuzzleio {
     }
 
     void KuzzleRequest::keys(const std::vector<std::string> &keys) {
-            KuzzleRequest::_kr->keys = vectorToC(keys);
             KuzzleRequest::_keys = keys;
     }
 
@@ -362,7 +369,7 @@ namespace kuzzleio {
     }
 
     void KuzzleRequest::field(const char* field) {
-            KuzzleRequest::_kr->field = strdup(field);
+            KuzzleRequest::_kr->field = toC::dupstring(field);
     }
 
     const std::vector<std::string> &KuzzleRequest::fields() const {
@@ -370,7 +377,6 @@ namespace kuzzleio {
     }
 
     void KuzzleRequest::fields(const std::vector<std::string> &fields) {
-            KuzzleRequest::_kr->fields = vectorToC(fields);
             KuzzleRequest::_fields = fields;
     }
 
@@ -379,7 +385,7 @@ namespace kuzzleio {
     }
 
     void KuzzleRequest::subcommand(const char* subcommand) {
-            KuzzleRequest::_kr->subcommand = strdup(subcommand);
+            KuzzleRequest::_kr->subcommand = toC::dupstring(subcommand);
     }
 
     const char* KuzzleRequest::pattern() const {
@@ -387,7 +393,7 @@ namespace kuzzleio {
     }
 
     void KuzzleRequest::pattern(const char* pattern) {
-            KuzzleRequest::_kr->pattern = strdup(pattern);
+            KuzzleRequest::_kr->pattern = toC::dupstring(pattern);
     }
 
     long KuzzleRequest::idx() const {
@@ -403,7 +409,7 @@ namespace kuzzleio {
     }
 
     void KuzzleRequest::min(const char* min) {
-            KuzzleRequest::_kr->min = strdup(min);
+            KuzzleRequest::_kr->min = toC::dupstring(min);
     }
 
     const char* KuzzleRequest::max() const {
@@ -411,7 +417,7 @@ namespace kuzzleio {
     }
 
     void KuzzleRequest::max(const char* max) {
-            KuzzleRequest::_kr->max = strdup(max);
+            KuzzleRequest::_kr->max = toC::dupstring(max);
     }
 
     const char* KuzzleRequest::limit() const {
@@ -419,7 +425,7 @@ namespace kuzzleio {
     }
 
     void KuzzleRequest::limit(const char* limit) {
-            KuzzleRequest::_kr->limit = strdup(limit);
+            KuzzleRequest::_kr->limit = toC::dupstring(limit);
     }
 
     unsigned long KuzzleRequest::count() const {
@@ -435,7 +441,7 @@ namespace kuzzleio {
     }
 
     void KuzzleRequest::match(const char* match) {
-            KuzzleRequest::_kr->match = strdup(match);
+            KuzzleRequest::_kr->match = toC::dupstring(match);
     }
 
     bool KuzzleRequest::reset() const {
@@ -453,68 +459,57 @@ namespace kuzzleio {
     void KuzzleRequest::includeTrash(bool includeTrash) {
             KuzzleRequest::_kr->include_trash = includeTrash;
     }
-
-    char* const* KuzzleRequest::vectorToC(const std::vector<std::string> &vec) noexcept {
-        if (!vec.size())
-            return NULL;
-        char** cc = new char*[vec.size()];
-        for(unsigned int i = 0; i < vec.size(); ++i)
-        {
-            cc[i] = new char[vec[i].size() + 1];
-            strcpy(cc[i], vec[i].c_str());
-        }
-        return cc;
-    }
+    
 
     kuzzle_request *KuzzleRequest::toC() {
 
         kuzzle_request *req = new kuzzle_request();
-        req->controller = strdup(this->_kr->controller);
-        req->action = strdup(this->_kr->action);
-        req->index = strdup(this->_kr->index);
-        req->collection = strdup(this->_kr->collection);
-        req->body = strdup(this->_kr->body);
-        req->id = strdup(this->_kr->id);
+        req->controller = toC::dupstring(this->_kr->controller);
+        req->action = toC::dupstring(this->_kr->action);
+        req->index = toC::dupstring(this->_kr->index);
+        req->collection = toC::dupstring(this->_kr->collection);
+        req->body = toC::dupstring(this->_kr->body);
+        req->id = toC::dupstring(this->_kr->id);
         req->from = this->_kr->from;
         req->size = this->_kr->size;
-        req->scroll = strdup(this->_kr->scroll);
-        req->scroll_id = strdup(this->_kr->scroll_id);
-        req->strategy = strdup(this->_kr->strategy);
+        req->scroll = toC::dupstring(this->_kr->scroll);
+        req->scroll_id = toC::dupstring(this->_kr->scroll_id);
+        req->strategy = toC::dupstring(this->_kr->strategy);
         req->expires_in = this->_kr->expires_in;
-        req->volatiles = strdup(this->_kr->volatiles);
-        req->scope = strdup(this->_kr->scope);
-        req->state = strdup(this->_kr->state);
-        req->users = strdup(this->_kr->users);
+        req->volatiles = toC::dupstring(this->_kr->volatiles);
+        req->scope = toC::dupstring(this->_kr->scope);
+        req->state = toC::dupstring(this->_kr->state);
+        req->users = toC::dupstring(this->_kr->users);
         req->start = this->_kr->start;
         req->stop = this->_kr->stop;
         req->end = this->_kr->end;
         req->bit = this->_kr->bit;
-        req->member = strdup(this->_kr->member);
-        req->member1 = strdup(this->_kr->member1);
-        req->member2 = strdup(this->_kr->member2);
-        req->members = vectorToC(this->_members);
+        req->member = toC::dupstring(this->_kr->member);
+        req->member1 = toC::dupstring(this->_kr->member1);
+        req->member2 = toC::dupstring(this->_kr->member2);
+        req->members = toC::vectorToC(this->_members);
         req->members_length = this->_members.size();
         req->lon = this->_kr->lon;
         req->lat = this->_kr->lat;
         req->distance = this->_kr->distance;
-        req->unit = strdup(this->_kr->unit);
+        req->unit = toC::dupstring(this->_kr->unit);
         req->options_length = this->_options.size();
         req->keys_length = this->_keys.size();
-        req->options = vectorToC(this->_options);
-        req->keys = vectorToC(this->_keys);
+        req->options = toC::vectorToC(this->_options);
+        req->keys = toC::vectorToC(this->_keys);
         req->cursor = this->_kr->cursor;
         req->offset = this->_kr->offset;
-        req->field = strdup(this->_kr->field);
-        req->fields = vectorToC(this->_fields);
+        req->field = toC::dupstring(this->_kr->field);
+        req->fields = toC::vectorToC(this->_fields);
         req->fields_length = this->_fields.size();
-        req->subcommand = strdup(this->_kr->subcommand);
-        req->pattern = strdup(this->_kr->pattern);
+        req->subcommand = toC::dupstring(this->_kr->subcommand);
+        req->pattern = toC::dupstring(this->_kr->pattern);
         req->idx = this->_kr->idx;
-        req->min = strdup(this->_kr->min);
-        req->max = strdup(this->_kr->max);
-        req->limit = strdup(this->_kr->limit);
+        req->min = toC::dupstring(this->_kr->min);
+        req->max = toC::dupstring(this->_kr->max);
+        req->limit = toC::dupstring(this->_kr->limit);
         req->count = this->_kr->count;
-        req->match = strdup(this->_kr->match);
+        req->match = toC::dupstring(this->_kr->match);
         req->reset = this->_kr->reset;
         req->include_trash = this->_kr->include_trash;
 

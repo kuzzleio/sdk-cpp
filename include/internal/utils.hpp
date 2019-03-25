@@ -4,7 +4,7 @@
 // you may not use this file except in compliance with the License.
 // You may obtain a copy of the License at
 //
-//    http://www.apache.org/licenses/LICENSE-2.0
+// 		http://www.apache.org/licenses/LICENSE-2.0
 //
 // Unless required by applicable law or agreed to in writing, software
 // distributed under the License is distributed on an "AS IS" BASIS,
@@ -12,34 +12,18 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-#ifndef _SUBSCRIBE_RESULT_HPP
-#define _SUBSCRIBE_RESULT_HPP
+#ifndef UTILS_HPP
+#define UTILS_HPP
 
 #include <string>
-#include <vector>
-#include "utils.hpp"
 #include "core.hpp"
+#include "kuzzle.hpp"
 
 namespace kuzzleio {
-  class SubscribeResult {
-    private:
-      subscribe_result* _sr = nullptr;
-
-    public:
-      SubscribeResult(subscribe_result* src);
-
-      virtual inline ~SubscribeResult() { kuzzle_free_subscribe_result(_sr);};
-
-      const char* room() const;
-
-      const char* channel() const;
-
-      const int status() const;
-
-      const char* error() const;
-
-      const char* stack() const;;
-  };
+    namespace toC {
+        const char* dupstring(const char* s);
+        char* const* vectorToC(const std::vector<std::string> &vec);
+    }
 }
 
-#endif
+#endif //UTILS_HPP

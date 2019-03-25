@@ -1,9 +1,24 @@
+// Copyright 2015-2018 Kuzzle
+//
+// Licensed under the Apache License, Version 2.0 (the "License");
+// you may not use this file except in compliance with the License.
+// You may obtain a copy of the License at
+//
+//    http://www.apache.org/licenses/LICENSE-2.0
+//
+// Unless required by applicable law or agreed to in writing, software
+// distributed under the License is distributed on an "AS IS" BASIS,
+// WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+// See the License for the specific language governing permissions and
+// limitations under the License.
+
 #ifndef _KUZZLE_REQUEST_HPP
 #define _KUZZLE_REQUEST_HPP
 
 #include <string>
 #include <vector>
 #include "core.hpp"
+#include "utils.hpp"
 
 namespace kuzzleio {
   class KuzzleRequest {
@@ -14,15 +29,13 @@ namespace kuzzleio {
       std::vector<std::string> _options;
       std::vector<std::string> _keys;
       std::vector<std::string> _fields;
-      char* const* vectorToC(const std::vector<std::string> &vec) noexcept;
-      char* strdup(const char* s);
 
   public:
       KuzzleRequest();
       KuzzleRequest(const kuzzle_request* src);
       KuzzleRequest(KuzzleRequest& src) : KuzzleRequest(src.toC()) {};
 
-      virtual inline ~KuzzleRequest() { if (_kr != nullptr) kuzzle_free_kuzzle_request(_kr); };
+      virtual inline ~KuzzleRequest() { kuzzle_free_kuzzle_request(_kr); };
 
       const char* requestId() const;
 
