@@ -1,235 +1,194 @@
-os: linux
-language: minimal
-sudo: required
-
-services:
-  - docker
-
-env:
-  global:
-  - AWS_S3_BUCKET=dl.kuzzle.io
-  - AWS_CLOUDFRONT_DISTRIBUTION_ID=E12YL8EZVABYR0
-  # AWS ACCESS KEY ID
-  - secure: "FNXFRe/5Ddci25oBqrMCjPe1JzfWs0A1b1e9FBMHK3ucx3bsbBLKs1HJWOUvTmWF/ZvvifaqZe1yczjoRfHSZeTNC4GQM1H//KZLU9PVx0FgIKy1AZ4efFftRsYOfQ6YhnPpp6SCeDoViC4bWwS7MxHQw8agvLBetDuV+nUK869DZtzAEw1Q/dThxSOtx/w+3LUibipxtmDpY99tB1+RCag1JyJBLvkkCuOEd/inAcTkLtEMXjIst5IP0pHJWfmVgGFwxclwzvq45qLEaS9cbmWcF9vFTV1eO9ubS27GgdL9Bnt1I0ZRYCrg3xxq8fIHKgmana8Jb9ESrB3QpqcaoVS5j5nR89lHdqHHPESCRghIOADnIqkqLi1+aURmSgQAyWOP4CRZuo1EO+A6Pq0XMisGreMkH1XfyemB6us9hijbSAnBdxAN6JQB0+SsKljIFf44iLilEVt1NzbPj4bxcUwFTZFPSsHKMXXgRgaZ86Gwg5ejuXweL1MPqWztBxn8TgaYR6SwExytD0rvhCMJoO/qyXplQxpuTVd517yL7iOFniMvtkxDTJCAkldj3yF/BnrESqs69R+LCBNorFmjnigyfDlg54FvWik4+QakyNofmB2LVnNBa9z+QB/QwFJcYkJpKLBgSxEEtQRJEVdOhiV8WlR84jmF45TgzRJgDEE="
-  # AWS SECRET ACCESS KEY
-  - secure: "XFXzbiX3L9yWTM1eZVHNvK9J36V5m02SBZ1SjGKQk6gk1FCBlTk2qimDcjEXRmoFbvSjl66qu2A7JYNyo0+UVAd6xUCKasJeEezElUkYGehXXc65yoSEC2BikIdgMWwl3q/flPBaXyLVCuaczLCY3T7j7d+oT4Zy0GNkqtPMxxe0DhUydyESJ8rVP07s/ai4qoAx9ZYOQ/zAitwZlrUM5SQo1lDSd3zb0mU2nk4WxgnlFZRxukc+fBS/Iz0+t10zcAr4meiAFhmHxu5I/GWo4NvxF2xvenxnN9OMdImrTn+X8kqiM3Zgp5nfxyM2pqeoPitkc8pps/UDiwYa59YC1aG5W05VdvJJYghBNYZXnQYTAcJeNdoMD+Vvg7bnPY8eEV5EcAoM+j8sRiqw+zr5ORtR/qYR98rYtBbYpRE9DAKqx5HIl6aWZIirSP0ChxmM9T4F1z9Nky/xq18hb9ZrTVTN2sOoJNh8c42odHuXlE7IDQqkB8EuY9nC6bIeBaKINtoMr1PZ1DmMdnTWliJdS7rhzKo3n1Ns0NMsLnnELMJXWUZD1LVHXlDT4yRo1ZFQ/bu3uGaaibIG4BZzwjrTQ+8Lnr1+MS5jeD/SkESzr2z8BRn+6Hmomap3BnYQAC565idMVATDAZ6NZh/j/lg5Vbvll0wRkoZR5v5Jgf3hIdE="
-
-before_install:
-  - sudo sysctl -w vm.max_map_count=262144
-
-before_script:
-  - ./.ci/start_kuzzle.sh
-
 jobs:
   include:
-# ---------------------------------------------
-# GCC: Build, test and deploy
-# ---------------------------------------------
-# AMD64
-# ---------------------------------------
-    - stage: Builds & Tests
-      name: "Build & Tests using GCC/G++ - amd64"
+# -----------------------------------------------
+# Linux amd64
+# -----------------------------------------------
 
-      addons:
-        apt:
-          packages:
-          - python
-          - python-pip
+  - stage: "Build & Tests"
+    name: Linux amd64 - GCC/G++
+    os: linux
+    dist: xenial
+    sudo: true
+    language: go
+    go: 1.12.x
+    cache:
+      directories:
+      - "$HOME/.cache/go-build"
+      - "$HOME/gopath/pkg"
+    script:
+    - export GOOS=linux
+    - export GOARCH=amd64
+    - export CGO_ENABLED=1
+    - make all
 
-      install:
-        - pip install awscli --upgrade --user
+  - stage: "Build & Tests"
+    name: Linux amd64 - Clang
+    if: type = cron OR branch = master
+    os: linux
+    dist: xenial
+    sudo: true
+    language: go
+    go: 1.12.x
+    cache:
+      directories:
+      - "$HOME/.cache/go-build"
+      - "$HOME/gopath/pkg"
+    script:
+    - export GOOS=linux
+    - export GOARCH=amd64
+    - export CGO_ENABLED=1
+    - export CC=clang
+    - make all
 
-      script:
-        # Build & Test
-        - docker run --rm -it --network ci_default --link kuzzle -v "$(pwd)":/mnt kuzzleio/sdk-cross:gcc make update_submodule all build_test run_test
+# -----------------------------------------------
+# Linux i386
+# -----------------------------------------------
 
-      after_success:
-        - docker run --rm -it -e ARCH=amd64 -v "$(pwd)":/mnt kuzzleio/sdk-cross:gcc make package
+  - stage: "Build & Tests"
+    name: Linux i386 - GCC/G++
+    os: linux
+    dist: xenial
+    sudo: true
+    language: go
+    go: 1.12.x
+    cache:
+      directories:
+      - "$HOME/.cache/go-build"
+      - "$HOME/gopath/pkg"
+    addons:
+      apt:
+        packages:
+          - gcc-multilib
+          - gccgo-multilib
+    script:
+    - export GOOS=linux
+    - export GOARCH=386
+    - export CGO_ENABLED=1
+    - make all
 
-      before_deploy:
-        - |
-          if [[ $TRAVIS_BRANCH =~ ^.?-dev$ ]]; then
-            sudo mv ./deploy/kuzzlesdk-cpp-*-amd64.tar.gz ./deploy/kuzzlesdk-cpp-experimental-amd64.tar.gz;
-          fi;
+  - stage: "Build & Tests"
+    name: Linux i386 - Clang
+    if: type = cron OR branch = master
+    os: linux
+    dist: xenial
+    sudo: true
+    language: go
+    go: 1.12.x
+    cache:
+      directories:
+      - "$HOME/.cache/go-build"
+      - "$HOME/gopath/pkg"
+    addons:
+      apt:
+        packages:
+          - gccgo-multilib
+    script:
+    - export GOOS=linux
+    - export GOARCH=386
+    - export CGO_ENABLED=1
+    - export CC=clang
+    - make all
 
-      deploy:
-        provider: s3
-        access_key_id: $AWS_ACCESS_KEY_ID
-        secret_access_key: $AWS_SECRET_ACCESS_KEY
-        bucket: $AWS_S3_BUCKET
-        region: us-west-2
-        skip_cleanup: true
-        upload-dir: sdk/cpp/$TRAVIS_BRANCH
-        local-dir: deploy
-        on:
-          all_branches: true
-          condition: $TRAVIS_BRANCH =~ ^master|.?-dev$
+# -----------------------------------------------
+# Linux armhf
+# -----------------------------------------------
 
-      after_deploy:
-        - aws cloudfront create-invalidation --distribution-id $AWS_CLOUDFRONT_DISTRIBUTION_ID --paths "/*"
+  - stage: "Build & Tests"
+    name: Linux armhf - GCC/G++
+    os: linux
+    dist: xenial
+    sudo: true
+    language: go
+    go: 1.12.x
+    cache:
+      directories:
+      - "$HOME/.cache/go-build"
+      - "$HOME/gopath/pkg"
+    addons:
+      apt:
+        packages:
+          - gcc-arm-linux-gnueabihf
+          - gccgo-arm-linux-gnueabihf
+    script:
+    - export GOOS=linux
+    - export GOARCH=arm
+    - export GOARM=7
+    - export CGO_ENABLED=1
+    - export GCCGO=arm-linux-gnueabihf-gcc
+    - export CC=arm-linux-gnueabihf-gccgo
+    - make all
 
-# ---------------------------------------
-# I386
-# ---------------------------------------
-    - stage: Builds & Tests
-      name: "Build & Tests using GCC/G++ - i386"
+# -----------------------------------------------
+# Linux arm64
+# -----------------------------------------------
 
-      addons:
-        apt:
-          packages:
-          - python
-          - python-pip
+  - stage: "Build & Tests"
+    name: Linux arm64 - GCC/G++
+    os: linux
+    dist: xenial
+    sudo: true
+    language: go
+    go: 1.12.x
+    cache:
+      directories:
+      - "$HOME/.cache/go-build"
+      - "$HOME/gopath/pkg"
+    addons:
+      apt:
+        packages:
+          - gcc-aarch64-linux-gnu
+          - gccgo-aarch64-linux-gnu
+    script:
+    - export GOOS=linux
+    - export GOARCH=arm64
+    - export CGO_ENABLED=1
+    - export GCCGO=aarch64-linux-gnu-gccgo
+    - export CC=aarch64-linux-gnu-gcc
+    - make all
 
-      install:
-        - pip install awscli --upgrade --user
+# -----------------------------------------------
+# MacOS amd64
+# -----------------------------------------------
 
-      script:
-        # Build & Test
-        - docker run --rm -it --network ci_default --link kuzzle -v "$(pwd)":/mnt kuzzleio/sdk-cross:gcc-i386 make update_submodule all build_test run_test
+  - stage: "Build & Tests"
+    name: MacOS amd64 - Clang
+    if: type = cron OR branch = master
+    os: osx
+    language: go
+    go: 1.12.x
+    cache:
+      directories:
+      - "$HOME/Library/Caches/go-build"
+      - "$HOME/gopath/pkg"
+    script:
+    - export GOOS=darwin
+    - export GOARCH=amd64
+    - export CGO_ENABLED=1
+    - make all
 
-      after_success:
-        - docker run --rm -it -e ARCH=i386 -v "$(pwd)":/mnt kuzzleio/sdk-cross:gcc-i386 make package
+# -----------------------------------------------
+# Windows amd64
+# -----------------------------------------------
 
-      before_deploy:
-        - |
-          if [[ $TRAVIS_BRANCH =~ ^.?-dev$ ]]; then
-            sudo mv ./deploy/kuzzlesdk-cpp-*-i386.tar.gz ./deploy/kuzzlesdk-cpp-experimental-i386.tar.gz;
-          fi;
+  - stage: "Build & Tests"
+    name: Windows amd64 - MinGw
+    if: type = cron OR branch = master
+    os: windows
+    language: go
+    go: 1.12.x
+    install: 
+    - choco install make 
+    script:
+    - export GOOS=windows
+    - export GOARCH=amd64
+    - export CGO_ENABLED=1
+    - make all
 
-      deploy:
-        provider: s3
-        access_key_id: $AWS_ACCESS_KEY_ID
-        secret_access_key: $AWS_SECRET_ACCESS_KEY
-        bucket: $AWS_S3_BUCKET
-        region: us-west-2
-        skip_cleanup: true
-        upload-dir: sdk/cpp/$TRAVIS_BRANCH
-        local-dir: deploy
-        on:
-          all_branches: true
-          condition: $TRAVIS_BRANCH =~ ^master|.?-dev$
-
-      after_deploy:
-        - aws cloudfront create-invalidation --distribution-id $AWS_CLOUDFRONT_DISTRIBUTION_ID --paths "/*"
-
-# ---------------------------------------
-# ARMV7
-# ---------------------------------------
-    - stage: Builds & Tests
-      name: "Build & Tests using GCC/G++ - armhf"
-
-      addons:
-        apt:
-          packages:
-          - python
-          - python-pip
-
-      install:
-        - pip install awscli --upgrade --user
-
-      script:
-        # Build
-        - docker run --rm -it -v "$(pwd)":/mnt kuzzleio/sdk-cross:gcc-armhf make all build_test
-        # Test
-        - docker run --rm --privileged multiarch/qemu-user-static:register
-        - docker run --rm -it -e SKIPVALGRIND=1 --network ci_default --link kuzzle -v "$(pwd)":/mnt kuzzleio/sdk-cross:armhf-cpp-runner make run_test
-
-      after_success:
-        - docker run --rm -it -e ARCH=armhf -v "$(pwd)":/mnt kuzzleio/sdk-cross:gcc-armhf make package
-
-      before_deploy:
-        - |
-          if [[ $TRAVIS_BRANCH =~ ^.?-dev$ ]]; then
-            sudo mv ./deploy/kuzzlesdk-cpp-*-armhf.tar.gz ./deploy/kuzzlesdk-cpp-experimental-armhf.tar.gz;
-          fi;
-
-      deploy:
-        provider: s3
-        access_key_id: $AWS_ACCESS_KEY_ID
-        secret_access_key: $AWS_SECRET_ACCESS_KEY
-        bucket: $AWS_S3_BUCKET
-        region: us-west-2
-        skip_cleanup: true
-        upload-dir: sdk/cpp/$TRAVIS_BRANCH
-        local-dir: deploy
-        on:
-          all_branches: true
-          condition: $TRAVIS_BRANCH =~ ^master|.?-dev$
-
-      after_deploy:
-        - aws cloudfront create-invalidation --distribution-id $AWS_CLOUDFRONT_DISTRIBUTION_ID --paths "/*"
-
-# ---------------------------------------
-# ARMV8
-# ---------------------------------------
-    - stage: Builds & Tests
-      name: "Build & Tests using GCC/G++ - aarch64"
-
-      addons:
-        apt:
-          packages:
-          - python
-          - python-pip
-
-      install:
-        - pip install awscli --upgrade --user
-
-      script:
-        # Build
-        - docker run --rm -it -v "$(pwd)":/mnt kuzzleio/sdk-cross:gcc-aarch64 make all build_test
-        # Test
-        - docker run --rm --privileged multiarch/qemu-user-static:register
-        - docker run --rm -it -e SKIPVALGRIND=1 --network ci_default --link kuzzle -v "$(pwd)":/mnt kuzzleio/sdk-cross:aarch64-cpp-runner make run_test
-
-      after_success:
-        - docker run --rm -it -e ARCH=aarch64 -v "$(pwd)":/mnt kuzzleio/sdk-cross:gcc-aarch64 make package
-
-      before_deploy:
-        - |
-          if [[ $TRAVIS_BRANCH =~ ^.?-dev$ ]]; then
-            sudo mv ./deploy/kuzzlesdk-cpp-*-aarch64.tar.gz ./deploy/kuzzlesdk-cpp-experimental-aarch64.tar.gz;
-          fi;
-
-      deploy:
-        provider: s3
-        access_key_id: $AWS_ACCESS_KEY_ID
-        secret_access_key: $AWS_SECRET_ACCESS_KEY
-        bucket: $AWS_S3_BUCKET
-        region: us-west-2
-        skip_cleanup: true
-        upload-dir: sdk/cpp/$TRAVIS_BRANCH
-        local-dir: deploy
-        on:
-          all_branches: true
-          condition: $TRAVIS_BRANCH =~ ^master|.?-dev$
-
-      after_deploy:
-        - aws cloudfront create-invalidation --distribution-id $AWS_CLOUDFRONT_DISTRIBUTION_ID --paths "/*"
-
-# ---------------------------------------------
-# CLANG: Build & Test (AMD64 & i386 only)
-# ---------------------------------------------
-# AMD64
-# ---------------------------------------
-    - stage: Builds & Tests
-      name: "Build & Tests using Clang - amd64"
-
-      env:
-        - COMPILATOR = "clang"
-
-      script:
-        # Build & Test
-        - docker run --rm -it --network ci_default --link kuzzle -v "$(pwd)":/mnt kuzzleio/sdk-cross:clang make update_submodule all build_test run_test
-
-# ---------------------------------------
-# I386
-# ---------------------------------------
-    - stage: Builds & Tests
-      name: "Build & Tests using Clang - i386"
-
-      env:
-        - COMPILATOR = "clang"
-
-      script:
-        # Build & Test
-        - docker run --rm -it --network ci_default --link kuzzle -v "$(pwd)":/mnt kuzzleio/sdk-cross:clang-i386 make update_submodule all build_test run_test
+notifications:
+  slack:
+    rooms:
+    - secure: "P61/XJ4BfN+RRtSJEMjTjFKANxG5K0AoodMR4p1sQz7qEsRv3ow/VtmHdeKsuiirJwVhyjDy2bLtj67r8ezsyMM9KQLp+n9+A4kXJPg4ySbVMjQMZDW0KNaLBth4kcU+Pt61JRBPjM5XlEzJgWQtHauT84H3xJl9jzpvlRCgdRnpTR8GKfRTEQwdoChg5iMTne85lJw6XwU4gY6w8iZpSTrN/cwZv9i7d6Cop1Z2/3HItEiJaL2I2GouKB/EY9ZHd1DP7iH/18bPTfhZfMF10yIw2/CeZxDbwLRnkScLDSU5VihDcxWxP8W5ZTQOjZafxxB9v4cvETBErw3c5Qp2nT4hoJmz8GBmFYjIxd6ausK1g8KTCZOPGHK0JaZRepmUVseGC1GwfX3NsmbmBoLv/bqzKNhx0o8T4xqzh9lxqpQKctDKSWy85kZYnKh0cazPQJgy/+Zgw9OCPjpvGi8AzqrJn2gjH388s/DK24rqz+U8KwLyr7W1UrvjMUKuOv9iGiM/ZpYGTMIMXwQfkFrAoGQCU/L2YC7ARKUwejjN+axsG3RJ5hKAOXOKTrjdPk+9i2fgP7Q7SdnHDQuvdzcRH7FL89JtFz2PURj08YA8gzhjfh6ErnaRHKK+9r/zXrD+/VxgxCWTBgqhzgtUycBPPfqLDieiOyNJhudjUWdBw7Y=" 
+    on_success: never
+    on_failure: always
+    on_error: always
+    on_pull_requests: false
