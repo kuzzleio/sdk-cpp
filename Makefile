@@ -6,11 +6,11 @@ ifeq ($(OS),Windows_NT)
 	STATICLIB = .lib
 	DYNLIB = .dll
 	GOROOT ?= C:/Go
-	GOCC ?= $(GOROOT)bin\go
-	SEP = \\
+	GOCC ?= go
+	SEP = /
 	RM = del /Q /F /S
 	RRM = rmdir /S /Q
-	MV = rename
+	MV = mv
 	CMDSEP = &
 	ROOT_DIR_CLEAN = $(subst /,\,$(ROOT_DIR))
 	LIB_PREFIX =
@@ -25,7 +25,13 @@ else
 	MV = mv -f
 	ROOT_DIR_CLEAN = $(ROOT_DIR)
 	LIB_PREFIX = lib
-	ARCH?=$(shell uname -p)
+	ARCH ?= $(shell uname -p)
+endif
+
+ifeq ($(shell uname) ,Darwin)
+	RELATIVELINKOPTS = -sf
+else
+	RELATIVELINKOPTS = -srf
 endif
 
 SDK_FOLDER_NAME=kuzzle-cpp-sdk
@@ -63,17 +69,14 @@ else
 	mkdir -p $@
 endif
 
-update_submodule:
-	cd sdk-c/go/src/github.com/kuzzleio/sdk-go && git submodule init && git submodule update
-
 make_c_sdk:
 	cd sdk-c && $(MAKE)
 
 $(BUILD_DIR)/cpp: $(BUILD_DIR) make_c_sdk $(OBJECTS)
 	$(AR) rvs $(BUILD_DIR)$(PATHSEP)libkuzzlesdk$(STATICLIB).$(VERSION) $(OBJECTS)
 	$(CXX) -shared -fPIC -o $(BUILD_DIR)$(PATHSEP)$(LIB_PREFIX)kuzzlesdk$(DYNLIB).$(VERSION) -Wl,--whole-archive $(BUILD_DIR)$(PATHSEP)$(LIB_PREFIX)kuzzlesdk$(STATICLIB).$(VERSION) sdk-c$(PATHSEP)build$(PATHSEP)$(LIB_PREFIX)kuzzlesdk$(STATICLIB) -Wl,--no-whole-archive
-	cd $(BUILD_DIR) && ln -srf $(LIB_PREFIX)kuzzlesdk$(DYNLIB).$(VERSION) $(LIB_PREFIX)kuzzlesdk$(DYNLIB)
-	cd $(BUILD_DIR) && ln -srf $(LIB_PREFIX)kuzzlesdk$(STATICLIB).$(VERSION) $(LIB_PREFIX)kuzzlesdk$(STATICLIB)
+	cd $(BUILD_DIR) && $(RELATIVELINKOPTS) $(LIB_PREFIX)kuzzlesdk$(DYNLIB).$(VERSION) $(LIB_PREFIX)kuzzlesdk$(DYNLIB)
+	cd $(BUILD_DIR) && $(RELATIVELINKOPTS) $(LIB_PREFIX)kuzzlesdk$(STATICLIB).$(VERSION) $(LIB_PREFIX)kuzzlesdk$(STATICLIB)
 	mkdir -p $(BUILD_DIR)$(PATHSEP)$(SDK_FOLDER_NAME)/lib
 	mkdir -p $(BUILD_DIR)$(PATHSEP)$(SDK_FOLDER_NAME)/include
 
@@ -81,9 +84,6 @@ $(BUILD_DIR)/cpp: $(BUILD_DIR) make_c_sdk $(OBJECTS)
 	cp -ra sdk-c$(PATHSEP)build/kuzzle-c-sdk/include/* $(BUILD_DIR)$(PATHSEP)$(SDK_FOLDER_NAME)/include
 	cp -a $(BUILD_DIR)$(PATHSEP)*.so*  $(BUILD_DIR)$(PATHSEP)*.a* $(BUILD_DIR)$(PATHSEP)$(SDK_FOLDER_NAME)/lib
 	@touch $@
-
-package: $(BUILD_DIR)$(PATHSEP)$(LIB_PREFIX)kuzzlesdk$(DYNLIB).$(VERSION) $(BUILD_DIR)$(PATHSEP)$(LIB_PREFIX)kuzzlesdk$(STATICLIB).$(VERSION)
-	mkdir -p deploy && cd $(BUILD_DIR) && tar cfz ..$(PATHSEP)deploy$(PATHSEP)kuzzlesdk-cpp-$(VERSION)-$(ARCH).tar.gz $(SDK_FOLDER_NAME)
 
 build_test: $(BUILD_DIR)$(PATHSEP)$(LIB_PREFIX)kuzzlesdk$(DYNLIB).$(VERSION) $(BUILD_DIR)$(PATHSEP)$(LIB_PREFIX)kuzzlesdk$(STATICLIB).$(VERSION)
 	cd test && ./build_cpp_tests.sh
