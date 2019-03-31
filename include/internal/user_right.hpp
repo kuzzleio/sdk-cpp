@@ -24,7 +24,7 @@ namespace kuzzleio {
       user_right* _ur = nullptr;
 
     public:
-      UserRight(user_right* src) : _ur(src) {};
+      UserRight(user_right* src);
 
       UserRight(const UserRight& src);
 

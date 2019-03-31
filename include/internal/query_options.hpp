@@ -27,15 +27,15 @@ namespace kuzzleio {
 
         public:
 
-            QueryOptions(query_options* src) : _qo(src) {};
+            QueryOptions(const query_options* src);
 
             QueryOptions(const QueryOptions& src);
 
             QueryOptions() :
-            _qo(static_cast<query_options*>(calloc(11, sizeof(query_options))))
+            _qo(static_cast<query_options*>(calloc(1, sizeof(query_options))))
             {};
 
-            virtual inline ~QueryOptions() { kuzzle_free_query_options(_qo);};
+            virtual inline ~QueryOptions() { kuzzle_free_query_options(_qo); };
 
             query_options *qo() const;
 

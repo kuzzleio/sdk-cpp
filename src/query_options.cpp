@@ -4,7 +4,7 @@
 namespace kuzzleio {
 
     QueryOptions::QueryOptions(const QueryOptions &src) {
-        _qo = static_cast<query_options*>(calloc(11, sizeof(query_options)));
+        _qo = static_cast<query_options*>(calloc(1, sizeof(query_options)));
         _qo->queuable = src.queuable();
         _qo->withdist = src.withdist();
         _qo->withcoord = src.withcoord();
@@ -16,6 +16,20 @@ namespace kuzzleio {
         _qo->if_exist = toC::dupstring(src.ifExist());
         _qo->volatiles = toC::dupstring(src.volatiles());
         _qo->retry_on_conflict = src.retryOnConflict();
+    }
+    QueryOptions::QueryOptions(const query_options* src) {
+        _qo = static_cast<query_options*>(calloc(1, sizeof(query_options)));
+        _qo->queuable = src->queuable;
+        _qo->withdist = src->withdist;
+        _qo->withcoord = src->withcoord;
+        _qo->from = src->from;
+        _qo->size = src->size;
+        _qo->scroll = toC::dupstring(src->scroll);
+        _qo->scroll_id = toC::dupstring(src->scroll_id);
+        _qo->refresh = toC::dupstring(src->refresh);
+        _qo->if_exist = toC::dupstring(src->if_exist);
+        _qo->volatiles = toC::dupstring(src->volatiles);
+        _qo->retry_on_conflict = src->retry_on_conflict;
     }
 
     query_options *QueryOptions::qo() const {

@@ -19,11 +19,11 @@
 namespace kuzzleio {
 
     KuzzleRequest::KuzzleRequest() {
-        _kr = static_cast<kuzzle_request*>(calloc(48, sizeof(kuzzle_request)));
+        _kr = static_cast<kuzzle_request*>(calloc(1, sizeof(kuzzle_request)));
     }
 
     KuzzleRequest::KuzzleRequest(const kuzzle_request* src) {
-        _kr = static_cast<kuzzle_request*>(calloc(48, sizeof(kuzzle_request)));
+        _kr = static_cast<kuzzle_request*>(calloc(1, sizeof(kuzzle_request)));
         _kr->request_id = toC::dupstring(src->request_id);
         _kr->controller = toC::dupstring(src->controller);
         _kr->action = toC::dupstring(src->action);
