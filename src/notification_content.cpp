@@ -17,21 +17,8 @@
 
 namespace kuzzleio {
 
-    NotificationContent::NotificationContent(notification_content *src) {
-        _nc = (notification_content*)malloc(sizeof(notification_content));
-        _nc->id = toC::dupstring(src->id);
-        if (src->m != nullptr) {
-            _meta = new Meta(src->m);
-            _meta->m()->author = toC::dupstring(src->m->author);
-            _meta->m()->created_at = src->m->created_at;
-            _meta->m()->updated_at = src->m->updated_at;
-            _meta->m()->updater = toC::dupstring(src->m->updater);
-            _meta->m()->active = src->m->active;
-            _meta->m()->deleted_at = src->m->deleted_at;
-        }
-        _nc->m = nullptr;
-        _nc->content = toC::dupstring(src->content);
-        _nc->count = src->count;
+    NotificationContent::NotificationContent(notification_content *src) : _nc(src){
+        _meta = src->m ? new Meta(src->m) : nullptr;
     }
 
     const char* NotificationContent::id() const {

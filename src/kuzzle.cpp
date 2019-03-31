@@ -116,12 +116,27 @@ namespace kuzzleio {
     return this;
   }
 
-  const std::string& Kuzzle::volatiles() const noexcept {
-    return std::string(kuzzle_get_volatile(_kuzzle));
+  std::string Kuzzle::volatiles() const noexcept {
+    char *volatiles = kuzzle_get_volatile(_kuzzle);
+    std::string volatilestr = volatiles;
+
+    free(volatiles);
+
+    return volatilestr;
   }
 
-  const std::string& Kuzzle::jwt() const noexcept {
-    return std::string(kuzzle_get_jwt(_kuzzle));
+  std::string Kuzzle::jwt() const noexcept {
+    char *jwt = kuzzle_get_jwt(_kuzzle);
+    std::string jwtstr = jwt;
+
+    free(jwt);
+
+    return jwtstr;
+  }
+
+  Kuzzle *Kuzzle::jwt(const std::string &jwt) noexcept {
+    kuzzle_set_jwt(_kuzzle, const_cast<char*>(jwt.c_str()));
+    return this;
   }
 
   Protocol* Kuzzle::getProtocol() const noexcept {

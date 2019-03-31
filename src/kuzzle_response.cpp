@@ -18,22 +18,6 @@
 
 namespace kuzzleio {
 
-    KuzzleResponse::KuzzleResponse(const kuzzle_response *src) {
-        _kr = (kuzzle_response*)malloc(sizeof(kuzzle_response));
-        _kr->request_id = toC::dupstring(src->request_id);
-        _kr->result = toC::dupstring(src->result);
-        _kr->volatiles = toC::dupstring(src->volatiles);
-        _kr->index = toC::dupstring(src->index);
-        _kr->collection = toC::dupstring(src->collection);
-        _kr->controller = toC::dupstring(src->controller);
-        _kr->action = toC::dupstring(src->action);
-        _kr->room_id = toC::dupstring(src->room_id);
-        _kr->channel = toC::dupstring(src->channel);
-        _kr->error = toC::dupstring(src->error);
-        _kr->stack = toC::dupstring(src->stack);
-        _kr->status = src->status;
-    }
-
     const char* KuzzleResponse::requestId() const {
         return _kr->request_id;
     }

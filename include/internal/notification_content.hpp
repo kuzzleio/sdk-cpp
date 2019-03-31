@@ -27,7 +27,7 @@ namespace kuzzleio {
         Meta* _meta = nullptr;
 
       public:
-        NotificationContent(notification_content* src);// : _nc(src) {};
+        NotificationContent(notification_content* src);
 
         virtual inline ~NotificationContent() { delete _meta; kuzzle_free_notification_content(_nc); };
 

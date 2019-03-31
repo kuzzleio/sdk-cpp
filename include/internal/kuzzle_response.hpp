@@ -25,7 +25,7 @@ namespace kuzzleio {
       kuzzle_response* _kr = nullptr;
 
     public:
-      KuzzleResponse(const kuzzle_response* src);
+      KuzzleResponse(kuzzle_response* src) : _kr(src) {};
 
       virtual inline ~KuzzleResponse() { kuzzle_free_kuzzle_response(_kr); };
 

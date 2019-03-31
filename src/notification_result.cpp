@@ -18,26 +18,8 @@
 
 namespace kuzzleio {
 
-    NotificationResult::NotificationResult(notification_result *src) {
-        _nr = (notification_result*)malloc(sizeof(notification_result));
-        _nr->request_id = toC::dupstring(src->request_id);
-        _nr->result = NULL;
+    NotificationResult::NotificationResult(notification_result *src) : _nr(src) {
         _result = src->result ? new NotificationContent(src->result) : nullptr;
-        _nr->volatiles = toC::dupstring(src->volatiles);
-        _nr->index = toC::dupstring(src->index);
-        _nr->collection = toC::dupstring(src->collection);
-        _nr->controller = toC::dupstring(src->controller);
-        _nr->action = toC::dupstring(src->action);
-        _nr->protocol = toC::dupstring(src->protocol);
-        _nr->scope = toC::dupstring(src->scope);
-        _nr->state = toC::dupstring(src->state);
-        _nr->user = toC::dupstring(src->user);
-        _nr->n_type = toC::dupstring(src->n_type);
-        _nr->room_id = toC::dupstring(src->room_id);
-        _nr->timestamp = src->timestamp;
-        _nr->status = src->status;
-        _nr->error = toC::dupstring(src->error);
-        _nr->stack = toC::dupstring(src->stack);
     }
 
 

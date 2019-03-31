@@ -16,7 +16,7 @@ namespace {
           CustomNotificationListener::getSingleton();
       ctx->notif_result = nullptr;
       ctx->room_id = ctx->kuzzle->realtime->subscribe(
-          ctx->index, collection_id, "{}", &l->listener);
+          ctx->index, collection_id, "{}", &(l->listener));
     } catch (kuzzleio::KuzzleException e) {
       BOOST_FAIL(e.what());
     }
@@ -31,8 +31,8 @@ namespace {
     options.refresh = const_cast<char*>("wait_for");
 
     try {
-      ctx->kuzzle->document->create(ctx->index, ctx->collection, "", R"({"foo":"bar"})", QueryOptions(&options));
-    } catch (KuzzleException e) {
+      ctx->kuzzle->document->create(ctx->index, ctx->collection, "", R"({"foo":"bar"})", kuzzleio::QueryOptions(&options));
+    } catch (kuzzleio::KuzzleException e) {
       BOOST_FAIL(e.what());
     }
   }
@@ -74,8 +74,8 @@ namespace {
     options.refresh = const_cast<char*>("wait_for");
 
     try {
-      ctx->kuzzle->document->update(ctx->index, ctx->collection, document_id, "{\""+key+"\":\""+value+"\"}", QueryOptions(&options));
-    } catch (KuzzleException e) {
+      ctx->kuzzle->document->update(ctx->index, ctx->collection, document_id, "{\""+key+"\":\""+value+"\"}", kuzzleio::QueryOptions(&options));
+    } catch (kuzzleio::KuzzleException e) {
       BOOST_FAIL(e.what());
     }
   }

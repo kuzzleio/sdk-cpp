@@ -17,14 +17,7 @@
 
 namespace kuzzleio {
 
-    SubscribeResult::SubscribeResult(subscribe_result *src) {
-        _sr = (subscribe_result*)malloc(sizeof(subscribe_result));
-        _sr->room = toC::dupstring(src->room);
-        _sr->channel = toC::dupstring(src->channel);
-        _sr->status = src->status;
-        _sr->error = toC::dupstring(src->error);
-        _sr->stack = toC::dupstring(src->stack);
-    }
+    SubscribeResult::SubscribeResult(subscribe_result *src) : _sr(src) {}
 
     const char* SubscribeResult::room() const {
         return _sr->room;

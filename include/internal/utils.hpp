@@ -16,6 +16,7 @@
 #define UTILS_HPP
 
 #include <string>
+#include <cstring>
 #include "core.hpp"
 #include "kuzzle.hpp"
 

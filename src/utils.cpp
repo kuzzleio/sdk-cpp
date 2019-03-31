@@ -19,19 +19,18 @@ namespace kuzzleio {
         const char* dupstring(const char* s) {
             if (s == NULL)
                 return NULL;
-            size_t len = 0;
-            for (; s[len]; len++);
-            char *dest = new char[len + 1];
+            size_t len = strlen(s);
+            char *dest = static_cast<char*>(malloc(sizeof(char) * len + 1));
             dest = strcpy(dest, s);
             return dest;
         }
         char* const* vectorToC(const std::vector<std::string> &vec) {
             if (!vec.size())
                 return NULL;
-            char** cc = new char*[vec.size()];
+            char** cc = static_cast<char**>(malloc(sizeof(char*) * vec.size()));
             for(unsigned int i = 0; i < vec.size(); ++i)
             {
-                cc[i] = new char[vec[i].size() + 1];
+                cc[i] = static_cast<char*>(malloc(sizeof(char) * vec[i].size() + 1));
                 strcpy(cc[i], vec[i].c_str());
             }
             return cc;

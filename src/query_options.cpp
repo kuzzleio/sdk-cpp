@@ -3,23 +3,8 @@
 
 namespace kuzzleio {
 
-    QueryOptions::QueryOptions(const query_options *src) {
-        _qo = (query_options*)malloc(sizeof(query_options));
-        _qo->queuable = src->queuable;
-        _qo->withdist = src->withdist;
-        _qo->withcoord = src->withcoord;
-        _qo->from = src->from;
-        _qo->size = src->size;
-        _qo->scroll = toC::dupstring(src->scroll);
-        _qo->scroll_id = toC::dupstring(src->scroll_id);
-        _qo->refresh = toC::dupstring(src->refresh);
-        _qo->if_exist = toC::dupstring(src->if_exist);
-        _qo->volatiles = toC::dupstring(src->volatiles);
-        _qo->retry_on_conflict = src->retry_on_conflict;
-    }
-
     QueryOptions::QueryOptions(const QueryOptions &src) {
-        _qo = (query_options*)malloc(sizeof(query_options));
+        _qo = static_cast<query_options*>(calloc(11, sizeof(query_options)));
         _qo->queuable = src.queuable();
         _qo->withdist = src.withdist();
         _qo->withcoord = src.withcoord();
@@ -102,18 +87,26 @@ namespace kuzzleio {
     }
 
     void QueryOptions::scroll(const char* scroll) {
+        if (_qo->scroll != nullptr)
+            free(const_cast<char*>(_qo->scroll));
         QueryOptions::_qo->scroll = toC::dupstring(scroll);
     }
 
     void QueryOptions::scrollId(const char* scrollId) {
+        if (_qo->scroll_id != nullptr)
+            free(const_cast<char*>(_qo->scroll_id));
         QueryOptions::_qo->scroll_id = toC::dupstring(scrollId);
     }
 
     void QueryOptions::refresh(const char* refresh) {
+        if (_qo->refresh != nullptr)
+            free(const_cast<char*>(_qo->refresh));
         QueryOptions::_qo->refresh = toC::dupstring(refresh);
     }
 
     void QueryOptions::ifExist(const char* ifExist) {
+        if (_qo->if_exist != nullptr)
+            free(const_cast<char*>(_qo->if_exist));
         QueryOptions::_qo->if_exist = toC::dupstring(ifExist);
     }
 
@@ -122,7 +115,8 @@ namespace kuzzleio {
     }
 
     void QueryOptions::volatiles(const char* volatiles) {
+        if (_qo->volatiles != nullptr)
+            free(const_cast<char*>(_qo->volatiles));
         QueryOptions::_qo->volatiles = toC::dupstring(volatiles);
     }
-
 }

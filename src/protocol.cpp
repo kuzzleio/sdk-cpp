@@ -15,9 +15,9 @@
 #include <algorithm>
 #include "protocol.hpp"
 
+// bridge functions
 namespace kuzzleio {
 
-   // bridge functions
   static void bridge_cpp_remove_listener(
       int event,
       kuzzle_event_listener listener,

@@ -20,15 +20,13 @@
 
 namespace kuzzleio {
   class Meta {
-     private:
+    private:
       meta* _m = nullptr;
 
-     public:
-      Meta(meta* src);
+    public:
+      Meta(meta* src) : _m(src) {};
 
       virtual inline ~Meta() { kuzzle_free_meta(_m); };
-
-      meta* m() const ;
 
       const char * author() const;
 

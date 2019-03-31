@@ -17,20 +17,6 @@
 
 namespace kuzzleio {
 
-    Meta::Meta(meta *src) {
-        _m = (meta*)malloc(sizeof(meta));
-        _m->author = toC::dupstring(src->author);
-        _m->created_at = src->created_at;
-        _m->updated_at = src->updated_at;
-        _m->updater = toC::dupstring(src->updater);
-        _m->active = src->active;
-        _m->deleted_at = src->deleted_at;
-    }
-
-    meta* Meta::m() const {
-        return _m;
-    }
-
     const char * Meta::author() const {
         return _m->author;
     }

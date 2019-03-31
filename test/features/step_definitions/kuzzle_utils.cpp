@@ -55,7 +55,7 @@ bool kuzzle_user_exists(kuzzleio::Kuzzle *kuzzle, const std::string &user_id) {
     req.controller = "security";
     req.action = "getUser";
     req.id = user_id.c_str();
-    KuzzleRequest n(&req);
+    kuzzleio::KuzzleRequest n(&req);
 
     kuzzle->query(n);
     user_exists = true;
@@ -82,7 +82,7 @@ void kuzzle_user_delete(kuzzleio::Kuzzle *kuzzle, const std::string &user_id)
     kuzzleio::query_options options;
     options.refresh = const_cast<char*>("wait_for");
     options.volatiles = const_cast<char*>("{}");
-    kuzzle->query(KuzzleRequest(&req), QueryOptions(&options));  // TODO: test if we can delete with options
+    kuzzle->query(kuzzleio::KuzzleRequest(&req), kuzzleio::QueryOptions(&options));  // TODO: test if we can delete with options
 
     K_LOG_D("Deleted user \"%s\"", user_id.c_str());
   }
@@ -102,7 +102,7 @@ void kuzzle_credentials_delete(
     req.strategy = "local";
     req.id = user_id.c_str();
 
-    kuzzle->query(KuzzleRequest(&req));
+    kuzzle->query(kuzzleio::KuzzleRequest(&req));
     //kuzzle->query(req);
 
     K_LOG_D("Deleted '%s' credentials for userId '%s'", strategy.c_str(),
@@ -141,7 +141,7 @@ void kuzzle_user_create(kuzzleio::Kuzzle *kuzzle, const std::string &user_id,
   K_LOG_D("Req body: %s", req.body);
   try
   {
-    KuzzleResponse resp = kuzzle->query(&req);
+    kuzzleio::KuzzleResponse resp = kuzzle->query(&req);
     K_LOG_D("createUser ended with status: %d", resp.status());
   }
   catch (kuzzleio::KuzzleException e)

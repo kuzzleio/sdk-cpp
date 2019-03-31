@@ -23,10 +23,10 @@
 namespace kuzzleio {
   class TokenValidity {
     private:
-      const bool _valid;
+      bool _valid;
       const std::string _state;
-      const unsigned long long _expiresAt;
-      const int _status;
+      unsigned long long _expiresAt;
+      int _status;
       const std::string _error;
       const std::string _stack;
 
@@ -40,13 +40,13 @@ namespace kuzzleio {
         _stack(src->stack ? src->stack : "")
         { kuzzle_free_token_validity(src); };
 
-      const bool valid() const;
+      bool valid() const;
 
       const std::string &state() const;
 
-      const unsigned long long int expiresAt() const;
+      unsigned long long int expiresAt() const;
 
-      const int status() const;
+      int status() const;
 
       const std::string &error() const;
 

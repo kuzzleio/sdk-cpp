@@ -12,7 +12,7 @@ namespace {
       kuzzleio::query_options options;
       options.refresh = const_cast<char*>("wait_for");
 
-      ctx->kuzzle->document->create(ctx->index, ctx->collection, document_id, "{\"a\":\"document\"}", QueryOptions(&options));
+      ctx->kuzzle->document->create(ctx->index, ctx->collection, document_id, "{\"a\":\"document\"}", kuzzleio::QueryOptions(&options));
       ctx->success = 1;
     } catch (kuzzleio::KuzzleException e) {
       ctx->success = 0;
@@ -45,8 +45,8 @@ namespace {
     try {
       kuzzleio::query_options options;
       options.refresh = const_cast<char*>("wait_for");
-      ctx->kuzzle->document->delete_(ctx->index, ctx->collection, document_id, QueryOptions(&options));
-    } catch (KuzzleException e) {
+      ctx->kuzzle->document->delete_(ctx->index, ctx->collection, document_id, kuzzleio::QueryOptions(&options));
+    } catch (kuzzleio::KuzzleException e) {
       ctx->error_message = e.what();
       ctx->success = 0;
     }
@@ -61,7 +61,7 @@ namespace {
       kuzzleio::query_options options;
       options.refresh = const_cast<char*>("wait_for");
 
-      ctx->kuzzle->document->createOrReplace(ctx->index, ctx->collection, document_id, "{\"a\":\"replaced document\"}", QueryOptions(&options));
+      ctx->kuzzle->document->createOrReplace(ctx->index, ctx->collection, document_id, "{\"a\":\"replaced document\"}", kuzzleio::QueryOptions(&options));
       ctx->document_id = document_id;
       ctx->success = 1;
     } catch (kuzzleio::KuzzleException e) {
@@ -90,7 +90,7 @@ namespace {
       kuzzleio::query_options options;
       options.refresh = const_cast<char*>("wait_for");
 
-      ctx->kuzzle->document->replace(ctx->index, ctx->collection, document_id, "{\"a\":\"replaced document\"}", QueryOptions(&options));
+      ctx->kuzzle->document->replace(ctx->index, ctx->collection, document_id, "{\"a\":\"replaced document\"}", kuzzleio::QueryOptions(&options));
       ctx->document_id = document_id;
       ctx->success = 1;
     } catch (kuzzleio::KuzzleException e) {
@@ -115,7 +115,7 @@ namespace {
       kuzzleio::query_options options;
       options.refresh = const_cast<char*>("wait_for");
 
-      ctx->kuzzle->document->update(ctx->index, ctx->collection, document_id, "{\"a\":\"updated document\"}", QueryOptions(&options));
+      ctx->kuzzle->document->update(ctx->index, ctx->collection, document_id, "{\"a\":\"updated document\"}", kuzzleio::QueryOptions(&options));
       ctx->document_id = document_id;
       ctx->success = 1;
     } catch (kuzzleio::KuzzleException e) {
@@ -143,7 +143,7 @@ namespace {
         + document_id + R"%("}}]}}})%";
 
     try {
-      ctx->search_result = new SearchResult(ctx->kuzzle->document->search(ctx->index, ctx->collection, "{\"query\": {\"bool\": {\"should\":[{\"match\":{\"_id\": \"" + document_id + "\"}}]}}}"));
+      ctx->search_result = new kuzzleio::SearchResult(ctx->kuzzle->document->search(ctx->index, ctx->collection, "{\"query\": {\"bool\": {\"should\":[{\"match\":{\"_id\": \"" + document_id + "\"}}]}}}"));
       ctx->success = 1;
     } catch (kuzzleio::KuzzleException e) {
       BOOST_FAIL(e.what());
@@ -163,8 +163,8 @@ namespace {
       options.from = from;
       options.size = size;
 
-      ctx->search_result = new SearchResult(ctx->kuzzle->document->search(ctx->index, ctx->collection, query, QueryOptions(&options)));
-    } catch (KuzzleException e) {
+      ctx->search_result = new kuzzleio::SearchResult(ctx->kuzzle->document->search(ctx->index, ctx->collection, query, kuzzleio::QueryOptions(&options)));
+    } catch (kuzzleio::KuzzleException e) {
       BOOST_FAIL(e.what());
     }
   }
@@ -174,8 +174,8 @@ namespace {
     ScenarioScope<KuzzleCtx> ctx;
 
     try {
-      ctx->search_result = new SearchResult(ctx->search_result->next());
-    } catch (KuzzleException e) {
+      ctx->search_result = new kuzzleio::SearchResult(ctx->search_result->next());
+    } catch (kuzzleio::KuzzleException e) {
       BOOST_FAIL(e.what());
     }
   }
@@ -221,7 +221,7 @@ namespace {
       document_ids.push_back(document1_id);
       document_ids.push_back(document2_id);
 
-      ctx->kuzzle->document->mDelete(ctx->index, ctx->collection, document_ids, QueryOptions(&options));
+      ctx->kuzzle->document->mDelete(ctx->index, ctx->collection, document_ids, kuzzleio::QueryOptions(&options));
       ctx->success = 1;
       ctx->partial_exception = 0;
     } catch (kuzzleio::PartialException e) {
@@ -259,7 +259,7 @@ namespace {
       options.refresh = const_cast<char*>("wait_for");
 
       string documents = "[{\"_id\":\"" + document1_id + "\", \"body\":{}}, {\"_id\":\"" + document2_id + "\", \"body\":{}}]";
-      ctx->kuzzle->document->mCreate(ctx->index, ctx->collection, documents, QueryOptions(&options));
+      ctx->kuzzle->document->mCreate(ctx->index, ctx->collection, documents, kuzzleio::QueryOptions(&options));
       ctx->success = 1;
       ctx->partial_exception = 0;
     } catch (kuzzleio::PartialException e) {
@@ -282,7 +282,7 @@ namespace {
       options.refresh = const_cast<char*>("wait_for");
 
       string documents = "[{\"_id\":\"" + document1_id + "\", \"body\":{\"a\":\"replaced document\"}}, {\"_id\":\"" + document2_id + "\", \"body\":{\"a\":\"replaced document\"}}]";
-      ctx->kuzzle->document->mReplace(ctx->index, ctx->collection, documents, QueryOptions(&options));
+      ctx->kuzzle->document->mReplace(ctx->index, ctx->collection, documents, kuzzleio::QueryOptions(&options));
       ctx->success = 1;
       ctx->partial_exception = 0;
     } catch (kuzzleio::PartialException e) {
@@ -317,7 +317,7 @@ namespace {
       options.refresh = const_cast<char*>("wait_for");
 
       string documents = "[{\"_id\":\"" + document1_id + "\", \"body\":{\"a\":\"replaced document\"}}, {\"_id\":\"" + document2_id + "\", \"body\":{\"a\":\"replaced document\"}}]";
-      ctx->kuzzle->document->mUpdate(ctx->index, ctx->collection, documents, QueryOptions(&options));
+      ctx->kuzzle->document->mUpdate(ctx->index, ctx->collection, documents, kuzzleio::QueryOptions(&options));
       ctx->success = 1;
       ctx->partial_exception = 0;
     } catch (kuzzleio::PartialException e) {
@@ -352,7 +352,7 @@ namespace {
       options.refresh = const_cast<char*>("wait_for");
 
       string documents = "[{\"_id\":\"" + document1_id + "\", \"body\":{\"a\":\"replaced document\"}}, {\"_id\":\"" + document2_id + "\", \"body\":{\"a\":\"replaced document\"}}]";
-      ctx->kuzzle->document->mCreateOrReplace(ctx->index, ctx->collection, documents, QueryOptions(&options));
+      ctx->kuzzle->document->mCreateOrReplace(ctx->index, ctx->collection, documents, kuzzleio::QueryOptions(&options));
       ctx->success = 1;
       ctx->partial_exception = 0;
     } catch (kuzzleio::PartialException e) {

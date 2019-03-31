@@ -104,7 +104,8 @@ namespace kuzzleio {
 
       void connect();
 
-      const std::string& jwt() const noexcept;
+      std::string jwt() const noexcept;
+      Kuzzle *jwt(const std::string& jwt) noexcept;
       void disconnect() noexcept;
       KuzzleResponse query(const KuzzleRequest& request);
       KuzzleResponse query(
@@ -123,7 +124,7 @@ namespace kuzzleio {
       int queueTTL() const noexcept;
       int replayInterval() const noexcept;
       int reconnectionDelay() const noexcept;
-      const std::string& volatiles() const noexcept;
+      std::string volatiles() const noexcept;
       Kuzzle* volatiles(const std::string& volatiles) noexcept;
       Protocol* getProtocol() const noexcept;
 

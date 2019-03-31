@@ -22,7 +22,6 @@ namespace kuzzleio {
   }
 
   SearchResult::~SearchResult() {
-    if (_sr != nullptr)
       kuzzle_free_search_result(_sr);
   }
 

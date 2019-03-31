@@ -30,8 +30,8 @@ struct KuzzleCtx {
   string collection;
   string jwt;
   string document_id;
-  SearchResult *search_result = nullptr;
-  std::vector<std::shared_ptr<UserRight>> user_rights;
+  kuzzleio::SearchResult *search_result = nullptr;
+  std::vector<std::shared_ptr<kuzzleio::UserRight>> user_rights;
 
 
   std::string room_id;
@@ -48,17 +48,17 @@ struct KuzzleCtx {
   int partial_exception = -1;
   std::vector<std::string> string_array;
 
-  NotificationResult *notif_result = nullptr;
+  kuzzleio::NotificationResult *notif_result = nullptr;
 
 };
 
 class CustomNotificationListener {
   private:
     CustomNotificationListener() {
-      listener = [](const NotificationResult& res) {
+      listener = [](const kuzzleio::NotificationResult& res) {
         ScenarioScope<KuzzleCtx> ctx;
         std::cout << "received a notification: " << res.result()->content() << std::endl;
-        ctx->notif_result = new NotificationResult(res);
+        ctx->notif_result = new kuzzleio::NotificationResult(res);
       };
     };
   public:

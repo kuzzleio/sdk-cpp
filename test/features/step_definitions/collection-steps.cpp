@@ -83,7 +83,7 @@ namespace {
     kuzzleio::query_options options;
     options.refresh = const_cast<char*>("wait_for");
 
-    ctx->kuzzle->document->create(ctx->index, ctx->collection, document_id, "{\"a\":\"document\"}", QueryOptions(&options));
+    ctx->kuzzle->document->create(ctx->index, ctx->collection, document_id, "{\"a\":\"document\"}", kuzzleio::QueryOptions(&options));
   }
 
   WHEN("^I truncate the collection \'([^\"]*)\'$")
@@ -95,7 +95,7 @@ namespace {
     kuzzleio::query_options options;
     options.refresh = const_cast<char*>("wait_for");
 
-    ctx->kuzzle->collection->truncate(ctx->index, collection_id, QueryOptions(&options));
+    ctx->kuzzle->collection->truncate(ctx->index, collection_id, kuzzleio::QueryOptions(&options));
   }
 
   THEN("^the collection \'([^\"]*)\' should be empty$")
@@ -104,7 +104,7 @@ namespace {
 
     ScenarioScope<KuzzleCtx> ctx;
 
-    SearchResult result(ctx->kuzzle->document->search(
+    kuzzleio::SearchResult result(ctx->kuzzle->document->search(
         ctx->index,
         collection_id,
         "{}"));
@@ -174,7 +174,7 @@ namespace {
 
     std::string specifications = R"%({"strict":true})%";
 
-    kuzzleio::ValidationResponse validationResponse = ValidationResponse(ctx->kuzzle->collection->validateSpecifications(ctx->index, ctx->collection, specifications));
+    kuzzleio::ValidationResponse validationResponse = kuzzleio::ValidationResponse(ctx->kuzzle->collection->validateSpecifications(ctx->index, ctx->collection, specifications));
     ctx->success = validationResponse.valid();
   }
 

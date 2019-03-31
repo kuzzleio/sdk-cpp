@@ -17,17 +17,9 @@
 
 namespace kuzzleio {
 
-    ValidationResponse::ValidationResponse(validation_response *src) {
-        _vr = (validation_response*)malloc(sizeof(validation_response));
-        _vr->valid = src->valid;
-        _vr->details = NULL;
-        if (src->details != NULL)
+    ValidationResponse::ValidationResponse(validation_response *src) : _vr(src) {
+        if (src->details != nullptr)
             _details = std::vector<std::string>(src->details, src->details + src->details_length);
-        _vr->details_length = src->details_length;
-        _vr->description = toC::dupstring(src->description);
-        _vr->status = src->status;
-        _vr->error = toC::dupstring(src->error);
-        _vr->stack = toC::dupstring(src->stack);
     }
 
     const bool ValidationResponse::valid() const {

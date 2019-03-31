@@ -3,7 +3,7 @@
 
 namespace kuzzleio {
 
-    const bool TokenValidity::valid() const {
+    bool TokenValidity::valid() const {
         return _valid;
     }
 
@@ -11,11 +11,11 @@ namespace kuzzleio {
         return _state;
     }
 
-    const unsigned long long int TokenValidity::expiresAt() const {
+    unsigned long long int TokenValidity::expiresAt() const {
         return _expiresAt;
     }
 
-    const int TokenValidity::status() const {
+    int TokenValidity::status() const {
         return _status;
     }
 

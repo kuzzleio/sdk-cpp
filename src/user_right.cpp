@@ -17,17 +17,8 @@
 
 namespace kuzzleio {
 
-    UserRight::UserRight(user_right *src) {
-        _ur = (user_right*)malloc(sizeof(user_right));
-        _ur->controller = toC::dupstring(src->controller);
-        _ur->action = toC::dupstring(src->action);
-        _ur->index = toC::dupstring(src->index);
-        _ur->collection = toC::dupstring(src->collection);
-        _ur->value = toC::dupstring(src->value);
-    }
-
     UserRight::UserRight(const UserRight &src) {
-        _ur = (user_right*)malloc(sizeof(user_right));
+        _ur = static_cast<user_right*>(calloc(5, sizeof(user_right)));
         _ur->controller = toC::dupstring(src._ur->controller);
         _ur->action = toC::dupstring(src._ur->action);
         _ur->index = toC::dupstring(src._ur->index);
