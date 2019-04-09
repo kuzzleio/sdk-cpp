@@ -18,36 +18,38 @@
 #include "exceptions.hpp"
 #include "core.hpp"
 
-namespace kuzzleio {
-  class Server {
-    private:
-      server *_server;
+namespace kuzzleio
+{
+class Server
+{
+private:
+  server *_server;
 
-    public:
-      Server(kuzzle* kuzzle);
-      virtual ~Server();
+public:
+  Server(kuzzle *kuzzle);
+  virtual ~Server();
 
-      bool adminExists();
-      bool adminExists(const query_options& options);
+  bool adminExists();
+  bool adminExists(const query_options &options);
 
-      std::string getAllStats();
-      std::string getAllStats(const query_options& options);
+  std::string allStats();
+  std::string allStats(const query_options &options);
 
-      std::string getStats(time_t start, time_t end);
-      std::string getStats(time_t start, time_t end, const query_options& options);
+  std::string stats(time_t start, time_t end);
+  std::string stats(time_t start, time_t end, const query_options &options);
 
-      std::string getLastStats();
-      std::string getLastStats(const query_options& options);
+  std::string lastStats();
+  std::string lastStats(const query_options &options);
 
-      std::string getConfig();
-      std::string getConfig(const query_options& options);
+  std::string config();
+  std::string config(const query_options &options);
 
-      std::string info();
-      std::string info(const query_options& options);
+  std::string info();
+  std::string info(const query_options &options);
 
-      long long now();
-      long long now(const query_options& options);
-  };
-}
+  long long now();
+  long long now(const query_options &options);
+};
+} // namespace kuzzleio
 
 #endif

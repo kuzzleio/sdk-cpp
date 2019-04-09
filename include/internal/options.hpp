@@ -18,47 +18,49 @@
 #include "internal/core.hpp"
 #include <string>
 
-namespace kuzzleio {
-  class Options {
-    private:
-      options *c_options;
-      size_t header_capacity;
+namespace kuzzleio
+{
+class Options
+{
+private:
+  options *c_options;
+  size_t header_capacity;
 
-    public:
-      Options();
-      virtual ~Options();
+public:
+  Options();
+  virtual ~Options();
 
-      // getters
-      options* c_opts() const noexcept;
-      bool autoQueue() const noexcept;
-      bool autoReconnect() const noexcept;
-      bool autoReplay() const noexcept;
-      bool autoResubscribe() const noexcept;
-      unsigned int port() const noexcept;
-      unsigned long queueMaxSize() const noexcept;
-      unsigned int queueTTL() const noexcept;
-      unsigned long reconnectionDelay() const noexcept;
-      unsigned long replayInterval() const noexcept;
-      bool sslConnection() const noexcept;
+  // getters
+  options *c_opts() const noexcept;
+  bool autoQueue() const noexcept;
+  bool autoReconnect() const noexcept;
+  bool autoReplay() const noexcept;
+  bool autoResubscribe() const noexcept;
+  unsigned int port() const noexcept;
+  unsigned long queueMaxSize() const noexcept;
+  unsigned int queueTTL() const noexcept;
+  unsigned long reconnectionDelay() const noexcept;
+  unsigned long replayInterval() const noexcept;
+  bool sslConnection() const noexcept;
 
-      // setters
-      void autoQueue(bool value) noexcept;
-      void autoReconnect(bool value) noexcept;
-      void autoReplay(bool value) noexcept;
-      void autoResubscribe(bool value) noexcept;
-      void port(unsigned int value) noexcept;
-      void queueMaxSize(unsigned long value) noexcept;
-      void queueTTL(unsigned int value) noexcept;
-      void reconnectionDelay(unsigned long value) noexcept;
-      void replayInterval(unsigned long value) noexcept;
-      void sslConnection(bool value) noexcept;
+  // setters
+  void autoQueue(bool value) noexcept;
+  void autoReconnect(bool value) noexcept;
+  void autoReplay(bool value) noexcept;
+  void autoResubscribe(bool value) noexcept;
+  void port(unsigned int value) noexcept;
+  void queueMaxSize(unsigned long value) noexcept;
+  void queueTTL(unsigned int value) noexcept;
+  void reconnectionDelay(unsigned long value) noexcept;
+  void replayInterval(unsigned long value) noexcept;
+  void sslConnection(bool value) noexcept;
 
-      // headers
-      void setHeader(const std::string & name,
-                     const std::string & value);
-      void delHeader(const std::string & name) noexcept;
-      void clearHeaders() noexcept;
-  };
-}
+  // headers
+  void header(const std::string &name,
+              const std::string &value);
+  void delHeader(const std::string &name) noexcept;
+  void clearHeaders() noexcept;
+};
+} // namespace kuzzleio
 
 #endif

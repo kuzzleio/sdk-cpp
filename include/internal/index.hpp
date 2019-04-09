@@ -19,43 +19,45 @@
 #include "exceptions.hpp"
 #include "core.hpp"
 
-namespace kuzzleio {
-  class Kuzzle;
-  class Index {
-    private:
-      kuzzle_index *_index;
+namespace kuzzleio
+{
+class Kuzzle;
+class Index
+{
+private:
+  kuzzle_index *_index;
 
-    public:
-      Index(kuzzle* kuzzle);
-      virtual ~Index();
+public:
+  Index(kuzzle *kuzzle);
+  virtual ~Index();
 
-      void create(const std::string& index);
-      void create(const std::string& index, const query_options& options);
+  void create(const std::string &index);
+  void create(const std::string &index, const query_options &options);
 
-      void delete_(const std::string& index);
-      void delete_(const std::string& index, const query_options& options);
+  void delete_(const std::string &index);
+  void delete_(const std::string &index, const query_options &options);
 
-      std::vector<std::string> mDelete(const std::vector<std::string>& indexes);
-      std::vector<std::string> mDelete(const std::vector<std::string>& indexes, const query_options& options);
+  std::vector<std::string> mDelete(const std::vector<std::string> &indexes);
+  std::vector<std::string> mDelete(const std::vector<std::string> &indexes, const query_options &options);
 
-      bool exists(const std::string& index);
-      bool exists(const std::string& index, const query_options& options);
+  bool exists(const std::string &index);
+  bool exists(const std::string &index, const query_options &options);
 
-      void refresh(const std::string& index);
-      void refresh(const std::string& index, const query_options& options);
+  void refresh(const std::string &index);
+  void refresh(const std::string &index, const query_options &options);
 
-      void refreshInternal();
-      void refreshInternal(const query_options& options);
+  void refreshInternal();
+  void refreshInternal(const query_options &options);
 
-      void setAutoRefresh(const std::string& index, bool auto_refresh);
-      void setAutoRefresh(const std::string& index, bool auto_refresh, const query_options& options);
+  void autoRefresh(const std::string &index, bool auto_refresh);
+  void autoRefresh(const std::string &index, bool auto_refresh, const query_options &options);
 
-      bool getAutoRefresh(const std::string& index);
-      bool getAutoRefresh(const std::string& index, const query_options& options);
+  bool autoRefresh(const std::string &index);
+  bool autoRefresh(const std::string &index, const query_options &options);
 
-      std::vector<std::string> list();
-      std::vector<std::string> list(const query_options& options);
-  };
-}
+  std::vector<std::string> list();
+  std::vector<std::string> list(const query_options &options);
+};
+} // namespace kuzzleio
 
 #endif
