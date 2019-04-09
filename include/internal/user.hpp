@@ -29,11 +29,11 @@ namespace kuzzleio {
     public:
       User() = default;
 
-      User(kuzzle_user* src) :
+      User(const kuzzle_user* src) :
         _id(src->id),
         _content(src->content),
         _profile_ids(std::vector<std::string>(src->profile_ids, src->profile_ids + src->profile_ids_length))
-        {};
+        {/* Must not call kuzzle_free_user() since the pointer always comes from user_result struct */};
 
       User(const User& src) :
         _id(src._id),
