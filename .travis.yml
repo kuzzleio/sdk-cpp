@@ -48,6 +48,18 @@ after_deploy:
 matrix:
   include:
 # ---------------------------------------------
+# Deadlinks
+# ---------------------------------------
+    - env:
+        - ARCH="amd64"
+
+      script:
+        - npm run doc-prepare
+        - npm run --prefix doc/framework clone-repos
+        - gem install typhoeus
+        - HYDRA_MAX_CONCURRENCY=20 npm run --prefix doc/framework dead-links
+
+# ---------------------------------------------
 # GCC: Build, test and deploy (only on master)
 # ---------------------------------------------
 # AMD64
@@ -122,4 +134,3 @@ matrix:
       script:
         # Build & Test
         - docker run --rm -it --network ci_default --link kuzzle -v "$(pwd)":/mnt kuzzleio/sdk-cross:clang-i386 make all build_test run_test
-
