@@ -243,8 +243,4 @@ jobs:
 
       script:
         # Build & Test
-<<<<<<< HEAD
         - docker run --rm -it --network ci_default --link kuzzle -v "$(pwd)":/mnt kuzzleio/sdk-cross:clang-i386 make update_submodule all build_test run_test
-=======
-        - docker run --rm -it --network ci_default --link kuzzle -v "$(pwd)":/mnt kuzzleio/sdk-cross:clang-i386 make all build_test run_test
->>>>>>> master
