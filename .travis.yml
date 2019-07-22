@@ -51,7 +51,7 @@ matrix:
 # Deadlinks
 # ---------------------------------------
     - env:
-        - ARCH="amd64"
+        - CHECK_DEAD_LINKS="CHECK_DEAD_LINKS"
 
       script:
         - npm run doc-prepare
