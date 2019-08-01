@@ -9,8 +9,7 @@ env:
   global:
   - AWS_S3_BUCKET=dl.kuzzle.io
   - AWS_CLOUDFRONT_DISTRIBUTION_ID=E12YL8EZVABYR0
-  # AWS ACCESS KEY ID
-  - secure: "FNXFRe/5Ddci25oBqrMCjPe1JzfWs0A1b1e9FBMHK3ucx3bsbBLKs1HJWOUvTmWF/ZvvifaqZe1yczjoRfHSZeTNC4GQM1H//KZLU9PVx0FgIKy1AZ4efFftRsYOfQ6YhnPpp6SCeDoViC4bWwS7MxHQw8agvLBetDuV+nUK869DZtzAEw1Q/dThxSOtx/w+3LUibipxtmDpY99tB1+RCag1JyJBLvkkCuOEd/inAcTkLtEMXjIst5IP0pHJWfmVgGFwxclwzvq45qLEaS9cbmWcF9vFTV1eO9ubS27GgdL9Bnt1I0ZRYCrg3xxq8fIHKgmana8Jb9ESrB3QpqcaoVS5j5nR89lHdqHHPESCRghIOADnIqkqLi1+aURmSgQAyWOP4CRZuo1EO+A6Pq0XMisGreMkH1XfyemB6us9hijbSAnBdxAN6JQB0+SsKljIFf44iLilEVt1NzbPj4bxcUwFTZFPSsHKMXXgRgaZ86Gwg5ejuXweL1MPqWztBxn8TgaYR6SwExytD0rvhCMJoO/qyXplQxpuTVd517yL7iOFniMvtkxDTJCAkldj3yF/BnrESqs69R+LCBNorFmjnigyfDlg54FvWik4+QakyNofmB2LVnNBa9z+QB/QwFJcYkJpKLBgSxEEtQRJEVdOhiV8WlR84jmF45TgzRJgDEE="
+  - AWS_ACCESS_KEY_ID=AKIAIYAXFUAHXOWP2MJA
   # AWS SECRET ACCESS KEY
   - secure: "XFXzbiX3L9yWTM1eZVHNvK9J36V5m02SBZ1SjGKQk6gk1FCBlTk2qimDcjEXRmoFbvSjl66qu2A7JYNyo0+UVAd6xUCKasJeEezElUkYGehXXc65yoSEC2BikIdgMWwl3q/flPBaXyLVCuaczLCY3T7j7d+oT4Zy0GNkqtPMxxe0DhUydyESJ8rVP07s/ai4qoAx9ZYOQ/zAitwZlrUM5SQo1lDSd3zb0mU2nk4WxgnlFZRxukc+fBS/Iz0+t10zcAr4meiAFhmHxu5I/GWo4NvxF2xvenxnN9OMdImrTn+X8kqiM3Zgp5nfxyM2pqeoPitkc8pps/UDiwYa59YC1aG5W05VdvJJYghBNYZXnQYTAcJeNdoMD+Vvg7bnPY8eEV5EcAoM+j8sRiqw+zr5ORtR/qYR98rYtBbYpRE9DAKqx5HIl6aWZIirSP0ChxmM9T4F1z9Nky/xq18hb9ZrTVTN2sOoJNh8c42odHuXlE7IDQqkB8EuY9nC6bIeBaKINtoMr1PZ1DmMdnTWliJdS7rhzKo3n1Ns0NMsLnnELMJXWUZD1LVHXlDT4yRo1ZFQ/bu3uGaaibIG4BZzwjrTQ+8Lnr1+MS5jeD/SkESzr2z8BRn+6Hmomap3BnYQAC565idMVATDAZ6NZh/j/lg5Vbvll0wRkoZR5v5Jgf3hIdE="
 
@@ -22,17 +21,6 @@ before_script:
 
 jobs:
   include:
-    - stage: Tests
-      name: Dead link check
-      if: type = pull_request OR type = push AND branch =~ /^master|[0-9]+-(dev|stable)$/ OR type = cron
-
-      before_script:
-        - npm run doc-prepare
-        - npm run --prefix doc/framework clone-repos
-        - gem install typhoeus
-      script:
-        - HYDRA_MAX_CONCURRENCY=20 npm run --prefix doc/framework dead-links
-
 # ---------------------------------------------
 # GCC: Build, test and deploy
 # ---------------------------------------------
@@ -244,3 +232,85 @@ jobs:
       script:
         # Build & Test
         - docker run --rm -it --network ci_default --link kuzzle -v "$(pwd)":/mnt kuzzleio/sdk-cross:clang-i386 make update_submodule all build_test run_test
+
+# ---------------------------------------------
+# Documentation
+# ---------------------------------------------
+    - stage: Tests
+      name: Dead link check
+      if: type = pull_request OR type = push AND branch =~ /^master|[0-9]+-(dev|stable)$/ OR type = cron
+      language: node_js
+      node_js: 10
+
+      before_script:
+        - npm run doc-prepare
+        - npm run --prefix doc/framework clone-repos
+      script:
+        - gem install typhoeus
+        - HYDRA_MAX_CONCURRENCY=20 npm run --prefix doc/framework dead-links
+
+    - stage: Deployment Doc Dev
+      name: Deploy next-docs.kuzzle.io
+      if: type = push AND branch =~ .*-dev
+      language: node_js
+      node_js: 10
+      env:
+        - NODE_ENV=production
+        - S3_BUCKET=docs-next.kuzzle.io
+        - CLOUDFRONT_DISTRIBUTION_ID=E2ZCCEK9GRB49U
+        - AWS_DEFAULT_REGION=us-west-2
+
+      addons:
+        apt:
+          packages:
+            - python
+            - python-pip
+
+      install:
+        - pip install awscli --upgrade --user
+
+      script:
+        - npm run doc-prepare
+        - npm run doc-build
+
+      deploy:
+        provider: script
+        script:
+          - npm run doc-upload
+        skip_cleanup: true
+
+      after_deploy:
+        - npm run doc-cloudfront
+
+    - stage: Deployment Doc Prod
+      name: Deploy docs.kuzzle.io
+      if: type = push AND branch =~ /^master|[0-9]+-stable$/
+      language: node_js
+      node_js: 10
+      env:
+        - NODE_ENV=production
+        - S3_BUCKET=docs.kuzzle.io
+        - CLOUDFRONT_DISTRIBUTION_ID=E3D6RP0POLCJMM
+        - AWS_DEFAULT_REGION=us-west-2
+
+      addons:
+        apt:
+          packages:
+            - python
+            - python-pip
+
+      install:
+        - pip install awscli --upgrade --user
+
+      script:
+        - npm run doc-prepare
+        - npm run doc-build
+
+      deploy:
+        provider: script
+        script:
+          - npm run doc-upload
+        skip_cleanup: true
+
+      after_deploy:
+        - npm run doc-cloudfront
