@@ -12,7 +12,7 @@ The `UserRight` class is the SDK representation of a single [user's right](/core
 
 Instances of the `UserRight` class are returned by the followings methods:
 
-- [auth:getMyRights](/sdk/cpp/1/controllers/auth/).
+- [auth:getMyRights](/sdk/cpp/1/controllers/auth).
 
 ## Public class definition
 

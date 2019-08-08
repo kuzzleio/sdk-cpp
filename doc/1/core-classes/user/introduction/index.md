@@ -12,7 +12,7 @@ The `User` class is the SDK representation of a Kuzzle [user](/core/1/guides/ess
 
 Instances of the `User` class are returned by the following methods:
 
-- [auth:getCurrentUser](/sdk/cpp/1/controllers/auth/)
+- [auth:getCurrentUser](/sdk/cpp/1/controllers/auth)
 
 ## Public class definition
 

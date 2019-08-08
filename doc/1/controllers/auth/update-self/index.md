@@ -34,7 +34,7 @@ Additional query options:
 
 ## Return
 
-A [kuzzleio::User](/sdk/cpp/1/core-classes/user/) object.
+A [kuzzleio::User](/sdk/cpp/1/core-classes/user) object.
 
 ## Exceptions
 

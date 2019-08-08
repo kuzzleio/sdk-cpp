@@ -34,7 +34,7 @@ Additional query options:
 
 ## Return
 
-A vector of pointer to [kuzzleio::UserRight](/sdk/cpp/1/core-classes/user-right/) object.
+A vector of pointer to [kuzzleio::UserRight](/sdk/cpp/1/core-classes/user-right) object.
 
 ## Exceptions
 

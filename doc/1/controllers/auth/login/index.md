@@ -9,7 +9,7 @@ description: Authenticate a user
 
 Authenticates a user.
 
-If this action is successful, all further requests emitted by this SDK instance will be in the name of the authenticated user, until either the authenticated token expires, the [logout](/sdk/cpp/1/controllers/auth/logout) action is called, or the [jwt](/sdk/cpp/1/core-classes/kuzzle/introduction/) property is manually unset.
+If this action is successful, all further requests emitted by this SDK instance will be in the name of the authenticated user, until either the authenticated token expires, the [logout](/sdk/cpp/1/controllers/auth/logout) action is called, or the [jwt](/sdk/cpp/1/core-classes/kuzzle/introduction) property is manually unset.
 
 ## Arguments
 
@@ -37,7 +37,7 @@ The name of the authentication [strategy](/core/1/guides/kuzzle-depth/authentica
 Depending on the chosen authentication `strategy`, additional [credential arguments](/core/1/guides/kuzzle-depth/authentication/#authentication) may be required.
 The API request example on this page provides the necessary arguments for the [`local` authentication plugin](https://github.com/kuzzleio/kuzzle-plugin-auth-passport-local).
 
-Check the appropriate [authentication plugin](/core/1/plugins/guides/strategies/overview/) documentation to get the list of additional arguments to provide.
+Check the appropriate [authentication plugin](/core/1/plugins/guides/strategies/overview) documentation to get the list of additional arguments to provide.
 
 
 ### expiresIn
@@ -52,7 +52,7 @@ Once `auth:login` has been called, the returned JWT is stored by the SDK and use
 
 ## Exceptions
 
-Throws a `kuzzleio::KuzzleException` if there is an error. See how to [handle error](/sdk/cpp/1/essentials/error-handling/).
+Throws a `kuzzleio::KuzzleException` if there is an error. See how to [handle error](/sdk/cpp/1/essentials/error-handling).
 
 ## Usage
 

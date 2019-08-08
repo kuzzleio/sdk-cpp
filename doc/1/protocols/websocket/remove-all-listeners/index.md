@@ -19,7 +19,7 @@ void removeAllListeners(kuzzleio::Event event);
 
 | Argument | Type                       | Description                                                              |
 | -------- | -------------------------- | ------------------------------------------------------------------------ |
-| `event`  | <pre>kuzzleio::Event</pre> | An enum representing the listener [event](/sdk/cpp/1/essentials/events/) |
+| `event`  | <pre>kuzzleio::Event</pre> | An enum representing the listener [event](/sdk/cpp/1/essentials/events) |
 
 ### event
 
