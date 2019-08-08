@@ -8,7 +8,7 @@ order: 100
 
 # Notifications
 
-The [realtime:subscribe](/sdk/cpp/1/controllers/realtime/) method takes a listener of type `kuzzleio::NotificationListener`.
+The [realtime:subscribe](/sdk/cpp/1/controllers/realtime) method takes a listener of type `kuzzleio::NotificationListener`.
 That listener is called with a `const kuzzleio::notification_result*` argument, pointing to an object whose content depends on the type of notification received.
 
 ## Document & messages
@@ -27,7 +27,7 @@ These `kuzzleio::notification_result` represent [documents changes & messages](/
 | `scope`      | <pre>const char\*</pre>                     | `in`: document enters (or stays) in the scope<br/>`out`: document leaves the scope                    |
 | `timestamp`  | <pre>unsigned long long</pre>               | Timestamp of the event, in Epoch-millis format                                                        |
 | `n_type`     | <pre>const char\*</pre>                     | `document`: the notification type                                                                     |
-| `volatiles`  | <pre>const char\*</pre>                     | JSON String representing request [volatile data](/core/1/api/essentials/volatile-data/)               |
+| `volatiles`  | <pre>const char\*</pre>                     | JSON String representing request [volatile data](/core/1/api/essentials/volatile-data)               |
 
 The `kuzzleio::notification_content` struct has the following properties for document notifications & messages:
 
@@ -52,7 +52,7 @@ These `kuzzleio::notification_result` represent [user events](/core/1/api/essent
 | `timestamp`  | <pre>unsigned long long</pre>               | Timestamp of the event, in Epoch-millis format                                                        |
 | `n_type`     | <pre>const char\*</pre>                     | `user`: the notification type                                                                         |
 | `user`       | <pre>const char\*</pre>                     | `in`: a new user has subscribed to the same filters<br/>`out`: a user cancelled a shared subscription |
-| `volatiles`  | <pre>const char\*</pre>                     | JSON String representing request [volatile data](/core/1/api/essentials/volatile-data/)               |
+| `volatiles`  | <pre>const char\*</pre>                     | JSON String representing request [volatile data](/core/1/api/essentials/volatile-data)               |
 
 The `kuzzleio::notification_content` struct has the following properties for document notifications & messages:
 

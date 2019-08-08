@@ -12,7 +12,7 @@ An event system allows to be notified when the SDK status changes. These events 
 
 Subscription to these events is possible by specifying callbacks that will be executed when a specific event is issued by the SDK instance.
 
-These callbacks can be added by the method [addListener](/sdk/cpp/1/core-classes/kuzzle/).
+These callbacks can be added by the method [addListener](/sdk/cpp/1/core-classes/kuzzle).
 
 **Note:** listeners are called in the order of their insertion.
 
@@ -74,7 +74,7 @@ Triggered whenever a request is removed from the offline queue.
 
 **Callback arguments**
 
-A JSON string representing the [request](/core/1/api/essentials/query-syntax/) removed from the queue.
+A JSON string representing the [request](/core/1/api/essentials/query-syntax) removed from the queue.
 
 ## KUZZLE_EVENT_OFFLINE_QUEUE_PUSH
 
@@ -86,7 +86,7 @@ A JSON string representing an object with the following properties:
 
 | Property  | Type                   | Description                                                                                 |
 | --------- | ---------------------- | ------------------------------------------------------------------------------------------- |
-| `request` | <pre>std::string</pre> | JSON string representing [request](/core/1/api/essentials/query-syntax/) added to the queue |
+| `request` | <pre>std::string</pre> | JSON string representing [request](/core/1/api/essentials/query-syntax) added to the queue |
 
 ## KUZZLE_EVENT_QUERY_ERROR
 
