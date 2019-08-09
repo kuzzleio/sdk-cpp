@@ -24,7 +24,7 @@ Depending on the arguments given to the initial search, the `next` method will p
 If no policy is applicable, the `next` method throws an exception.
 
 :::info
-When processing a large number of documents (i.e. more than 1000), it is advised to use a scroll cursor (see the [scroll search option](/sdk/cpp/1/controllers/document/search/#arguments)).
+When processing a large number of documents (i.e. more than 1000), it is advised to use a scroll cursor (see the [scroll search option](/sdk/cpp/1/controllers/document/search#arguments)).
 
 It is also the only method that guarantees that all matching documents will be retrieved, without duplicates.
 :::
