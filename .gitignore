@@ -4,3 +4,4 @@ deploy/
 build/
 
 doc/framework
+node_modules
