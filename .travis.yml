@@ -7,11 +7,11 @@ services:
 
 env:
   global:
-  - AWS_S3_BUCKET=dl.kuzzle.io
-  - AWS_CLOUDFRONT_DISTRIBUTION_ID=E12YL8EZVABYR0
-  - AWS_ACCESS_KEY_ID=AKIAIYAXFUAHXOWP2MJA
-  # AWS SECRET ACCESS KEY
-  - secure: "XFXzbiX3L9yWTM1eZVHNvK9J36V5m02SBZ1SjGKQk6gk1FCBlTk2qimDcjEXRmoFbvSjl66qu2A7JYNyo0+UVAd6xUCKasJeEezElUkYGehXXc65yoSEC2BikIdgMWwl3q/flPBaXyLVCuaczLCY3T7j7d+oT4Zy0GNkqtPMxxe0DhUydyESJ8rVP07s/ai4qoAx9ZYOQ/zAitwZlrUM5SQo1lDSd3zb0mU2nk4WxgnlFZRxukc+fBS/Iz0+t10zcAr4meiAFhmHxu5I/GWo4NvxF2xvenxnN9OMdImrTn+X8kqiM3Zgp5nfxyM2pqeoPitkc8pps/UDiwYa59YC1aG5W05VdvJJYghBNYZXnQYTAcJeNdoMD+Vvg7bnPY8eEV5EcAoM+j8sRiqw+zr5ORtR/qYR98rYtBbYpRE9DAKqx5HIl6aWZIirSP0ChxmM9T4F1z9Nky/xq18hb9ZrTVTN2sOoJNh8c42odHuXlE7IDQqkB8EuY9nC6bIeBaKINtoMr1PZ1DmMdnTWliJdS7rhzKo3n1Ns0NMsLnnELMJXWUZD1LVHXlDT4yRo1ZFQ/bu3uGaaibIG4BZzwjrTQ+8Lnr1+MS5jeD/SkESzr2z8BRn+6Hmomap3BnYQAC565idMVATDAZ6NZh/j/lg5Vbvll0wRkoZR5v5Jgf3hIdE="
+    - AWS_S3_BUCKET=dl.kuzzle.io
+    - AWS_CLOUDFRONT_DISTRIBUTION_ID=E12YL8EZVABYR0
+    - AWS_ACCESS_KEY_ID=AKIAIYAXFUAHXOWP2MJA
+    # AWS SECRET ACCESS KEY
+    - secure: "XFXzbiX3L9yWTM1eZVHNvK9J36V5m02SBZ1SjGKQk6gk1FCBlTk2qimDcjEXRmoFbvSjl66qu2A7JYNyo0+UVAd6xUCKasJeEezElUkYGehXXc65yoSEC2BikIdgMWwl3q/flPBaXyLVCuaczLCY3T7j7d+oT4Zy0GNkqtPMxxe0DhUydyESJ8rVP07s/ai4qoAx9ZYOQ/zAitwZlrUM5SQo1lDSd3zb0mU2nk4WxgnlFZRxukc+fBS/Iz0+t10zcAr4meiAFhmHxu5I/GWo4NvxF2xvenxnN9OMdImrTn+X8kqiM3Zgp5nfxyM2pqeoPitkc8pps/UDiwYa59YC1aG5W05VdvJJYghBNYZXnQYTAcJeNdoMD+Vvg7bnPY8eEV5EcAoM+j8sRiqw+zr5ORtR/qYR98rYtBbYpRE9DAKqx5HIl6aWZIirSP0ChxmM9T4F1z9Nky/xq18hb9ZrTVTN2sOoJNh8c42odHuXlE7IDQqkB8EuY9nC6bIeBaKINtoMr1PZ1DmMdnTWliJdS7rhzKo3n1Ns0NMsLnnELMJXWUZD1LVHXlDT4yRo1ZFQ/bu3uGaaibIG4BZzwjrTQ+8Lnr1+MS5jeD/SkESzr2z8BRn+6Hmomap3BnYQAC565idMVATDAZ6NZh/j/lg5Vbvll0wRkoZR5v5Jgf3hIdE="
 
 before_install:
   - sudo sysctl -w vm.max_map_count=262144
@@ -21,19 +21,19 @@ before_script:
 
 jobs:
   include:
-# ---------------------------------------------
-# GCC: Build, test and deploy
-# ---------------------------------------------
-# AMD64
-# ---------------------------------------
+    # ---------------------------------------------
+    # GCC: Build, test and deploy
+    # ---------------------------------------------
+    # AMD64
+    # ---------------------------------------
     - stage: Builds & Tests
       name: "Build & Tests using GCC/G++ - amd64"
 
       addons:
         apt:
           packages:
-          - python
-          - python-pip
+            - python
+            - python-pip
 
       install:
         - pip install awscli --upgrade --user
@@ -67,17 +67,17 @@ jobs:
       after_deploy:
         - aws cloudfront create-invalidation --distribution-id $AWS_CLOUDFRONT_DISTRIBUTION_ID --paths "/*"
 
-# ---------------------------------------
-# I386
-# ---------------------------------------
+    # ---------------------------------------
+    # I386
+    # ---------------------------------------
     - stage: Builds & Tests
       name: "Build & Tests using GCC/G++ - i386"
 
       addons:
         apt:
           packages:
-          - python
-          - python-pip
+            - python
+            - python-pip
 
       install:
         - pip install awscli --upgrade --user
@@ -111,17 +111,17 @@ jobs:
       after_deploy:
         - aws cloudfront create-invalidation --distribution-id $AWS_CLOUDFRONT_DISTRIBUTION_ID --paths "/*"
 
-# ---------------------------------------
-# ARMV7
-# ---------------------------------------
+    # ---------------------------------------
+    # ARMV7
+    # ---------------------------------------
     - stage: Builds & Tests
       name: "Build & Tests using GCC/G++ - armhf"
 
       addons:
         apt:
           packages:
-          - python
-          - python-pip
+            - python
+            - python-pip
 
       install:
         - pip install awscli --upgrade --user
@@ -158,17 +158,17 @@ jobs:
       after_deploy:
         - aws cloudfront create-invalidation --distribution-id $AWS_CLOUDFRONT_DISTRIBUTION_ID --paths "/*"
 
-# ---------------------------------------
-# ARMV8
-# ---------------------------------------
+    # ---------------------------------------
+    # ARMV8
+    # ---------------------------------------
     - stage: Builds & Tests
       name: "Build & Tests using GCC/G++ - aarch64"
 
       addons:
         apt:
           packages:
-          - python
-          - python-pip
+            - python
+            - python-pip
 
       install:
         - pip install awscli --upgrade --user
@@ -205,11 +205,11 @@ jobs:
       after_deploy:
         - aws cloudfront create-invalidation --distribution-id $AWS_CLOUDFRONT_DISTRIBUTION_ID --paths "/*"
 
-# ---------------------------------------------
-# CLANG: Build & Test (AMD64 & i386 only)
-# ---------------------------------------------
-# AMD64
-# ---------------------------------------
+    # ---------------------------------------------
+    # CLANG: Build & Test (AMD64 & i386 only)
+    # ---------------------------------------------
+    # AMD64
+    # ---------------------------------------
     - stage: Builds & Tests
       name: "Build & Tests using Clang - amd64"
 
@@ -220,9 +220,9 @@ jobs:
         # Build & Test
         - docker run --rm -it --network ci_default --link kuzzle -v "$(pwd)":/mnt kuzzleio/sdk-cross:clang make update_submodule all build_test run_test
 
-# ---------------------------------------
-# I386
-# ---------------------------------------
+    # ---------------------------------------
+    # I386
+    # ---------------------------------------
     - stage: Builds & Tests
       name: "Build & Tests using Clang - i386"
 
@@ -233,9 +233,9 @@ jobs:
         # Build & Test
         - docker run --rm -it --network ci_default --link kuzzle -v "$(pwd)":/mnt kuzzleio/sdk-cross:clang-i386 make update_submodule all build_test run_test
 
-# ---------------------------------------------
-# Documentation
-# ---------------------------------------------
+    # ---------------------------------------------
+    # Documentation
+    # ---------------------------------------------
     - stage: Tests
       name: Dead link check
       if: type = pull_request OR type = push AND branch =~ /^master|[0-9]+-(dev|stable)$/ OR type = cron
@@ -282,6 +282,8 @@ jobs:
         script:
           - npm run doc-upload
         skip_cleanup: true
+        on:
+          all_branches: true
 
       after_deploy:
         - npm run doc-cloudfront
@@ -316,6 +318,8 @@ jobs:
         script:
           - npm run doc-upload
         skip_cleanup: true
+        on:
+          all_branches: true
 
       after_deploy:
         - npm run doc-cloudfront
